@@ -3,6 +3,7 @@ import background1 from "../homeBackground.jpg";
 import Footer from "../components/Footer";
 import logo from "../logo.png";
 import { Accordion, AccordionItem } from "@szhsin/react-accordion";
+import Navigation from "../components/Navigation";
 
 // var acc = document.getElementsByClassName("accordion");
 // var i;
@@ -20,6 +21,9 @@ import { Accordion, AccordionItem } from "@szhsin/react-accordion";
 // }
 export default function Homepage() {
   return (
+    <>
+    <Navigation />
+
     <div className="bg-[#F3F8FF]">
       {/*------------ Opening Backgroud --------------- */}
 
@@ -291,6 +295,7 @@ export default function Homepage() {
       </div>
       <Footer />
     </div>
+    </>
   );
 }
 

@@ -1,4 +1,10 @@
 import React from "react";
+import Navigation from "../components/Navigation";
 export default function Contact() {
-  return <div>Contact</div>;
+  
+  return 
+    <>      
+  <Navigation />
+  <div>Contact</div>;
+    </>
 }
