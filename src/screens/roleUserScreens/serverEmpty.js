@@ -5,7 +5,7 @@ import Empty from "../../images/empty.png";
 import Footer from "../../components/userFooter";
 import ButtonAddServer from "../buttonAddServer";
 
-export default function landingPage() {
+export default function serverEmpty() {
   return (
     <div>
       <div className="px-20">

@@ -19,7 +19,7 @@ export default function buttonAddServer() {
         }}
       >
         <AddIcon />
-        <span className="buttonAddServerHover">Learn More</span>
+        {/* <span className="buttonAddServerHover">Learn More</span> */}
       </Fab>
     </>
   );

@@ -30,9 +30,11 @@ export default function Navigation() {
               <button className="font-semibold">Solutions</button>
             </p>
           </Link>
-          <button class="bg-[#3867A5] hover:bg-blue-700 text-white  py-2 px-6 rounded-full">
+          <Link to={`/login`}>
+          <button href="" class="bg-[#3867A5] hover:bg-blue-700 text-white  py-2 px-6 rounded-full">
             Create MHD account
           </button>
+          </Link>
         </div>
       </div>
     </div>

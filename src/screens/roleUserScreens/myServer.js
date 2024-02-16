@@ -1,14 +1,16 @@
 import React from "react";
 import { RiServerFill } from "react-icons/ri";
-// import { Container } from 'tailwind-react-ui'
 import Empty from "../../images/empty.png";
 import Footer from "../../components/userFooter";
+import ButtonAddServer from "../buttonAddServer";
 
-export default function landingPage() {
+export default function LandingPage() {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(!open);
+
   return (
     <div>
       <div className="container px-20">
-        {/* BodyContainer */}
         <div className=" py-6 text-center border-b-2 border-stone-200">
           <div className="header flex flex-row items-center gap-x-3">
             <RiServerFill
@@ -23,10 +25,6 @@ export default function landingPage() {
           </div>
         </div>
 
-        {/* start body content */}
-
-        {/* Searching */}
-        {/* <!-- TW Elements is free under AGPL, with commercial license required for specific uses. See more details: https://tw-elements.com/license/ and contact us for queries at tailwind@mdbootstrap.com -->  */}
         <div class="mb-3">
           <div class="relative mb-4 flex w-full flex-wrap items-stretch">
             <input
@@ -37,7 +35,6 @@ export default function landingPage() {
               aria-describedby="button-addon2"
             />
 
-            {/* <!--Search icon--> */}
             <span
               class="input-group-text flex items-center whitespace-nowrap rounded px-3 py-1.5 text-center text-base font-normal text-neutral-700 dark:text-neutral-200"
               id="basic-addon2"
@@ -57,24 +54,22 @@ export default function landingPage() {
             </span>
           </div>
         </div>
-        {/* end searching */}
 
-        <div className="">
+        <div className="flex flex-row">
           <p>Active Servers</p>
           <div>
             <p>3</p>
           </div>
         </div>
 
-        <div className="">
+        <div className="flex flex-row">
           <p>Inactive Servers</p>
           <div>
             <p>3</p>
           </div>
         </div>
-
-        {/* end body content */}
       </div>
+      <ButtonAddServer onClick={handleOpen} />
       <Footer />
     </div>
   );
