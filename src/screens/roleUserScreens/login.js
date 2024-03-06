@@ -2,29 +2,44 @@ import React from "react";
 import bgLogin from "../../images/loginBackgr.png";
 import Logo from "../../images/MHDLogo.png";
 import loginLeft from "../../images/loginLeft.png";
+import {
+  Grid,
+  Checkbox,
+  Button,
+  TextField,
+  FormControlLabel,
+  Box,
+  Item,
+} from "@mui/material";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import Footer from "../../components/loginFooter";
 
 export default function Login() {
   return (
-    <div
+    <>
+    {/* <div
       style={{
-        position: "relative",
-        width: "100vw",
+        position:"relative",
+        width: "100%",
         height: "100vh",
+        top: "0",
+        left: "0",
+        right: "0",
+        bottom: "0",
       }}
-    >
+    > */}
       <div
         style={{
-          position: "absolute",
-          top: "0",
-          left: "0",
-          right: "0",
-          bottom: "0",
+          position: "relative",
+          width: "100%",
+          minHeight: "100vh",
           backgroundImage: `url(${bgLogin})`,
           backgroundPosition: "center",
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
-          width: "100%",
-          height: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
           filter: "blur(2px)",
         }}
       ></div>
@@ -35,12 +50,10 @@ export default function Login() {
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          width: "65vw",
-          height: "70vh",
+          width: "70%",
+          height: "84%",
           backgroundColor: "white",
-          zIndex: "0",
-
-          borderRadius: "5px",
+          borderRadius: "20px",
           display: "flex",
           flexDirection: "column",
         }}
@@ -60,41 +73,101 @@ export default function Login() {
           />
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <img
-            src={loginLeft}
-            alt="Login Left"
-            style={{ width: "60px", height: "60px" }}
-          />
+        <Grid container justifyContent="center" spacing={2}>
+          <Grid item xs={12} md={6}>
+            <img src={loginLeft} alt="Login Left" />
+          </Grid>
 
-          <div
-            style={{
-              height: "60px",
-              width: "1px",
-              background: "gray",
-              marginRight: "10px",
-              marginLeft: "10px",
-            }}
-          ></div>
+          <Grid item xs={12} md={6} className="pr-8">
+            <div className="d-flex flex-row align-items-center justify-content-center">
+              <p
+                className="lead mb-0"
+                style={{ fontWeight: "900  ", fontSize: "24px" }}
+              >
+                Sign in
+              </p>
+            </div>
+            <div className="d-flex flex-row align-items-center justify-content-center">
+              <p
+                className="lead mb-0"
+                style={{ fontSize: "16px", color: "#637381" }}
+              >
+                Enter your details below
+              </p>
+            </div>
 
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              marginLeft: "10px",
-            }}
-          >
-            <span style={{ fontWeight: "bold" }}>Sign in</span>
-            <span>Enter your details below</span>
-          </div>
-        </div>
+            <div className="emailAddress">
+              <p
+                className="mt-3"
+                style={{ fontSize: "16px", fontWeight: "600" }}>
+                Root user email address
+              </p>
+              <p style={{ fontSize: "11px", fontWeight: "600" }}>Used for account recovery and some administrative functions</p>
+              <div className="textField mt-3">
+                <TextField
+                  label="Email address"
+                  fullWidth
+                  variant="outlined"
+                  className="mb-4"
+                />
+              </div>
+            </div>
+
+            <div className="password">
+              <p
+                className="mt-3"
+                style={{ fontSize: "16px", fontWeight: "600" }}>
+                Password
+              </p>
+              <p style={{ fontSize: "11px", fontWeight: "600" }}>Your password just only you know</p>
+              <div className="textField mt-3">
+                <TextField
+                  label="Password"
+                  fullWidth
+                  variant="outlined"
+                  type="password"
+                  className="mb-4"
+                />
+              </div>
+            </div>
+
+
+            <Box className="mt-3" sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
+            <div>
+            <FormControlLabel control={<Checkbox />} label="Remember me" /></div>
+            <div className="mt-2" style={{textAlign:"right"}}>
+            <a  href="#" style={{fontWeight:"bold", color:"#3867A5",}}>Forgot password?</a>
+            </div>
+
+            </Box>
+            <div className="loginBtn text-center mt-3" >
+            <Button
+            style={{width:"100%", height:"45px",  backgroundColor:"#3867A5"}}
+                variant="contained"
+                color="primary"
+                className="mb-0"
+              >
+                Login
+              </Button>
+              </div>
+            <div className="text-center text-md-start pt-2 float-left" >
+
+              <p className="small fw-bold mt-2 pt-1 mb-2">
+                Don't have an account?{" "}
+                <b style={{color: "#3867A5"}}><a href="#!" >
+                Get started
+                </a></b>
+              </p>
+            </div>
+          </Grid>
+        </Grid>
+        <Footer/>
+
       </div>
-    </div>
+
+
+    {/* </div> */}
+
+    </>
   );
 }
