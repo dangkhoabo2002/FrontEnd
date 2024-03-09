@@ -13,38 +13,19 @@ import {
 } from "@mui/material";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import Footer from "../../components/loginFooter";
+import "./login.css";
+import { Link } from "react-router-dom";
 
 export default function Login() {
   return (
     <>
-    {/* <div
-      style={{
-        position:"relative",
-        width: "100%",
-        height: "100vh",
-        top: "0",
-        left: "0",
-        right: "0",
-        bottom: "0",
-      }}
-    > */}
       <div
-        style={{
-          position: "relative",
-          width: "100%",
-          minHeight: "100vh",
-          backgroundImage: `url(${bgLogin})`,
-          backgroundPosition: "center",
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          filter: "blur(2px)",
-        }}
+        className="login-background"
+        style={{ backgroundImage: `url(${bgLogin})` }}
       ></div>
 
       <div
+        className="white-box"
         style={{
           position: "absolute",
           top: "50%",
@@ -99,10 +80,13 @@ export default function Login() {
             <div className="emailAddress">
               <p
                 className="mt-3"
-                style={{ fontSize: "16px", fontWeight: "600" }}>
+                style={{ fontSize: "16px", fontWeight: "600" }}
+              >
                 Root user email address
               </p>
-              <p style={{ fontSize: "11px", fontWeight: "600" }}>Used for account recovery and some administrative functions</p>
+              <p style={{ fontSize: "11px", fontWeight: "600" }}>
+                Used for account recovery and some administrative functions
+              </p>
               <div className="textField mt-3">
                 <TextField
                   label="Email address"
@@ -116,10 +100,13 @@ export default function Login() {
             <div className="password">
               <p
                 className="mt-3"
-                style={{ fontSize: "16px", fontWeight: "600" }}>
+                style={{ fontSize: "16px", fontWeight: "600" }}
+              >
                 Password
               </p>
-              <p style={{ fontSize: "11px", fontWeight: "600" }}>Your password just only you know</p>
+              <p style={{ fontSize: "11px", fontWeight: "600" }}>
+                Your password just only you know
+              </p>
               <div className="textField mt-3">
                 <TextField
                   label="Password"
@@ -131,43 +118,53 @@ export default function Login() {
               </div>
             </div>
 
+            <Box
+              className="mt-3"
+              sx={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)" }}
+            >
+              <div>
+                <FormControlLabel control={<Checkbox />} label="Remember me" />
+              </div>
 
-            <Box className="mt-3" sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
-            <div>
-            <FormControlLabel control={<Checkbox />} label="Remember me" /></div>
-            <div className="mt-2" style={{textAlign:"right"}}>
-            <a  href="#" style={{fontWeight:"bold", color:"#3867A5",}}>Forgot password?</a>
-            </div>
-
+              <div
+                className="mt-2 font-semibold"
+                style={{ textAlign: "right" }}
+              >
+                <Link to={`/forgotPassword`}>
+                  <p style={{ color: "#3867A5" }}>
+                    <button>Forgot password?</button>
+                  </p>
+                </Link>
+              </div>
             </Box>
-            <div className="loginBtn text-center mt-3" >
-            <Button
-            style={{width:"100%", height:"45px",  backgroundColor:"#3867A5"}}
+            <div className="loginBtn text-center mt-3">
+              <Button
+                style={{
+                  width: "100%",
+                  height: "45px",
+                  backgroundColor: "#3867A5",
+                }}
                 variant="contained"
                 color="primary"
                 className="mb-0"
               >
                 Login
               </Button>
-              </div>
-            <div className="text-center text-md-start pt-2 float-left" >
-
-              <p className="small fw-bold mt-2 pt-1 mb-2">
+            </div>
+            <div className="text-center text-md-start pt-2 float-left ">
+              <p className="small fw-bold mt-2 pt-1 mb-2 flex ">
                 Don't have an account?{" "}
-                <b style={{color: "#3867A5"}}><a href="#!" >
-                Get started
-                </a></b>
+                <Link to={'/signUp'}>
+                  <p style={{ color: "#3867A5" }}>
+                    <button>Get started</button>
+                  </p>
+                </Link>
               </p>
             </div>
           </Grid>
         </Grid>
-        <Footer/>
-
+        <Footer />
       </div>
-
-
-    {/* </div> */}
-
     </>
   );
 }
