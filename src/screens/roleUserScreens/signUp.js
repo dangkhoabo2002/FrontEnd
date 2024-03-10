@@ -16,7 +16,7 @@ import Footer from "../../components/loginFooter";
 import "./login.css";
 import { Link } from "react-router-dom";
 
-export default function signUp() {
+export default function SignUp() {
   return (
     <>
       <div
@@ -76,17 +76,19 @@ export default function signUp() {
         />
       </div>
 
-      <Box
-              className="mt-3"
-              sx={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)" }}
-            >
-              <div>
-                <FormControlLabel control={<Checkbox />} label="By signing up, I agree to Manimal" 
-                />
-                <Link>Term of Service </Link>and <Link>Privacy Policy.</Link>
-              </div>
-              
-            </Box>
+      <Box className="mt-3 d-flex">
+        <div>
+          <FormControlLabel
+            control={<Checkbox />}
+            label={
+              <>
+                By signing up, I agree to Manimal <Link>Terms of Service</Link>{" "}
+                and <Link>Privacy Policy.</Link>
+              </>
+            }
+          />
+        </div>
+      </Box>
 
       <div className="loginBtn text-center mt-3">
         <Button
@@ -103,16 +105,14 @@ export default function signUp() {
         </Button>
       </div>
 
-        <div className="text-center text-md-start pt-2 float-left ">
-              <p className="small fw-bold mt-2 pt-1 mb-2 flex ">
-              Already have an account? { <Link to={'/login'}>
-                  <b style={{ color: "#3867A5" }}>
-                    <button>Login</button>
-                  </b>
-                </Link>}
-                
-              </p>
-            </div>
-      </>
+      <div className="text-center text-md-start pt-2 float-left">
+        <div className="small fw-bold mt-2 pt-1 mb-2 flex">
+          Already have an account?{" "}
+          <Link to={"/login"} style={{ color: "#3867A5" }}>
+            <b>Login</b>
+          </Link>
+        </div>
+      </div>
+    </>
   );
 }

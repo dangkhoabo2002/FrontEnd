@@ -8,6 +8,8 @@ import Test from "./screens/roleUserScreens/test";
 import Login from "./screens/roleUserScreens/login";
 import ForgotPassword from "./screens/roleUserScreens/forgotPassword";
 import SignUp from "./screens/roleUserScreens/signUp";
+import OTPInput from "./screens/roleUserScreens/otp";
+import ResetPassword from "./screens/roleUserScreens/resetPassword";
 export default function App() {
   return (
     <div>
@@ -18,7 +20,9 @@ export default function App() {
         <Route path="/test" element={<Test/>}> </Route>
         <Route path="/login" element={<Login/>}> </Route>
         <Route path="/forgotPassword" element={<ForgotPassword/>}> </Route>
+        <Route path="/ResetPassword" element={<ResetPassword/>}> </Route>
         <Route path="/signUp" element={<SignUp/>}> </Route>
+        <Route path="/OTP" element={<OTPInput/>}> </Route>
         {/* Dashboard Unlogin */}
         <Route path="/" element={<Homepage />}></Route>
         <Route path="/contact" element={<Contact />}></Route>

@@ -1,9 +1,10 @@
 import React from "react";
 import background1 from "../homeBackground.jpg";
 import Footer from "../components/Footer";
-import logo from "../logo.png";
+import logo from "../images/MHDLogo.png";
 import { Accordion, AccordionItem } from "@szhsin/react-accordion";
 import Navigation from "../components/Navigation";
+import hpBr from "../images/hpBr.png";
 
 // var acc = document.getElementsByClassName("accordion");
 // var i;
@@ -29,10 +30,10 @@ export default function Homepage() {
 
       <div className="relative">
         <img
-          src={background1}
-          alt="background1"
-          className="w-full object-fill"
-          style={{ height: "750px" }}
+          src={hpBr}
+          alt="hpBr"
+          className="w-full object-cover"
+          style={{ height: "600px" }}
         />
         <div className="absolute bottom-1/3 left-64 text-white w-1/3">
           <div className="text-6xl font-semibold w-2/3 pb-6">
