@@ -3,28 +3,55 @@ import { RiServerFill } from "react-icons/ri";
 import Empty from "../../images/empty.png";
 import Footer from "../../components/userFooter";
 import ButtonAddServer from "../buttonAddServer";
+import ApartmentIcon from '@mui/icons-material/Apartment';
+import {
+  Grid,
+  Checkbox,
+  Button,
+  TextField,
+  FormControlLabel,
+  Box,
+  Item,
+} from "@mui/material";
+import Stack from '@mui/material/Stack';
+import { purple } from '@mui/material/colors';
+import { styled } from '@mui/material/styles';
+
+
 
 export default function LandingPage() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(!open);
+
+  const ColorButton = styled(Button)(({ theme }) => ({
+    color: theme.palette.getContrastText(purple[500]),
+    backgroundColor: "#E6E6E6",
+    color:"#637381",
+    fontSize: "24px",
+    width: "100%",
+    height: "200px",
+    '&:hover': {
+      backgroundColor: "#D2D2D2",
+    },
+  }));
 
   return (
     <div>
       <div className="container px-20">
         <div className=" py-6 text-center border-b-2 border-stone-200">
           <div className="header flex flex-row items-center gap-x-3">
-            <RiServerFill
+            <ApartmentIcon
               style={{ width: "32px", height: "32px", color: "#637381" }}
             />
             <p
               className="font-semibold"
               style={{ fontSize: "28px", color: "#637381" }}
             >
-              MY SERVERS
+              ORGANIZATONS
             </p>
           </div>
         </div>
-
+{/* 
         <div class="mb-3">
           <div class="relative mb-4 flex w-full flex-wrap items-stretch">
             <input
@@ -53,9 +80,12 @@ export default function LandingPage() {
               </svg>
             </span>
           </div>
+        </div> */}
+        <div className="mt-3" style={{}}>
+        <ColorButton variant="contained">+</ColorButton>
         </div>
 
-        <div className="flex flex-row">
+        {/* <div className="flex flex-row">
           <p>Active Servers</p>
           <div>
             <p>3</p>
@@ -67,9 +97,9 @@ export default function LandingPage() {
           <div>
             <p>3</p>
           </div>
-        </div>
+        </div> */}
       </div>
-      <ButtonAddServer onClick={handleOpen} />
+      {/* <ButtonAddServer onClick={handleOpen} /> */}
       <Footer />
     </div>
   );

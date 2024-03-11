@@ -57,6 +57,7 @@ export default function forgotPassword() {
       </div>
 
       <div className="loginBtn text-center mt-3">
+        <Link to={"/otp"}>
         <Button
           style={{
             width: "100%",
@@ -69,6 +70,7 @@ export default function forgotPassword() {
         >
           Send code
         </Button>
+        </Link>
       </div>
 
       <div>

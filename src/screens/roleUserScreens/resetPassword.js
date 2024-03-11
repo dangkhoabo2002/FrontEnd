@@ -29,7 +29,7 @@ export default function ResetPassword() {
       setAlertMessage("Please enter both passwords.");
       setShowAlert(true);
     } else if (password === confirmPassword) {
-      setAlertMessage("Reset password Successfully");
+      setAlertMessage("Reset password successfully");
       setShowAlert(true);
     } else {
       setAlertMessage("The password doesn't match");
@@ -123,19 +123,19 @@ export default function ResetPassword() {
 
       {showAlert && (
         <Alert
-          severity={alertMessage === "Reset password Successfully" ? "success" : "error"}
+          severity={alertMessage === "Reset password successfully" ? "success" : "error"}
           onClose={() => setShowAlert(false)}
           style={{
             position: "fixed",
             bottom: "20px",
             right: "20px",
             backgroundColor:
-              alertMessage === "Reset password Successfully" ? "#dff0d8" : "#f2dede",
+              alertMessage === "Reset password successfully" ? "#dff0d8" : "#f2dede",
             border:
-              alertMessage === "Reset password Successfully"
+              alertMessage === "Reset password successfully"
                 ? "1px solid #c3e6cb"
                 : "1px solid #ebccd1",
-            color: alertMessage === "Reset password Successfully" ? "#3c763d" : "#a94442",
+            color: alertMessage === "Reset password successfully" ? "#3c763d" : "#a94442",
             borderRadius: "4px",
             padding: "15px",
           }}
