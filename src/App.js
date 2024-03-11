@@ -5,10 +5,10 @@ import Navigation from "./components/Navigation";
 import ServerEmpty from "./screens/serverEmpty";
 import Organization from "./screens/Organization";
 import Test from "./screens/test";
-import Login from "./screens/login";
+import Login from "./screens/Login";
 import ForgotPassword from "./screens/forgotPassword";
 import SignUp from "./screens/signUp";
-import OTPInput from "./screens/otp";
+import OTP from "./screens/OTP";
 import ResetPassword from "./screens/resetPassword";
 export default function App() {
   return (
@@ -22,7 +22,7 @@ export default function App() {
         <Route path="/forgotPassword" element={<ForgotPassword/>}> </Route>
         <Route path="/ResetPassword" element={<ResetPassword/>}> </Route>
         <Route path="/signUp" element={<SignUp/>}> </Route>
-        <Route path="/OTP" element={<OTPInput/>}> </Route>
+        <Route path="/OTP" element={<OTP/>}> </Route>
         {/* Dashboard Unlogin */}
         <Route path="/" element={<Homepage />}></Route>
         <Route path="/contact" element={<Contact />}></Route>

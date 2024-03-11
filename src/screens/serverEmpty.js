@@ -1,7 +1,7 @@
 import React from "react";
 import { RiServerFill } from "react-icons/ri";
 // import { Container } from 'tailwind-react-ui'
-import Empty from "../../images/empty.png";
+import Empty from "../images/empty.png";
 import Footer from "../components/userFooter";
 import ButtonAddServer from "./buttonAddServer";
 

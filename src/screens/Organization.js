@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { RiServerFill } from "react-icons/ri";
-import Empty from "../../images/empty.png";
+import Empty from "../images/empty.png";
 import Footer from "../components/userFooter";
 import ButtonAddServer from "./buttonAddServer";
 import ApartmentIcon from "@mui/icons-material/Apartment";

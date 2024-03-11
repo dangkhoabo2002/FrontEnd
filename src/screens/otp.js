@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { MuiOtpInput } from "mui-one-time-password-input";
 import { Box, Button, FormHelperText } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
-import Logo from "../../images/MHDLogo.png";
+import Logo from "../images/MHDLogo.png";
 import { Link } from "react-router-dom";
 import forgotPassword from "./forgotPassword";
 import CheckIcon from "@mui/icons-material/Check";
 
-export default function OTPInput() {
+export default function OTP() {
   const { control, handleSubmit } = useForm({
     defaultValues: {
       otp: "",
