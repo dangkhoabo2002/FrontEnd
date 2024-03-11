@@ -5,6 +5,9 @@ import Footer from "../../components/userFooter";
 import ButtonAddServer from "../buttonAddServer";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import { Cancel } from "@mui/icons-material";
+import { Link } from "react-router-dom";
+import CloseIcon from "@mui/icons-material/Close";
+import CancelIcon from "@mui/icons-material/Cancel";
 import {
   Grid,
   Checkbox,
@@ -20,6 +23,7 @@ import {
   InputAdornment,
   FormHelperText,
   Chip,
+  IconButton,
 } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import { purple } from "@mui/material/colors";
@@ -70,9 +74,9 @@ export default function LandingPage() {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 900,
+    width: 600,
     bgcolor: "background.paper",
-    border: "2px solid #000",
+    borderRadius: "20px",
     boxShadow: 24,
     p: 4,
   };
@@ -107,14 +111,17 @@ export default function LandingPage() {
             aria-describedby="keep-mounted-modal-description"
           >
             <Box sx={style}>
-              <div className=" pb-2  text-center border-b-2 border-stone-200">
-                <div className="header flex flex-row items-center gap-x-3">
+              <div className="pb-2 text-center border-b-2 border-stone-500">
+                <div className="flex flex-row items-center justify-between">
                   <p
                     className="font-semibold"
                     style={{ fontSize: "28px", color: "#637381" }}
                   >
-                    ADD ORGANIZATON
+                    ADD ORGANIZATION
                   </p>
+                  <IconButton onClick={handleClose}>
+                    <CloseIcon />
+                  </IconButton>
                 </div>
               </div>
 
@@ -220,6 +227,77 @@ export default function LandingPage() {
                   </FormControl>
                 </Grid>
               </Grid>
+              <Grid className="mt-3">
+                <Grid item>
+                  <Typography
+                    className="mt-3"
+                    style={{
+                      fontSize: "16px",
+                      fontWeight: "400",
+                    }}
+                  >
+                    Description:
+                  </Typography>
+                </Grid>
+                <Grid item xs>
+                  <FormControl fullWidth variant="outlined">
+                    <OutlinedInput
+                      className="mt-2"
+                      style={{ height: "100px" }}
+                      multiline
+                      rows={4}
+                      inputProps={{
+                        "aria-label": "Description",
+                      }}
+                    />
+                  </FormControl>
+                </Grid>
+              </Grid>
+              <Box className="mt-3 d-flex">
+                <div>
+                  <FormControlLabel
+                    control={<Checkbox />}
+                    label={
+                      <>
+                        I accept the{" "}
+                        <Link style={{ color: "#5F94D9" }}>
+                          Term of Service.
+                        </Link>
+                      </>
+                    }
+                  />
+                </div>
+              </Box>
+
+              <Box>
+                <Grid container spacing={2} mt={3}>
+                  <Grid item xs={12} md={3}></Grid>
+                  <Grid item xs={12} md={3}></Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    md={3}
+                    className="d-flex justify-content-center align-items-center"
+                  >
+                    {" "}
+                    <Button onClick={handleClose}>
+                      <Typography variant="button" style={{ color: "red" }}>
+                        Cancel
+                      </Typography>{" "}
+                    </Button>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    md={3}
+                    className="d-flex justify-content-center align-items-center"
+                  >
+                    <Button variant="contained" color="success" style={{width:"100px"}}>
+                      Done
+                    </Button>{" "}
+                  </Grid>
+                </Grid>
+              </Box>
             </Box>
           </Modal>
         </div>
