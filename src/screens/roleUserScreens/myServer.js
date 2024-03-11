@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { RiServerFill } from "react-icons/ri";
 import Empty from "../../images/empty.png";
 import Footer from "../../components/userFooter";
 import ButtonAddServer from "../buttonAddServer";
 import ApartmentIcon from "@mui/icons-material/Apartment";
+import { Cancel } from "@mui/icons-material";
 import {
   Grid,
   Checkbox,
@@ -18,6 +19,7 @@ import {
   OutlinedInput,
   InputAdornment,
   FormHelperText,
+  Chip,
 } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import { purple } from "@mui/material/colors";
@@ -28,8 +30,28 @@ export default function LandingPage() {
   const handleOpen = () => setOpen(!open);
 
   const [addOrg, setAddOrg] = React.useState(false);
-  const handleAdd = () => setAddOrg(!addOrg); // Toggle addOrg state
-  const handleClose = () => setAddOrg(false); // Close modal
+  const handleAdd = () => setAddOrg(!addOrg);
+  const handleClose = () => setAddOrg(false);
+
+  const [memberInput, setMemberInput] = useState("");
+  const [members, setMembers] = useState([]);
+
+  const handleMemberInputChange = (event) => {
+    setMemberInput(event.target.value);
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter" && memberInput.trim() !== "") {
+      setMembers([...members, memberInput.trim()]);
+      setMemberInput("");
+    }
+  };
+
+  const handleMemberDelete = (index) => {
+    const updatedMembers = [...members];
+    updatedMembers.splice(index, 1);
+    setMembers(updatedMembers);
+  };
 
   const ColorButton = styled(Button)(({ theme }) => ({
     color: theme.palette.getContrastText(purple[500]),
@@ -71,36 +93,7 @@ export default function LandingPage() {
             </p>
           </div>
         </div>
-        {/* 
-        <div class="mb-3">
-          <div class="relative mb-4 flex w-full flex-wrap items-stretch">
-            <input
-              type="search"
-              class="relative m-0 block min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary"
-              placeholder="Search"
-              aria-label="Search"
-              aria-describedby="button-addon2"
-            />
 
-            <span
-              class="input-group-text flex items-center whitespace-nowrap rounded px-3 py-1.5 text-center text-base font-normal text-neutral-700 dark:text-neutral-200"
-              id="basic-addon2"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                class="h-5 w-5"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
-                  clip-rule="evenodd"
-                />
-              </svg>
-            </span>
-          </div>
-        </div> */}
         <div className="mt-3">
           <ColorButton onClick={handleAdd} variant="contained">
             +
@@ -126,7 +119,7 @@ export default function LandingPage() {
               </div>
 
               <Grid container alignItems="center" spacing={2} mt={1}>
-                <Grid item>
+                <Grid item xs={12} md={3}>
                   <Typography
                     className="mt-3"
                     style={{
@@ -137,7 +130,7 @@ export default function LandingPage() {
                     Organization name:
                   </Typography>
                 </Grid>
-                <Grid item xs>
+                <Grid item xs={12} md={9}>
                   <FormControl fullWidth variant="outlined">
                     <OutlinedInput
                       inputProps={{
@@ -149,7 +142,7 @@ export default function LandingPage() {
               </Grid>
 
               <Grid container alignItems="center" spacing={2} mt={1}>
-                <Grid item>
+                <Grid item xs={12} md={3}>
                   <Typography
                     className="mt-3"
                     style={{
@@ -160,7 +153,7 @@ export default function LandingPage() {
                     Phone number:
                   </Typography>
                 </Grid>
-                <Grid item xs>
+                <Grid item xs={12} md={9}>
                   <FormControl fullWidth variant="outlined">
                     <OutlinedInput
                       inputProps={{
@@ -172,7 +165,7 @@ export default function LandingPage() {
               </Grid>
 
               <Grid container alignItems="center" spacing={2} mt={1}>
-                <Grid item>
+                <Grid item xs={12} md={3}>
                   <Typography
                     className="mt-3"
                     style={{
@@ -183,7 +176,7 @@ export default function LandingPage() {
                     Email:
                   </Typography>
                 </Grid>
-                <Grid item xs>
+                <Grid item xs={12} md={9}>
                   <FormControl fullWidth variant="outlined">
                     <OutlinedInput
                       inputProps={{
@@ -195,7 +188,7 @@ export default function LandingPage() {
               </Grid>
 
               <Grid container alignItems="center" spacing={2} mt={1}>
-                <Grid item>
+                <Grid item xs={12} md={3}>
                   <Typography
                     className="mt-3"
                     style={{
@@ -206,36 +199,31 @@ export default function LandingPage() {
                     Add member:
                   </Typography>
                 </Grid>
-                <Grid item xs>
+                <Grid item xs={12} md={9}>
                   <FormControl fullWidth variant="outlined">
                     <OutlinedInput
+                      value={memberInput}
+                      onChange={handleMemberInputChange}
+                      onKeyPress={handleKeyPress} // Added onKeyPress event handler here
                       inputProps={{
                         "aria-label": "Member",
                       }}
+                      endAdornment={members.map((member, index) => (
+                        <Chip
+                          key={index}
+                          label={member}
+                          onDelete={() => handleMemberDelete(index)}
+                          style={{ margin: "5px" }}
+                        />
+                      ))}
                     />
                   </FormControl>
                 </Grid>
               </Grid>
-
             </Box>
           </Modal>
         </div>
-
-        {/* <div className="flex flex-row">
-          <p>Active Servers</p>
-          <div>
-            <p>3</p>
-          </div>
-        </div>
-
-        <div className="flex flex-row">
-          <p>Inactive Servers</p>
-          <div>
-            <p>3</p>
-          </div>
-        </div> */}
       </div>
-      {/* <ButtonAddServer onClick={handleOpen} /> */}
       <Footer />
     </div>
   );
