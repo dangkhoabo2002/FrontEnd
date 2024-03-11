@@ -12,7 +12,7 @@ import {
   Item,
 } from "@mui/material";
 import FacebookIcon from "@mui/icons-material/Facebook";
-import Footer from "../../components/loginFooter";
+import Footer from "../components/loginFooter";
 import "./login.css";
 import { Link } from "react-router-dom";
 
