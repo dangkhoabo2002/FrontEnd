@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Logo from "../logo.png";
+import Logo from "../assets/logo.png";
 
 export default function Navigation() {
   return (
@@ -20,9 +20,14 @@ export default function Navigation() {
               <button className="font-semibold">About Us</button>
             </p>
           </Link>
-          <Link to={`/`}>
+          <Link to={`/admin`}>
             <p>
-              <button className="font-semibold">Feature News</button>
+              <button className="font-semibold">Admin</button>
+            </p>
+          </Link>
+          <Link to={`/sidebar`}>
+            <p>
+              <button className="font-semibold">Sidebar</button>
             </p>
           </Link>
           <Link to={`/`}>

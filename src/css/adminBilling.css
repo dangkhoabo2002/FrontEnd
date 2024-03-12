@@ -1,0 +1,113 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    transition: opacity 500ms;
+    visibility: hidden;
+    opacity: 0;
+    z-index: 10;
+}
+
+.overlay:target {
+    visibility: visible;
+    opacity: 1;
+}
+
+.popup {
+    display: flex;
+    background-color: #fff;
+    flex-direction: column;
+    margin: 60px auto;
+    padding: 32px 12px;
+    border-radius: 14px;
+    width: 50%;
+    height: auto;
+    transition: all 1s ease-in-out;
+    overflow: hidden;
+    box-shadow: rgba(255, 255, 255, 0.35) 0px 5px 15px;
+}
+
+
+
+.popup h2 {
+    margin-top: 0;
+    color: #333;
+    font-family: Tahoma, Arial, sans-serif;
+}
+
+.popup .close:hover {
+    color: #06D85F;
+}
+
+.popup .content {
+    max-height: 30%;
+    overflow: auto;
+}
+
+.popup_content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0px 40px;
+}
+
+.popup_content h1 {
+    font-size: 1.5rem;
+    font-weight: bolder;
+    color: #637381;
+    border-bottom: 2px solid #637381;
+    padding: 20px 0px;
+}
+
+.popup_btn {
+    display: flex;
+    flex-direction: column;
+    row-gap: 24px;
+
+}
+
+#popup_btn {
+    text-align: center;
+    border-radius: 8px;
+    background-color: #7357FF;
+    color: white;
+    padding: 12px;
+}
+
+.popup_info {
+    padding-bottom: 24px;
+}
+
+.billingInfo {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    padding: 32px 0px;
+}
+
+.leftInfo h2 {
+    font-weight: 600;
+    font-size: 1.01rem;
+}
+
+.leftInfo,
+.rightInfo {
+    line-height: 2rem;
+}
+
+#paid {
+    color: #6EC882;
+    font-weight: bold;
+}
+
+#pending {
+    color: #DCD421;
+    font-weight: bold;
+}
+
+#fail {
+    color: #F85F60;
+    font-weight: bold;
+}
