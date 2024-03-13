@@ -5,7 +5,7 @@ import NavigationAdmin from "../components/navAdmin";
 export default function adminSetting() {
   return (
     <div>
-      <div className="bg-[#F3F8FF]">
+      <div className="">
         {/*-------------- Navigation + Backgroud---------------- */}
 
         <NavigationAdmin />
@@ -29,7 +29,7 @@ export default function adminSetting() {
           >
             <SidebarAdmin />
           </div>
-          <div className="px-12 py-6"></div>
+          <div className="px-12 py-6 bg-[#F3F8FF]"></div>
         </div>
 
         {/*-------------- END OF LayoutBody ---------------- */}

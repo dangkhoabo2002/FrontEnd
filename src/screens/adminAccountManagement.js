@@ -6,7 +6,7 @@ import "../css/Admin.css";
 
 export default function adminAccountManagement() {
   return (
-    <div className="bg-[#F3F8FF]">
+    <div className="">
       {/*-------------- Navigation + Backgroud---------------- */}
 
       <NavigationAdmin />
@@ -30,7 +30,7 @@ export default function adminAccountManagement() {
         >
           <SidebarAdmin />
         </div>
-        <div className="px-12 py-6">
+        <div className="px-12 py-6 bg-[#F3F8FF]">
           <button class="bg-transparent hover:bg-[#3867A5] text-[#3867A5] font-semibold hover:text-white  border border-[#3867A5] hover:border-transparent rounded px-8 py-1">
             Select
           </button>

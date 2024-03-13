@@ -7,8 +7,10 @@ import "../css/adminBilling.css";
 export default function AdminBillings() {
   const [Billing, setBilling] = useState({});
 
+  console.log(Billing);
+
   return (
-    <div className="bg-[#F3F8FF]">
+    <div className="">
       {/*-------------- Navigation + Backgroud---------------- */}
 
       <NavigationAdmin />
@@ -32,7 +34,7 @@ export default function AdminBillings() {
         >
           <SidebarAdmin />
         </div>
-        <div className="px-12 py-6">
+        <div className="px-12 py-6 bg-[#F3F8FF]">
           <button class="bg-transparent hover:bg-[#3867A5] text-[#3867A5] font-semibold hover:text-white  border border-[#3867A5] hover:border-transparent rounded px-8 py-1">
             Select
           </button>
@@ -62,7 +64,7 @@ export default function AdminBillings() {
                   </td>
                 </tr>
                 {Billings.map((bill) => (
-                  <tr>
+                  <tr key={bill.id}>
                     <td>{bill.date}</td>
                     <td>{bill.type_of_package}</td>
                     <td>{bill.transaction_fee}$</td>
@@ -73,7 +75,10 @@ export default function AdminBillings() {
                     )}
                     <td>
                       <a href="#popup1" id="openPopUp">
-                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                        <button
+                          onClick={() => setBilling(bill)}
+                          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                        >
                           View
                         </button>
                       </a>
