@@ -1,0 +1,15 @@
+[
+    {
+      "id": 1,
+      "name": "Specific Organization",
+      "membersCount": 5,
+      "description": "This is a placeholder description for the specific organization."
+    },
+    {
+      "id": 2,
+      "name": "Another Organization",
+      "membersCount": 7,
+      "description": "This is another organization with a longer description to test how it appears in the UI."
+    }
+  ]
+  

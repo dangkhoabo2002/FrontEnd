@@ -81,8 +81,9 @@ export default function SignUp() {
             control={<Checkbox />}
             label={
               <>
-                By signing up, I agree to Manimal <Link>Terms of Service</Link>{" "}
-                and <Link>Privacy Policy.</Link>
+                By signing up, I agree to Manimal{" "}
+                <Link style={{ color: "#5F94D9" }}>Terms of Service</Link> and{" "}
+                <Link style={{ color: "#5F94D9" }}>Privacy Policy.</Link>
               </>
             }
           />

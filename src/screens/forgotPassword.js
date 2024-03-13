@@ -15,7 +15,7 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import Footer from "../components/loginFooter";
 import { Link } from "react-router-dom";
 
-export default function forgotPassword() {
+export default function ForgotPassword() {
   return (
     <>
       <div

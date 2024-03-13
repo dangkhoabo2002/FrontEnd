@@ -28,6 +28,9 @@ import {
 import Stack from "@mui/material/Stack";
 import { purple } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
+import OrganizationCard from "../components/organizationCard";
+import organizationsData from "../database/organizationsData.json";
+import "./Organization.css";
 
 export default function LandingPage() {
   const [open, setOpen] = React.useState(false);
@@ -57,8 +60,15 @@ export default function LandingPage() {
     setMembers(updatedMembers);
   };
 
+  const [showConfirmation, setShowConfirmation] = React.useState(false);
+  const handleDone = () => {
+    setAddOrg(false);
+    setShowConfirmation(true);
+  };
+
+  // css
+
   const ColorButton = styled(Button)(({ theme }) => ({
-    color: theme.palette.getContrastText(purple[500]),
     backgroundColor: "#E6E6E6",
     color: "#637381",
     fontSize: "24px",
@@ -78,8 +88,12 @@ export default function LandingPage() {
     bgcolor: "background.paper",
     borderRadius: "20px",
     boxShadow: 24,
-    p: 4,
+    p: 3,
   };
+
+  const OrgCard = {
+
+  }
 
   return (
     <div>
@@ -96,6 +110,19 @@ export default function LandingPage() {
               ORGANIZATONS
             </p>
           </div>
+        </div>
+
+        <div className="mt-3">
+          {organizationsData.map((organization) => (
+            <OrganizationCard 
+              className="org-card"
+              sx={OrgCard}
+              key={organization.id}
+              name={organization.name}
+              membersCount={organization.membersCount}
+              description={organization.description}
+            />
+          ))}
         </div>
 
         <div className="mt-3">
@@ -125,7 +152,7 @@ export default function LandingPage() {
                 </div>
               </div>
 
-              <Grid container alignItems="center" spacing={2} mt={1}>
+              <Grid container alignItems="center" spacing={2} mt={0}>
                 <Grid item xs={12} md={3}>
                   <Typography
                     className="mt-3"
@@ -148,7 +175,7 @@ export default function LandingPage() {
                 </Grid>
               </Grid>
 
-              <Grid container alignItems="center" spacing={2} mt={1}>
+              <Grid container alignItems="center" spacing={2} mt={0}>
                 <Grid item xs={12} md={3}>
                   <Typography
                     className="mt-3"
@@ -171,7 +198,7 @@ export default function LandingPage() {
                 </Grid>
               </Grid>
 
-              <Grid container alignItems="center" spacing={2} mt={1}>
+              <Grid container alignItems="center" spacing={2} mt={0}>
                 <Grid item xs={12} md={3}>
                   <Typography
                     className="mt-3"
@@ -194,7 +221,7 @@ export default function LandingPage() {
                 </Grid>
               </Grid>
 
-              <Grid container alignItems="center" spacing={2} mt={1}>
+              <Grid container alignItems="center" spacing={2} mt={0}>
                 <Grid item xs={12} md={3}>
                   <Typography
                     className="mt-3"
@@ -243,7 +270,7 @@ export default function LandingPage() {
                   <FormControl fullWidth variant="outlined">
                     <OutlinedInput
                       className="mt-2"
-                      style={{ height: "100px" }}
+                      style={{}}
                       multiline
                       rows={4}
                       inputProps={{
@@ -270,7 +297,7 @@ export default function LandingPage() {
               </Box>
 
               <Box>
-                <Grid container spacing={2} mt={3}>
+                <Grid container spacing={2} mt={0}>
                   <Grid item xs={12} md={3}></Grid>
                   <Grid item xs={12} md={3}></Grid>
                   <Grid
@@ -292,11 +319,73 @@ export default function LandingPage() {
                     md={3}
                     className="d-flex justify-content-center align-items-center"
                   >
-                    <Button variant="contained" color="success" style={{width:"100px"}}>
+                    <Button
+                      variant="contained"
+                      onClick={handleDone}
+                      sx={{
+                        width: "100px",
+                        color: "white",
+                        bgcolor: "#6EC882",
+                        "&:hover": { bgcolor: "darkgreen" },
+                      }}
+                    >
                       Done
-                    </Button>{" "}
+                    </Button>
                   </Grid>
                 </Grid>
+              </Box>
+            </Box>
+          </Modal>
+
+          <Modal
+            keepMounted
+            open={showConfirmation}
+            onClose={() => setShowConfirmation(false)}
+            aria-labelledby="confirmation-modal-title"
+            aria-describedby="confirmation-modal-description"
+          >
+            <Box sx={{ ...style, bgcolor: "white", borderRadius: "16px" }}>
+              <Typography
+                id="confirmation-modal-title"
+                variant="h6"
+                component="h2"
+                sx={{ fontWeight: "bold", mb: 2 }}
+              >
+                Confirmation!
+              </Typography>
+              <Typography id="confirmation-modal-description" sx={{ mb: 2 }}>
+                Are you sure you want to create organization?
+              </Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  gap: "10px",
+                }}
+              >
+                <Button
+                  onClick={() => setShowConfirmation(false)}
+                  sx={{
+                    width: "100px",
+                    color: "white",
+                    bgcolor: "#F85F60",
+                    "&:hover": { bgcolor: "darkred" },
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={() => {}}
+                  sx={{
+                    width: "100px",
+                    color: "white",
+                    bgcolor: "#6EC882",
+                    "&:hover": { bgcolor: "darkgreen" },
+                  }}
+                >
+                  Confirm
+                </Button>
               </Box>
             </Box>
           </Modal>

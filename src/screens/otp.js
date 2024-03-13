@@ -4,13 +4,12 @@ import { Box, Button, FormHelperText } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import Logo from "../images/MHDLogo.png";
 import { Link } from "react-router-dom";
-import forgotPassword from "./forgotPassword";
 import CheckIcon from "@mui/icons-material/Check";
 
 export default function OTP() {
   const { control, handleSubmit } = useForm({
     defaultValues: {
-      otp: "",
+      OTP: "",
     },
   });
 
@@ -62,7 +61,7 @@ export default function OTP() {
               ) : null}
             </Box>
           )}
-          name="otp"
+          name="OTP"
         />
         <Box>
           <Button
@@ -104,7 +103,6 @@ export default function OTP() {
           }}
         >
           <CheckIcon fontSize="inherit" style={{ marginRight: "10px" }} />
-          Here is a gentle confirmation that your action was successful.
         </div>
       )} */}
     </>
