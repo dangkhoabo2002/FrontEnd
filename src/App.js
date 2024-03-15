@@ -4,8 +4,12 @@ import Contact from "./screens/Contact";
 import Navigation from "./components/Navigation";
 import Sidebar from "./components/Sidebar";
 import Admin from "./screens/adminAccountManagement";
+
 import AdminBilling from "./screens/adminBilling";
 import AdminSetting from "./screens/adminSetting";
+
+import UserProfile from "./screens/userProfile";
+import UserSubscribe from "./screens/userSubscribe";
 export default function App() {
   return (
     <div>
@@ -18,6 +22,10 @@ export default function App() {
         <Route path="/admin" element={<Admin />}></Route>
         <Route path="/admin/billing" element={<AdminBilling />}></Route>
         <Route path="/admin/setting" element={<AdminSetting />}></Route>
+
+        {/* USER ROUTE*/}
+        <Route path="/user" element={<UserProfile />}></Route>
+        <Route path="/user/subscribe" element={<UserSubscribe />}></Route>
       </Routes>
     </div>
   );

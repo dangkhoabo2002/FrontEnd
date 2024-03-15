@@ -1,5 +1,5 @@
 import React from "react";
-import background1 from "../assets/homeBackground.jpg";
+import background1 from "../assets/homeBackground.png";
 import Footer from "../components/Footer";
 import Navigation from "../components/Navigation";
 import logo from "../assets/logo.png";
@@ -31,11 +31,11 @@ export default function Homepage() {
           <img
             src={background1}
             alt="background1"
-            className="w-full object-fill"
-            style={{ height: "750px" }}
+            className="w-full object-contain"
+            style={{}}
           />
-          <div className="absolute bottom-1/3 left-64 text-white w-1/3">
-            <div className="text-6xl font-semibold w-2/3 pb-6">
+          <div className="absolute bottom-1/3 top-1/4 left-32 text-white w-1/3">
+            <div className="text-6xl font-semibold w-1/1 pb-8">
               Learn, connect and explore
             </div>
             <div className=" text-lg w-full font-semibold">
@@ -59,7 +59,7 @@ export default function Homepage() {
             </div>
           </div>
 
-          <div className="flex lg:flex-row lg:justify-between md:flex-colf">
+          <div className="flex lg:flex-row lg:justify-between md:flex-cols gap-10">
             <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
               <a href="#">
                 <div className="">

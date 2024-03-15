@@ -25,6 +25,11 @@ export default function Navigation() {
               <button className="font-semibold">Admin</button>
             </p>
           </Link>
+          <Link to={`/user`}>
+            <p>
+              <button className="font-semibold">User</button>
+            </p>
+          </Link>
           <Link to={`/sidebar`}>
             <p>
               <button className="font-semibold">Sidebar</button>
