@@ -33,3 +33,26 @@ ul {
     padding-left: 1.6em;
 
 }
+
+.billingInfo {
+    display: flex;
+    flex-direction: column;
+    row-gap: 12px;
+}
+
+.packageBundle {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.package {
+    width: 260px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 24px 20px;
+    border: 4px solid #DFEDFF;
+    border-radius: 32px;
+    row-gap: 8px;
+    background-color: white;
+}
