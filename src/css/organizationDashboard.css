@@ -51,3 +51,16 @@
 #role {
     width: 200px;
 }
+
+.serverDes{
+ 
+    overflow-wrap: break-word;
+}
+
+.textField{
+    margin-top: 100px;
+}
+
+.delOrgBtn{
+    background-color: #F85F60;
+}

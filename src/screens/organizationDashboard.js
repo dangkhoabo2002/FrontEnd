@@ -6,7 +6,6 @@ import organizations from "../database/organizationsData";
 import serverIcon2 from "../images/serverIcon2.png";
 import "../css/organizationDashboard.css";
 import InputAdornment from "@mui/material/InputAdornment";
-import PersonIcon from "@mui/icons-material/Person";
 import EmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
 import DnsIcon from "@mui/icons-material/Dns";
@@ -18,9 +17,9 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
 import { Link } from "react-router-dom";
 import ApartmentIcon from "@mui/icons-material/Apartment";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
@@ -288,14 +287,17 @@ export default function OrganizationDashboard() {
 
                 {/* TAB 3 */}
                 <TabPanel value="3">
-                        <Grid container alignItems="center" spacing={2} mt={0}></Grid>
+                  <h1 className="text-[#637381] text-2xl font pr-16 my-3">
+                    Slot(s) available: 1/5
+                  </h1>
                   <div className="server">
                     <div className="profileField flex flex-col gap-10">
                       <div className="org_name">
-                        <h1>Organization name</h1>
+                        <h1 className="mb-2">Organization name</h1>
 
                         <TextField
-                        mt={1}
+                          className="textField"
+                          mt={1}
                           disabled
                           id="outlined-basic"
                           value={orgName}
@@ -313,9 +315,11 @@ export default function OrganizationDashboard() {
 
                       <div className="flex flex-row gap-40 ">
                         <div className="email">
-                          <h1>Email</h1>
+                          <h1 className="mb-2">Email</h1>
 
-                          <TextField mt={1}
+                          <TextField
+                            className="textField"
+                            mt={1}
                             disabled={isDisabled}
                             id="outlined-basic"
                             value={Email}
@@ -335,8 +339,10 @@ export default function OrganizationDashboard() {
                           />
                         </div>
                         <div className="">
-                          <h1>Phone Number</h1>
-                          <TextField mt={1}
+                          <h1 className="mb-2">Phone Number</h1>
+                          <TextField
+                            className="textField"
+                            mt={1}
                             disabled={isDisabled}
                             id="outlined-basic"
                             value={phoneNumber}
@@ -355,21 +361,23 @@ export default function OrganizationDashboard() {
                             }}
                           />
                         </div>
-
-                        <div className="">
-                          <h1>Description</h1>
-                          <TextField mt={1}
-                            disabled={isDisabled}
-                            id="outlined-basic"
-                            value={Description}
-                            onChange={handleChangeDescription}
-                            size="small"
-                            sx={{ width: "260px" }}
-                          />
-                        </div>
                       </div>
-
-                      <div className="">
+                      <div className="serverDes">
+                        <h1 className="mb-2">Description</h1>
+                        <TextField
+                          className="textField"
+                          mt={1}
+                          rows={4}
+                          multiline
+                          disabled={isDisabled}
+                          id="outlined-multiline-static"
+                          value={Description}
+                          onChange={handleChangeDescription}
+                          size="medium"
+                          sx={{ width: "100%", maxWidth: "820px" }}
+                        />
+                      </div>
+                      <div className="server_des mb-3">
                         <Button variant="outlined" onClick={handleEditClick}>
                           {isDisabled ? "Update" : "Save Changes"}
                         </Button>
@@ -386,6 +394,19 @@ export default function OrganizationDashboard() {
                       </div>
                     </div>
                   </div>
+                  <div>
+                    <h1 className="text-[#637381] text-2xl font pr-16 my-3">
+                      Demolish organization
+                    </h1>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      startIcon={<FontAwesomeIcon icon="fa-regular fa-plug-circle-xmark" />}
+                      sx={{ borderRadius: 2 }}
+                    >
+                      DELETE ORGANIZATION
+                    </Button>
+                  </div>  
                 </TabPanel>
               </TabContext>
             </Box>
