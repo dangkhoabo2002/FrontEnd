@@ -18,6 +18,7 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
 import { Link } from "react-router-dom";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 
@@ -287,12 +288,14 @@ export default function OrganizationDashboard() {
 
                 {/* TAB 3 */}
                 <TabPanel value="3">
-                  <div className="profile">
+                        <Grid container alignItems="center" spacing={2} mt={0}></Grid>
+                  <div className="server">
                     <div className="profileField flex flex-col gap-10">
                       <div className="org_name">
                         <h1>Organization name</h1>
 
                         <TextField
+                        mt={1}
                           disabled
                           id="outlined-basic"
                           value={orgName}
@@ -312,7 +315,7 @@ export default function OrganizationDashboard() {
                         <div className="email">
                           <h1>Email</h1>
 
-                          <TextField
+                          <TextField mt={1}
                             disabled={isDisabled}
                             id="outlined-basic"
                             value={Email}
@@ -333,7 +336,7 @@ export default function OrganizationDashboard() {
                         </div>
                         <div className="">
                           <h1>Phone Number</h1>
-                          <TextField
+                          <TextField mt={1}
                             disabled={isDisabled}
                             id="outlined-basic"
                             value={phoneNumber}
@@ -355,23 +358,13 @@ export default function OrganizationDashboard() {
 
                         <div className="">
                           <h1>Description</h1>
-                          <TextField
+                          <TextField mt={1}
                             disabled={isDisabled}
                             id="outlined-basic"
                             value={Description}
                             onChange={handleChangeDescription}
                             size="small"
                             sx={{ width: "260px" }}
-                            InputProps={{
-                              startAdornment: (
-                                <InputAdornment
-                                  position="start"
-                                  className="pr-2"
-                                >
-                                  <PhoneIcon />
-                                </InputAdornment>
-                              ),
-                            }}
                           />
                         </div>
                       </div>

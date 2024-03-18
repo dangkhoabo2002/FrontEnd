@@ -12,6 +12,7 @@ import SignUp from "./screens/signUp";
 import OTPInput from "./screens/otp";
 import ResetPassword from "./screens/resetPassword";
 import Subscribe from "./screens/Subscribe";
+import Payment from "./screens/Payment";
 
 export default function App() {
   return (
@@ -29,6 +30,7 @@ export default function App() {
         <Route path="/login" element={<Login />}></Route>
         <Route path="/forgotPassword" element={<ForgotPassword />}></Route>
         <Route path="/ResetPassword" element={<ResetPassword />}></Route>
+        <Route path="/payment" element={<Payment />}></Route>
         <Route path="/signUp" element={<SignUp />}></Route>
         <Route path="/OTP" element={<OTPInput />}></Route>
         <Route path="/subscribe" element={<Subscribe />}></Route>
