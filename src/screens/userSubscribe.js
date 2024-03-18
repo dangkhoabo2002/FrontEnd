@@ -6,9 +6,13 @@ import Button from "@mui/material/Button";
 import SidebarUser from "../components/sidebarUser";
 import NavigationUser from "../components/navUserProfile";
 import backgroundPackage from "../assets/backgroundUserPackage.png";
+
+import Packages from "../data/packages.json";
+
 import chip from "../assets/chip.png";
 
 import "../css/userSubscribe.css";
+import { Link } from "react-router-dom";
 
 export default function UserSubscribe() {
   const [showPackageCard, setShowPackageCard] = useState(true);
@@ -80,60 +84,32 @@ export default function UserSubscribe() {
             )}
             {!showPackageCard && (
               <div className="packageBundle ">
-                <div className="package">
-                  <h1 className="text-center font-bold text-3xl">Package 1</h1>
-                  <Divider orientation="horizontal" variant="middle" />
-                  <span className="flex flex-col items-left pl-10 py-4">
-                    <p>2 Organizations</p>
-                    <p className="py-2">Organization:</p>
-                    <ul className="pl-12">
-                      <li>2 Admins</li>
-                      <li>5 Members</li>
-                    </ul>
-                    <p className="font-bold text-2xl italic	pt-8">$4 / month</p>
-                  </span>
-                  <div className="flex justify-center">
-                    <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded shadow-md w-40">
-                      Buy Now
-                    </button>
+                {Packages.map((pack) => (
+                  <div className="package">
+                    <h1 className="text-center font-bold text-3xl">
+                      {pack.name}
+                    </h1>
+                    <Divider orientation="horizontal" variant="middle" />
+                    <span className="flex flex-col items-left pl-10 py-4">
+                      <p>{pack.OrganizationSlot} Organizations</p>
+                      <p className="py-2">Organization:</p>
+                      <ul className="pl-12">
+                        <li>{pack.AdminSlot} Admins</li>
+                        <li>{pack.MemberSlot} Members</li>
+                      </ul>
+                      <p className="font-bold text-2xl italic	pt-8">
+                        ${pack.price}/ month
+                      </p>
+                    </span>
+                    <div className="flex justify-center">
+                      <Link to={`/user/subscribe/payment`}>
+                        <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded shadow-md w-40">
+                          Buy Now
+                        </button>
+                      </Link>
+                    </div>
                   </div>
-                </div>
-                <div className="package">
-                  <h1 className="text-center font-bold text-3xl">Package 2</h1>
-                  <Divider orientation="horizontal" variant="middle" />
-                  <span className="flex flex-col items-left pl-10 py-4">
-                    <p>5 Organizations</p>
-                    <p className="py-2">Organization:</p>
-                    <ul className="pl-12">
-                      <li>2 Admins</li>
-                      <li>10 Members</li>
-                    </ul>
-                    <p className="font-bold text-2xl italic	pt-8">$9 / month</p>
-                  </span>
-                  <div className="flex justify-center">
-                    <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded shadow-md w-40">
-                      Buy Now
-                    </button>
-                  </div>
-                </div>
-                <div className="package">
-                  <h1 className="text-center font-bold text-3xl">Package 3</h1>
-                  <Divider orientation="horizontal" variant="middle" />
-                  <span className="flex flex-col items-left pl-10 py-4">
-                    <p>5 Organizations</p>
-                    <p className="py-2">Organization:</p>
-                    <ul className="pl-12">
-                      <li>5 Admins</li>
-                      <li>20 Members</li>
-                    </ul>
-                    <p className="font-bold text-2xl italic	pt-8">$19 / month</p>
-                  </span>
-                  <div className="flex justify-center">
-                    <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded shadow-md w-40">
-                      Buy Now
-                    </button>
-                  </div>
-                </div>
+                ))}
               </div>
             )}
           </div>

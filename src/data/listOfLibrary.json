@@ -1,0 +1,23 @@
+[
+  {
+    "name": "NGINX",
+    "image": "https://www.svgrepo.com/show/373924/nginx.svg",
+    "version": "1.0.0",
+    "detail": "Đây là ứng dụng A với chức năng ...",
+    "status": false
+  },
+  {
+    "name": "PYTHON",
+    "image": "https://blog.glugmvit.com/assets/images/docker-logo.png",
+    "version": "2.1.3",
+    "detail": "Đây là ứng dụng B với chức năng ...",
+    "status": true
+  },
+  {
+    "name": "DOCKER",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/800px-Python-logo-notext.svg.png",
+    "version": "0.5.2",
+    "detail": "Đây là ứng dụng C với chức năng ...",
+    "status": true
+  }
+]

@@ -40,6 +40,11 @@ export default function Navigation() {
               <button className="font-semibold">Solutions</button>
             </p>
           </Link>
+          <Link to={`/server`}>
+            <p>
+              <button className="font-semibold">ServerConfig</button>
+            </p>
+          </Link>
           <button class="bg-[#3867A5] hover:bg-blue-700 text-white  py-2 px-6 rounded-full">
             Create MHD account
           </button>
