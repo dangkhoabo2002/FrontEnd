@@ -8,7 +8,7 @@ import {
   CardActionArea,
 } from "@mui/material";
 
-import "../screens/subPackage.css";
+import "../css/subPackage.css";
 const packages = [
   {
     id: 1,

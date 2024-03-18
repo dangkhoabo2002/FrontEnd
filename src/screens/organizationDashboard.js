@@ -4,14 +4,22 @@ import { RiServerFill } from "react-icons/ri";
 import { useParams } from "react-router-dom";
 import organizations from "../database/organizationsData";
 import serverIcon2 from "../images/serverIcon2.png";
-import "../screens/organizationDashboard.css";
+import "../css/organizationDashboard.css";
+import InputAdornment from "@mui/material/InputAdornment";
+import PersonIcon from "@mui/icons-material/Person";
+import EmailIcon from "@mui/icons-material/Email";
+import PhoneIcon from "@mui/icons-material/Phone";
+import DnsIcon from "@mui/icons-material/Dns";
 
 import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import Button from "@mui/material/Button";
+import { Link } from "react-router-dom";
+import ApartmentIcon from "@mui/icons-material/Apartment";
 
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
@@ -21,6 +29,34 @@ import Footer from "../components/userFooter";
 import ButtonAddServer from "./buttonAddServer";
 
 export default function OrganizationDashboard() {
+  const [isDisabled, setIsDisabled] = useState(true);
+  const [showResetButton, setShowResetButton] = useState(false);
+
+  const [phoneNumber, setPhoneNumber] = useState("+84 34523322");
+  const [orgName, setOrgName] = useState("Organization name");
+  const [Email, setEmail] = useState("abc@fpt.edu.vn");
+  const [Description, setDescription] = useState(
+    "Lorem ipsum dolor sit amet, consectetur adip"
+  );
+
+  // Điền thông tin vào Input
+
+  const handlePhoneChange = (event) => {
+    setPhoneNumber(event.target.value);
+  };
+  const handleChangeEmail = (event) => {
+    setEmail(event.target.value);
+  };
+  const handleChangeDescription = (event) => {
+    setDescription(event.target.value);
+  };
+
+  // Toggle Disabled trong TextField và Editable
+  const handleEditClick = () => {
+    setIsDisabled(!isDisabled);
+    setShowResetButton(isDisabled);
+  };
+
   const [value, setValue] = useState("1");
   const { organizationId } = useParams();
 
@@ -88,15 +124,27 @@ export default function OrganizationDashboard() {
           style={{ borderBottom: "1px solid", color: "#D9D9D9", width: "100%" }}
         >
           <div className="header flex flex-row items-center gap-x-3">
-            <RiServerFill
-              style={{ width: "32px", height: "32px", color: "#637381" }}
-            />
-            <p
+            <Link
+              to={"/organization"}
+              className="flex flex-row items-center gap-x-3"
+            >
+              <div></div>
+              <ApartmentIcon
+                style={{ width: "32px", height: "32px", color: "#637381" }}
+              />
+              <p
+                className="font-semibold"
+                style={{ fontSize: "28px", color: "#637381" }}
+              >
+                Organizations <ArrowForwardIosIcon />
+              </p>
+            </Link>
+            <span
               className="font-semibold"
               style={{ fontSize: "28px", color: "#637381" }}
             >
-              Organization <ArrowForwardIosIcon /> {name}
-            </p>
+              {name}
+            </span>
           </div>
         </div>
         <div
@@ -238,7 +286,114 @@ export default function OrganizationDashboard() {
                 </TabPanel>
 
                 {/* TAB 3 */}
-                <TabPanel value="3">Item Three</TabPanel>
+                <TabPanel value="3">
+                  <div className="profile">
+                    <div className="profileField flex flex-col gap-10">
+                      <div className="org_name">
+                        <h1>Organization name</h1>
+
+                        <TextField
+                          disabled
+                          id="outlined-basic"
+                          value={orgName}
+                          size="small"
+                          sx={{ width: "auto" }}
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start" className="pr-2">
+                                <DnsIcon />
+                              </InputAdornment>
+                            ),
+                          }}
+                        />
+                      </div>
+
+                      <div className="flex flex-row gap-40 ">
+                        <div className="email">
+                          <h1>Email</h1>
+
+                          <TextField
+                            disabled={isDisabled}
+                            id="outlined-basic"
+                            value={Email}
+                            onChange={handleChangeEmail}
+                            size="small"
+                            sx={{ width: "400px" }}
+                            InputProps={{
+                              startAdornment: (
+                                <InputAdornment
+                                  position="start"
+                                  className="pr-2"
+                                >
+                                  <EmailIcon />
+                                </InputAdornment>
+                              ),
+                            }}
+                          />
+                        </div>
+                        <div className="">
+                          <h1>Phone Number</h1>
+                          <TextField
+                            disabled={isDisabled}
+                            id="outlined-basic"
+                            value={phoneNumber}
+                            onChange={handlePhoneChange}
+                            size="small"
+                            sx={{ width: "260px" }}
+                            InputProps={{
+                              startAdornment: (
+                                <InputAdornment
+                                  position="start"
+                                  className="pr-2"
+                                >
+                                  <PhoneIcon />
+                                </InputAdornment>
+                              ),
+                            }}
+                          />
+                        </div>
+
+                        <div className="">
+                          <h1>Description</h1>
+                          <TextField
+                            disabled={isDisabled}
+                            id="outlined-basic"
+                            value={Description}
+                            onChange={handleChangeDescription}
+                            size="small"
+                            sx={{ width: "260px" }}
+                            InputProps={{
+                              startAdornment: (
+                                <InputAdornment
+                                  position="start"
+                                  className="pr-2"
+                                >
+                                  <PhoneIcon />
+                                </InputAdornment>
+                              ),
+                            }}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="">
+                        <Button variant="outlined" onClick={handleEditClick}>
+                          {isDisabled ? "Update" : "Save Changes"}
+                        </Button>
+
+                        {showResetButton && (
+                          <Button
+                            size="medium"
+                            variant="text"
+                            onClick={handleEditClick}
+                          >
+                            <span className="btn-cancel">Cancel</span>
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </TabPanel>
               </TabContext>
             </Box>
           </div>

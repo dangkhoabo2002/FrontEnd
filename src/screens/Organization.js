@@ -30,7 +30,8 @@ import { purple } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
 import OrganizationCard from "../components/organizationCard";
 import organizationsData from "../database/organizationsData.json";
-import "./Organization.css";
+import "../css/Organization.css";
+
 
 export default function LandingPage() {
   const [open, setOpen] = React.useState(false);

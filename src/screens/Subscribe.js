@@ -1,6 +1,6 @@
 import React from "react";
 import SubscriptionPackages from "../components/subPackage";
-import "./Subscribe.css";
+import "../css/Subscribe.css";
 import Logo from "../images/MHDLogo.png";
 
 export default function Subscribe() {

@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import Footer from "../components/loginFooter";
-import "./login.css";
+import "../css/login.css";
 import { Link } from "react-router-dom";
 
 export default function Login() {
