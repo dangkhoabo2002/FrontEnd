@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import Footer from "../components/loginFooter";
-import "./Login.css";
+import "./login.css";
 import { Link } from "react-router-dom";
 
 export default function Login() {
@@ -45,6 +45,7 @@ export default function Login() {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            padding: "12px ",
           }}
         >
           <img
@@ -154,7 +155,7 @@ export default function Login() {
             <div className="text-center text-md-start pt-2 float-left ">
               <p className="small fw-bold mt-2 pt-1 mb-2 flex ">
                 Don't have an account?{" "}
-                <Link to={'/signUp'}>
+                <Link to={"/signUp"}>
                   <p style={{ color: "#3867A5" }}>
                     <button>Get started</button>
                   </p>
@@ -163,7 +164,6 @@ export default function Login() {
             </div>
           </Grid>
         </Grid>
-        <Footer />
       </div>
     </>
   );

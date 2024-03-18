@@ -5,7 +5,7 @@ import Footer from "../components/userFooter";
 import ButtonAddServer from "./buttonAddServer";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import { Cancel } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
 import CancelIcon from "@mui/icons-material/Cancel";
 import {
@@ -91,14 +91,12 @@ export default function LandingPage() {
     p: 3,
   };
 
-  const OrgCard = {
-
-  }
+  const OrgCard = {};
 
   return (
     <div>
       <div className="container px-20">
-        <div className=" py-6 text-center border-b-2 border-stone-200">
+        <div className=" py-6 text-center border-b-2 border-stone-200 gap-10">
           <div className="header flex flex-row items-center gap-x-3">
             <ApartmentIcon
               style={{ width: "32px", height: "32px", color: "#637381" }}
@@ -107,21 +105,24 @@ export default function LandingPage() {
               className="font-semibold"
               style={{ fontSize: "28px", color: "#637381" }}
             >
-              ORGANIZATONS
+              Organizations
             </p>
           </div>
         </div>
 
-        <div className="mt-3">
+        <div className="mt-3 ">
           {organizationsData.map((organization) => (
-            <OrganizationCard 
-              className="org-card"
-              sx={OrgCard}
-              key={organization.id}
-              name={organization.name}
-              membersCount={organization.membersCount}
-              description={organization.description}
-            />
+            <Link to={`dashboard/${organization.id}`} key={organization.id}>
+              <OrganizationCard
+                className="org-card"
+                sx={OrgCard}
+                key={organization.id}
+                name={organization.name}
+                membersCount={organization.membersCount}
+                description={organization.description}
+                servers={organization.servers}
+              />
+            </Link>
           ))}
         </div>
 

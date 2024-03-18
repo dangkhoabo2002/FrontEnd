@@ -107,7 +107,7 @@ export default function SignUp() {
 
       <div className="text-center text-md-start pt-2 float-left">
         <div className="small fw-bold mt-2 pt-1 mb-2 flex">
-          Already have an account?{" "}
+          Already have an account?
           <Link to={"/login"} style={{ color: "#3867A5" }}>
             <b>Login</b>
           </Link>

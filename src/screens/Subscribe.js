@@ -13,16 +13,21 @@ export default function Subscribe() {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          paddingTop: "20px",
         }}
       >
         <img src={Logo} alt="Logo" style={{ width: "96px", height: "96px" }} />
       </div>
       <p
-              className="font-semibold text-center"
-              style={{ fontSize: "26px", color: "#3867A5", fontWeight:"700" }}
-            >
-              Package of MHD
-            </p>
+        className="font-semibold text-center"
+        style={{
+          fontSize: "26px",
+          color: "#3867A5",
+          fontWeight: "700",
+        }}
+      >
+        Package of MHD
+      </p>
 
       <div className="card mt-3">
         <SubscriptionPackages className="" />

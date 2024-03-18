@@ -8,6 +8,7 @@ import {
   CardActionArea,
 } from "@mui/material";
 
+import "../screens/subPackage.css";
 const packages = [
   {
     id: 1,
@@ -41,10 +42,11 @@ export default function SubscriptionPackages() {
   return (
     <>
       <Grid
-        style={{ height: "100vh" }}
+        style={{ height: "76vh" }}
         container
-        spacing={2}
+        spacing={5}
         justifyContent="center"
+        className="px-32 py-20"
       >
         {packages.map((pkg) => (
           <Grid item xs={12} sm={6} md={4} key={pkg.id}>
@@ -64,7 +66,13 @@ export default function SubscriptionPackages() {
                 onClick={() => setSelectedPackage(pkg)}
                 disableRipple
               >
-                <CardContent>
+                <CardContent
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                  }}
+                >
                   <Typography
                     className="py-3 text-center border-b-2 border-stone-200"
                     gutterBottom
@@ -77,26 +85,35 @@ export default function SubscriptionPackages() {
                   >
                     {pkg.title}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {pkg.orgs} Organizations
-                    <br />
-                    Organization: <br />- {pkg.admins} Super Admin
-                    <br />- {pkg.members} Members
-                  </Typography>
+                  <span className="pt-10 pl-10">
+                    <h1>{pkg.orgs} Organizations</h1>
+                    <h1>Organization:</h1>
+                    <ul>
+                      <li>
+                        <h1> {pkg.admins} Admin </h1>
+                      </li>
+                      <li>
+                        <h1> {pkg.members} Members</h1>
+                      </li>
+                    </ul>
+                  </span>
+
+                  {/* <Typography variant="body2" color="text.secondary">
+                    {pkg.orgs} Organizations Organization: <br />- {pkg.admins}{" "}
+                    Super Admin - {pkg.members} Members
+                  </Typography> */}
                   <Typography
                     className="text-center"
                     color="text.primary"
-                    style={{ marginTop: 80,
-                      fontSize: "32px",
-                      bottom: "10px",
-                      }}
+                    style={{ marginTop: 40, fontSize: "32px", bottom: "10px" }}
                   >
                     <i>{pkg.price}</i>
                   </Typography>
                 </CardContent>
-                <div 
-                className="mb-3"
-                style={{ bottom: "20px", width: "100%", textAlign: "center" }}>
+                <div
+                  className="mb-3"
+                  style={{ bottom: "20px", width: "100%", textAlign: "center" }}
+                >
                   <Button
                     variant="contained"
                     style={{
@@ -109,7 +126,7 @@ export default function SubscriptionPackages() {
                           ? "white"
                           : "#3867A5",
                       margin: "auto",
-                      width: "50%"
+                      width: "50%",
                     }}
                   >
                     Buy Now
