@@ -32,11 +32,13 @@ const ServerReport = () => {
   return (
     <>
       <div className="">
-        <div className="flex flex-row justify-between">
-          <h1 className="text-2xl">Access history</h1>
+        <div className="flex flex-row justify-between pt-2">
+          <h1 className="text-2xl ">Access history</h1>
           <Button variant="contained">Dowload raw file</Button>
         </div>
-        <h1>Review your server history within the last 3 days.</h1>
+        <h1 className="pb-10">
+          Review your server history within the last 3 days.
+        </h1>
       </div>
       <table className="table border-2">
         <thead>
@@ -56,7 +58,25 @@ const ServerReport = () => {
               <td>{row.time}</td>
               <td>{row.username}</td>
               <td>{row.action}</td>
-              <td>{row.level}</td>
+              <td
+                className="text-[#637381]"
+                style={{
+                  backgroundColor:
+                    row.level === "Debug"
+                      ? "#DDDDDD"
+                      : row.level === "Info"
+                      ? "#B7FFB9"
+                      : row.level === "Warning"
+                      ? "#FCFF53"
+                      : row.level === "Error"
+                      ? "#FFC266"
+                      : row.level === "Critical"
+                      ? "#FF6868"
+                      : "",
+                }}
+              >
+                {row.level}
+              </td>
               <td>
                 <Button onClick={handleRowClick}>More</Button>
               </td>

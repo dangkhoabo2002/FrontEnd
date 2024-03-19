@@ -12,7 +12,7 @@ export default function ServerLibrary() {
   return (
     <>
       <div>
-        <h1>Library Settings</h1>
+        <h1 className="text-2xl pb-10 pt-2">Library Settings</h1>
         <div className="flex flex-row flex-wrap gap-10 w-3/3">
           {Libraries.map((lib) => (
             <div className="flex flex-row justify-left items-center gap-8 rounded-md shadow-lg border px-12 py-6 w-2/7">

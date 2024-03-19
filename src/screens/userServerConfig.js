@@ -8,6 +8,7 @@ import TabPanel from "@mui/lab/TabPanel";
 
 import Library from "../tabs/serverLibrary";
 import ServerReport from "../tabs/serverReport";
+import Docker from "../tabs/serverDocker";
 
 export default function UserServerConfig() {
   const [value, setValue] = React.useState("1");
@@ -34,7 +35,9 @@ export default function UserServerConfig() {
         <TabPanel value="1">Item One</TabPanel>
         <TabPanel value="2">Item Two</TabPanel>
         <TabPanel value="3">Item Three</TabPanel>
-        <TabPanel value="4">Item Three</TabPanel>
+        <TabPanel value="4">
+          <Docker />
+        </TabPanel>
         <TabPanel value="5">
           <Library />
         </TabPanel>
