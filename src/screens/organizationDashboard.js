@@ -296,7 +296,7 @@ export default function OrganizationDashboard() {
                         <h1 className="mb-2">Organization name</h1>
 
                         <TextField
-                          className="textField"
+                          className="org-Dashboard-textField"
                           mt={1}
                           disabled
                           id="outlined-basic"
@@ -318,7 +318,7 @@ export default function OrganizationDashboard() {
                           <h1 className="mb-2">Email</h1>
 
                           <TextField
-                            className="textField"
+                            className="org-Dashboard-textField"
                             mt={1}
                             disabled={isDisabled}
                             id="outlined-basic"
@@ -341,7 +341,7 @@ export default function OrganizationDashboard() {
                         <div className="">
                           <h1 className="mb-2">Phone Number</h1>
                           <TextField
-                            className="textField"
+                            className="org-Dashboard-textField"
                             mt={1}
                             disabled={isDisabled}
                             id="outlined-basic"
@@ -365,7 +365,7 @@ export default function OrganizationDashboard() {
                       <div className="serverDes">
                         <h1 className="mb-2">Description</h1>
                         <TextField
-                          className="textField"
+                          className="org-Dashboard-textField"
                           mt={1}
                           rows={4}
                           multiline

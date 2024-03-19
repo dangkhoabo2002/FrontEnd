@@ -152,8 +152,9 @@ export default function Login() {
                 Login
               </Button>
             </div>
-            <div className="text-center text-md-start pt-2 float-left ">
-              <p className="small fw-bold mt-2 pt-1 mb-2 flex ">
+            <div className="text-center text-md-start pt-2 float-left" 
+            style={{marginBottom:"10px"}}>
+              <p className="small fw-bold mt-2 pt-1 flex ">
                 Don't have an account?{" "}
                 <Link to={"/signUp"}>
                   <p style={{ color: "#3867A5" }}>
