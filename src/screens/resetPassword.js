@@ -49,109 +49,134 @@ export default function ResetPassword() {
   return (
     <>
       <div
-        className="Logo"
+        className="login-background"
+        style={{ backgroundImage: `url(${bgLogin})` }}
+      ></div>
+
+      <div
+        className="white-box"
         style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: "70%",
+          height: "85%",
+          backgroundColor: "white",
+          borderRadius: "20px",
           display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          padding: "20px 400px",
+          flexDirection: "column",
         }}
       >
-        <img src={Logo} alt="Logo" style={{ width: "96px", height: "96px" }} />
-      </div>
-      <div className="px-96 py-20">
-        <div className="d-flex flex-col ">
-          <p
-            className="lead mb-0"
-            style={{ fontWeight: "900  ", fontSize: "24px" }}
-          >
-            Reset Your Password
-          </p>
+        <div
+          className="Logo"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: "20px 400px",
+          }}
+        >
+          <img
+            src={Logo}
+            alt="Logo"
+            style={{ width: "96px", height: "96px" }}
+          />
         </div>
-
-        <div className="password">
-          <p className="mt-3" style={{ fontSize: "16px", fontWeight: "600" }}>
-            Enter new password
-          </p>
-          <div className="textField mt-3">
-            <TextField
-              label="Password"
-              fullWidth
-              variant="outlined"
-              type="password"
-              className="mb-4"
-              value={password}
-              onChange={handlePasswordChange}
-              required
-            />
+        <div className="px-60">
+          <div className="d-flex flex-col ">
+            <p
+              className="lead mb-0"
+              style={{ fontWeight: "900  ", fontSize: "24px" }}
+            >
+              Reset Your Password
+            </p>
           </div>
-        </div>
 
-        <div className="password">
-          <p className="mt-3" style={{ fontSize: "16px", fontWeight: "600" }}>
-            Confirm new password
-          </p>
-          <div className="textField mt-3">
-            <TextField
-              label="Confirm Password"
-              fullWidth
-              variant="outlined"
-              type="password"
-              className="mb-4"
-              value={confirmPassword}
-              onChange={handleConfirmPasswordChange}
-              required
-            />
+          <div className="password">
+            <p className="mt-3" style={{ fontSize: "16px", fontWeight: "600" }}>
+              Enter new password
+            </p>
+            <div className="textField mt-3">
+              <TextField
+                label="Password"
+                fullWidth
+                variant="outlined"
+                type="password"
+                className="mb-4"
+                value={password}
+                onChange={handlePasswordChange}
+                required
+              />
+            </div>
           </div>
-        </div>
 
-        <div className="loginBtn text-center mt-3">
-          <Button
-            onClick={handleConfirmClick}
-            style={{
-              width: "100%",
-              height: "45px",
-              backgroundColor: "#3867A5",
-            }}
-            variant="contained"
-            color="primary"
-            className="mb-0"
-          >
-            Confirm
-          </Button>
-        </div>
+          <div className="password">
+            <p className="mt-3" style={{ fontSize: "16px", fontWeight: "600" }}>
+              Confirm new password
+            </p>
+            <div className="textField mt-3">
+              <TextField
+                label="Confirm Password"
+                fullWidth
+                variant="outlined"
+                type="password"
+                className="mb-4"
+                value={confirmPassword}
+                onChange={handleConfirmPasswordChange}
+                required
+              />
+            </div>
+          </div>
 
-        {showAlert && (
-          <Alert
-            severity={
-              alertMessage === "Reset password successfully"
-                ? "success"
-                : "error"
-            }
-            onClose={() => setShowAlert(false)}
-            style={{
-              position: "fixed",
-              bottom: "20px",
-              right: "20px",
-              backgroundColor:
+          <div className="loginBtn text-center mt-5">
+            <Button
+              onClick={handleConfirmClick}
+              style={{
+                width: "100%",
+                height: "45px",
+                backgroundColor: "#3867A5",
+              }}
+              variant="contained"
+              color="primary"
+              className="mb-0"
+            >
+              Confirm
+            </Button>
+          </div>
+
+          {showAlert && (
+            <Alert
+              severity={
                 alertMessage === "Reset password successfully"
-                  ? "#dff0d8"
-                  : "#f2dede",
-              border:
-                alertMessage === "Reset password successfully"
-                  ? "1px solid #c3e6cb"
-                  : "1px solid #ebccd1",
-              color:
-                alertMessage === "Reset password successfully"
-                  ? "#3c763d"
-                  : "#a94442",
-              borderRadius: "4px",
-              padding: "15px",
-            }}
-          >
-            {alertMessage}
-          </Alert>
-        )}
+                  ? "success"
+                  : "error"
+              }
+              onClose={() => setShowAlert(false)}
+              style={{
+                position: "fixed",
+                bottom: "20px",
+                right: "20px",
+                backgroundColor:
+                  alertMessage === "Reset password successfully"
+                    ? "#dff0d8"
+                    : "#f2dede",
+                border:
+                  alertMessage === "Reset password successfully"
+                    ? "1px solid #c3e6cb"
+                    : "1px solid #ebccd1",
+                color:
+                  alertMessage === "Reset password successfully"
+                    ? "#3c763d"
+                    : "#a94442",
+                borderRadius: "4px",
+                padding: "15px",
+              }}
+            >
+              {alertMessage}
+            </Alert>
+          )}
+        </div>
       </div>
     </>
   );

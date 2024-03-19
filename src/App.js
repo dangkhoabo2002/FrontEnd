@@ -29,7 +29,7 @@ export default function App() {
         <Route path="/server" element={<ServerConfig />}></Route>
         <Route path="/test" element={<Test />}></Route>
         <Route path="/login" element={<Login />}></Route>
-        <Route path="/forgotPassword" element={<ForgotPassword />}></Route>
+        <Route path="/login/forgotPassword" element={<ForgotPassword />}></Route>
         <Route path="/ResetPassword" element={<ResetPassword />}></Route>
         <Route path="/payment" element={<Payment />}></Route>
         <Route path="/signUp" element={<SignUp />}></Route>

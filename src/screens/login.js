@@ -32,7 +32,7 @@ export default function Login() {
           left: "50%",
           transform: "translate(-50%, -50%)",
           width: "70%",
-          height: "84%",
+          height: "85%",
           backgroundColor: "white",
           borderRadius: "20px",
           display: "flex",
@@ -131,7 +131,7 @@ export default function Login() {
                 className="mt-2 font-semibold"
                 style={{ textAlign: "right" }}
               >
-                <Link to={`/forgotPassword`}>
+                <Link to={`/login/forgotPassword`}>
                   <p style={{ color: "#3867A5" }}>
                     <button>Forgot password?</button>
                   </p>
@@ -152,8 +152,8 @@ export default function Login() {
                 Login
               </Button>
             </div>
-            <div className="text-center text-md-start pt-2 float-left" 
-            style={{marginBottom:"10px"}}>
+            <div className="text-center pt-2 float-left" 
+            style={{marginBottom:"50px"}}>
               <p className="small fw-bold mt-2 pt-1 flex ">
                 Don't have an account?{" "}
                 <Link to={"/signUp"}>
