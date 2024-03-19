@@ -1,8 +1,26 @@
 import React, { useState } from "react";
-import { Paper, p, Grid, Button } from "@mui/material";
+import {
+  Paper,
+  Grid,
+  Button,
+  Modal,
+  Box,
+  FormControl,
+  OutlinedInput,
+  IconButton,
+  Typography,
+  Chip,
+  FormControlLabel,
+  Checkbox,
+  TextField,
+  MenuItem,
+} from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import AddIcon from "@mui/icons-material/Add";
 import "../css/serverGeneral.css";
 import ServerManager from "../database/listOfServerManager.json";
+import CloseIcon from "@mui/icons-material/Close";
+import { Link } from "react-router-dom";
 
 export default function ServerGeneral() {
   // BTN
@@ -11,6 +29,78 @@ export default function ServerGeneral() {
   const handleButtonClick = () => {
     setIsServerOn((prevState) => !prevState);
   };
+
+  // add member
+  const [addMember, setAddMember] = React.useState(false);
+  const handleAddMeber = () => setAddMember(!addMember);
+  const handleClose = () => setAddMember(false);
+
+  const [memberInput, setMemberInput] = useState("");
+  const [members, setMembers] = useState([]);
+
+  const handleMemberInputChange = (event) => {
+    setMemberInput(event.target.value);
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter" && memberInput.trim() !== "") {
+      setMembers([...members, memberInput.trim()]);
+      setMemberInput(""); // Reset memberInput after adding member
+    }
+  };
+
+  const handleMemberDelete = (index) => {
+    const updatedMembers = members.filter((_, i) => i !== index); // Filter out the deleted member
+    setMembers(updatedMembers);
+  };
+  const [showConfirmation, setShowConfirmation] = React.useState(false);
+  const handleDone = () => {
+    setAddMember(false);
+    setShowConfirmation(true);
+  };
+
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 600,
+    bgcolor: "background.paper",
+    borderRadius: "20px",
+    boxShadow: 24,
+    p: 3,
+  };
+
+  const role = [
+    {
+      value: "1",
+      label: "Proxy Manager",
+    },
+    {
+      value: "2",
+      label: "Firewall Manager",
+    },
+    {
+      value: "3",
+      label: "Docker Manager",
+    },
+    {
+      value: "4",
+      label: "Library Manager",
+    },
+    {
+      value: "5",
+      label: "Data Manager",
+    },
+    {
+      value: "6",
+      label: "Report Manager",
+    },
+    {
+      value: "7",
+      label: "Execution Manager",
+    },
+  ];
 
   return (
     <>
@@ -107,7 +197,10 @@ export default function ServerGeneral() {
             <p>Member</p>
           </div>
 
-          <button class="bg-transparent hover:bg-[#3867A5] text-[#3867A5] font-semibold hover:text-white  border border-[#3867A5] hover:border-transparent rounded px-8 py-1">
+          <button
+            onClick={handleAddMeber}
+            class="bg-transparent hover:bg-[#3867A5] text-[#3867A5] font-semibold hover:text-white  border border-[#3867A5] hover:border-transparent rounded px-8 py-1"
+          >
             Add member
           </button>
 
@@ -176,6 +269,156 @@ export default function ServerGeneral() {
         </div>
         {/* End Setting */}
       </div>
+
+      {/* Modal add member */}
+      <Modal
+        open={addMember}
+        onClose={handleClose}
+        aria-labelledby="keep-mounted-modal-title"
+        aria-describedby="keep-mounted-modal-description"
+      >
+        <Box sx={style}>
+          <div className="pb-2 text-center border-b-2 border-stone-500">
+            <div className="flex flex-row items-center justify-between">
+              <p
+                className="font-semibold"
+                style={{ fontSize: "28px", color: "#637381" }}
+              >
+                ADD MEMBER
+              </p>
+              <IconButton onClick={handleClose}>
+                <CloseIcon />
+              </IconButton>
+            </div>
+          </div>
+
+          <Grid container alignItems="center" spacing={2} mt={0}>
+            <Grid item xs={12} md={3}>
+              <Typography
+                className="mt-3"
+                style={{
+                  fontSize: "16px",
+                  fontWeight: "400",
+                }}
+              >
+                Add member:
+              </Typography>
+            </Grid>
+            <Grid item xs={12} md={9}>
+              <FormControl fullWidth variant="outlined">
+                <OutlinedInput
+                  value={memberInput}
+                  onChange={handleMemberInputChange}
+                  onKeyPress={handleKeyPress} // Added onKeyPress event handler here
+                  inputProps={{
+                    "aria-label": "Member",
+                  }}
+                  endAdornment={members.map((member, index) => (
+                    <Chip
+                      key={index}
+                      label={member}
+                      onDelete={() => handleMemberDelete(index)}
+                      style={{ margin: "5px" }}
+                    />
+                  ))}
+                />
+              </FormControl>
+            </Grid>
+          </Grid>
+
+          <div
+            className="mt-3"
+            style={{ fontSize: "18px", fontWeight: "bold" }}
+          >
+            <p>Add role</p>
+          </div>
+
+          <Grid container alignItems="center" spacing={2} mb={3}>
+            <Grid item xs={12} md={3}>
+              <Typography
+                className="mt-3"
+                style={{
+                  fontSize: "16px",
+                  fontWeight: "400",
+                }}
+              >
+                Role:
+              </Typography>
+            </Grid>
+            <Grid item xs={12} md={9}>
+              <TextField
+                fullWidth
+                id="outlined-select-currency"
+                select
+                label=""
+                defaultValue="1"
+              >
+                {role.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+          </Grid>
+          <Button
+            startIcon={<AddIcon />}
+            variant="contained"
+            sx={{
+              width: "150px",
+              height: "30px",
+              color: "white",
+              bgcolor: "#3867A5",
+              "&:hover": { bgcolor: "#264B7B" },
+              fontSize: "14px",
+              fontWeight: "normal",
+              textTransform: "none",
+            }}
+          >
+            Add more role
+          </Button>
+
+          <Box>
+            <Grid container spacing={2} mt={0}>
+              <Grid item xs={12} md={3}></Grid>
+              <Grid item xs={12} md={3}></Grid>
+              <Grid
+                item
+                xs={12}
+                md={3}
+                className="d-flex justify-content-center align-items-center"
+              >
+                {" "}
+                <Button onClick={handleClose}>
+                  <Typography variant="button" style={{ color: "red" }}>
+                    Cancel
+                  </Typography>{" "}
+                </Button>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                md={3}
+                className="d-flex justify-content-center align-items-center"
+              >
+                <Button
+                  variant="contained"
+                  onClick={handleDone}
+                  sx={{
+                    width: "100px",
+                    color: "white",
+                    bgcolor: "#6EC882",
+                    "&:hover": { bgcolor: "darkgreen" },
+                  }}
+                >
+                  Done
+                </Button>
+              </Grid>
+            </Grid>
+          </Box>
+          {/* End modal */}
+        </Box>
+      </Modal>
     </>
   );
 }

@@ -116,7 +116,7 @@ export default function OrganizationDashboard() {
     selectedOrganization;
 
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{}}>
       <div className="px-20" style={{ width: "100%" }}>
         {/* BodyContainer */}
         <div
@@ -128,7 +128,6 @@ export default function OrganizationDashboard() {
               to={"/organization"}
               className="flex flex-row items-center gap-x-3"
             >
-              <div></div>
               <ApartmentIcon
                 style={{ width: "32px", height: "32px", color: "#637381" }}
               />
@@ -190,6 +189,7 @@ export default function OrganizationDashboard() {
                         }
                       </p>
                     </div>
+                    <Link to={"/server"}>
                     <div className="serverListRow">
                       {servers
                         .filter((server) => server.status == "Active")
@@ -215,6 +215,7 @@ export default function OrganizationDashboard() {
                           </div>
                         ))}
                     </div>
+                    </Link>
                     <div className="flex flex-row justify-left gap-12">
                       <h1 className="text-[#637381] text-3xl font-bold pr-12">
                         Inactive servers
