@@ -17,9 +17,9 @@ export default function ServerGeneral() {
       <div>
         {/* Information */}
         <div className="info-site mb-5">
-          <div className="info-title font-semibold mb-3">
+          <div className="info-title font-semibold my-3">
             <p>Information</p>
-          </div>
+          </div>{" "}
           <Paper elevation={3} sx={{ padding: 2 }}>
             <div className="flex flex-row justify-between px-5">
               {/* left */}

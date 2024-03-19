@@ -10,6 +10,7 @@ import TabPanel from "@mui/lab/TabPanel";
 // import ServerReport from "../tabs/serverReport";
 import General from "../tabs/serverGeneral";
 import Proxy from "../tabs/serverProxy";
+import Execution from "../tabs/serverExecution";
 
 export default function UserServerConfig() {
   const [value, setValue] = React.useState("1");
@@ -48,7 +49,9 @@ export default function UserServerConfig() {
         <TabPanel value="7">
           {/* <ServerReport /> */}
         </TabPanel>
-        <TabPanel value="8">Item Three</TabPanel>
+        <TabPanel value="8">
+          <Execution/>
+        </TabPanel>
       </TabContext>
     </div>
   );
