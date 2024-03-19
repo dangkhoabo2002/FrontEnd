@@ -13,6 +13,7 @@ import OTPInput from "./screens/otp";
 import ResetPassword from "./screens/resetPassword";
 import Subscribe from "./screens/Subscribe";
 import Payment from "./screens/Payment";
+import ServerConfig from "./screens/userServerConfig";
 
 export default function App() {
   return (
@@ -25,7 +26,7 @@ export default function App() {
           path="/Organization/dashboard/:organizationId"
           element={<OrganizationDashboard />}
         ></Route>
-
+        <Route path="/server" element={<ServerConfig />}></Route>
         <Route path="/test" element={<Test />}></Route>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/forgotPassword" element={<ForgotPassword />}></Route>
@@ -34,6 +35,7 @@ export default function App() {
         <Route path="/signUp" element={<SignUp />}></Route>
         <Route path="/OTP" element={<OTPInput />}></Route>
         <Route path="/subscribe" element={<Subscribe />}></Route>
+
         {/* Dashboard Unlogin */}
         <Route path="/" element={<Homepage />}></Route>
         <Route path="/contact" element={<Contact />}></Route>
