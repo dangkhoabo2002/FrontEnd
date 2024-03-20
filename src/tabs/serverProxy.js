@@ -12,11 +12,12 @@ import {
   InputAdornment,
 } from "@mui/material";
 import { withStyles } from "@mui/styles";
-import "../css/serverProxy.css"
+import "../css/serverProxy.css";
 
 export default function ServerProxy() {
   const [isDisabled, setIsDisabled] = useState(true);
   const [showResetButton, setShowResetButton] = useState(false);
+  const [showTable, setShowTable] = useState(false);
   const [DomainOrIP, setDomainOrIP] = useState("10001");
   const [Port, setPort] = useState("10001");
   const [selectedOption, setSelectedOption] = useState("enable");
@@ -39,6 +40,10 @@ export default function ServerProxy() {
     setShowResetButton(isDisabled);
   };
 
+  const handleShowTableClick = () => {
+    setShowTable(!showTable);
+  };
+
   // Btn radio color
   const CustomRadio = withStyles({
     root: {
@@ -57,7 +62,7 @@ export default function ServerProxy() {
             <p>Proxy Server Setting</p>
           </div>{" "}
           <RadioGroup
-          className="mb-3"
+            className="mb-3"
             value={selectedOption}
             onChange={handleRadioChange}
             row
@@ -72,14 +77,14 @@ export default function ServerProxy() {
               disabled={isDisabled}
             />
             <FormControlLabel
-            className="custom-radio"
+              className="custom-radio"
               value="automatic"
               control={<CustomRadio />}
               label="Automatic"
               disabled={isDisabled}
             />
             <FormControlLabel
-            className="custom-radio"
+              className="custom-radio"
               value="disable"
               control={<CustomRadio />}
               label="Disable"
@@ -123,9 +128,39 @@ export default function ServerProxy() {
         </Button>
 
         {showResetButton && (
-          <Button size="medium" variant="text" onClick={handleEditClick}>
-            <span className="btn-cancel">Cancel</span>
-          </Button>
+          <>
+            <Button size="medium" variant="text" onClick={handleEditClick}>
+              <span className="btn-cancel">Cancel</span>
+            </Button>
+            <div>
+              <Button variant="outlined" onClick={handleShowTableClick}>
+                Show proxy
+              </Button>
+            </div>
+          </>
+        )}
+
+        {showTable && (
+          <div>
+            {/* Replace with your actual table implementation */}
+            <table className="w-full">
+              <thead>
+                <tr>
+                  <th>Protocol</th>
+                  <th>Detail</th>
+                </tr>
+              </thead>
+              <tbody>
+                {/* Populate table rows with data */}
+                <tr>
+                  <td>Data 1</td>
+                  <td>Data 2</td>
+                  {/* Add more table cells per row */}
+                </tr>
+                {/* Add more table rows as needed */}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </div>

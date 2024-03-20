@@ -19,7 +19,6 @@ import TabPanel from "@mui/lab/TabPanel";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import ApartmentIcon from "@mui/icons-material/Apartment";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
@@ -190,31 +189,31 @@ export default function OrganizationDashboard() {
                       </p>
                     </div>
                     <Link to={"/server"}>
-                    <div className="serverListRow">
-                      {servers
-                        .filter((server) => server.status == "Active")
-                        .map((server) => (
-                          <div className="serverCard flex flex-col justify-between items-center">
-                            <span
-                              className={`text-white px-6 py-1 ${
-                                server.status == "Inactive"
-                                  ? "bg-gray-400"
-                                  : "bg-[#6EC882]"
-                              }`}
-                            >
-                              {server.status}
-                            </span>
-                            <h2>Server Name</h2>
-                            <img
-                              src={serverIcon2}
-                              style={{ width: "60px", objectFit: "contain" }}
-                            />
-                            <h2 className="text-[#5F94D9]">Shared Hosting</h2>
-                            <h2>{server.hostname}</h2>
-                            <h2>IP Address: {server.port}</h2>
-                          </div>
-                        ))}
-                    </div>
+                      <div className="serverListRow">
+                        {servers
+                          .filter((server) => server.status == "Active")
+                          .map((server) => (
+                            <div className="serverCard flex flex-col justify-between items-center">
+                              <span
+                                className={`text-white px-6 py-1 ${
+                                  server.status == "Inactive"
+                                    ? "bg-gray-400"
+                                    : "bg-[#6EC882]"
+                                }`}
+                              >
+                                {server.status}
+                              </span>
+                              <h2>Server Name</h2>
+                              <img
+                                src={serverIcon2}
+                                style={{ width: "60px", objectFit: "contain" }}
+                              />
+                              <h2 className="text-[#5F94D9]">Shared Hosting</h2>
+                              <h2>{server.hostname}</h2>
+                              <h2>IP Address: {server.port}</h2>
+                            </div>
+                          ))}
+                      </div>
                     </Link>
                     <div className="flex flex-row justify-left gap-12">
                       <h1 className="text-[#637381] text-3xl font-bold pr-12">
@@ -399,15 +398,7 @@ export default function OrganizationDashboard() {
                     <h1 className="text-[#637381] text-2xl font pr-16 my-3">
                       Demolish organization
                     </h1>
-                    <Button
-                      variant="contained"
-                      color="error"
-                      startIcon={<FontAwesomeIcon icon="fa-regular fa-plug-circle-xmark" />}
-                      sx={{ borderRadius: 2 }}
-                    >
-                      DELETE ORGANIZATION
-                    </Button>
-                  </div>  
+                  </div>
                 </TabPanel>
               </TabContext>
             </Box>
