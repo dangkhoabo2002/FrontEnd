@@ -1,20 +1,7 @@
 import React, { useState } from "react";
 import bgLogin from "../images/loginBackgr.png";
 import Logo from "../images/MHDLogo.png";
-import loginLeft from "../images/loginLeft.png";
-import {
-  Grid,
-  Checkbox,
-  Button,
-  TextField,
-  FormControlLabel,
-  Box,
-  Item,
-  Alert,
-} from "@mui/material";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import Footer from "../components/loginFooter";
-import { Link } from "react-router-dom";
+import { Button, TextField, Alert } from "@mui/material";
 
 export default function ResetPassword() {
   const [password, setPassword] = useState("");

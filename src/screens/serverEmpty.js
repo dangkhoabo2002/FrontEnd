@@ -4,7 +4,6 @@ import { RiServerFill } from "react-icons/ri";
 import Empty from "../images/empty.png";
 import Footer from "../components/userFooter";
 import ButtonAddServer from "./buttonAddServer";
-import { Link } from "react-router-dom";
 
 export default function ServerEmpty() {
   return (

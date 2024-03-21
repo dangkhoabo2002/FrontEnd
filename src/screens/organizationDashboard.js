@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useState } from "react";
 import { RiServerFill } from "react-icons/ri";
 import { useParams } from "react-router-dom";
@@ -398,6 +398,13 @@ export default function OrganizationDashboard() {
                     <h1 className="text-[#637381] text-2xl font pr-16 my-3">
                       Demolish organization
                     </h1>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      sx={{ borderRadius: 1, marginRight: 2 }}
+                    >
+                      DELETE ORGANIZATION
+                    </Button>
                   </div>
                 </TabPanel>
               </TabContext>

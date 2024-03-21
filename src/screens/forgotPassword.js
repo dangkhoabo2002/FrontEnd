@@ -1,18 +1,8 @@
 import React from "react";
 import bgLogin from "../images/loginBackgr.png";
 import Logo from "../images/MHDLogo.png";
-import loginLeft from "../images/loginLeft.png";
-import {
-  Grid,
-  Checkbox,
-  Button,
-  TextField,
-  FormControlLabel,
-  Box,
-  Item,
-} from "@mui/material";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import Footer from "../components/loginFooter";
+import { Button, TextField } from "@mui/material";
+
 import { Link } from "react-router-dom";
 import "../css/login.css";
 
@@ -48,12 +38,13 @@ export default function ForgotPassword() {
           }}
         >
           <img
+          className="mb-10"
             src={Logo}
             alt="Logo"
             style={{ width: "96px", height: "96px" }}
           />
         </div>
-        <div className="px-60 py-20">
+        <div className="px-60 py-15">
           <div className="d-flex flex-col ">
             <p
               className="lead mb-0"
@@ -98,7 +89,10 @@ export default function ForgotPassword() {
           </div>
           <div>
             <Link to={"/login"}>
-              <p className=" mt-3 font-semibold" style={{ color: "#3867A5", textAlign: "right" }}>
+              <p
+                className=" mt-3 font-semibold"
+                style={{ color: "#3867A5", textAlign: "right" }}
+              >
                 <buton>Return to login</buton>
               </p>
             </Link>

@@ -11,6 +11,7 @@ import TabPanel from "@mui/lab/TabPanel";
 import General from "../tabs/serverGeneral";
 import Proxy from "../tabs/serverProxy";
 import Execution from "../tabs/serverExecution";
+import Firewall from "../tabs/serverFirewall";
 
 export default function UserServerConfig() {
   const [value, setValue] = React.useState("1");
@@ -35,22 +36,20 @@ export default function UserServerConfig() {
           </TabList>
         </Box>
         <TabPanel value="1">
-          <General/>
+          <General />
         </TabPanel>
         <TabPanel value="2">
-          <Proxy/>
+          <Proxy />
         </TabPanel>
-        <TabPanel value="3">Item Three</TabPanel>
+        <TabPanel value="3">
+          <Firewall/>
+        </TabPanel>
         <TabPanel value="4">Item Three</TabPanel>
-        <TabPanel value="5">
-          {/* <Library /> */}
-        </TabPanel>
+        <TabPanel value="5">{/* <Library /> */}</TabPanel>
         <TabPanel value="6">Item Three</TabPanel>
-        <TabPanel value="7">
-          {/* <ServerReport /> */}
-        </TabPanel>
+        <TabPanel value="7">{/* <ServerReport /> */}</TabPanel>
         <TabPanel value="8">
-          <Execution/>
+          <Execution />
         </TabPanel>
       </TabContext>
     </div>

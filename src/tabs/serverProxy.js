@@ -1,15 +1,11 @@
 import React, { useState } from "react";
 import {
-  Paper,
-  Typography,
   TextField,
   Button,
   FormControl,
   RadioGroup,
-  FormLabel,
   FormControlLabel,
   Radio,
-  InputAdornment,
 } from "@mui/material";
 import { withStyles } from "@mui/styles";
 import "../css/serverProxy.css";

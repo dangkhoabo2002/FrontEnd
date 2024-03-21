@@ -5,7 +5,6 @@ import { Controller, useForm } from "react-hook-form";
 import Logo from "../images/MHDLogo.png";
 import bgLogin from "../images/loginBackgr.png";
 import { Link } from "react-router-dom";
-import CheckIcon from "@mui/icons-material/Check";
 
 export default function OTP() {
   const { control, handleSubmit } = useForm({

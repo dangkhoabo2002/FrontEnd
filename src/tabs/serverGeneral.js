@@ -10,8 +10,6 @@ import {
   IconButton,
   Typography,
   Chip,
-  FormControlLabel,
-  Checkbox,
   TextField,
   MenuItem,
 } from "@mui/material";
@@ -20,7 +18,6 @@ import AddIcon from "@mui/icons-material/Add";
 import "../css/serverGeneral.css";
 import ServerManager from "../database/listOfServerManager.json";
 import CloseIcon from "@mui/icons-material/Close";
-import { Link } from "react-router-dom";
 
 export default function ServerGeneral() {
   // BTN

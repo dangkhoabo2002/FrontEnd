@@ -1,37 +1,26 @@
 import React, { useState } from "react";
-import { RiServerFill } from "react-icons/ri";
-import Empty from "../images/empty.png";
 import Footer from "../components/userFooter";
-import ButtonAddServer from "./buttonAddServer";
 import ApartmentIcon from "@mui/icons-material/Apartment";
-import { Cancel } from "@mui/icons-material";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
-import CancelIcon from "@mui/icons-material/Cancel";
 import {
   Grid,
   Checkbox,
   Button,
-  TextField,
   FormControlLabel,
   Box,
-  Item,
   Typography,
   Modal,
   FormControl,
   OutlinedInput,
-  InputAdornment,
-  FormHelperText,
   Chip,
   IconButton,
 } from "@mui/material";
-import Stack from "@mui/material/Stack";
-import { purple } from "@mui/material/colors";
+
 import { styled } from "@mui/material/styles";
 import OrganizationCard from "../components/organizationCard";
 import organizationsData from "../database/organizationsData.json";
 import "../css/Organization.css";
-
 
 export default function LandingPage() {
   const [open, setOpen] = React.useState(false);
