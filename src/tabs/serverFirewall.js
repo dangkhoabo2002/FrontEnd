@@ -63,7 +63,7 @@ export default function ServerFirewall() {
       {/* End SL */}
       {/* TS */}
       <div className="flex flex-row mt-3">
-        <div className="flex flex-col">
+        <div className="flex flex-row gap-40">
           <p>
             <b>Trusted services:</b>
           </p>
@@ -71,7 +71,7 @@ export default function ServerFirewall() {
             className="flex flex-col"
             style={{ border: "1px solid", borderRadius: "5px" }}
           >
-            <div className=" flex flex-row justify-start mx-2">
+            <div className=" flex flex-row mx-2">
               <div className="flex flex-col" style={{ marginRight: "200px" }}>
                 <FormControlLabel
                   control={
@@ -133,13 +133,13 @@ export default function ServerFirewall() {
       {/*End TS */}
       {/* OP */}
       <div className="flex flex-row mt-3">
-        <div className="flex flex col  pr-40">
+        <div className="flex flex-col  pr-48">
           <p className="mr-1">
             <b>Other ports: </b>
-          </p>{" "}
+          </p>
           <p>1029:tcp </p>
         </div>
-        <div className="flex flex col">
+        <div className="flex flex-col">
           <TextField
             id="outlined-basic"
             value={"192.168.x.xx"}

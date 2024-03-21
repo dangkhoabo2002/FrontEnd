@@ -136,7 +136,7 @@ export default function ServerProxy() {
           </>
         )}
 
-        {showTable && (
+        {showResetButton && showTable && (
           <div>
             {/* Replace with your actual table implementation */}
             <table className="w-full">
