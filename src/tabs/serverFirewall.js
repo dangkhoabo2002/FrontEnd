@@ -5,6 +5,7 @@ import {
   MenuItem,
   Select,
   TextField,
+  Button,
 } from "@mui/material";
 
 export default function ServerFirewall() {
@@ -149,7 +150,19 @@ export default function ServerFirewall() {
           />
         </div>
       </div>
-      \{/* End OP */}
+      {/* End OP */}
+      <div className="my-3">
+        <Button
+          variant="contained"
+          sx={{
+            width: "150px",
+            bgcolor: "#3867A5",
+            "&:hover": { bgcolor: "#264B7B" },
+          }}
+        >
+          Update
+        </Button>
+      </div>
     </div>
   );
 }
