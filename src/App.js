@@ -14,6 +14,7 @@ import ResetPassword from "./screens/resetPassword";
 import Subscribe from "./screens/Subscribe";
 import Payment from "./screens/Payment";
 import ServerConfig from "./screens/userServerConfig";
+import Guide from "./screens/Guide";
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
           path="/Organization/dashboard/:organizationId"
           element={<OrganizationDashboard />}
         ></Route>
+        <Route path="/guide" element={<Guide />}></Route>
         <Route path="/server" element={<ServerConfig />}></Route>
         <Route path="/test" element={<Test />}></Route>
         <Route path="/login" element={<Login />}></Route>
