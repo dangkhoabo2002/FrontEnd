@@ -13,8 +13,6 @@ import OTPInput from "./screens/otp";
 import ResetPassword from "./screens/resetPassword";
 import Subscribe from "./screens/Subscribe";
 import Payment from "./screens/Payment";
-import ServerConfig from "./screens/userServerConfig";
-
 import Sidebar from "./components/Sidebar";
 import Admin from "./screens/adminAccountManagement";
 
