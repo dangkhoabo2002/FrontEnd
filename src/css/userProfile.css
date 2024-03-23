@@ -1,0 +1,14 @@
+* {
+    margin: 0;
+}
+
+
+.profileTitle h1 {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+div h1 {
+    padding-bottom: 6px;
+    font-weight: bold;
+}

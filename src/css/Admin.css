@@ -1,0 +1,35 @@
+* {
+    margin: 0;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    padding: 0px 24px;
+}
+
+td {
+    text-align: center;
+    padding: 6px 16px;
+
+}
+
+th {
+    padding: 14px 16px;
+    border-bottom: 1px solid black;
+
+}
+
+.thLeft,
+.tdLeft {
+    text-align: left;
+}
+
+
+
+/* STATUS USER */

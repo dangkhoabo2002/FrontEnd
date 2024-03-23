@@ -1,0 +1,16 @@
+[
+  {
+    "date": "2024-02-24",
+    "time": "00:00",
+    "username": "NganTB",
+    "action": "Change Server name",
+    "level": "Debug"
+  },
+  {
+    "date": "2024-02-24",
+    "time": "00:01",
+    "username": "NganTB",
+    "action": "Change Server name",
+    "level": "Info"
+  }
+]
