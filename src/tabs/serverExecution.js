@@ -15,7 +15,7 @@ export default function ServerExecution() {
     <div>
       <div className="info-title font-semibold my-3">
         <p>Execute code</p>
-      </div>{" "}
+      </div>
       <div className="default-url">
         <Typography variant="body1" style={{ marginTop: "10px" }}>
           Default
@@ -38,7 +38,11 @@ export default function ServerExecution() {
               <div className="check-btn mx-3 flex flex-col">
                 <Button
                   variant="contained"
-                  sx={{ width: "150px", bgcolor: "#3867A5", "&:hover": { bgcolor: "#264B7B" }, }}
+                  sx={{
+                    width: "150px",
+                    bgcolor: "#3867A5",
+                    "&:hover": { bgcolor: "#264B7B" },
+                  }}
                 >
                   Check
                 </Button>

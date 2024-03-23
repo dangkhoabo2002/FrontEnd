@@ -12,6 +12,9 @@ import General from "../tabs/serverGeneral";
 import Proxy from "../tabs/serverProxy";
 import Execution from "../tabs/serverExecution";
 import Firewall from "../tabs/serverFirewall";
+import Library from "../tabs/serverLibrary";
+import ServerReport from "../tabs/serverReport";
+import Docker from "../tabs/serverDocker";
 
 export default function UserServerConfig() {
   const [value, setValue] = React.useState("1");
@@ -42,12 +45,18 @@ export default function UserServerConfig() {
           <Proxy />
         </TabPanel>
         <TabPanel value="3">
-          <Firewall/>
+          <Firewall />
         </TabPanel>
-        <TabPanel value="4">Item Three</TabPanel>
-        <TabPanel value="5">{/* <Library /> */}</TabPanel>
+        <TabPanel value="4">
+          <Docker />
+        </TabPanel>
+        <TabPanel value="5">
+          <Library />
+        </TabPanel>
         <TabPanel value="6">Item Three</TabPanel>
-        <TabPanel value="7">{/* <ServerReport /> */}</TabPanel>
+        <TabPanel value="7">
+          <ServerReport />
+        </TabPanel>
         <TabPanel value="8">
           <Execution />
         </TabPanel>

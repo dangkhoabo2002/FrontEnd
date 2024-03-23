@@ -1,0 +1,41 @@
+[
+  {
+    "id": 1,
+    "name": "Package 1",
+    "price": 4,
+    "type": "monthly",
+    "description": "Gói này bao gồm các tính năng cơ bản của dịch vụ.",
+    "status": "active",
+    "duration": 30,
+    "renewable": true,
+    "OrganizationSlot": 2,
+    "AdminSlot": 2,
+    "MemberSlot": 5
+  },
+  {
+    "id": 2,
+    "name": "Package 2",
+    "price": 14,
+    "type": "monthly",
+    "description": "Gói này bao gồm tất cả các tính năng của dịch vụ.",
+    "status": "active",
+    "duration": 30,
+    "renewable": true,
+    "OrganizationSlot": 5,
+    "AdminSlot": 2,
+    "MemberSlot": 10
+  },
+  {
+    "id": 3,
+    "name": "Package 3",
+    "price": 19,
+    "type": "monthly",
+    "description": "Gói này được thiết kế riêng cho các doanh nghiệp.",
+    "status": "active",
+    "duration": 30,
+    "renewable": true,
+    "OrganizationSlot": 7,
+    "AdminSlot": 20,
+    "MemberSlot": 5
+  }
+]

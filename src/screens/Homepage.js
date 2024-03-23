@@ -1,6 +1,8 @@
 import React from "react";
-import background1 from "../homeBackground.jpg";
+import background1 from "../assets/homeBackground.png";
 import Footer from "../components/Footer";
+import Navigation from "../components/Navigation";
+import logo from "../assets/logo.png";
 import { Accordion, AccordionItem } from "@szhsin/react-accordion";
 import Navigation from "../components/Navigation";
 import hpBr from "../images/hpBr.png";

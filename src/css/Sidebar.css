@@ -1,0 +1,8 @@
+.hoverSection:hover {
+    background-color: #DFEDFF;
+    cursor: context-menu;
+}
+
+section:hover {
+    color: #3867A5;
+}
