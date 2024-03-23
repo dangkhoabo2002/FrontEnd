@@ -15,6 +15,8 @@ import Subscribe from "./screens/Subscribe";
 import Payment from "./screens/Payment";
 import Sidebar from "./components/Sidebar";
 import Admin from "./screens/adminAccountManagement";
+import ServerConfig from "./screens/userServerConfig";
+import Guide from "./screens/Guide";
 
 import AdminBilling from "./screens/adminBilling";
 import AdminSetting from "./screens/adminSetting";
@@ -22,7 +24,6 @@ import AdminSetting from "./screens/adminSetting";
 import UserProfile from "./screens/userProfile";
 import UserSubscribe from "./screens/userSubscribe";
 import UserPayment from "./screens/userSubscribePayment";
-import ServerConfig from "./screens/userServerConfig";
 export default function App() {
   return (
     <div>
@@ -34,6 +35,7 @@ export default function App() {
           path="/Organization/dashboard/:organizationId"
           element={<OrganizationDashboard />}
         ></Route>
+        <Route path="/guide" element={<Guide />}></Route>
         <Route path="/server" element={<ServerConfig />}></Route>
         <Route path="/test" element={<Test />}></Route>
         <Route path="/login" element={<Login />}></Route>

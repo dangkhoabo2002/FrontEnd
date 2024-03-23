@@ -1,0 +1,19 @@
+[
+    {
+      "title": "Accordion 1",
+      "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget."
+    },
+    {
+      "title": "Accordion 2",
+      "content": "Praesent eu nulla eu elit ullamcorper suscipit. Proin auctor, leo nec suscipit luctus, libero lacus semper nisi, a venenatis tortor leo vel libero."
+    },
+    {
+      "title": "Accordion 3",
+      "content": "Integer dapibus est non elit posuere, ac elementum enim ultricies. Suspendisse potenti."
+    },
+    {
+      "title": "Accordion 4",
+      "content": "Quisque eget nunc vel nunc commodo laoreet. Integer tempor magna non lorem dignissim, eget malesuada orci malesuada."
+    }
+  ]
+  
