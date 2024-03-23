@@ -9,8 +9,11 @@ export default function Navigation() {
         <Link to={`/`}>
           <div className=" flex flex-row items-center gap-x-4">
             <img className="object-cover h-18 w-16" src={Logo} alt="logo" />
-            <div className="text-3xl font-semibold tracking-wide">
-              Master Help Desk
+            <div
+              className="text-3xl font-semibold tracking-wide"
+              style={{ fontSize: "24px" }}
+            >
+              <p>MASTER HELP DESK</p>
             </div>
           </div>
         </Link>
@@ -45,9 +48,11 @@ export default function Navigation() {
               <button className="font-semibold">ServerConfig</button>
             </p>
           </Link>
-          <button class="bg-[#3867A5] hover:bg-blue-700 text-white  py-2 px-6 rounded-full">
-            Create MHD account
-          </button>
+          <Link to={`/login`}>
+            <button class="bg-[#3867A5] hover:bg-blue-700 text-white  py-2 px-6 rounded-full">
+              Create MHD account
+            </button>
+          </Link>
         </div>
       </div>
     </div>

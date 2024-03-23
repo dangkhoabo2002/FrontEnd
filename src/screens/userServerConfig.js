@@ -6,6 +6,12 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 
+// import Library from "../tabs/serverLibrary";
+// import ServerReport from "../tabs/serverReport";
+import General from "../tabs/serverGeneral";
+import Proxy from "../tabs/serverProxy";
+import Execution from "../tabs/serverExecution";
+import Firewall from "../tabs/serverFirewall";
 import Library from "../tabs/serverLibrary";
 import ServerReport from "../tabs/serverReport";
 import Docker from "../tabs/serverDocker";
@@ -32,9 +38,15 @@ export default function UserServerConfig() {
             <Tab label="Execution" value="8" />
           </TabList>
         </Box>
-        <TabPanel value="1">Item One</TabPanel>
-        <TabPanel value="2">Item Two</TabPanel>
-        <TabPanel value="3">Item Three</TabPanel>
+        <TabPanel value="1">
+          <General />
+        </TabPanel>
+        <TabPanel value="2">
+          <Proxy />
+        </TabPanel>
+        <TabPanel value="3">
+          <Firewall />
+        </TabPanel>
         <TabPanel value="4">
           <Docker />
         </TabPanel>
@@ -45,7 +57,9 @@ export default function UserServerConfig() {
         <TabPanel value="7">
           <ServerReport />
         </TabPanel>
-        <TabPanel value="8">Item Three</TabPanel>
+        <TabPanel value="8">
+          <Execution />
+        </TabPanel>
       </TabContext>
     </div>
   );

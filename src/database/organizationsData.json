@@ -1,0 +1,140 @@
+[
+  {
+    "id": 1,
+    "name": "Specific Organization",
+    "membersCount": 5,
+    "description": "This is a placeholder description for the specific organization.",
+    "servers": [
+      {
+        "status": "Active",
+        "address": "10.0.0.1",
+        "hostname": "server1.example.com",
+        "port": 8080
+      },
+      {
+        "status": "Active",
+        "address": "10.0.0.2",
+        "hostname": "server2.example.com",
+        "port": "177.01.74.189"
+      },
+      {
+        "status": "Inactive",
+        "address": "10.0.0.2",
+        "hostname": "server2.example.com",
+        "port": "177.01.74.189"
+      },
+      {
+        "status": "Inactive",
+        "address": "10.0.0.2",
+        "hostname": "server2.example.com",
+        "port": "177.01.74.189"
+      },
+      {
+        "status": "Inactive",
+        "address": "10.0.0.2",
+        "hostname": "server2.example.com",
+        "port": "177.01.74.189"
+      }
+    ],
+    "members": [
+      {
+        "id": 11,
+        "name": "John Doe",
+        "role": "Administrator"
+      },
+      {
+        "id": 12,
+        "name": "Jane Smith",
+        "role": "Developer"
+      },
+      {
+        "id": 3,
+        "name": "Jane Smith",
+        "role": "Developer"
+      },
+      {
+        "id": 2,
+        "name": "Jane Smith",
+        "role": "Developer"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Another Organization",
+    "membersCount": 7,
+    "description": "This is another organization with a longer description to test how it appears in the UI.",
+    "servers": [
+      {
+        "status": "Inactive",
+        "address": "192.168.1.10",
+        "hostname": "server2.example.com",
+        "port": "177.01.74.189"
+      },
+      {
+        "status": "Inactive",
+        "address": "192.168.1.11",
+        "hostname": "server4.example.com",
+        "port": "177.01.74.189"
+      }
+    ],
+    "members": [
+      {
+        "id": 11,
+        "name": "John Doe",
+        "role": "Administrator"
+      },
+      {
+        "id": 12,
+        "name": "Jane Smith",
+        "role": "Developer"
+      },
+      {
+        "id": 3,
+        "name": "Jane Smith",
+        "role": "Developer"
+      },
+      {
+        "id": 2,
+        "name": "Jane Smith",
+        "role": "Developer"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Another Organization",
+    "membersCount": 7,
+    "description": "This is another organization with a longer description to test how it appears in the UI.",
+    "servers": [
+      {
+        "status": "Active",
+        "address": "10.0.0.3",
+        "hostname": "server3.example.com",
+        "port": "177.01.74.189"
+      }
+    ],
+    "members": [
+      {
+        "id": 11,
+        "name": "John Doe",
+        "role": "Administrator"
+      },
+      {
+        "id": 12,
+        "name": "Jane Smith",
+        "role": "Developer"
+      },
+      {
+        "id": 3,
+        "name": "Jane Smith",
+        "role": "Developer"
+      },
+      {
+        "id": 2,
+        "name": "Jane Smith",
+        "role": "Developer"
+      }
+    ]
+  }
+]

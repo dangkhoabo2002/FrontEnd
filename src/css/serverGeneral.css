@@ -1,0 +1,58 @@
+
+.info-title{
+    font-size: 24px;
+    ;
+}
+.refreshBtn{
+    color: white;
+    background-color: #229BF3;
+}
+
+.infor-content{
+    font-size: 16px;
+}
+.gray-text{
+    color: #637381;
+}
+
+.blue-text{
+    color: #3867A5;
+}
+.link-text{
+    color: #0000FF;
+}
+
+* {
+    margin: 0;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    padding: 0px 24px;
+}
+
+td {
+    text-align: center;
+    padding: 6px 16px;
+
+}
+
+th {
+    padding: 14px 16px;
+    border-bottom: 1px solid black;
+
+}
+
+.thLeft,
+.tdLeft {
+    text-align: left;
+}
+.setting-btb-del{
+    background-color: #F85F60;
+}

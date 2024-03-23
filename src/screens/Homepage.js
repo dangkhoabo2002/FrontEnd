@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import Navigation from "../components/Navigation";
 import logo from "../assets/logo.png";
 import { Accordion, AccordionItem } from "@szhsin/react-accordion";
+import hpBr from "../images/hpBr.png";
 
 // var acc = document.getElementsByClassName("accordion");
 // var i;
@@ -21,21 +22,21 @@ import { Accordion, AccordionItem } from "@szhsin/react-accordion";
 // }
 export default function Homepage() {
   return (
-    <div>
-      {" "}
+    <>
       <Navigation />
+
       <div className="bg-[#F3F8FF]">
         {/*------------ Opening Backgroud --------------- */}
 
         <div className="relative">
           <img
-            src={background1}
-            alt="background1"
-            className="w-full object-contain"
-            style={{}}
+            src={hpBr}
+            alt="hpBr"
+            className="w-full object-cover"
+            style={{ height: "600px" }}
           />
-          <div className="absolute bottom-1/3 top-1/4 left-32 text-white w-1/3">
-            <div className="text-6xl font-semibold w-1/1 pb-8">
+          <div className="absolute bottom-1/3 left-64 text-white w-1/3">
+            <div className="text-6xl font-semibold w-2/3 pb-6">
               Learn, connect and explore
             </div>
             <div className=" text-lg w-full font-semibold">
@@ -59,7 +60,7 @@ export default function Homepage() {
             </div>
           </div>
 
-          <div className="flex lg:flex-row lg:justify-between md:flex-cols gap-10">
+          <div className="flex flex-row justify-between">
             <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
               <a href="#">
                 <div className="">
@@ -295,7 +296,7 @@ export default function Homepage() {
         </div>
         <Footer />
       </div>
-    </div>
+    </>
   );
 }
 

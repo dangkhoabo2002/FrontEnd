@@ -1,0 +1,66 @@
+.btn-cancel{
+    color: #F85F60;
+
+}
+
+.serverCard {
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    width: 280px;
+    height: 300px;
+    border-radius: 12px;
+    padding-bottom: 12px;
+}
+
+.serverListRow {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: left;
+    row-gap: 80px;
+    column-gap: 60px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.memberInOrganizationTable {
+    width: 100%;
+    text-align: center;
+
+}
+
+.memberInOrganizationTable th {
+    padding: 24px 0px;
+    border-bottom: 1px solid black;
+
+}
+
+.memberInOrganizationTable td {
+    padding-top: 24px;
+
+}
+
+
+#id {
+    width: 60px;
+}
+
+#name {
+    width: 600px;
+}
+
+#role {
+    width: 200px;
+}
+
+.serverDes{
+ 
+    overflow-wrap: break-word;
+}
+
+.org-Dashboard-textField{
+    margin-top: 100px;
+}
+
+.delOrgBtn{
+    background-color: #F85F60;
+}
