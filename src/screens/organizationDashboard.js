@@ -21,11 +21,13 @@ import { Link } from "react-router-dom";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import "../css/userOrganization.css";
 
 // import { Container } from 'tailwind-react-ui'
 import Empty from "../images/empty.png";
 import Footer from "../components/userFooter";
 import ButtonAddServer from "./buttonAddServer";
+import Sidebar from "../components/Sidebar";
 
 export default function OrganizationDashboard() {
   const [isDisabled, setIsDisabled] = useState(true);
@@ -115,7 +117,10 @@ export default function OrganizationDashboard() {
     selectedOrganization;
 
   return (
-    <div style={{}}>
+    <div className="containerOrg">
+      <div className="sideMenu">
+        <Sidebar />
+      </div>
       <div className="px-20" style={{ width: "100%" }}>
         {/* BodyContainer */}
         <div
@@ -259,7 +264,7 @@ export default function OrganizationDashboard() {
                 <TabPanel value="2">
                   <div className="memberTab">
                     <h1>Members</h1>
-                    <div className="flex flex-row">
+                    <div className="flex flex-row gap-">
                       <Button variant="outlined">Select</Button>
                       <Button variant="outlined">Add Member</Button>
                     </div>

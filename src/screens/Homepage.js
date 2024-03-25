@@ -53,14 +53,14 @@ export default function Homepage() {
         <div className="px-60 pb-20">
           {/*------------ Featured News--------------- */}
 
-          <div className="flex flex-col py-12">
+          <div className="flex flex-col py-12 ">
             <div>FEATURED NEWS</div>
             <div className="text-black text-2xl font-semibold">
               Discover what’s happening on MHD
             </div>
           </div>
 
-          <div className="flex flex-row justify-between">
+          <div className="flex flex-row gap-12">
             <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
               <a href="#">
                 <div className="">

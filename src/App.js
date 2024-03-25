@@ -16,7 +16,7 @@ import Payment from "./screens/Payment";
 import Sidebar from "./components/Sidebar";
 import Admin from "./screens/adminAccountManagement";
 import ServerConfig from "./screens/userServerConfig";
-import Guide from "./screens/Guide";
+import Guide from "./screens/userGuide";
 
 import AdminBilling from "./screens/adminBilling";
 import AdminSetting from "./screens/adminSetting";
@@ -24,21 +24,28 @@ import AdminSetting from "./screens/adminSetting";
 import UserProfile from "./screens/userProfile";
 import UserSubscribe from "./screens/userSubscribe";
 import UserPayment from "./screens/userSubscribePayment";
+import Organizations from "./screens/userOrganization";
 export default function App() {
   return (
     <div>
       <Routes>
-        {/* User */}
-        <Route path="/serverEmpty" element={<ServerEmpty />}></Route>
-        <Route path="/Organization" element={<Organization />}></Route>
-        <Route
-          path="/Organization/dashboard/:organizationId"
-          element={<OrganizationDashboard />}
-        ></Route>
+        {/* Dashboard Unlogin */}
+        <Route path="/" element={<Homepage />}></Route>
+        <Route path="/contact" element={<Contact />}></Route>
         <Route path="/guide" element={<Guide />}></Route>
-        <Route path="/server" element={<ServerConfig />}></Route>
-        <Route path="/test" element={<Test />}></Route>
+
+        {/* ADMIN ROUTE*/}
+        <Route path="/admin" element={<Admin />}></Route>
+        <Route path="/admin/billing" element={<AdminBilling />}></Route>
+        <Route path="/admin/setting" element={<AdminSetting />}></Route>
+
+        {/* USER ROUTE*/}
         <Route path="/login" element={<Login />}></Route>
+
+        {/* USER PROFILE*/}
+        <Route path="/user" element={<UserProfile />}></Route>
+        <Route path="/user/subscribe" element={<UserSubscribe />}></Route>
+        <Route path="/user/subscribe/payment" element={<UserPayment />}></Route>
         <Route
           path="/login/forgotPassword"
           element={<ForgotPassword />}
@@ -49,21 +56,21 @@ export default function App() {
         <Route path="/OTP" element={<OTPInput />}></Route>
         <Route path="/subscribe" element={<Subscribe />}></Route>
 
-        {/* Dashboard Unlogin */}
-        <Route path="/" element={<Homepage />}></Route>
-        <Route path="/contact" element={<Contact />}></Route>
-        <Route path="/sidebar" element={<Sidebar />}></Route>
+        {/* USER ORG*/}
+        <Route path="/organizations" element={<Organizations />}></Route>
+        <Route
+          path="/organizations/dashboard/:organizationId"
+          element={<OrganizationDashboard />}
+        ></Route>
 
-        {/* ADMIN ROUTE*/}
-        <Route path="/admin" element={<Admin />}></Route>
-        <Route path="/admin/billing" element={<AdminBilling />}></Route>
-        <Route path="/admin/setting" element={<AdminSetting />}></Route>
-
-        {/* USER ROUTE*/}
-        <Route path="/user" element={<UserProfile />}></Route>
-        <Route path="/user/subscribe" element={<UserSubscribe />}></Route>
-        <Route path="/user/subscribe/payment" element={<UserPayment />}></Route>
+        {/* USER SEVER*/}
         <Route path="/server" element={<ServerConfig />}></Route>
+        <Route path="/serverEmpty" element={<ServerEmpty />}></Route>
+
+        <Route path="/server" element={<ServerConfig />}></Route>
+
+        {/* DRAFT TEST ROUTE*/}
+        <Route path="/test" element={<Test />}></Route>
       </Routes>
     </div>
   );
