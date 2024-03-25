@@ -17,6 +17,7 @@ import Library from "../tabs/serverLibrary";
 import ServerReport from "../tabs/serverReport";
 import Docker from "../tabs/serverDocker";
 import Sidebar from "../components/Sidebar";
+import Data from "../tabs/serverData";
 
 import "../css/userOrganization.css";
 
@@ -81,7 +82,9 @@ export default function UserServerConfig() {
               <TabPanel value="5">
                 <Library />
               </TabPanel>
-              <TabPanel value="6">Item Three</TabPanel>
+              <TabPanel value="6">
+                <Data/>
+              </TabPanel>
               <TabPanel value="7">
                 <ServerReport />
               </TabPanel>

@@ -80,7 +80,7 @@ export default function Login() {
                 className="mt-3"
                 style={{ fontSize: "16px", fontWeight: "600" }}
               >
-                Root user email address
+                Root username
               </p>
               <p style={{ fontSize: "11px", fontWeight: "600" }}>
                 Used for account recovery and some administrative functions

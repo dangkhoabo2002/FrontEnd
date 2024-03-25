@@ -8,7 +8,7 @@ export default function serverDocker() {
   return (
     <div className="flex flex-col gap-12">
       <div className="projectSection">
-        <h1 className="text-2xl pb-10 pt-2">Library Settings</h1>
+        <h1 className="text-2xl pb-10 pt-2">Docker Project</h1>
         <div className="flex flex-col flex-wrap gap-2">
           <h2>Dockerfile</h2>
           <div className="flex flex-row gap-20">

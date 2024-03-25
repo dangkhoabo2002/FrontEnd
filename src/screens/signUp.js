@@ -26,7 +26,7 @@ export default function SignUp() {
           left: "50%",
           transform: "translate(-50%, -50%)",
           width: "70%",
-          height: "85%",
+          height: "90%",
           backgroundColor: "white",
           borderRadius: "20px",
           display: "flex",
@@ -65,7 +65,14 @@ export default function SignUp() {
               className="mb-4"
             />
           </div>
-
+          <div className="textField mt-3">
+            <TextField
+              label="Username"
+              fullWidth
+              variant="outlined"
+              className="mb-4"
+            />
+          </div>
           <div className="textField mt-3">
             <TextField
               label="Email Address"
@@ -127,7 +134,7 @@ export default function SignUp() {
           </div>
 
           <div className="text-center text-md-start pt-2 float-left">
-            <div className="small fw-bold mt-2 pt-1 mb-2 flex">
+            <div className="small fw-bold mt-1 pt-1 mb-2 flex">
               <div className="mr-1">Already have an account?</div>
               <Link to={"/login"} style={{ color: "#3867A5" }}>
                 <b>Login</b>

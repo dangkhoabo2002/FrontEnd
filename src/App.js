@@ -25,6 +25,8 @@ import UserProfile from "./screens/userProfile";
 import UserSubscribe from "./screens/userSubscribe";
 import UserPayment from "./screens/userSubscribePayment";
 import Organizations from "./screens/userOrganization";
+import AdminLogin from "./screens/adminLogin";
+
 export default function App() {
   return (
     <div>
@@ -35,6 +37,7 @@ export default function App() {
         <Route path="/guide" element={<Guide />}></Route>
 
         {/* ADMIN ROUTE*/}
+        <Route path="/adminLogin" element={<AdminLogin />}></Route>
         <Route path="/admin" element={<Admin />}></Route>
         <Route path="/admin/billing" element={<AdminBilling />}></Route>
         <Route path="/admin/setting" element={<AdminSetting />}></Route>
