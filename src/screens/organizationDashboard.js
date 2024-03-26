@@ -19,6 +19,8 @@ import TabPanel from "@mui/lab/TabPanel";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import ApartmentIcon from "@mui/icons-material/Apartment";
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import KeyboardDoubleArrowUpOutlinedIcon from '@mui/icons-material/KeyboardDoubleArrowUpOutlined';
 
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import "../css/userOrganization.css";
@@ -117,6 +119,7 @@ export default function OrganizationDashboard() {
     selectedOrganization;
 
   return (
+    <>
     <div className="containerOrg">
       <div className="sideMenu">
         <Sidebar />
@@ -129,7 +132,7 @@ export default function OrganizationDashboard() {
         >
           <div className="header flex flex-row items-center gap-x-3">
             <Link
-              to={"/organization"}
+              to={"/organizations"}
               className="flex flex-row items-center gap-x-3"
             >
               <ApartmentIcon
@@ -181,12 +184,12 @@ export default function OrganizationDashboard() {
 
                 {/* TAB 1 */}
                 <TabPanel value="1">
-                  <div className="flex flex-col justify-start gap-y-10">
-                    <div className="flex flex-row justify-left gap-12 pt-10">
-                      <h1 className="text-[#637381] text-2xl font pr-16">
-                        Active servers
-                      </h1>
-                      <p className="text-3xl text-[#637381]">
+                  <div className="flex flex-col justify-start">
+                    <div className="flex flex-row justify-left">
+                    <h1 className="text-[#637381] text-2xl font pr-10 my-3">
+                    Active server
+                  </h1>
+                      <p className="text-2xl font pr-10 my-3 text-[#637381]">
                         {
                           servers.filter((server) => server.status === "Active")
                             .length
@@ -220,15 +223,14 @@ export default function OrganizationDashboard() {
                           ))}
                       </div>
                     </Link>
-                    <div className="flex flex-row justify-left gap-12">
-                      <h1 className="text-[#637381] text-3xl font-bold pr-12">
-                        Inactive servers
-                      </h1>
-                      <p className="text-[#637381] text-3xl">
+                    <div className="flex flex-row justify-left">
+                    <h1 className="text-[#637381] text-2xl font pr-10 my-3">
+                    Inactive server
+                  </h1>
+                      <p className="text-2xl font pr-10 my-3 text-[#637381]">
                         {
-                          servers.filter(
-                            (server) => server.status === "Inactive"
-                          ).length
+                          servers.filter((server) => server.status === "Inactive")
+                            .length
                         }
                       </p>
                     </div>
@@ -263,7 +265,9 @@ export default function OrganizationDashboard() {
                 {/* TAB 2 */}
                 <TabPanel value="2">
                   <div className="memberTab">
-                    <h1>Members</h1>
+                  <h1 className="text-[#637381] text-2xl font pr-16 my-3">
+                    Member
+                  </h1>
                     <div className="flex flex-row gap-">
                       <Button variant="outlined">Select</Button>
                       <Button variant="outlined">Add Member</Button>
@@ -281,8 +285,8 @@ export default function OrganizationDashboard() {
                           <td>{member.name}</td>
                           <td>{member.role}</td>
                           <td>
-                            <Button>Primary</Button>
-                            <Button>Primary</Button>
+                          <DeleteOutlineOutlinedIcon style={{cursor:"pointer", marginRight:"20px"}}/>
+                          <KeyboardDoubleArrowUpOutlinedIcon style={{cursor:"pointer"}}/>
                           </td>
                         </tr>
                       ))}
@@ -417,7 +421,9 @@ export default function OrganizationDashboard() {
           </div>
         </div>
       </div>
-      <Footer />
     </div>
+    <Footer />
+
+    </>
   );
 }

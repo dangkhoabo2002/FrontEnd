@@ -20,15 +20,16 @@ export default function Homepage() {
             className="w-full object-cover"
             style={{ height: "600px" }}
           />
-          <div className="absolute bottom-1/3 left-64 text-white w-1/3">
-            <div className="text-6xl font-semibold w-2/3 pb-6">
-              Learn, connect and explore
+          <div className="absolute bottom-1/3 left-60 text-white w-1/3">
+            <div className="text-5xl font-semibold w-2/3 pb-6">
+              Sell solutions not products
             </div>
             <div className=" text-lg w-full font-semibold">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book.
+              Shift your perspective from pushing products to solving problems.
+              Understand the root causes of your customers' challenges and craft
+              holistic solutions that address their unique needs. By
+              prioritizing solutions over sales pitches, you build lasting
+              partnerships founded on mutual trust and value.{" "}
             </div>
           </div>
         </div>

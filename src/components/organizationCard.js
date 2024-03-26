@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Typography, Paper, Grid, Avatar } from "@mui/material";
 import OrganizationIcon from "@mui/icons-material/Apartment";
 import ServerIcon from "../images/serverIcon2.png";
-import BusinessIcon from "@mui/icons-material/Business";
+import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
 export default function OrganizationCard({
   name,
   membersCount,
@@ -13,7 +13,7 @@ export default function OrganizationCard({
 
   return (
     <Paper
-      className="mt-3"
+      className="mt-3 mb-8"
       elevation={3}
       sx={{
         padding: 2,
@@ -80,7 +80,7 @@ export default function OrganizationCard({
         </Grid>
 
         <Grid item xs={4} sx={{ display: "flex", justifyContent: "end" }}>
-          <BusinessIcon
+          <AccountTreeOutlinedIcon
             style={{ width: "auto", height: "80px", color: "#637381" }}
           />
         </Grid>

@@ -50,9 +50,9 @@ export default function UserServerConfig() {
               </div>
             </div>
 
-            <div className="mt-3 "></div>
+            <div className=""></div>
             <TabContext value={value}>
-              <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+              <Box sx={{}}>
                 <TabList
                   onChange={handleChange}
                   aria-label="lab API tabs example"

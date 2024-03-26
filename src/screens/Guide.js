@@ -3,9 +3,11 @@ import ApartmentIcon from "@mui/icons-material/Apartment";
 import SearchBar from "../components/searchBar";
 import BookIcon from "@mui/icons-material/Book";
 import Accordion from "../components/guideAccodion";
+import Footer from "../components/userFooter";
 
 export default function Guide() {
   return (
+    <>
     <div>
       <div className="container px-20">
         <div className=" py-6 text-center border-b-2 border-stone-200 gap-10">
@@ -28,6 +30,8 @@ export default function Guide() {
         <Accordion/>
         </div>
       </div>
+
     </div>
-  );
+    <Footer />
+</>);
 }

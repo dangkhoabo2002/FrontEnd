@@ -4,7 +4,7 @@ import NavigationAdmin from "../components/navAdmin";
 import Users from "../data/listOfUserAccount.json";
 import "../css/Admin.css";
 import Button from "@mui/material/Button";
-
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 export default function adminAccountManagement() {
   return (
     <div className="">
@@ -68,7 +68,8 @@ export default function adminAccountManagement() {
                     <td>{user.role}</td>
                     <td>{user.email}</td>
                     <td>
-                      <Button variant="text">Delete</Button>
+
+                      <DeleteOutlineOutlinedIcon style={{cursor:"pointer"}}/>
                     </td>
                     {user.status == "Active" ? (
                       <td>

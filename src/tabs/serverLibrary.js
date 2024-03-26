@@ -25,8 +25,9 @@ export default function ServerLibrary() {
     <>
       <div>
         <div className="flex flex-row justify-between items-center pr-6">
-          <h1 className="text-2xl pb-10 pt-2">Library Settings</h1>
-          <Button variant="text" size="large" onClick={handleFilterClick}>
+        <div className="info-title font-semibold my-3">
+        <p>Library</p>
+      </div>          <Button variant="text" size="large" onClick={handleFilterClick}>
             {showOnlyNotInstalled ? "Not Installed" : "Installed"}
           </Button>
         </div>

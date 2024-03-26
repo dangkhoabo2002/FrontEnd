@@ -100,7 +100,7 @@ export default function LandingPage() {
           </div>
         </div>
 
-        <div className="mt-3 ">
+        <div className="mt-3">
           {organizationsData.map((organization) => (
             <Link to={`dashboard/${organization.id}`} key={organization.id}>
               <OrganizationCard
@@ -313,11 +313,16 @@ export default function LandingPage() {
                     <Button
                       variant="contained"
                       onClick={handleDone}
+                      style={{ marginLeft: "10px" }}
                       sx={{
-                        width: "100px",
+                        width: "120px",
+                        height: "auto",
                         color: "white",
                         bgcolor: "#6EC882",
-                        "&:hover": { bgcolor: "darkgreen" },
+                        "&:hover": { bgcolor: "#5CA36C" },
+                        fontSize: "14px",
+                        fontWeight: "normal",
+                        textTransform: "none",
                       }}
                     >
                       Done

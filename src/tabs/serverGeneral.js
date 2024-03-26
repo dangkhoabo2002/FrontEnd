@@ -18,6 +18,8 @@ import AddIcon from "@mui/icons-material/Add";
 import "../css/serverGeneral.css";
 import ServerManager from "../database/listOfServerManager.json";
 import CloseIcon from "@mui/icons-material/Close";
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+
 
 export default function ServerGeneral() {
   // BTN
@@ -229,7 +231,7 @@ export default function ServerGeneral() {
                       <td>{svmg.id}</td>
                       <td>{svmg.email}</td>
                       <td>{svmg.role}</td>
-                      <td>Delete</td>
+                      <td><DeleteOutlineOutlinedIcon style={{cursor:"pointer"}}/></td>
                     </tr>
                   ))}
                 </tbody>

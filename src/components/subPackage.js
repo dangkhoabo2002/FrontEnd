@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 
 import "../css/subPackage.css";
+import { Link } from "react-router-dom";
 const packages = [
   {
     id: 1,
@@ -114,6 +115,7 @@ export default function SubscriptionPackages() {
                   className="mb-3"
                   style={{ bottom: "20px", width: "100%", textAlign: "center" }}
                 >
+                  <Link to={"/user/subscribe/payment"}>
                   <Button
                     variant="contained"
                     style={{
@@ -130,7 +132,7 @@ export default function SubscriptionPackages() {
                     }}
                   >
                     Buy Now
-                  </Button>
+                  </Button></Link>
                 </div>
               </CardActionArea>
             </Card>
