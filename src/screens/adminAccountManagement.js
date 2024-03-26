@@ -4,7 +4,7 @@ import NavigationAdmin from "../components/navAdmin";
 import Users from "../data/listOfUserAccount.json";
 import "../css/Admin.css";
 import Button from "@mui/material/Button";
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 export default function adminAccountManagement() {
   return (
     <div className="">
@@ -68,13 +68,27 @@ export default function adminAccountManagement() {
                     <td>{user.role}</td>
                     <td>{user.email}</td>
                     <td>
-
-                      <DeleteOutlineOutlinedIcon style={{cursor:"pointer"}}/>
+                      <Button
+                        variant="contained"
+                        sx={{
+                          width: "100px",
+                          height: "25px",
+                          color: "white",
+                          borderRadius: "100px",
+                          bgcolor: "#F85F60",
+                          "&:hover": { bgcolor: "#D45758" },
+                          fontSize: "14px",
+                          fontWeight: "normal",
+                          textTransform: "none",
+                        }}
+                      >
+                        Delete
+                      </Button>
                     </td>
                     {user.status == "Active" ? (
                       <td>
                         <div class="flex justify-center m-5">
-                          <button
+                          {/* <button
                             id="deleteButton"
                             data-modal-target="deleteModal"
                             data-modal-toggle="deleteModal"
@@ -82,13 +96,29 @@ export default function adminAccountManagement() {
                             type="button"
                           >
                             Active
-                          </button>
+                          </button> */}
+                          <Button
+                            variant="contained"
+                            sx={{
+                              width: "100px",
+                              height: "25px",
+                              color: "white",
+                              borderRadius: "100px",
+                              bgcolor: "#6EC882",
+                              "&:hover": { bgcolor: "#63B976" },
+                              fontSize: "14px",
+                              fontWeight: "normal",
+                              textTransform: "none",
+                            }}
+                          >
+                            Active
+                          </Button>
                         </div>
                       </td>
                     ) : (
                       <td>
                         <div class="flex justify-center m-5">
-                          <button
+                          {/* <button
                             id="deleteButton"
                             data-modal-target="deleteModal"
                             data-modal-toggle="deleteModal"
@@ -96,7 +126,23 @@ export default function adminAccountManagement() {
                             type="button"
                           >
                             Inactive
-                          </button>
+                          </button> */}
+                          <Button
+                            variant="contained"
+                            sx={{
+                              width: "100px",
+                              height: "25px",
+                              color: "white",
+                              borderRadius: "100px",
+                              bgcolor: "#8E8E8E",
+                              "&:hover": { bgcolor: "#6C6C6C" },
+                              fontSize: "14px",
+                              fontWeight: "normal",
+                              textTransform: "none",
+                            }}
+                          >
+                            Inative
+                          </Button>
                         </div>
                       </td>
                     )}

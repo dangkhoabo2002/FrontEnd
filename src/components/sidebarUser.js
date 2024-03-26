@@ -8,13 +8,13 @@ import SettingsIcon from '@mui/icons-material/Settings';
 export default function sidebarUser() {
   return (
     <div
-      style={{
-        borderRight: "1px solid #E5E8EB",
-        width: "100%",
-        height: "auto",
-        display: "flex",
-        flexDirection: "column",
-      }}
+    style={{
+      borderRight: "1px solid #E5E8EB",
+      width: "280px",
+      height: "1000px",
+      display: "flex",
+      flexDirection: "column",
+    }}
     >
       <div className="font-black py-3 text-lg pl-12"></div> 
       <div className="flex flex-col">
