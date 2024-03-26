@@ -1,9 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Homepage from "./screens/Homepage";
 import Contact from "./screens/Contact";
-import Navigation from "./components/Navigation";
 import ServerEmpty from "./screens/serverEmpty";
-import Organization from "./screens/Organization";
 import OrganizationDashboard from "./screens/organizationDashboard";
 import Test from "./screens/test";
 import Login from "./screens/login";
@@ -13,7 +11,6 @@ import OTPInput from "./screens/otp";
 import ResetPassword from "./screens/resetPassword";
 import Subscribe from "./screens/Subscribe";
 import Payment from "./screens/Payment";
-import Sidebar from "./components/Sidebar";
 import Admin from "./screens/adminAccountManagement";
 import ServerConfig from "./screens/userServerConfig";
 import Guide from "./screens/userGuide";

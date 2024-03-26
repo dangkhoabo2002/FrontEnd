@@ -3,6 +3,7 @@ import SidebarAdmin from "../components/sidebarAdmin";
 import NavigationAdmin from "../components/navAdmin";
 import Users from "../data/listOfUserAccount.json";
 import "../css/Admin.css";
+import Button from "@mui/material/Button";
 
 export default function adminAccountManagement() {
   return (
@@ -66,7 +67,9 @@ export default function adminAccountManagement() {
                     <td>{user.fullname}</td>
                     <td>{user.role}</td>
                     <td>{user.email}</td>
-                    <td>Delete</td>
+                    <td>
+                      <Button variant="text">Delete</Button>
+                    </td>
                     {user.status == "Active" ? (
                       <td>
                         <div class="flex justify-center m-5">
