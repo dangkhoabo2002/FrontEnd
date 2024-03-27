@@ -13,7 +13,7 @@ export default function serverDocker() {
       </div>
         <div className="flex flex-col flex-wrap gap-2">
           <h2>Dockerfile</h2>
-          <div className="flex flex-row gap-20">
+          <div className="flex flex-row gap-5">
             <TextField
               hiddenLabel
               id="filled-hidden-label-small"
@@ -21,7 +21,7 @@ export default function serverDocker() {
               variant="filled"
               size="small"
               sx={{
-                width: "800px",
+                width: "600px",
               }}
             />
             <Button
@@ -44,7 +44,7 @@ export default function serverDocker() {
           </div>
 
           <h2 className="pt-4">docker-compose.yml</h2>
-          <div className="flex flex-row gap-20">
+          <div className="flex flex-row gap-5">
             <TextField
               hiddenLabel
               id="filled-hidden-label-small"
@@ -52,7 +52,7 @@ export default function serverDocker() {
               variant="filled"
               size="small"
               sx={{
-                width: "800px",
+                width: "600px",
               }}
             />
             <div>

@@ -4,7 +4,7 @@ import Logo from "../assets/logo.png";
 
 export default function Navigation() {
   return (
-    <div>
+    <div style={{ backgroundColor: "white" }}>
       <div className="flex flex-row justify-between items-center px-20 py-4">
         <Link to={`/`}>
           <div className=" flex flex-row items-center gap-x-4">
@@ -18,7 +18,7 @@ export default function Navigation() {
           </div>
         </Link>
         <div className="flex flex-row justify-between items-center gap-x-10 ">
-          <Link to={`/contact`}>
+          <Link to={`/aboutUs`}>
             <p>
               <button className="font-semibold">About Us</button>
             </p>

@@ -29,7 +29,7 @@ export default function Subscribe() {
         Package of MHD
       </p>
 
-      <div className="card mt-3">
+      <div className="card">
         <SubscriptionPackages className="" />
       </div>
     </div>

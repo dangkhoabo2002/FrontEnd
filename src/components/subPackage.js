@@ -47,7 +47,7 @@ export default function SubscriptionPackages() {
         container
         spacing={5}
         justifyContent="center"
-        className="px-32 py-20"
+        className="px-32 py-10"
       >
         {packages.map((pkg) => (
           <Grid item xs={12} sm={6} md={4} key={pkg.id}>
