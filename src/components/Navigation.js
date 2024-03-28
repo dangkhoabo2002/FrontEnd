@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Logo from "../assets/logo.png";
-
+import { Button } from "@mui/material";
 
 export default function Navigation() {
   return (
@@ -19,6 +19,16 @@ export default function Navigation() {
           </div>
         </Link>
         <div className="flex flex-row justify-between items-center gap-x-10 ">
+          <a href="#featureNew">
+            <button className="font-semibold">Feature News</button>
+          </a>
+          <a href="#solution">
+            <button className="font-semibold">Solution</button>
+          </a>
+
+          <a href="#contact">
+            <button className="font-semibold">Contact</button>
+          </a>
           <Link to={`/aboutUs`}>
             <p>
               <button className="font-semibold">About Us</button>
