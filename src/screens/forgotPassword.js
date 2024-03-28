@@ -1,12 +1,47 @@
-import React from "react";
+import React, { useState } from "react";
 import bgLogin from "../images/loginBackgr.png";
 import Logo from "../images/MHDLogo.png";
 import { Button, TextField } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 import { Link } from "react-router-dom";
 import "../css/login.css";
 
 export default function ForgotPassword() {
+  const navigate = useNavigate();
+  const [data, setData] = useState({
+    email: "",
+  });
+
+  const handleChange = (prop) => (event) => {
+    setData({ ...data, [prop]: event.target.value });
+  };
+
+  console.log("dataLogin", data);
+  const handleSubmit = async () => {
+    const loginUrl = "http://127.0.0.1:5000/auth/forgot_password";
+    try {
+      const response = await fetch(loginUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          email: data.email,
+        }),
+      });
+      if (response.status === 200) {
+        navigate("/otp");
+      } else {
+        alert("Fail to OTP");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+
   return (
     <>
       <div
@@ -37,8 +72,9 @@ export default function ForgotPassword() {
             padding: "20px 400px",
           }}
         >
-          <img loading="lazy"
-          className="mb-10"
+          <img
+            loading="lazy"
+            className="mb-10"
             src={Logo}
             alt="Logo"
             style={{ width: "96px", height: "96px" }}
@@ -68,24 +104,25 @@ export default function ForgotPassword() {
                 fullWidth
                 variant="outlined"
                 className="mb-4"
+                onChange={handleChange("email")}
+                value={data.email}
               />
             </div>
           </div>
           <div className="loginBtn text-center mt-3">
-            <Link to={"/otp"}>
-              <Button
-                style={{
-                  width: "100%",
-                  height: "45px",
-                  backgroundColor: "#3867A5",
-                }}
-                variant="contained"
-                color="primary"
-                className="mb-0"
-              >
-                Send code
-              </Button>
-            </Link>
+            <Button
+              style={{
+                width: "100%",
+                height: "45px",
+                backgroundColor: "#3867A5",
+              }}
+              variant="contained"
+              color="primary"
+              className="mb-0"
+              onClick={handleSubmit}
+            >
+              Send code
+            </Button>
           </div>
           <div>
             <Link to={"/login"}>
