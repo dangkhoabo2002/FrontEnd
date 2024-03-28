@@ -1,77 +1,100 @@
-import React, { useState } from 'react';
-import { Button, TextField, Container, Typography } from '@mui/material';
-import { makeStyles } from '@mui/styles';
-
-const useStyles = makeStyles({
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    minHeight: '100vh',
-  },
-  form: {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '20px',
-  },
-});
+import React, { useState } from "react";
+import {
+  TextField,
+  Checkbox,
+  Button,
+  FormControlLabel,
+  Link,
+} from "@mui/material";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { useNavigate } from "react-router-dom";
+import bgLogin from "../images/loginBackgr.png";
 
 export default function AdminLogin() {
-  const classes = useStyles();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+  const [data, setData] = useState({
+    username: "",
+    password: "",
+    rememberMe: false,
+  });
 
-  const handleLogin = () => {
-    if (username === 'admin' && password === 'password') {
-      setIsLoggedIn(true);
-    } else {
-      alert('ERROR');
-    }
+  const handleChange = (prop) => (event) => {
+    setData({ ...data, [prop]: event.target.value });
   };
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
+  const handleCheckboxChange = (event) => {
+    setData({ ...data, rememberMe: event.target.checked });
   };
 
-  if (isLoggedIn) {
-    return (
-      <Container className={classes.container}>
-        <Typography variant="h4" gutterBottom>
-          Chào mừng bạn đã đăng nhập!
-        </Typography>
-        <Button variant="contained" color="primary" onClick={handleLogout}>
-          Đăng xuất
-        </Button>
-      </Container>
-    );
-  }
+  const handleLogin = async () => {
+    // Implement your login logic here
+    console.log("Logging in with:", data);
+    navigate("/user"); // Example redirection
+  };
 
   return (
-    <Container className={classes.container}>
-      <Typography variant="h4" gutterBottom>
-        Đăng nhập
-      </Typography>
-      <form className={classes.form}>
-        <TextField
-          label="Tên đăng nhập"
-          variant="outlined"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <TextField
-          type="password"
-          label="Mật khẩu"
-          variant="outlined"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <Button variant="contained" color="primary" onClick={handleLogin}>
-          Đăng nhập
-        </Button>
-      </form>
-    </Container>
+    <div
+      style={{
+        backgroundImage: `url(${bgLogin})`,
+        backgroundSize: "cover",
+        height: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <div
+        style={{
+          width: "70%",
+          maxWidth: "400px",
+          backgroundColor: "white",
+          borderRadius: "20px",
+          padding: "40px",
+          boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.1)",
+        }}
+      >
+        <div style={{ textAlign: "center" }}>
+          <LockOutlinedIcon style={{ fontSize: "48px", color: "#3867A5" }} />
+          <h1 style={{ fontSize: "32px",margin: "10px 0", color: "#3867A5" }}>Admin Sign in</h1>
+        </div>
+        <form onSubmit={handleLogin}>
+          <TextField
+            label="Username"
+            fullWidth
+            variant="outlined"
+            margin="normal"
+            value={data.username}
+            onChange={handleChange("username")}
+          />
+          <TextField
+            label="Password"
+            fullWidth
+            variant="outlined"
+            type="password"
+            margin="normal"
+            value={data.password}
+            onChange={handleChange("password")}
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={data.rememberMe}
+                onChange={handleCheckboxChange}
+              />
+            }
+            label="Remember me"
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            style={{ marginTop: "20px", backgroundColor: "#3867A5" }}
+          >
+            Sign in
+          </Button>
+        </form>
+      </div>
+    </div>
   );
-};
+}
