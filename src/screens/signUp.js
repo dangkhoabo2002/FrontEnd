@@ -26,16 +26,16 @@ export default function SignUp() {
           left: "50%",
           transform: "translate(-50%, -50%)",
           width: "70%",
-          height: "90%",
+          height: "92%",
           backgroundColor: "white",
           borderRadius: "20px",
           display: "flex",
           flexDirection: "column",
         }}
       >
-        <div className="px-60 py-2">
+        <div className="px-60">
           <div
-            className="Logo pb-2"
+            className="Logo pb-0"
             style={{
               display: "flex",
               justifyContent: "center",
