@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Logo from "../assets/logo.png";
 
+
 export default function Navigation() {
   return (
     <div style={{ backgroundColor: "white" }}>
@@ -23,19 +24,9 @@ export default function Navigation() {
               <button className="font-semibold">About Us</button>
             </p>
           </Link>
-          <Link to={`/admin`}>
-            <p>
-              <button className="font-semibold">Admin</button>
-            </p>
-          </Link>
-          <Link to={`/organizations`}>
-            <p>
-              <button className="font-semibold">Organization</button>
-            </p>
-          </Link>
           <Link to={`/login`}>
-            <button class="bg-[#3867A5] hover:bg-blue-700 text-white  py-2 px-6 rounded-full">
-              Create MHD account
+            <button className="bg-[#3867A5] hover:bg-[#2B4B75] text-white py-2 px-6 rounded-full">
+              Login
             </button>
           </Link>
         </div>

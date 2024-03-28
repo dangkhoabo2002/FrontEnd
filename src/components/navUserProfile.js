@@ -2,8 +2,8 @@ import React from "react";
 import Logo from "../assets/logo.png";
 import { Link } from "react-router-dom";
 import BackgroundUserProfile from "../assets/userBackground.png";
-
-export default function navUserProfile() {
+import LogoutConfirm from "../components/confirmLogoutModal";
+export default function NavUserProfile() {
   return (
     <div>
       <nav className="px-4 pl-10">
@@ -15,9 +15,7 @@ export default function navUserProfile() {
             </div>
           </Link>
           <div className="flex justify-center items-center pr-6 ">
-            <button className="bg-[#3867A5] hover:bg-[#3962A0] text-white  py-2 px-12 rounded-full tracking-widest">
-              LOGOUT
-            </button>
+            <LogoutConfirm />
           </div>
         </div>
       </nav>

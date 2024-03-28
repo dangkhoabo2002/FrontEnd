@@ -39,11 +39,13 @@ export default function UserProfile() {
     console.log("Reset button clicked");
   };
 
+
+
   return (
     <div className="">
       {/*-------------- Navigation + Backgroud---------------- */}
 
-      <NavigationUser />
+      <NavigationUser  />
 
       {/*-------------- END OF Navigation + Backgroud---------------- */}
 
