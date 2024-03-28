@@ -29,7 +29,7 @@ export default function AdminLogin() {
   const handleLogin = async () => {
     // Implement your login logic here
     console.log("Logging in with:", data);
-    navigate("/user"); // Example redirection
+    navigate("/admin"); // Example redirection
   };
 
   return (

@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Logo from "../assets/logo.png";
+import { Button } from "@mui/material";
 
 export default function Navigation() {
   return (
@@ -18,6 +19,16 @@ export default function Navigation() {
           </div>
         </Link>
         <div className="flex flex-row justify-between items-center gap-x-10 ">
+          <a href="#featureNew">
+            <button className="font-semibold">Feature News</button>
+          </a>
+          <a href="#solution">
+            <button className="font-semibold">Solution</button>
+          </a>
+
+          <a href="#contact">
+            <button className="font-semibold">Contact</button>
+          </a>
           <Link to={`/aboutUs`}>
             <p>
               <button className="font-semibold">About Us</button>
@@ -34,7 +45,7 @@ export default function Navigation() {
             </p>
           </Link>
           <Link to={`/login`}>
-            <button class="bg-[#3867A5] hover:bg-blue-700 text-white  py-2 px-6 rounded-full">
+            <button className="bg-[#3867A5] hover:bg-[#2B4B75] text-white py-2 px-6 rounded-full">
               Create MHD account
             </button>
           </Link>
