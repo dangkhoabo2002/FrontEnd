@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import Navigation from "../components/Navigation";
 import { Accordion, AccordionItem } from "@szhsin/react-accordion";
 import hpBr from "../images/hpBr.png";
+import AboutUs from "./abouUs";
 
 export default function Homepage() {
   return (
@@ -14,7 +15,8 @@ export default function Homepage() {
         {/*------------ Opening Backgroud --------------- */}
 
         <div className="relative">
-          <img loading="lazy"
+          <img
+            loading="lazy"
             src={hpBr}
             alt="hpBr"
             className="w-full object-cover"
@@ -51,7 +53,7 @@ export default function Homepage() {
               <a href="#">
                 <div className="">
                   <img
-                  loading="lazy"
+                    loading="lazy"
                     class="rounded-t-lg"
                     src={background1}
                     alt="imgCard"
@@ -79,7 +81,8 @@ export default function Homepage() {
             <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
               <a href="#">
                 <div className="">
-                  <img loading="lazy"
+                  <img
+                    loading="lazy"
                     class="rounded-t-lg"
                     src={background1}
                     alt="imgCard"
@@ -106,7 +109,8 @@ export default function Homepage() {
             <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
               <a href="#">
                 <div>
-                  <img loading="lazy"
+                  <img
+                    loading="lazy"
                     class="rounded-t-lg"
                     src={background1}
                     alt="imgCard"
@@ -183,15 +187,23 @@ export default function Homepage() {
             </Accordion>
           </div>
 
-          {/*------------ CONTACT--------------- */}
+          {/*------------ ABOUT US--------------- */}
 
-          <div className="flex flex-col py-12 ">
-            <div>SOLUTIONS</div>
+          <div className="flex flex-col pt-12 " id="aboutUs">
+            <div>ABOUT US</div>
             <div className="text-black text-2xl font-semibold">
-              Find solutions for putting your ideas into action
+              MHD, dedicated and enthusiastic people
             </div>
+            <AboutUs />{" "}
           </div>
 
+          {/* CONTACT */}
+          <div className="flex flex-col pb-12 " id="contact">
+            <div>CONTACT</div>
+            <div className="text-black text-2xl font-semibold">
+              Contact information to answer questions
+            </div>
+          </div>
           <div className="w-full border-2 rounded-lg px-20 py-10 flex flex-row justify-between	shadow-md  ">
             <div className="w-1/4 ">
               <div className="font-semibold border-b-2">CONTACT</div>
@@ -210,7 +222,7 @@ export default function Homepage() {
             </div>
             <div className="w-1/3">
               <iframe
-              id="contact"
+                id="contact"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.610010537607!2d106.8073027088192!3d10.841127589266979!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752731176b07b1%3A0xb752b24b379bae5e!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBGUFQgVFAuIEhDTQ!5e0!3m2!1svi!2s!4v1704530710413!5m2!1svi!2s"
                 allowfullscreen=""
                 loading="lazy"

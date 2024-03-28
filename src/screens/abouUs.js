@@ -7,15 +7,13 @@ import { Box, Typography, div } from "@mui/material";
 export default function AboutUs() {
   return (
     <div>
-      <Navigation />
-      <div className="content-container px-40 py-10 pb-20">
         <div className="intro-title">
-          <div className="intro-title-head">
-          <p>HI, WE ARE</p>
+          <div className="intro-title-head my-8">
+          <p className="">HI, WE ARE</p>
           <p>MASTER HELP DESK DEVELOPERS</p>
           </div>
-          <p className="mt-5"
-          style={{fontWeight:"600", textAlign:"justify"}}>
+          <p className=""
+          style={{fontWeight:"500", textAlign:"justify", fontSize:"16px"}}>
             Master Help Desk (MHD) is a groundbreaking project aimed at
             improving server management and configuration for small and
             medium-sized enterprises (SMEs). With a mission to help businesses
@@ -97,7 +95,7 @@ export default function AboutUs() {
               </div>
             </div>
             <div className="flex flex-col">
-              <div className="px-10 mb-20" sx={{ p: 2 }}>
+              <div className="px-10 mb-20 " sx={{ p: 2 }}>
                 <div className="flex flex-row items-center mb-2">
                   <div className="number-circle">
                     <Typography
@@ -156,8 +154,7 @@ export default function AboutUs() {
             </div>
           </Box>
         </div>
-      </div>
-      <Footer />
+
     </div>
   );
 }

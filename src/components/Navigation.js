@@ -26,17 +26,17 @@ export default function Navigation() {
             <button className="font-semibold">Solution</button>
           </a>
 
+          <a href="#aboutUs">
+            <button className="font-semibold">About Us</button>
+            
+          </a>
           <a href="#contact">
             <button className="font-semibold">Contact</button>
           </a>
-          <Link to={`/aboutUs`}>
-            <p>
-              <button className="font-semibold">About Us</button>
-            </p>
-          </Link>
           <Link to={`/login`}>
-            <button className="bg-[#3867A5] hover:bg-[#2B4B75] text-white py-2 px-6 rounded-full">
-              Login
+            <button className="bg-[#3867A5] hover:bg-[#2B4B75] text-white py-2 px-6 rounded-full w-40 tracking-widest	">
+              <b>
+              SIGN IN</b>
             </button>
           </Link>
         </div>

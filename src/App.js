@@ -22,7 +22,7 @@ import UserSubscribe from "./screens/userSubscribe";
 import UserPayment from "./screens/userSubscribePayment";
 import Organizations from "./screens/userOrganization";
 import AdminLogin from "./screens/adminLogin";
-import AboutUs from "./screens/abouUs";
+// import AboutUs from "./screens/abouUs";
 
 export default function App() {
   return (
@@ -30,7 +30,7 @@ export default function App() {
       <Routes>
         {/* Dashboard Unlogin */}
         <Route path="/" element={<Homepage />}></Route>
-        <Route path="/aboutUs" element={<AboutUs />}></Route>
+        {/* <Route path="/aboutUs" element={<AboutUs />}></Route> */}
         <Route path="/guide" element={<Guide />}></Route>
 
         {/* ADMIN ROUTE*/}
