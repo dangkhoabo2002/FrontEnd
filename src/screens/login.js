@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import bgLogin from "../images/loginBackgr.png";
 import Logo from "../images/MHDLogo.png";
 import loginLeft from "../images/loginLeft.png";
+import { useNavigate } from "react-router-dom";
+
 import {
   Grid,
   Checkbox,
@@ -14,6 +16,43 @@ import "../css/login.css";
 import { Link } from "react-router-dom";
 
 export default function Login() {
+  const navigate = useNavigate();
+  const [data, setData] = useState({
+    username: "",
+    password: "",
+  });
+
+  useEffect(() => {});
+
+  const handleChange = (prop) => (event) => {
+    setData({ ...data, [prop]: event.target.value });
+  };
+
+  console.log("dataLogin", data);
+  const handleLogin = async () => {
+    const loginUrl = "http://127.0.0.1:5000/auth/login";
+    try {
+      const response = await fetch(loginUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          username: data.username,
+          password: data.password,
+        }),
+      });
+      if (response.status === 200) {
+        navigate("/user");
+      } else {
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+
   return (
     <>
       <div
@@ -91,6 +130,8 @@ export default function Login() {
                   fullWidth
                   variant="outlined"
                   className="mb-4"
+                  onChange={handleChange("username")}
+                  value={data.username}
                 />
               </div>
             </div>
@@ -112,6 +153,8 @@ export default function Login() {
                   variant="outlined"
                   type="password"
                   className="mb-4"
+                  onChange={handleChange("password")}
+                  value={data.password}
                 />
               </div>
             </div>
@@ -145,12 +188,15 @@ export default function Login() {
                 variant="contained"
                 color="primary"
                 className="mb-0"
+                onClick={handleLogin}
               >
                 Login
               </Button>
             </div>
-            <div className="text-center pt-2 float-left" 
-            style={{marginBottom:"50px"}}>
+            <div
+              className="text-center pt-2 float-left"
+              style={{ marginBottom: "50px" }}
+            >
               <p className="small fw-bold mt-2 pt-1 flex ">
                 Don't have an account?{" "}
                 <Link to={"/signUp"}>
