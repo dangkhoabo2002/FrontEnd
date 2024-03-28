@@ -17,7 +17,7 @@ export default function UserSubscribePayment() {
     <div className="backgroundContainer">
       <div className="bodyContainer flex flex-col justify-center items-center py-12">
         <div className="flex flex-row items-center gap-2 pb-2 ">
-          <img className="w-36" src={Logo} alt="Logo" />
+          <img loading="lazy" className="w-36" src={Logo} alt="Logo" />
           <h1 className="text-[40px] text-[#3867A5]">Proceed to payment</h1>
         </div>
         <h2 className="text-lg font-bold pb-4">
@@ -25,7 +25,7 @@ export default function UserSubscribePayment() {
         </h2>
         {isPaid && (
           <>
-            <img className="w-60" src={QR} alt="QRcode" />
+            <img  loading="lazy" className="w-60" src={QR} alt="QRcode" />
             <h2 className="font-bold py-6">
               Scan the QR code with the MOMO app to pay
             </h2>

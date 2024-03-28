@@ -37,7 +37,7 @@ export default function ForgotPassword() {
             padding: "20px 400px",
           }}
         >
-          <img
+          <img loading="lazy"
           className="mb-10"
             src={Logo}
             alt="Logo"

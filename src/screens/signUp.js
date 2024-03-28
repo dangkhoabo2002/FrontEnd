@@ -42,7 +42,7 @@ export default function SignUp() {
               alignItems: "center",
             }}
           >
-            <img
+            <img loading="lazy"
               src={Logo}
               alt="Logo"
               style={{ width: "96px", height: "96px" }}

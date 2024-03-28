@@ -7,6 +7,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import { useNavigate } from "react-router-dom";
+import { Typography } from "@mui/material";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -45,8 +46,8 @@ export default function AlertDialogSlide() {
 
   return (
     <React.Fragment>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Slide in alert dialog
+      <Button variant="contained" sx={{backgroundColor:"#3867A5","&:hover": { bgcolor: "#2B4B75" },}} onClick={handleClickOpen}>
+        Logout
       </Button>
       <Dialog
         open={open}
@@ -55,10 +56,14 @@ export default function AlertDialogSlide() {
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle>{"Log out from MHD ?"}</DialogTitle>
+        <DialogTitle>{"Confirmation!"}</DialogTitle>
+        <DialogContent>Are you sure you want to logout?</DialogContent>
+
         <DialogActions>
-          <Button onClick={handleClose}>Disagree</Button>
-          <Button onClick={handleLogout}>Agree</Button>
+          <Button sx={{ color: "red" }} onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button onClick={handleLogout}>Confirm</Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>

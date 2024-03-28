@@ -14,7 +14,7 @@ export default function Homepage() {
         {/*------------ Opening Backgroud --------------- */}
 
         <div className="relative">
-          <img
+          <img loading="lazy"
             src={hpBr}
             alt="hpBr"
             className="w-full object-cover"
@@ -51,6 +51,7 @@ export default function Homepage() {
               <a href="#">
                 <div className="">
                   <img
+                  loading="lazy"
                     class="rounded-t-lg"
                     src={background1}
                     alt="imgCard"
@@ -78,7 +79,7 @@ export default function Homepage() {
             <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
               <a href="#">
                 <div className="">
-                  <img
+                  <img loading="lazy"
                     class="rounded-t-lg"
                     src={background1}
                     alt="imgCard"
@@ -105,7 +106,7 @@ export default function Homepage() {
             <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
               <a href="#">
                 <div>
-                  <img
+                  <img loading="lazy"
                     class="rounded-t-lg"
                     src={background1}
                     alt="imgCard"

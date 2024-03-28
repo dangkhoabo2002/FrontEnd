@@ -10,7 +10,7 @@ export default function NavUserProfile() {
         <div className="flex justify-between bg-white">
           <Link to={`/`}>
             <div className="flex justify-center items-center">
-              <img className="object-cover h-18 w-16 	" src={Logo} alt="Logo" />
+              <img loading="lazy" className="object-cover h-18 w-16 	" src={Logo} alt="Logo" />
               <p className="font-black text-xl pl-10">MASTER HELP DESK</p>
             </div>
           </Link>
@@ -19,7 +19,7 @@ export default function NavUserProfile() {
           </div>
         </div>
       </nav>
-      <img
+      <img loading="lazy"
         style={{
           width: "100%",
           height: "240px",

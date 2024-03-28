@@ -45,7 +45,7 @@ export default function Login() {
             padding: "12px ",
           }}
         >
-          <img
+          <img loading="lazy"
             src={Logo}
             alt="Logo"
             style={{ width: "96px", height: "96px" }}
@@ -54,7 +54,7 @@ export default function Login() {
 
         <Grid container justifyContent="center" spacing={2}>
           <Grid item xs={12} md={6}>
-            <img src={loginLeft} alt="Login Left" />
+            <img loading="lazy" src={loginLeft} alt="Login Left" />
           </Grid>
 
           <Grid item xs={12} md={6} className="pr-8">

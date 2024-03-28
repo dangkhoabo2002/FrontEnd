@@ -57,7 +57,7 @@ export default function UserSubscribe() {
             {showPackageCard && (
               <div className="packageCard">
                 <div className="imgCard">
-                  <img src={chip} />
+                  <img loading="lazy" src={chip} />
                 </div>
                 <Divider orientation="vertical" variant="middle" />
 

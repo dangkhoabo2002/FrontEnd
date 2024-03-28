@@ -27,7 +27,7 @@ export default function Payment() {
           alignItems: "center",
         }}
       >
-        <img src={Logo} alt="Logo" style={{ width: "96px", height: "96px" }} />
+        <img loading="lazy" src={Logo} alt="Logo" style={{ width: "96px", height: "96px" }} />
       </div>
 
       {/* Heading */}

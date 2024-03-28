@@ -37,7 +37,7 @@ export default function ServerLibrary() {
               key={lib.id}
               className="flex flex-row justify-left items-center gap-8 rounded-md shadow-lg border px-12 py-6 w-2/7"
             >
-              <img className="w-20 object-contain" src={lib.image} />
+              <img loading="lazy" className="w-20 object-contain" src={lib.image} />
               <div className="flex flex-col items-center">
                 <h1>{lib.name}</h1>
                 <h2 className="text-[14px] pb-2">Version: {lib.version}</h2>

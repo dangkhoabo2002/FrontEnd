@@ -9,7 +9,7 @@ export default function Navigation() {
       <div className="flex flex-row justify-between items-center px-20 py-4">
         <Link to={`/`}>
           <div className=" flex flex-row items-center gap-x-4">
-            <img className="object-cover h-18 w-16" src={Logo} alt="logo" />
+            <img loading="lazy" className="object-cover h-18 w-16" src={Logo} alt="logo" />
             <div
               className="text-3xl font-semibold tracking-wide"
               style={{ fontSize: "24px" }}

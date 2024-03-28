@@ -67,7 +67,7 @@ export default function OrganizationCard({
             }}
           >
             {servers.map((server) => (
-              <img src={ServerIcon} style={{ width: "50px" }} />
+              <img loading="lazy" src={ServerIcon} style={{ width: "50px" }} />
             ))}
           </div>
           <Typography

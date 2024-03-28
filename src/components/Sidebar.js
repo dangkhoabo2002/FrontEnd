@@ -21,7 +21,7 @@ export default function Sidebar() {
     >
       <div className="py-10 px-8">
         <Link to={"/"}>
-          <img style={{ width: "70px" }} src={Logo} />
+          <img loading="lazy" style={{ width: "70px" }} src={Logo} />
         </Link>
       </div>
       <div className="flex flex-col">

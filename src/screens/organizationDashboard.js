@@ -93,7 +93,7 @@ export default function OrganizationDashboard() {
             className=""
             style={{ display: "flex", justifyContent: "center" }}
           >
-            <img
+            <img loading="lazy"
               src={Empty}
               className="img items-center justify-center"
               alt="empty"
@@ -212,7 +212,7 @@ export default function OrganizationDashboard() {
                                 {server.status}
                               </span>
                               <h2>Server Name</h2>
-                              <img
+                              <img loading="lazy"
                                 src={serverIcon2}
                                 style={{ width: "60px", objectFit: "contain" }}
                               />
@@ -249,7 +249,7 @@ export default function OrganizationDashboard() {
                               {server.status}
                             </span>
                             <h2>Server Name</h2>
-                            <img
+                            <img loading="lazy"
                               src={serverIcon2}
                               style={{ width: "60px", objectFit: "contain" }}
                             />

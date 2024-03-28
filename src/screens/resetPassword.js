@@ -64,7 +64,7 @@ export default function ResetPassword() {
             padding: "20px 400px",
           }}
         >
-          <img
+          <img loading="lazy"
             src={Logo}
             alt="Logo"
             style={{ width: "96px", height: "96px" }}
