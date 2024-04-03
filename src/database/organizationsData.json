@@ -40,22 +40,22 @@
       {
         "id": 11,
         "name": "John Doe",
-        "role": "Administrator"
+        "role": "Super User"
       },
       {
         "id": 12,
         "name": "Jane Smith",
-        "role": "Developer"
+        "role": "User"
       },
       {
         "id": 3,
         "name": "Jane Smith",
-        "role": "Developer"
+        "role": "User"
       },
       {
         "id": 2,
         "name": "Jane Smith",
-        "role": "Developer"
+        "role": "User"
       }
     ]
   },

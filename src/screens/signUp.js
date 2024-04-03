@@ -26,7 +26,7 @@ export default function SignUp() {
     username: null,
     password: null,
     email: null,
-    confirm_password: null, // Thêm trường confirm_password vào state error
+    confirm_password: null,
   });
 
   const handleChange = (prop) => (event) => {

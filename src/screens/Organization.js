@@ -21,6 +21,7 @@ import { styled } from "@mui/material/styles";
 import OrganizationCard from "../components/organizationCard";
 import organizationsData from "../database/organizationsData.json";
 import "../css/Organization.css";
+import axios from 'axios';
 
 export default function LandingPage() {
   const [open, setOpen] = React.useState(false);
@@ -55,6 +56,19 @@ export default function LandingPage() {
     setAddOrg(false);
     setShowConfirmation(true);
   };
+// change role super user / user
+  const handleChangeRoleToSuperuser = async (memberId) => {
+    try {
+        const response = await axios.post('/change_role_to_superuser', { memberId });
+        console.log(response.data); // Handle success, e.g., display a success message
+    } catch (error) {
+        console.error(error); // Handle errors appropriately
+    }
+};
+
+const handleChangeRoleToUser = async (memberId) => {
+    // ... similar implementation for changing to user role
+};
 
   // css
 

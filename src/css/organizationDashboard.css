@@ -64,3 +64,29 @@
 .delOrgBtn{
     background-color: #F85F60;
 }
+
+.CustomDropdown {
+    background-color: #f2f2f2;
+    color: #333;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 200px;
+  }
+  
+  .CustomDropdown:hover {
+    background-color: #eaeaea;
+  }
+  
+  .CustomDropdown:focus {
+    outline: none;
+    border-color: #6ec882;
+  }
+  
+  .CustomDropdown option {
+    text-align: center;
+  }
+  
+  .CustomDropdownMenu {
+    width: 200px;
+  }
