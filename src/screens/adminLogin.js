@@ -1,8 +1,5 @@
 import React, { useState } from "react";
-import {
-  TextField,
-  Button,
-} from "@mui/material";
+import { TextField, Button } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useNavigate } from "react-router-dom";
 import bgLogin from "../images/loginBackgr.png";
@@ -20,31 +17,30 @@ export default function AdminLogin() {
 
   console.log("dataManagerLogin", data);
 
-
-    console.log("Logging in with:", data);
-    const handleManagerLogin = async () => {
-      const loginUrl = "http://127.0.0.1:5000/auth/login";
-      try {
-        const response = await fetch(loginUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-          },
-          body: JSON.stringify({
-            manager_username: data.manager_username,
-            manager_password: data.manager_password,
-          }),
-        });
-        if (response.status === 200) {
-          navigate("/admin");
-        } else {
-        }
-      } catch (error) {
-        console.error("Error:", error);
-      } finally {
+  console.log("Logging in with:", data);
+  const handleManagerLogin = async () => {
+    const loginUrl = "http://127.0.0.1:5000/manager/login";
+    try {
+      const response = await fetch(loginUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          manager_username: data.manager_username,
+          manager_password: data.manager_password,
+        }),
+      });
+      if (response.status === 200) {
+        navigate("/admin");
+      } else {
       }
-    };
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
 
   return (
     <div
@@ -69,7 +65,9 @@ export default function AdminLogin() {
       >
         <div style={{ textAlign: "center" }}>
           <LockOutlinedIcon style={{ fontSize: "48px", color: "#3867A5" }} />
-          <h1 style={{ fontSize: "32px",margin: "10px 0", color: "#3867A5" }}>Admin Sign in</h1>
+          <h1 style={{ fontSize: "32px", margin: "10px 0", color: "#3867A5" }}>
+            Admin Sign in
+          </h1>
         </div>
         <div>
           <TextField
@@ -89,9 +87,9 @@ export default function AdminLogin() {
             value={data.manager_password}
             onChange={handleChange("manager_password")}
           />
-         
+
           <Button
-          onClick={handleManagerLogin}
+            onClick={handleManagerLogin}
             type="submit"
             fullWidth
             variant="contained"

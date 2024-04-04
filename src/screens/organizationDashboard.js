@@ -24,9 +24,33 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import "../css/organizationDashboard.css";
 import "../css/userOrganization.css";
 import axios from "axios";
-import { Select, MenuItem } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+
+import { Select, MenuItem, Modal, Box, IconButton, Grid, Typography, FormControl, OutlinedInput, FormControlLabel, Checkbox, Chip, Dialog, DialogTitle, DialogContentText, DialogContent, DialogActions } from "@mui/material";
 
 export default function OrganizationDashboard() {
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  // const [open, setOpen] = React.useState(false);
+  // const handleOpen = () => setOpen(!open);
+
+  // const [addServer, setAddServer] = React.useState(false);
+  // const handleAdd = () => setAddServer(true);
+  // const handleClose = () => setAddServer(false);
+
+  // const handleDone = () => {
+  //   setAddServer(false);
+  // };
+
   const [isDisabled, setIsDisabled] = useState(true);
   const [showResetButton, setShowResetButton] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("+84 34523322");
@@ -146,6 +170,19 @@ export default function OrganizationDashboard() {
     } catch (error) {
       console.error("Error changing role:", error);
     }
+  };
+
+  // modal
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 600,
+    bgcolor: "background.paper",
+    borderRadius: "20px",
+    boxShadow: 24,
+    p: 3,
   };
 
   return (
@@ -456,6 +493,225 @@ export default function OrganizationDashboard() {
           </div>
         </div>
       </div>
+      <ButtonAddServer onClick={handleClickOpen}/>
+
+{/* MODAL ADD SV */}
+
+<Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Use Google's location service?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Disagree</Button>
+          <Button onClick={handleClose} autoFocus>
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* <Modal
+            keepMounted
+            open={addServer}
+            onClose={handleClose}
+            aria-labelledby="keep-mounted-modal-title"
+            aria-describedby="keep-mounted-modal-description"
+          >
+            <Box sx={style}>
+              <div className="pb-2 text-center border-b-2 border-stone-500">
+                <div className="flex flex-row items-center justify-between">
+                  <p
+                    className="font-semibold"
+                    style={{ fontSize: "28px", color: "#637381" }}
+                  >
+                    ADD ORGANIZATION
+                  </p>
+                  <IconButton onClick={handleClose}>
+                    <CloseIcon />
+                  </IconButton>
+                </div>
+              </div>
+
+              <Grid container alignItems="center" spacing={2} mt={0}>
+                <Grid item xs={12} md={3}>
+                  <Typography
+                    className="mt-3"
+                    style={{
+                      fontSize: "16px",
+                      fontWeight: "400",
+                    }}
+                  >
+                    Organization name:
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} md={9}>
+                  <FormControl fullWidth variant="outlined">
+                    <OutlinedInput
+                      inputProps={{
+                        "aria-label": "Organization name",
+                      }}
+                    />
+                  </FormControl>
+                </Grid>
+              </Grid>
+
+              <Grid container alignItems="center" spacing={2} mt={0}>
+                <Grid item xs={12} md={3}>
+                  <Typography
+                    className="mt-3"
+                    style={{
+                      fontSize: "16px",
+                      fontWeight: "400",
+                    }}
+                  >
+                    Phone number:
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} md={9}>
+                  <FormControl fullWidth variant="outlined">
+                    <OutlinedInput
+                      inputProps={{
+                        "aria-label": "Phone number",
+                      }}
+                    />
+                  </FormControl>
+                </Grid>
+              </Grid>
+
+              <Grid container alignItems="center" spacing={2} mt={0}>
+                <Grid item xs={12} md={3}>
+                  <Typography
+                    className="mt-3"
+                    style={{
+                      fontSize: "16px",
+                      fontWeight: "400",
+                    }}
+                  >
+                    Email:
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} md={9}>
+                  <FormControl fullWidth variant="outlined">
+                    <OutlinedInput
+                      inputProps={{
+                        "aria-label": "Email",
+                      }}
+                    />
+                  </FormControl>
+                </Grid>
+              </Grid>
+
+              <Grid container alignItems="center" spacing={2} mt={0}>
+                <Grid item xs={12} md={3}>
+                  <Typography
+                    className="mt-3"
+                    style={{
+                      fontSize: "16px",
+                      fontWeight: "400",
+                    }}
+                  >
+                    Add member:
+                  </Typography>
+                </Grid>
+              </Grid>
+              <Grid className="mt-3">
+                <Grid item>
+                  <Typography
+                    className="mt-3"
+                    style={{
+                      fontSize: "16px",
+                      fontWeight: "400",
+                    }}
+                  >
+                    Description:
+                  </Typography>
+                </Grid>
+                <Grid item xs>
+                  <FormControl fullWidth variant="outlined">
+                    <OutlinedInput
+                      className="mt-2"
+                      style={{}}
+                      multiline
+                      rows={4}
+                      inputProps={{
+                        "aria-label": "Description",
+                      }}
+                    />
+                  </FormControl>
+                </Grid>
+              </Grid>
+              <Box className="mt-3 d-flex">
+                <div>
+                  <FormControlLabel
+                    control={<Checkbox />}
+                    label={
+                      <>
+                        I accept the{" "}
+                        <Link style={{ color: "#5F94D9" }}>
+                          Term of Service.
+                        </Link>
+                      </>
+                    }
+                  />
+                </div>
+              </Box>
+
+              <Box>
+                <Grid container spacing={2} mt={0}>
+                  <Grid item xs={12} md={3}></Grid>
+                  <Grid item xs={12} md={3}></Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    md={3}
+                    className="d-flex justify-content-center align-items-center"
+                  >
+                    {" "}
+                    <Button onClick={handleClose}>
+                      <Typography variant="button" style={{ color: "red" }}>
+                        Cancel
+                      </Typography>{" "}
+                    </Button>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    md={3}
+                    className="d-flex justify-content-center align-items-center"
+                  >
+                    <Button
+                      variant="contained"
+                      onClick={handleDone}
+                      style={{ marginLeft: "10px" }}
+                      sx={{
+                        width: "120px",
+                        height: "auto",
+                        color: "white",
+                        bgcolor: "#6EC882",
+                        "&:hover": { bgcolor: "#5CA36C" },
+                        fontSize: "14px",
+                        fontWeight: "normal",
+                        textTransform: "none",
+                      }}
+                    >
+                      Done
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Box>
+            </Box>
+          </Modal> */}
+
       <Footer />
     </>
   );

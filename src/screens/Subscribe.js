@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SubscriptionPackages from "../components/subPackage";
 import "../css/Subscribe.css";
 import Logo from "../images/MHDLogo.png";
@@ -18,7 +18,12 @@ export default function Subscribe() {
           paddingTop: "20px",
         }}
       >
-        <img loading="lazy" src={Logo} alt="Logo" style={{ width: "96px", height: "96px" }} />
+        <img
+          loading="lazy"
+          src={Logo}
+          alt="Logo"
+          style={{ width: "96px", height: "96px" }}
+        />
       </div>
       <p
         className="font-semibold text-center"
