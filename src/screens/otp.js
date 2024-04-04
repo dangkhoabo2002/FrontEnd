@@ -7,6 +7,20 @@ import bgLogin from "../images/loginBackgr.png";
 import { Link } from "react-router-dom";
 
 export default function OTP() {
+  const [otp, setOtp] = React.useState("");
+  const [data, setData] = useState({
+    otp: "",
+    email: "",
+  });
+
+  const handleChange = (newValue) => {
+    setOtp(newValue);
+  };
+
+  // const handleChange = (prop) => (event) => {
+  //   setData({ ...data, [prop]: event.target.value });
+  // };
+
   const { control, handleSubmit } = useForm({
     defaultValues: {
       OTP: "",
@@ -26,7 +40,7 @@ export default function OTP() {
 
   return (
     <>
-    <div
+      <div
         className="login-background"
         style={{ backgroundImage: `url(${bgLogin})` }}
       ></div>
@@ -46,7 +60,7 @@ export default function OTP() {
           flexDirection: "column",
         }}
       >
-      <div
+        <div
           className="Logo"
           style={{
             display: "flex",
@@ -55,70 +69,70 @@ export default function OTP() {
             padding: "20px 400px",
           }}
         >
-          <img loading="lazy"
+          <img
+            loading="lazy"
             src={Logo}
             alt="Logo"
             style={{ width: "96px", height: "96px" }}
           />
         </div>
 
-      <div className="px-60 py-20">
-        <div className="d-flex flex-row">
-          <p
-            className="lead mb-0"
-            style={{ fontWeight: "900  ", fontSize: "24px" }}
-          >
-            Email confirmation
-          </p>
-        </div>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <p className="mt-3" style={{ fontSize: "16px", fontWeight: "600" }}>
-            Enter code
-          </p>
-          <Controller
-            control={control}
-            rules={{ validate: (value) => value.length === 6 }}
-            render={({ field, fieldState }) => (
-              <Box>
-                <MuiOtpInput sx={{ gap: 1 }} {...field} length={6} />
-                {fieldState.invalid ? (
-                  <FormHelperText error>OTP invalid</FormHelperText>
-                ) : null}
-              </Box>
-            )}
-            name="OTP"
-          />
-          <Box>
-            <div className="flex flex-row justify-between"
-            > 
-            <div className="">
-            <Button
-              type="cancel"
-              variant="contained"
-              sx={{ mt: 2, mr: 2 }}
-              style={{ backgroundColor: "#F85F60", width: "200px", height: "40px" }}
+        <div className="px-60 py-20">
+          <div className="d-flex flex-row">
+            <p
+              className="lead mb-0"
+              style={{ fontWeight: "900  ", fontSize: "24px" }}
             >
-              Resend
-            </Button>
-            </div>
-            <Link to={"/resetPassword"}>
-              <Button
-                type="submit"
-                variant="contained"
-                sx={{ mt: 2 }}
-                style={{ backgroundColor: "#3867A5", width: "200px",height: "40px" }}
-              >
-                Submit
-              </Button>
-            </Link>
-            </div>
-          </Box>
-          <Box className="mt-3 font-semibold" style={{ color: "#3867A5" }} sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Link to={"/login"} >Cancel</Link>
-            <Link to={"/login/forgotPassword"}>Change email</Link>
-          </Box>
-        </form>
-        {/* {showSuccessAlert && (
+              Email confirmation
+            </p>
+          </div>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <p className="mt-3" style={{ fontSize: "16px", fontWeight: "600" }}>
+              Enter code
+            </p>
+            <MuiOtpInput length={6} value={otp} onChange={handleChange} />
+            <Box>
+              <div className="flex flex-row justify-between">
+                <div className="">
+                  <Button
+                    type="cancel"
+                    variant="contained"
+                    sx={{ mt: 2, mr: 2 }}
+                    style={{
+                      backgroundColor: "#F85F60",
+                      width: "200px",
+                      height: "40px",
+                    }}
+                  >
+                    Resend
+                  </Button>
+                </div>
+                <Link to={"/resetPassword"}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    sx={{ mt: 2 }}
+                    style={{
+                      backgroundColor: "#3867A5",
+                      width: "200px",
+                      height: "40px",
+                    }}
+                  >
+                    Submit
+                  </Button>
+                </Link>
+              </div>
+            </Box>
+            <Box
+              className="mt-3 font-semibold"
+              style={{ color: "#3867A5" }}
+              sx={{ display: "flex", justifyContent: "space-between" }}
+            >
+              <Link to={"/login"}>Cancel</Link>
+              <Link to={"/login/forgotPassword"}>Change email</Link>
+            </Box>
+          </form>
+          {/* {showSuccessAlert && (
         <div
           style={{
             position: "fixed",
@@ -134,7 +148,7 @@ export default function OTP() {
           <CheckIcon fontSize="inherit" style={{ marginRight: "10px" }} />
         </div>
       )} */}
-      </div>
+        </div>
       </div>
     </>
   );

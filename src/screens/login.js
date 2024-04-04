@@ -25,15 +25,16 @@ export default function Login() {
     setData({ ...data, [prop]: event.target.value });
   };
 
-  console.log("dataLogin", data);
   const handleLogin = async () => {
     const loginUrl = "http://127.0.0.1:5000/auth/login";
     try {
       const response = await fetch(loginUrl, {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": "true",
         },
         body: JSON.stringify({
           username: data.username,
@@ -41,8 +42,9 @@ export default function Login() {
         }),
       });
       if (response.status === 200) {
-        navigate("/user");
+        navigate("/organizations");
       } else {
+        navigate("/");
       }
     } catch (error) {
       console.error("Error:", error);

@@ -35,15 +35,13 @@ export default function ServerFirewall() {
         <p>Firewall Server Setting</p>
       </div>
       {/* SL */}
-      <div className="flex flex-row mt-3">
-        <div className="flex flex-col mr-5 pr-40">
-          <p>
-            <b>Security level:</b>
-          </p>
+      <div className="flex flex-row mt-3 gap-32">
+        <div className="flex flex-col ">
+          <p className="font-bold">Security level:</p>
         </div>
         <div className="flex flex-col">
           <Select
-            sx={{ width: "800px" }}
+            sx={{ width: "800px", marginLeft: "4px" }}
             size="small"
             labelId="demo-select-small-label"
             id="demo-select-small"
@@ -63,7 +61,7 @@ export default function ServerFirewall() {
       {/* End SL */}
       {/* TS */}
       <div className="flex flex-row mt-3">
-        <div className="flex flex-row gap-40">
+        <div className="flex flex-row gap-28">
           <p>
             <b>Trusted services:</b>
           </p>
@@ -132,14 +130,12 @@ export default function ServerFirewall() {
       </div>
       {/*End TS */}
       {/* OP */}
-      <div className="flex flex-row mt-3">
-        <div className="flex flex-col  pr-48">
-          <p className="mr-1">
-            <b>Other ports: </b>
-          </p>
+      <div className="flex flex-row mt-3 gap-32">
+        <div className="flex flex-col w-24">
+          <p className="font-bold">Other ports:</p>
           <p>1029:tcp </p>
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col ml-3">
           <TextField
             id="outlined-basic"
             value={"192.168.x.xx"}

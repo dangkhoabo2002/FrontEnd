@@ -50,27 +50,23 @@ export default function Homepage() {
 
           <div className="flex flex-row gap-12">
             <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-              <a href="#">
-                <div className="">
-                  <img
-                    loading="lazy"
-                    class="rounded-t-lg"
-                    src={background1}
-                    alt="imgCard"
-                    style={{
-                      borderRadius: "20px",
-                      objectFit: "cover",
-                      padding: "10px",
-                    }}
-                  />
-                </div>
-              </a>
-              <div class="p-5">
-                <a href="#">
-                  <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                    Noteworthy technology acquisitions 2021
-                  </h5>
-                </a>
+              <div className="">
+                <img
+                  loading="lazy"
+                  class="rounded-t-lg"
+                  src={background1}
+                  alt="imgCard"
+                  style={{
+                    borderRadius: "20px",
+                    objectFit: "cover",
+                    padding: "10px",
+                  }}
+                />
+              </div>
+              <div class="p-5 py-14">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                  Easy to Use
+                </h5>
                 <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
                   Here are the biggest enterprise technology acquisitions of
                   2021 so far, in reverse chronological order.
@@ -79,27 +75,23 @@ export default function Homepage() {
             </div>
 
             <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-              <a href="#">
-                <div className="">
-                  <img
-                    loading="lazy"
-                    class="rounded-t-lg"
-                    src={background1}
-                    alt="imgCard"
-                    style={{
-                      borderRadius: "20px",
-                      objectFit: "cover",
-                      padding: "10px",
-                    }}
-                  />
-                </div>
-              </a>
-              <div class="p-5">
-                <a href="#">
-                  <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                    Noteworthy technology acquisitions 2021
-                  </h5>
-                </a>
+              <div className="">
+                <img
+                  loading="lazy"
+                  class="rounded-t-lg"
+                  src={background1}
+                  alt="imgCard"
+                  style={{
+                    borderRadius: "20px",
+                    objectFit: "cover",
+                    padding: "10px",
+                  }}
+                />
+              </div>
+              <div class="p-5 py-14">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                  Reasonable Price
+                </h5>
                 <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
                   Here are the biggest enterprise technology acquisitions of
                   2021 so far, in reverse chronological order.
@@ -107,30 +99,27 @@ export default function Homepage() {
               </div>
             </div>
             <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-              <a href="#">
-                <div>
-                  <img
-                    loading="lazy"
-                    class="rounded-t-lg"
-                    src={background1}
-                    alt="imgCard"
-                    style={{
-                      borderRadius: "20px",
-                      objectFit: "cover",
-                      padding: "10px",
-                    }}
-                  />
-                </div>
-              </a>
+              <div>
+                <img
+                  loading="lazy"
+                  class="rounded-t-lg"
+                  src={background1}
+                  alt="imgCard"
+                  style={{
+                    borderRadius: "20px",
+                    objectFit: "cover",
+                    padding: "10px",
+                  }}
+                />
+              </div>
               <div class="p-5">
-                <a href="#">
-                  <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                    Noteworthy technology acquisitions 2021
-                  </h5>
-                </a>
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                  Management capabilities
+                </h5>
                 <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                  Here are the biggest enterprise technology acquisitions of
-                  2021 so far, in reverse chronological order.
+                  With real-time reflection method along with the ability to
+                  store direct impacts on the server side, helping you easily
+                  manage and control the actions of members of the organization
                 </p>
               </div>
             </div>
@@ -138,44 +127,13 @@ export default function Homepage() {
 
           {/*------------ SOLUTIONS --------------- */}
 
+          {/* 
           <div className="flex flex-col py-12" id="solution">
             <div>SOLUTIONS</div>
             <div className="text-black text-2xl font-semibold">
               Find solutions for putting your ideas into action
             </div>
           </div>
-
-          {/* <div>
-          <h2>Accordion with symbols</h2>
-          <button class="accordion">Section 1</button>
-          <div class="panel">
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
-            </p>
-          </div>
-          <button class="accordion">Section 2</button>
-          <div class="panel">
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
-            </p>
-          </div>
-
-          <button class="accordion">Section 3</button>
-          <div class="panel">
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
-            </p>
-          </div>
-        </div> */}
 
           <div>
             <Accordion>
@@ -185,7 +143,7 @@ export default function Homepage() {
                 </AccordionItem>
               ))}
             </Accordion>
-          </div>
+          </div> */}
 
           {/*------------ ABOUT US--------------- */}
 
@@ -194,7 +152,7 @@ export default function Homepage() {
             <div className="text-black text-2xl font-semibold">
               MHD, dedicated and enthusiastic people
             </div>
-            <AboutUs />{" "}
+            <AboutUs />
           </div>
 
           {/* CONTACT */}

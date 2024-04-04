@@ -9,10 +9,6 @@ import Slide from "@mui/material/Slide";
 import { useNavigate } from "react-router-dom";
 import { Typography } from "@mui/material";
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
-
 export default function AlertDialogSlide() {
   const [open, setOpen] = React.useState(false);
 
@@ -25,6 +21,10 @@ export default function AlertDialogSlide() {
   };
 
   const navigate = useNavigate();
+  const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+  });
+
   const handleLogout = async () => {
     const logoutUrl = "http://127.0.0.1:5000/auth/logout";
     try {
@@ -37,16 +37,22 @@ export default function AlertDialogSlide() {
       });
       if (response.status === 200) {
         navigate("/");
-        console.log("Logout Success");
+      } else {
+        alert("fail to logout");
       }
     } catch (error) {
+      console.error("Error:", error);
     } finally {
     }
   };
 
   return (
     <React.Fragment>
-      <Button variant="contained" sx={{backgroundColor:"#3867A5","&:hover": { bgcolor: "#2B4B75" },}} onClick={handleClickOpen}>
+      <Button
+        variant="contained"
+        sx={{ backgroundColor: "#3867A5", "&:hover": { bgcolor: "#2B4B75" } }}
+        onClick={handleClickOpen}
+      >
         Logout
       </Button>
       <Dialog

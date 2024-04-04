@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Footer from "../components/userFooter";
 import ApartmentIcon from "@mui/icons-material/Apartment";
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
 import {
   Grid,
@@ -16,6 +16,7 @@ import {
   Chip,
   IconButton,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 import { styled } from "@mui/material/styles";
 import OrganizationCard from "../components/organizationCard";
@@ -32,6 +33,34 @@ export default function LandingPage() {
 
   const [memberInput, setMemberInput] = useState("");
   const [members, setMembers] = useState([]);
+
+  const [orgList, setOrgList] = useState();
+
+  const handleShowOrganization = async () => {
+    const getUrl = "http://127.0.0.1:5000/org/get";
+    try {
+      const response = await fetch(getUrl, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": "true",
+        },
+      });
+      if (response.status === 200) {
+        const orgData = await response.json();
+        console.log(orgData);
+        setOrgList(orgData);
+      }
+    } catch {
+    } finally {
+    }
+  };
+
+  useEffect(() => {
+    handleShowOrganization();
+  }, []);
 
   const handleMemberInputChange = (event) => {
     setMemberInput(event.target.value);
@@ -81,7 +110,49 @@ export default function LandingPage() {
     p: 3,
   };
 
+  // Khoa code
+  const handleChange = (prop) => (event) => {
+    setData({ ...data, [prop]: event.target.value });
+  };
   const OrgCard = {};
+  const [data, setData] = useState({
+    name: "",
+    contact_phone: "",
+    contact_email: "",
+    description: "",
+    org_member: "",
+  });
+  // const navigate = useNavigate();
+
+  const handleAddOrg = async () => {
+    const addUrl = "http://127.0.0.1:5000/org/add";
+    try {
+      const response = await fetch(addUrl, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": "true",
+        },
+        body: JSON.stringify({
+          name: data.name,
+          contact_phone: data.contact_phone,
+          contact_email: data.contact_email,
+          description: data.description,
+          org_member: data.org_member,
+        }),
+      });
+      if (response.status === 200) {
+        alert("Add server success");
+      } else {
+        alert("Add server fail");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
 
   return (
     <div>
@@ -101,19 +172,20 @@ export default function LandingPage() {
         </div>
 
         <div className="mt-3">
-          {organizationsData.map((organization) => (
-            <Link to={`dashboard/${organization.id}`} key={organization.id}>
-              <OrganizationCard
-                className="org-card"
-                sx={OrgCard}
-                key={organization.id}
-                name={organization.name}
-                membersCount={organization.membersCount}
-                description={organization.description}
-                servers={organization.servers}
-              />
-            </Link>
-          ))}
+          {orgList &&
+            orgList?.map((organization) => (
+              <Link to={`dashboard/${organization.id}`} key={organization.id}>
+                <OrganizationCard
+                  className="org-card"
+                  sx={OrgCard}
+                  key={organization.id}
+                  name={organization.name}
+                  membersCount={organization.membersCount}
+                  description={organization.description}
+                  servers={organization.servers}
+                />
+              </Link>
+            ))}
         </div>
 
         <div className="mt-3">
@@ -161,6 +233,8 @@ export default function LandingPage() {
                       inputProps={{
                         "aria-label": "Organization name",
                       }}
+                      onChange={handleChange("name")}
+                      value={data.name}
                     />
                   </FormControl>
                 </Grid>
@@ -184,6 +258,8 @@ export default function LandingPage() {
                       inputProps={{
                         "aria-label": "Phone number",
                       }}
+                      onChange={handleChange("contact_phone")}
+                      value={data.contact_phone}
                     />
                   </FormControl>
                 </Grid>
@@ -207,6 +283,8 @@ export default function LandingPage() {
                       inputProps={{
                         "aria-label": "Email",
                       }}
+                      onChange={handleChange("contact_email")}
+                      value={data.contact_email}
                     />
                   </FormControl>
                 </Grid>
@@ -267,6 +345,8 @@ export default function LandingPage() {
                       inputProps={{
                         "aria-label": "Description",
                       }}
+                      onChange={handleChange("description")}
+                      value={data.description}
                     />
                   </FormControl>
                 </Grid>
@@ -372,7 +452,7 @@ export default function LandingPage() {
                 </Button>
                 <Button
                   variant="contained"
-                  onClick={() => {}}
+                  onClick={handleAddOrg}
                   sx={{
                     width: "100px",
                     color: "white",

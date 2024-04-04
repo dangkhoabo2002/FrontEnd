@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import bgLogin from "../images/loginBackgr.png";
 import Logo from "../images/MHDLogo.png";
 import {
@@ -8,10 +8,104 @@ import {
   FormControlLabel,
   Box,
 } from "@mui/material";
+import "../css/signUp.css";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function SignUp() {
+  const navigate = useNavigate();
+  const [data, setData] = useState({
+    username: "",
+    password: "",
+    full_name: "",
+    email: "",
+  });
+  const [isChecked, setIsChecked] = useState(false);
+  const [showTickMessage, setShowTickMessage] = useState(false);
+  const [error, setError] = useState({
+    username: null,
+    password: null,
+    email: null,
+    confirm_password: null, // Thêm trường confirm_password vào state error
+  });
+
+  const handleChange = (prop) => (event) => {
+    setData({ ...data, [prop]: event.target.value });
+  };
+
+  const handleCheckboxChange = (event) => {
+    setIsChecked(event.target.checked);
+    setShowTickMessage(false);
+  };
+
+  const handleSignup = async () => {
+    if (!isChecked) {
+      setShowTickMessage(true);
+      return;
+    }
+
+    const usernameRegex = /^[a-zA-Z0-9_]{1,12}$/;
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,30}$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    let newErrors = { username: null, password: null, email: null };
+
+    if (!usernameRegex.test(data.username)) {
+      newErrors.username =
+        "Username must be 1-12 characters long and contain only letters, numbers, or underscores.";
+    }
+
+    if (!passwordRegex.test(data.password)) {
+      newErrors.password =
+        "Password must contain at least one lowercase letter, one uppercase letter, one digit, one special character, and be 8-30 characters long.";
+    }
+
+    if (!emailRegex.test(data.email)) {
+      newErrors.email = "Invalid email address.";
+    }
+
+    // Kiểm tra xác nhận mật khẩu
+    if (data.password !== data.confirm_password) {
+      newErrors.confirm_password = "Passwords do not match";
+    }
+
+    if (
+      newErrors.username ||
+      newErrors.password ||
+      newErrors.email ||
+      newErrors.confirm_password
+    ) {
+      setError(newErrors);
+      return;
+    }
+
+    const signupUrl = "http://127.0.0.1:5000/auth/signup";
+    try {
+      const response = await fetch(signupUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          username: data.username,
+          password: data.password,
+          full_name: data.full_name,
+          email: data.email,
+        }),
+      });
+      if (response.status === 201) {
+        navigate("/login");
+      } else if (response.status === 400) {
+        const responseData = await response.json();
+        alert(responseData.message);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   return (
     <>
       <div
@@ -29,11 +123,9 @@ export default function SignUp() {
           height: "92%",
           backgroundColor: "white",
           borderRadius: "20px",
-          display: "flex",
-          flexDirection: "column",
         }}
       >
-        <div className="px-60">
+        <div className="px-40">
           <div
             className="Logo pb-0"
             style={{
@@ -42,103 +134,146 @@ export default function SignUp() {
               alignItems: "center",
             }}
           >
-            <img loading="lazy"
+            <img
+              loading="lazy"
               src={Logo}
               alt="Logo"
               style={{ width: "96px", height: "96px" }}
             />
           </div>
-          <div className="d-flex flex-row align-items-center justify-content-center">
+          <div className="">
             <p
-              className="lead mb-0"
+              className="lead mb-0 pb-6"
               style={{ fontWeight: "900  ", fontSize: "24px" }}
             >
               Get started absolutely free.
             </p>
           </div>
-
-          <div className="textField mt-3">
-            <TextField
-              label="Full Name"
-              fullWidth
-              variant="outlined"
-              className="mb-4"
-            />
-          </div>
-          <div className="textField mt-3">
-            <TextField
-              label="Username"
-              fullWidth
-              variant="outlined"
-              className="mb-4"
-            />
-          </div>
-          <div className="textField mt-3">
-            <TextField
-              label="Email Address"
-              fullWidth
-              variant="outlined"
-              className="mb-4"
-            />
-          </div>
-
-          <div className="textField mt-3">
-            <TextField
-              label="Password"
-              fullWidth
-              type="password"
-              variant="outlined"
-              className="mb-4"
-            />
-          </div>
-
-          <div className="textField mt-3">
-            <TextField
-              label="Confirm Password"
-              fullWidth
-              type="password"
-              variant="outlined"
-              className="mb-4"
-            />
-          </div>
-
-          <Box className="mt-3 d-flex">
-            <div>
-              <FormControlLabel
-                control={<Checkbox />}
-                label={
-                  <>
-                    By signing up, I agree to Manimal{" "}
-                    <Link style={{ color: "#5F94D9" }}>Terms of Service</Link>{" "}
-                    and{" "}
-                    <Link style={{ color: "#5F94D9" }}>Privacy Policy.</Link>
-                  </>
-                }
-              />
+          <div className="flex flex-col gap-12">
+            <div className="gridCust">
+              <div className="flex flex-col">
+                <div className="textField mt-3">
+                  <TextField
+                    onChange={handleChange("full_name")}
+                    label="Full Name"
+                    fullWidth
+                    variant="outlined"
+                    className="mb-4"
+                    required
+                  />
+                </div>
+                <div className="textField mt-3">
+                  <TextField
+                    onChange={handleChange("username")}
+                    label="Username"
+                    fullWidth
+                    variant="outlined"
+                    className="mb-4"
+                    required
+                    error={!!error.username}
+                    helperText={error.username}
+                  />
+                </div>
+                <div className="textField mt-3">
+                  <TextField
+                    onChange={handleChange("email")}
+                    label="Email Address"
+                    fullWidth
+                    variant="outlined"
+                    className="mb-4"
+                    required
+                    error={!!error.email}
+                    helperText={error.email}
+                  />
+                </div>
+              </div>
+              <div className="flex flex-col">
+                <div className="textField mt-3">
+                  <TextField
+                    onChange={handleChange("password")}
+                    label="Password"
+                    fullWidth
+                    type="password"
+                    variant="outlined"
+                    className="mb-4"
+                    required
+                    error={!!error.password}
+                    helperText={error.password}
+                  />
+                </div>
+                <div className="textField mt-3">
+                  <TextField
+                    onChange={handleChange("confirm_password")}
+                    label="Confirm Password"
+                    fullWidth
+                    type="password"
+                    variant="outlined"
+                    className="mb-4"
+                    required
+                    error={!!error.confirm_password}
+                    helperText={error.confirm_password}
+                  />
+                </div>
+              </div>
             </div>
-          </Box>
+            <div className="flex flex-col">
+              <Box className=" d-flex">
+                <div>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={isChecked}
+                        onChange={handleCheckboxChange}
+                      />
+                    }
+                    label={
+                      <>
+                        By signing up, I agree to Manimal{" "}
+                        <Link style={{ color: "#5F94D9" }}>
+                          Terms of Service
+                        </Link>{" "}
+                        and{" "}
+                        <Link style={{ color: "#5F94D9" }}>
+                          Privacy Policy.
+                        </Link>
+                      </>
+                    }
+                  />
+                </div>
+              </Box>
 
-          <div className="loginBtn text-center mt-3">
-            <Button
-              style={{
-                width: "100%",
-                height: "45px",
-                backgroundColor: "#3867A5",
-              }}
-              variant="contained"
-              color="primary"
-              className="mb-0"
-            >
-              Sign Up
-            </Button>
-          </div>
+              {showTickMessage && (
+                <div className={`error-popup ${showTickMessage ? "show" : ""}`}>
+                  Please tick the agreement checkbox.
+                </div>
+              )}
 
-          <div className="text-center text-md-start pt-2 float-left">
-            <div className="small fw-bold mt-1 pt-1 mb-2 flex">
-              <div className="mr-1">Already have an account?</div>
-              <Link to={"/login"} style={{ color: "#3867A5" }}>
-                <b>Login</b>
-              </Link>
+              <div className="loginBtn text-center mt-3">
+                <Button
+                  type="button"
+                  id="signup-button"
+                  onClick={handleSignup}
+                  style={{
+                    width: "100%",
+                    height: "45px",
+                    backgroundColor: "#3867A5",
+                  }}
+                  variant="contained"
+                  color="primary"
+                  className="mb-0"
+                >
+                  Sign Up
+                </Button>
+              </div>
+
+              <div className="text-center text-md-start pt-2 float-left">
+                <div className="small fw-bold pt-1 mb-2 flex">
+                  <div className="mr-1">Already have an account?</div>
+                  <Link to={"/login"} style={{ color: "#3867A5" }}>
+                    <b>Login</b>
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
         </div>

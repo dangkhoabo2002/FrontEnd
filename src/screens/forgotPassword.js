@@ -34,6 +34,7 @@ export default function ForgotPassword() {
       if (response.status === 200) {
         navigate("/otp");
       } else {
+        console.log(response.status);
         alert("Fail to OTP");
       }
     } catch (error) {
