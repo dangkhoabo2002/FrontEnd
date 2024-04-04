@@ -377,7 +377,6 @@ export default function LandingPage() {
                     md={3}
                     className="d-flex justify-content-center align-items-center"
                   >
-                    {" "}
                     <Button onClick={handleClose}>
                       <Typography variant="button" style={{ color: "red" }}>
                         Cancel

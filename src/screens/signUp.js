@@ -126,21 +126,23 @@ export default function SignUp() {
         }}
       >
         <div className="px-40">
-          <div
-            className="Logo pb-0"
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <img
-              loading="lazy"
-              src={Logo}
-              alt="Logo"
-              style={{ width: "96px", height: "96px" }}
-            />
-          </div>
+          <Link to={`/`}>
+            <div
+              className="Logo pb-0"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <img
+                loading="lazy"
+                src={Logo}
+                alt="Logo"
+                style={{ width: "96px", height: "96px" }}
+              />
+            </div>
+          </Link>
           <div className="">
             <p
               className="lead mb-0 pb-6"

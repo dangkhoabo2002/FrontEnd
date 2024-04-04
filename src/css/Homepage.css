@@ -1,0 +1,30 @@
+.textChangeColor {
+    animation-name: blackToWhite;
+    animation-duration: 4s;
+}
+
+#imgFadeIn {
+    animation-name: fadeIn;
+    animation-duration: 2s;
+}
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes blackToWhite {
+    from {
+        color: black;
+    }
+
+    to {
+        color: white;
+    }
+}

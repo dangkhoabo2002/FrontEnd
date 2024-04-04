@@ -44,7 +44,7 @@ export default function Login() {
       if (response.status === 200) {
         navigate("/organizations");
       } else {
-        navigate("/");
+        alert("Can not create account!");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -74,22 +74,24 @@ export default function Login() {
           flexDirection: "column",
         }}
       >
-        <div
-          className="Logo"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: "12px ",
-          }}
-        >
-          <img
-            loading="lazy"
-            src={Logo}
-            alt="Logo"
-            style={{ width: "96px", height: "96px" }}
-          />
-        </div>
+        <Link to={`/`}>
+          <div
+            className="Logo"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              padding: "12px ",
+            }}
+          >
+            <img
+              loading="lazy"
+              src={Logo}
+              alt="Logo"
+              style={{ width: "96px", height: "96px" }}
+            />
+          </div>
+        </Link>
 
         <Grid container justifyContent="center" spacing={2}>
           <Grid item xs={12} md={6}>

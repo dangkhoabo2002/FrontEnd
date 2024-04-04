@@ -64,23 +64,25 @@ export default function ForgotPassword() {
           flexDirection: "column",
         }}
       >
-        <div
-          className="Logo"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: "20px 400px",
-          }}
-        >
-          <img
-            loading="lazy"
-            className="mb-10"
-            src={Logo}
-            alt="Logo"
-            style={{ width: "96px", height: "96px" }}
-          />
-        </div>
+        <Link to={`/`}>
+          <div
+            className="Logo"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              padding: "20px 400px",
+            }}
+          >
+            <img
+              loading="lazy"
+              className="mb-10"
+              src={Logo}
+              alt="Logo"
+              style={{ width: "96px", height: "96px" }}
+            />
+          </div>
+        </Link>
         <div className="px-60 py-15">
           <div className="d-flex flex-col ">
             <p

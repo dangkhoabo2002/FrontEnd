@@ -5,7 +5,7 @@ import Navigation from "../components/Navigation";
 import { Accordion, AccordionItem } from "@szhsin/react-accordion";
 import hpBr from "../images/hpBr.png";
 import AboutUs from "./abouUs";
-
+import "../css/Homepage.css";
 export default function Homepage() {
   return (
     <>
@@ -16,6 +16,7 @@ export default function Homepage() {
 
         <div className="relative">
           <img
+            id="imgFadeIn"
             loading="lazy"
             src={hpBr}
             alt="hpBr"
@@ -23,10 +24,10 @@ export default function Homepage() {
             style={{ height: "600px" }}
           />
           <div className="absolute bottom-1/3 left-60 text-white w-1/3">
-            <div className="text-5xl font-semibold w-2/3 pb-6">
+            <div className="text-5xl font-semibold w-2/3 pb-6 textChangeColor">
               Sell solutions not products
             </div>
-            <div className=" text-lg w-full font-semibold">
+            <div className=" text-lg w-full font-semibold textChangeColor">
               Shift your perspective from pushing products to solving problems.
               Understand the root causes of your customers' challenges and craft
               holistic solutions that address their unique needs. By
@@ -88,7 +89,7 @@ export default function Homepage() {
                   }}
                 />
               </div>
-              <div class="p-5 py-14">
+              <div class="p-5 ">
                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                   Reasonable Price
                 </h5>
@@ -98,6 +99,7 @@ export default function Homepage() {
                 </p>
               </div>
             </div>
+
             <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
               <div>
                 <img
@@ -156,23 +158,23 @@ export default function Homepage() {
           </div>
 
           {/* CONTACT */}
-          <div className="flex flex-col pb-12 " id="contact">
+          <div className="flex flex-col pb-12" id="contact">
             <div>CONTACT</div>
             <div className="text-black text-2xl font-semibold">
               Contact information to answer questions
             </div>
           </div>
-          <div className="w-full border-2 rounded-lg px-20 py-10 flex flex-row justify-between	shadow-md  ">
+          <div className="w-full border-2 rounded-lg px-20 py-10 flex flex-row justify-between shadow-md bg-white">
             <div className="w-1/4 ">
               <div className="font-semibold border-b-2">CONTACT</div>
               <span>
-                <p className="text-slate-400 pt-4">mhd_support@gmail.com</p>
-                <p className="text-slate-400">+84 834523322</p>
+                <p className="text-slate-600 pt-4">mhd_support@gmail.com</p>
+                <p className="text-slate-600">+84 834523322</p>
               </span>
             </div>
             <div className="w-1/3">
               <div className="font-semibold border-b-2">LOCATION</div>
-              <div className="text-slate-400 pt-4">
+              <div className="text-slate-600 pt-4">
                 FPT University, Ho Chi Minh City, High Technology Park, Lot
                 E2a-7, Street D1, D. D1, Long Thanh My, Thu Duc City, Ho Chi
                 Minh City, Vietnam.

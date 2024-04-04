@@ -60,23 +60,24 @@ export default function OTP() {
           flexDirection: "column",
         }}
       >
-        <div
-          className="Logo"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: "20px 400px",
-          }}
-        >
-          <img
-            loading="lazy"
-            src={Logo}
-            alt="Logo"
-            style={{ width: "96px", height: "96px" }}
-          />
-        </div>
-
+        <Link to={`/`}>
+          <div
+            className="Logo"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              padding: "20px 400px",
+            }}
+          >
+            <img
+              loading="lazy"
+              src={Logo}
+              alt="Logo"
+              style={{ width: "96px", height: "96px" }}
+            />
+          </div>
+        </Link>
         <div className="px-60 py-20">
           <div className="d-flex flex-row">
             <p

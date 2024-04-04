@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { RiServerFill } from "react-icons/ri";
 import { useParams } from "react-router-dom";
+
 import organizations from "../database/organizationsData";
 import serverIcon2 from "../images/serverIcon2.png";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -42,7 +43,10 @@ export default function OrganizationDashboard() {
   const [isDisabled, setIsDisabled] = useState(true);
   const [showResetButton, setShowResetButton] = useState(false);
   const [open, setOpen] = React.useState(false);
+  const [openAddMember, setOpenAddMember] = React.useState(false);
+
   const [currentStatus, setCurrentStatus] = useState("");
+
   const [orgData, setOrgData] = useState();
 
   const navigate = useNavigate();
@@ -226,16 +230,25 @@ export default function OrganizationDashboard() {
     setShowResetButton(isDisabled);
   };
 
-  // Toggle mở đóng Dialog
+  // Toggle mở đóng Dialog xóa
 
   const handleClickOpen = () => {
     setOpen(true);
   };
-  
+
   const handleClose = () => {
     setOpen(false);
   };
 
+  // Toggle mở đóng Dialog add member
+
+  const handleOpenAddMember = () => {
+    setOpenAddMember(true);
+  };
+
+  const handleCloseAddMember = () => {
+    setOpenAddMember(false);
+  };
   // Dialog của Remove User
   const handleClickOpenRemoveUser = () => {
     setOpen(true);
@@ -467,8 +480,56 @@ export default function OrganizationDashboard() {
                         Member
                       </h1>
                       <div className="flex flex-row gap-">
-                        <Button variant="outlined">Add Member</Button>
+                        <Button
+                          variant="outlined"
+                          onClick={handleOpenAddMember}
+                        >
+                          Add Member
+                        </Button>
                       </div>
+                      <Dialog
+                        open={openAddMember}
+                        onClose={handleCloseAddMember}
+                        PaperProps={{
+                          component: "form",
+                          onSubmit: (event) => {
+                            event.preventDefault();
+                            const formData = new FormData(event.currentTarget);
+                            const formJson = Object.fromEntries(
+                              formData.entries()
+                            );
+                            const email = formJson.email;
+                            console.log(email);
+                            handleClose();
+                          },
+                        }}
+                      >
+                        <DialogTitle>Add new member</DialogTitle>
+                        <DialogContent>
+                          <DialogContentText>
+                            To add member into this organization, please enter
+                            their username here. We will send updates
+                            occasionally.
+                          </DialogContentText>
+                          <TextField
+                            autoFocus
+                            required
+                            margin="dense"
+                            id="name"
+                            name="email"
+                            label="Username"
+                            type="username"
+                            fullWidth
+                            variant="standard"
+                          />
+                        </DialogContent>
+                        <DialogActions>
+                          <Button onClick={handleCloseAddMember}>Cancel</Button>
+                          <Button type="submit" variant="outlined">
+                            Add
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
                       <table className="memberInOrganizationTable">
                         <tr>
                           <th id="id">#</th>
