@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import SidebarUser from "../components/sidebarUser";
+import { useNavigate } from "react-router-dom";
 
 import NavigationUser from "../components/navUserProfile";
 import TextField from "@mui/material/TextField";
@@ -21,6 +22,8 @@ export default function UserProfile() {
   const [phoneNumber, setPhoneNumber] = useState("+84 34523322");
   const [userName, setUserName] = useState("user20112002");
 
+  const navigate = useNavigate();
+
   // Điền thông tin vào Input
   const handleUserNameChange = (event) => {
     setUserName(event.target.value);
@@ -36,16 +39,14 @@ export default function UserProfile() {
   };
 
   const handleResetClick = () => {
-    console.log("Reset button clicked");
+    navigate(`/login/forgotPassword`);
   };
-
-
 
   return (
     <div className="">
       {/*-------------- Navigation + Backgroud---------------- */}
 
-      <NavigationUser  />
+      <NavigationUser />
 
       {/*-------------- END OF Navigation + Backgroud---------------- */}
 
@@ -117,8 +118,8 @@ export default function UserProfile() {
                   sx={{ width: "260px" }}
                   InputProps={{
                     startAdornment: (
-                      <InputAdornment position="start" className="pr-2">
-                        <PhoneIcon />
+                      <InputAdornment position="start" className="pr-1">
+                        <PhoneIcon /> <p className="pl-4">+84</p>
                       </InputAdornment>
                     ),
                   }}
@@ -126,23 +127,33 @@ export default function UserProfile() {
               </div>
             </div>
             <div className="flex gap-10">
-              <Button variant="outlined" onClick={handleEditClick}>
-                {isDisabled ? "Edit Profile" : "Save Changes"}
-              </Button>
-              {showResetButton && (
-                <Button
-                  size="small"
-                  variant="contained"
-                  onClick={handleResetClick}
-                >
-                  <LockResetIcon />
-                  <span className="px-2">Reset Password</span>
+              {!showResetButton && (
+                <Button variant="outlined" onClick={handleEditClick}>
+                  Edit Profile
                 </Button>
               )}
+
               {showResetButton && (
-                <Button size="medium" variant="text" onClick={handleEditClick}>
-                  <span className="">Cancel</span>
-                </Button>
+                <>
+                  <Button variant="outlined" onClick={handleEditClick}>
+                    Save Changes
+                  </Button>
+                  <Button
+                    size="small"
+                    variant="contained"
+                    onClick={handleResetClick}
+                  >
+                    <LockResetIcon />
+                    <span className="px-2">Reset Password</span>
+                  </Button>
+                  <Button
+                    size="medium"
+                    variant="text"
+                    onClick={handleEditClick}
+                  >
+                    <span className="">Cancel</span>
+                  </Button>
+                </>
               )}
             </div>
           </div>

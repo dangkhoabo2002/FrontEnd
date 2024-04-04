@@ -50,7 +50,7 @@ export default function Homepage() {
           </div>
 
           <div className="flex flex-row gap-12">
-            <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+            <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 hoverZoom">
               <div className="">
                 <img
                   loading="lazy"
@@ -75,7 +75,7 @@ export default function Homepage() {
               </div>
             </div>
 
-            <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+            <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 hoverZoom">
               <div className="">
                 <img
                   loading="lazy"
@@ -100,7 +100,7 @@ export default function Homepage() {
               </div>
             </div>
 
-            <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+            <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 hoverZoom">
               <div>
                 <img
                   loading="lazy"

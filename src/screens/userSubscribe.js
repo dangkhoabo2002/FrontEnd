@@ -83,7 +83,7 @@ export default function UserSubscribe() {
               </div>
             )}
             {!showPackageCard && (
-              <div className="packageBundle ">
+              <div className="packageBundle">
                 {Packages.map((pack) => (
                   <div className="package">
                     <h1 className="text-center font-bold text-3xl">
