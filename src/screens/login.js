@@ -42,6 +42,8 @@ export default function Login() {
         }),
       });
       if (response.status === 200) {
+        const data = await response.json();
+        localStorage.setItem("access_token", data.access_token);
         navigate("/organizations");
       } else {
         alert("Can not create account!");
