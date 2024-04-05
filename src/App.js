@@ -23,6 +23,7 @@ import UserPayment from "./screens/userSubscribePayment";
 import Organizations from "./screens/userOrganization";
 import AdminLogin from "./screens/adminLogin";
 // import AboutUs from "./screens/abouUs";
+import TermOfService from "./screens/termOfService";
 
 export default function App() {
   return (
@@ -32,6 +33,7 @@ export default function App() {
         <Route path="/" element={<Homepage />}></Route>
         {/* <Route path="/aboutUs" element={<AboutUs />}></Route> */}
         <Route path="/guide" element={<Guide />}></Route>
+        <Route path="/TermOfService" element={<TermOfService />}></Route>
 
         {/* ADMIN ROUTE*/}
         <Route path="/adminLogin" element={<AdminLogin />}></Route>
