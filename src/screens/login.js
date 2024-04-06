@@ -42,7 +42,9 @@ export default function Login() {
         }),
       });
       if (response.status === 200) {
-        navigate(`/organizations`);
+        const data = await response.json();
+        localStorage.setItem("access_token", data.access_token);
+        navigate("/organizations");
       } else {
         console.error("Login failed");
       }
