@@ -47,7 +47,7 @@ export default function Login() {
         localStorage.setItem("access_token", data.access_token);
         navigate(`/organizations`);
       } else if (response.status === 401) {
-        alert("Please input you Username & Password");
+        alert("Invalid Username & Password");
       } else {
         alert("Unknown Error");
       }
