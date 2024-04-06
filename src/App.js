@@ -59,7 +59,7 @@ export default function App() {
         {/* USER ORG*/}
         <Route path="/organizations" element={<Organizations />}></Route>
         <Route
-          path="/organizations/dashboard/:organizationId"
+          path="/organizations/dashboard/:organization_id"
           element={<OrganizationDashboard />}
         ></Route>
 

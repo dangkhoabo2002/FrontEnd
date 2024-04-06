@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { RiServerFill } from "react-icons/ri";
 import { useParams } from "react-router-dom";
 
-import organizations from "../database/organizationsData";
 import serverIcon2 from "../images/serverIcon2.png";
 import InputAdornment from "@mui/material/InputAdornment";
 import EmailIcon from "@mui/icons-material/Email";
@@ -40,19 +39,22 @@ import ButtonAddServer from "./buttonAddServer";
 import Sidebar from "../components/Sidebar";
 
 export default function OrganizationDashboard() {
+  // DATA API
+  const [organizations, setOrganizations] = useState();
+
+  const [serverList, setServerList] = useState();
+  //
+
   const [isDisabled, setIsDisabled] = useState(true);
   const [showResetButton, setShowResetButton] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openAddMember, setOpenAddMember] = React.useState(false);
 
-  const [currentStatus, setCurrentStatus] = useState("");
-
-  const [orgData, setOrgData] = useState();
+  const [currentStatus, setCurrentStatus] = useState();
 
   const navigate = useNavigate();
   const [data, setData] = useState({
-    organization_id: "",
     name: "",
     contact_phone: "",
     contact_email: "",
@@ -60,6 +62,8 @@ export default function OrganizationDashboard() {
     status: "",
     remove_username: "",
   });
+
+  const { organization_id } = useParams();
 
   const handleChangeInput = (prop) => (event) => {
     setData({ ...data, [prop]: event.target.value });
@@ -69,16 +73,19 @@ export default function OrganizationDashboard() {
 
   const handleUpdate = async () => {
     const loginUrl = "http://127.0.0.1:5000/org/update_information";
+    const token = localStorage.getItem("access_token");
+
     try {
       const response = await fetch(loginUrl, {
         method: "PUT",
         credentials: "include",
         headers: {
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
         },
         body: JSON.stringify({
-          organization_id: data.organization_id,
+          organization_id: organization_id,
           name: data.name,
           contact_phone: data.contact_phone,
           contact_email: data.contact_email,
@@ -86,10 +93,11 @@ export default function OrganizationDashboard() {
         }),
       });
       if (response.status === 200) {
+        handleGetOrgData();
         alert("Update Success");
-        // getAll để upd lại data
       } else {
         alert("Update Fail");
+        console.log("orgId", organization_id);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -104,24 +112,23 @@ export default function OrganizationDashboard() {
 
   // Lấy information của Org từ API
   const handleGetOrgData = async () => {
-    const loginUrl =
-      "http://127.0.0.1:5000/org/get_organization_data/${organization_id}";
+    const loginUrl = `http://127.0.0.1:5000/org/get_organization_data/${organization_id}`;
+    const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(loginUrl, {
         method: "GET",
         credentials: "include",
         headers: {
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
         },
       });
       if (response.status === 200) {
-        alert("Success");
         const orgData = await response.json();
-        console.log(orgData);
-        setOrgData(orgData);
+        setOrganizations(orgData);
       } else {
-        alert("Update Fail");
+        alert("Get Fail");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -131,36 +138,46 @@ export default function OrganizationDashboard() {
 
   // Đổi status của Org - Deactivate
   const handleChangeStatus = async () => {
-    const newStatus = "";
+    let newStatus = organizations[0].status;
     if (currentStatus === "ACTIVE") {
       newStatus = "INACTIVE";
     } else {
       newStatus = "ACTIVE";
     }
-    const loginUrl = "http://127.0.0.1:5000/org/change_organization_status";
+    const changeStatusUrl =
+      "http://127.0.0.1:5000/org/change_organization_status";
+    const token = localStorage.getItem("access_token");
+
     try {
-      const response = await fetch(loginUrl, {
+      const response = await fetch(changeStatusUrl, {
         method: "PUT",
         credentials: "include",
         headers: {
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
         },
         body: JSON.stringify({
-          organization_id: data.organization_id,
+          organization_id: organization_id,
           status: newStatus,
         }),
       });
       if (response.status === 200) {
+        setCurrentStatus(newStatus);
+        handleGetOrgData();
         alert("Inactive Success");
-        // getAll để upd lại data
       } else {
-        alert("Inactive Fail");
+        console.log("Inactive Fail");
       }
     } catch (error) {
       console.error("Error:", error);
     } finally {
     }
+  };
+
+  const handleChangeStatusDone = () => {
+    handleChangeStatus();
+    handleClose();
   };
 
   // Xóa user ra khỏi Org
@@ -194,25 +211,29 @@ export default function OrganizationDashboard() {
 
   const handleRemoveUser = () => {
     handleRemoveUserAPI();
-    handleClose();
+    // handleClose();
   };
+
   // DELETE ORG
 
   const handleDeleteOrg = async () => {
-    const loginUrl = "http://127.0.0.1:5000/org/delete";
+    const loginUrl = `http://127.0.0.1:5000/org/delete/${organization_id}`;
+    const token = localStorage.getItem("access_token");
+
     try {
       const response = await fetch(loginUrl, {
         method: "DELETE",
         credentials: "include",
         headers: {
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Credentials": "true",
         },
       });
       if (response.status === 200) {
+        alert("Delete Success");
         navigate("/organizations");
-        console.log("Delete Success");
       } else {
         console.log("Delete Fail");
       }
@@ -251,6 +272,34 @@ export default function OrganizationDashboard() {
     setOpen(false);
   };
 
+  // GET SERVERS IN ORG
+
+  const handleGetServers = async () => {
+    const getsvUrl = `http://127.0.0.1:5000/server/get_server_in_organization/${organization_id}`;
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await fetch(getsvUrl, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": "true",
+        },
+      });
+      if (response.status === 200) {
+        const servers = await response.json();
+        setServerList(servers);
+      } else if (response.status === 404) {
+        console.log("Not Found Any Server");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+
   // Toggle mở đóng Dialog add member
 
   const handleOpenAddMember = () => {
@@ -266,13 +315,15 @@ export default function OrganizationDashboard() {
   };
 
   const [value, setValue] = useState("1");
-  const { organizationId } = useParams();
 
-  const selectedOrganization = organizations.find(
-    (org) => org.id === Number(organizationId)
-  );
+  // Auto load khi vào trang
 
-  if (!selectedOrganization) {
+  useEffect(() => {
+    handleGetOrgData();
+    handleGetServers();
+  }, []);
+
+  if (!organizations) {
     return (
       <div>
         <div className="px-20">
@@ -322,8 +373,9 @@ export default function OrganizationDashboard() {
   };
 
   const { name, membersCount, description, servers, members } =
-    selectedOrganization;
+    organizations[0];
 
+  console.log("org ne", organizations[0]);
   return (
     <>
       <div className="containerOrg">
@@ -360,7 +412,11 @@ export default function OrganizationDashboard() {
               </Link>
               <span
                 className="font-semibold"
-                style={{ fontSize: "28px", color: "#637381" }}
+                style={{
+                  fontSize: "28px",
+                  color: "#637381",
+                  textTransform: "uppercase",
+                }}
               >
                 {name}
               </span>
@@ -404,28 +460,28 @@ export default function OrganizationDashboard() {
                         </h1>
                         <p className="text-2xl font pr-10 my-3 text-[#637381]">
                           {
-                            servers.filter(
-                              (server) => server.status === "Active"
+                            serverList?.filter(
+                              (server) => server.status === "ACTIVE"
                             ).length
                           }
                         </p>
                       </div>
                       <Link to={"/server"}>
                         <div className="serverListRow">
-                          {servers
-                            .filter((server) => server.status == "Active")
-                            .map((server) => (
+                          {serverList
+                            ?.filter((server) => server.status === "ACTIVE")
+                            ?.map((server) => (
                               <div className="serverCard flex flex-col justify-between items-center">
                                 <span
                                   className={`text-white px-6 py-1 ${
-                                    server.status == "Inactive"
+                                    server.status == "INACTIVE"
                                       ? "bg-gray-400"
                                       : "bg-[#6EC882]"
                                   }`}
                                 >
                                   {server.status}
                                 </span>
-                                <h2>Server Name</h2>
+                                <h2>{server.server_name}</h2>
                                 <img
                                   loading="lazy"
                                   src={serverIcon2}
@@ -437,7 +493,7 @@ export default function OrganizationDashboard() {
                                 <h2 className="text-[#5F94D9]">
                                   Shared Hosting
                                 </h2>
-                                <h2>{server.hostname}</h2>
+                                <h2>{server.domain}</h2>
                                 <h2>IP Address: {server.port}</h2>
                               </div>
                             ))}
@@ -449,34 +505,34 @@ export default function OrganizationDashboard() {
                         </h1>
                         <p className="text-2xl font pr-10 my-3 text-[#637381]">
                           {
-                            servers.filter(
-                              (server) => server.status === "Inactive"
+                            serverList?.filter(
+                              (server) => server.status === "INACTIVE"
                             ).length
                           }
                         </p>
                       </div>
                       <div className="serverListRow">
-                        {servers
-                          .filter((server) => server.status == "Inactive")
-                          .map((server) => (
+                        {serverList
+                          ?.filter((server) => server.status == "INACTIVE")
+                          ?.map((server) => (
                             <div className="serverCard flex flex-col justify-between items-center">
                               <span
                                 className={`text-white px-6 py-1 ${
-                                  server.status == "Inactive"
+                                  server.status == "INACTIVE"
                                     ? "bg-gray-400"
                                     : "bg-[#6EC882]"
                                 }`}
                               >
                                 {server.status}
                               </span>
-                              <h2>Server Name</h2>
+                              <h2>{server.server_name}</h2>
                               <img
                                 loading="lazy"
                                 src={serverIcon2}
                                 style={{ width: "60px", objectFit: "contain" }}
                               />
                               <h2 className="text-[#5F94D9]">Shared Hosting</h2>
-                              <h2>{server.hostname}</h2>
+                              <h2>{server.domain}</h2>
                               <h2>IP Address: {server.port}</h2>
                             </div>
                           ))}
@@ -510,7 +566,6 @@ export default function OrganizationDashboard() {
                               formData.entries()
                             );
                             const email = formJson.email;
-                            console.log(email);
                             handleClose();
                           },
                         }}
@@ -548,7 +603,7 @@ export default function OrganizationDashboard() {
                           <th id="role">ROLE</th>
                           <th id="action">ACTIONS</th>
                         </tr>
-                        {members.map((member) => (
+                        {members?.map((member) => (
                           <tr>
                             <td>{member.id}</td>
                             <td>{member.name}</td>
@@ -598,12 +653,13 @@ export default function OrganizationDashboard() {
                           <h1 className="mb-2">Organization name</h1>
 
                           <TextField
-                            className="org-Dashboard-textField"
+                            className="org-Dashboard-textField placeholder-gray-500 border"
                             mt={1}
                             disabled={isDisabled}
                             id="outlined-basic"
                             onChange={handleChangeInput("name")}
-                            value={data.name}
+                            defaultValue={data.name}
+                            placeholder={organizations[0].name}
                             size="small"
                             sx={{ width: "auto" }}
                             InputProps={{
@@ -624,12 +680,13 @@ export default function OrganizationDashboard() {
                             <h1 className="mb-2">Email</h1>
 
                             <TextField
-                              className="org-Dashboard-textField"
+                              className="org-Dashboard-textField placeholder-gray-500 border"
                               mt={1}
                               disabled={isDisabled}
                               id="outlined-basic"
                               onChange={handleChangeInput("contact_email")}
-                              value={data.contact_email}
+                              placeholder={organizations[0].contact_email}
+                              defaultValue={data.contact_email}
                               size="small"
                               sx={{ width: "400px" }}
                               InputProps={{
@@ -647,12 +704,13 @@ export default function OrganizationDashboard() {
                           <div className="">
                             <h1 className="mb-2">Phone Number</h1>
                             <TextField
-                              className="org-Dashboard-textField"
+                              className="org-Dashboard-textField placeholder-gray-500 border"
                               mt={1}
                               disabled={isDisabled}
                               id="outlined-basic"
                               onChange={handleChangeInput("contact_phone")}
-                              value={data.contact_phone}
+                              placeholder={organizations[0].contact_phone}
+                              defaultValue={data.contact_phone}
                               size="small"
                               sx={{ width: "260px" }}
                               InputProps={{
@@ -678,7 +736,8 @@ export default function OrganizationDashboard() {
                             disabled={isDisabled}
                             id="outlined-multiline-static"
                             onChange={handleChangeInput("description")}
-                            value={data.description}
+                            placeholder={organizations[0].description}
+                            defaultValue={data.description}
                             size="medium"
                             sx={{ width: "100%", maxWidth: "820px" }}
                           />
@@ -699,7 +758,7 @@ export default function OrganizationDashboard() {
                                 variant="outlined"
                                 onClick={handleSaveClick}
                               >
-                                Save Change{" "}
+                                Save Change
                               </Button>
                               <Button
                                 size="medium"
@@ -723,7 +782,7 @@ export default function OrganizationDashboard() {
                         sx={{ borderRadius: 1, marginRight: 2 }}
                         onClick={handleClickOpen}
                       >
-                        DEACTIVE ORGANIZATION
+                        Change status
                       </Button>
                       <Dialog
                         open={open}
@@ -736,10 +795,7 @@ export default function OrganizationDashboard() {
                         </DialogTitle>
                         <DialogActions>
                           <Button onClick={handleClose}>No</Button>
-                          <Button
-                            onClick={handleChangeStatus(currentStatus)}
-                            autoFocus
-                          >
+                          <Button onClick={handleChangeStatusDone}>
                             <p className="text-red-600">Yes</p>
                           </Button>
                         </DialogActions>

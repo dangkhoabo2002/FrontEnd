@@ -179,11 +179,14 @@ export default function LandingPage() {
         <div className="mt-3">
           {orgList &&
             orgList.map((organization) => (
-              <Link to={`dashboard/${organization.id}`} key={organization.id}>
+              <Link
+                to={`dashboard/${organization.organization_id}`}
+                key={organization.organization_id}
+              >
                 <OrganizationCard
                   className="org-card"
                   sx={OrgCard}
-                  key={organization.id}
+                  key={organization.organization_id}
                   name={organization.name}
                   description={organization.description}
                 />
