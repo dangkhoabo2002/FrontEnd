@@ -42,16 +42,15 @@ export default function Login() {
         }),
       });
       if (response.status === 200) {
-        navigate("/organizations");
+        navigate(`/organizations`);
       } else {
-        alert("Can not create account!");
+        console.error("Login failed");
       }
     } catch (error) {
       console.error("Error:", error);
     } finally {
     }
   };
-
   return (
     <>
       <div

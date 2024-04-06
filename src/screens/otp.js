@@ -5,11 +5,18 @@ import { Controller, useForm } from "react-hook-form";
 import Logo from "../images/MHDLogo.png";
 import bgLogin from "../images/loginBackgr.png";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Alert from "@mui/material/Alert";
 
 export default function OTP() {
+  const navigate = useNavigate();
+  const [alert, setAlert] = useState(false);
+
   const [otp, setOtp] = React.useState("");
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+
   const [data, setData] = useState({
-    otp: "",
+    otp: otp,
     email: "",
   });
 
@@ -27,8 +34,6 @@ export default function OTP() {
     },
   });
 
-  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-
   const onSubmit = (data) => {
     setShowSuccessAlert(true);
     setTimeout(() => {
@@ -38,6 +43,59 @@ export default function OTP() {
     // alert(JSON.stringify(data));
   };
 
+  // Handle OTP API
+
+  const handleOTP = async () => {
+    const otpUrl = "http://127.0.0.1:5000/auth/verify_otp";
+    try {
+      const response = await fetch(otpUrl, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          otp: otp,
+          email: data.email,
+        }),
+      });
+      if (response.status === 200) {
+        navigate("/resetPassword");
+      } else {
+        alert("Fail to verify");
+        alert(otp);
+      }
+    } catch {
+    } finally {
+    }
+  };
+
+  const handleResendOtp = async () => {
+    const otpUrl = "http://127.0.0.1:5000/auth/resend_otp";
+    try {
+      const response = await fetch(otpUrl, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          email: data.email,
+        }),
+      });
+      if (response.status === 200) {
+        alert("Resend success, please check out your Email!");
+      } else {
+        alert("Fail to resend password");
+        setAlert(true);
+      }
+    } catch {
+      setAlert(true);
+    } finally {
+    }
+  };
   return (
     <>
       <div
@@ -104,28 +162,28 @@ export default function OTP() {
                       width: "200px",
                       height: "40px",
                     }}
+                    onClick={handleResendOtp}
                   >
                     Resend
                   </Button>
                 </div>
-                <Link to={"/resetPassword"}>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    sx={{ mt: 2 }}
-                    style={{
-                      backgroundColor: "#3867A5",
-                      width: "200px",
-                      height: "40px",
-                    }}
-                  >
-                    Submit
-                  </Button>
-                </Link>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{ mt: 2 }}
+                  style={{
+                    backgroundColor: "#3867A5",
+                    width: "200px",
+                    height: "40px",
+                  }}
+                  onClick={handleOTP}
+                >
+                  Submit
+                </Button>
               </div>
             </Box>
             <Box
-              className="mt-3 font-semibold"
+              className="mt-3 font-semibold pb-12"
               style={{ color: "#3867A5" }}
               sx={{ display: "flex", justifyContent: "space-between" }}
             >
@@ -133,22 +191,11 @@ export default function OTP() {
               <Link to={"/login/forgotPassword"}>Change email</Link>
             </Box>
           </form>
-          {/* {showSuccessAlert && (
-        <div
-          style={{
-            position: "fixed",
-            bottom: "20px",
-            right: "20px",
-            backgroundColor: "#dff0d8",
-            border: "1px solid #c3e6cb",
-            color: "#3c763d",
-            borderRadius: "4px",
-            padding: "15px",
-          }}
-        >
-          <CheckIcon fontSize="inherit" style={{ marginRight: "10px" }} />
-        </div>
-      )} */}
+          {alert && (
+            <>
+              <Alert severity="error">This is an error Alert.</Alert>
+            </>
+          )}
         </div>
       </div>
     </>

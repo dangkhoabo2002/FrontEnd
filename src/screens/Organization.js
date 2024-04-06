@@ -38,11 +38,13 @@ export default function LandingPage() {
 
   const handleShowOrganization = async () => {
     const getUrl = "http://127.0.0.1:5000/org/get";
+    const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(getUrl, {
         method: "GET",
         credentials: "include",
         headers: {
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Credentials": "true",
