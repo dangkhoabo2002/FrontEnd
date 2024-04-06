@@ -43,6 +43,7 @@ export default function OrganizationDashboard() {
   const [isDisabled, setIsDisabled] = useState(true);
   const [showResetButton, setShowResetButton] = useState(false);
   const [open, setOpen] = React.useState(false);
+  const [openDelete, setOpenDelete] = React.useState(false);
   const [openAddMember, setOpenAddMember] = React.useState(false);
 
   const [currentStatus, setCurrentStatus] = useState("");
@@ -195,33 +196,43 @@ export default function OrganizationDashboard() {
     handleRemoveUserAPI();
     handleClose();
   };
-  // DELETE ORG - Chưa có API
+  // DELETE ORG
 
   const handleDeleteOrg = async () => {
-    const loginUrl = "http://127.0.0.1:5000/auth/login";
+    const loginUrl = "http://127.0.0.1:5000/org/delete";
     try {
       const response = await fetch(loginUrl, {
-        method: "POST",
+        method: "DELETE",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Credentials": "true",
         },
-        body: JSON.stringify({
-          username: data.username,
-          password: data.password,
-        }),
       });
       if (response.status === 200) {
         navigate("/organizations");
+        console.log("Delete Success");
       } else {
-        navigate("/");
+        console.log("Delete Fail");
       }
     } catch (error) {
       console.error("Error:", error);
     } finally {
     }
+  };
+
+  const handleOpenDelete = () => {
+    setOpenDelete(true);
+  };
+
+  const handleCloseDelete = () => {
+    setOpenDelete(false);
+  };
+
+  const handleConfirmDelete = () => {
+    handleDeleteOrg();
+    handleCloseDelete();
   };
 
   // Toggle cho phép Edit
@@ -737,9 +748,31 @@ export default function OrganizationDashboard() {
                         variant="text"
                         color="error"
                         sx={{ borderRadius: 1, marginRight: 2 }}
+                        onClick={handleOpenDelete}
                       >
                         DELETE ORGANIZATION
                       </Button>
+                      <Dialog
+                        open={openDelete}
+                        onClose={handleCloseDelete}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                      >
+                        <DialogTitle id="alert-dialog-title">
+                          {"Do you want to Delete this Organization?"}
+                        </DialogTitle>
+                        <DialogContent>
+                          <DialogContentText id="alert-dialog-description">
+                            Your action will not be recovery.
+                          </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                          <Button onClick={handleCloseDelete}>No</Button>
+                          <Button onClick={handleConfirmDelete} autoFocus>
+                            <p className="text-red-600">Yes</p>
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
                     </div>
                   </TabPanel>
                 </TabContext>

@@ -38,13 +38,13 @@ export default function LandingPage() {
 
   const handleShowOrganization = async () => {
     const getUrl = "http://127.0.0.1:5000/org/get";
-    const token = localStorage.getItem('access_token');
+    const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(getUrl, {
         method: "GET",
         credentials: "include",
         headers: {
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Credentials": "true",
@@ -128,11 +128,14 @@ export default function LandingPage() {
 
   const handleAddOrg = async () => {
     const addUrl = "http://127.0.0.1:5000/org/add";
+    const token = localStorage.getItem("access_token");
+
     try {
       const response = await fetch(addUrl, {
         method: "POST",
         credentials: "include",
         headers: {
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Credentials": "true",
@@ -175,16 +178,14 @@ export default function LandingPage() {
 
         <div className="mt-3">
           {orgList &&
-            orgList?.map((organization) => (
+            orgList.map((organization) => (
               <Link to={`dashboard/${organization.id}`} key={organization.id}>
                 <OrganizationCard
                   className="org-card"
                   sx={OrgCard}
                   key={organization.id}
                   name={organization.name}
-                  membersCount={organization.membersCount}
                   description={organization.description}
-                  servers={organization.servers}
                 />
               </Link>
             ))}
@@ -359,7 +360,7 @@ export default function LandingPage() {
                     control={<Checkbox />}
                     label={
                       <>
-                        I accept the{" "}
+                        I accept the
                         <Link style={{ color: "#5F94D9" }}>
                           Term of Service.
                         </Link>

@@ -3,12 +3,7 @@ import { Box, Typography, Paper, Grid, Avatar } from "@mui/material";
 import OrganizationIcon from "@mui/icons-material/Apartment";
 import ServerIcon from "../images/serverIcon2.png";
 import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
-export default function OrganizationCard({
-  name,
-  membersCount,
-  description,
-  servers,
-}) {
+export default function OrganizationCard({ id, name, description }) {
   const shortDescription = `${description.substring(0, 50)}...`;
 
   return (
@@ -41,6 +36,7 @@ export default function OrganizationCard({
                   fontWeight: "700  ",
                   fontSize: "20px",
                   color: "#3867A5",
+                  textTransform: "uppercase",
                 }}
               >
                 {name}
@@ -51,7 +47,7 @@ export default function OrganizationCard({
               gutterBottom
               sx={{ marginBottom: "18px" }}
             >
-              <i style={{ color: "#637381" }}>{membersCount} members</i>
+              <i style={{ color: "#637381" }}> members</i>
             </Typography>
           </div>
           <div
@@ -66,9 +62,9 @@ export default function OrganizationCard({
               alignItems: "center",
             }}
           >
-            {servers.map((server) => (
+            {/* {servers.map((server) => (
               <img loading="lazy" src={ServerIcon} style={{ width: "50px" }} />
-            ))}
+            ))} */}
           </div>
           <Typography
             variant="body2"

@@ -42,15 +42,15 @@ export default function Login() {
         }),
       });
       if (response.status === 200) {
+        console.log("Fail", response.status);
         const data = await response.json();
         localStorage.setItem("access_token", data.access_token);
-        navigate("/organizations");
+        navigate(`/organizations`);
       } else {
         console.error("Login failed");
       }
     } catch (error) {
       console.error("Error:", error);
-    } finally {
     }
   };
   return (
