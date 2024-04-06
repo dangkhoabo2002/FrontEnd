@@ -46,8 +46,10 @@ export default function Login() {
         const data = await response.json();
         localStorage.setItem("access_token", data.access_token);
         navigate(`/organizations`);
+      } else if (response.status === 401) {
+        alert("Please input you Username & Password");
       } else {
-        console.error("Login failed");
+        alert("Unknown Error");
       }
     } catch (error) {
       console.error("Error:", error);

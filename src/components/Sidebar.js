@@ -5,8 +5,8 @@ import Navigation from "./Navigation";
 import "../css/Sidebar.css";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import BookIcon from "@mui/icons-material/Book";
-import PermIdentityIcon from '@mui/icons-material/PermIdentity';
-import SettingsIcon from '@mui/icons-material/Settings';
+import PermIdentityIcon from "@mui/icons-material/PermIdentity";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 export default function Sidebar() {
   return (
@@ -25,11 +25,16 @@ export default function Sidebar() {
         </Link>
       </div>
       <div className="flex flex-col">
-        <div className="gap-3 py-2 px-11 items-center text-[#212B36]" style={{fontSize:"12px"}}><b>GENERAL</b></div>
+        <div
+          className="gap-3 py-2 px-11 items-center text-[#212B36]"
+          style={{ fontSize: "12px" }}
+        >
+          <b>GENERAL</b>
+        </div>
         <Link to={`/organizations`}>
           <div className="hoverSection">
             <section className="flex flex-row gap-3 py-4 px-11 items-center text-[#637381]">
-              <ApartmentIcon/>
+              <ApartmentIcon />
               <p className="text-xl font-semibold">Organization</p>
             </section>
           </div>
@@ -37,17 +42,22 @@ export default function Sidebar() {
         <Link to={`/guide`}>
           <div className="hoverSection">
             <section className="flex flex-row gap-3 py-4 px-11 items-center text-[#637381]">
-              <BookIcon/>
+              <BookIcon />
               <p className="text-xl font-semibold">Guide</p>
             </section>
           </div>
         </Link>
-                <div className="gap-3 py-2 mt-4 px-11 items-center text-[#212B36]" style={{fontSize:"12px"}}><b>MANAGEMENT</b></div>
+        <div
+          className="gap-3 py-2 mt-4 px-11 items-center text-[#212B36]"
+          style={{ fontSize: "12px" }}
+        >
+          <b>MANAGEMENT</b>
+        </div>
 
         <Link to={`/user`}>
           <div className="hoverSection">
             <section className="flex flex-row gap-3 py-4 px-11 items-center text-[#637381]">
-              <PermIdentityIcon/>
+              <PermIdentityIcon />
               <p className="text-xl font-semibold">Profile</p>
             </section>
           </div>
@@ -55,7 +65,7 @@ export default function Sidebar() {
         <Link to={`/setting`}>
           <div className="hoverSection">
             <section className="flex flex-row gap-3 py-4 px-11 items-center text-[#637381]">
-              <SettingsIcon/>
+              <SettingsIcon />
 
               <p className="text-xl font-semibold">Settings</p>
             </section>
