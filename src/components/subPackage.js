@@ -33,7 +33,7 @@ export default function SubscriptionPackages() {
       if (response.status === 200) {
         const data = await response.json();
         setPackageData(data);
-        console.log("");
+        console.log(data);
       } else {
       }
     } catch (error) {
@@ -55,7 +55,7 @@ export default function SubscriptionPackages() {
         justifyContent="center"
         className="px-32 py-10"
       >
-        {packageData.map((pkg) => (
+        {packageData?.map((pkg) => (
           <Grid item xs={12} sm={6} md={4} key={pkg.id}>
             <Card
               style={{
@@ -101,7 +101,7 @@ export default function SubscriptionPackages() {
                       </li>
                       <li>
                         <h1> {pkg.members} Members</h1>
-                      </li>
+                      </li>               
                     </ul>
                   </span>
 

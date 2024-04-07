@@ -25,15 +25,16 @@ export default function Login() {
     setData({ ...data, [prop]: event.target.value });
   };
 
-  console.log("dataLogin", data);
   const handleLogin = async () => {
     const loginUrl = "http://127.0.0.1:5000/auth/login";
     try {
       const response = await fetch(loginUrl, {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": "true",
         },
         body: JSON.stringify({
           username: data.username,
@@ -41,15 +42,18 @@ export default function Login() {
         }),
       });
       if (response.status === 200) {
-        navigate("/user");
+        const data = await response.json();
+        localStorage.setItem("access_token", data.access_token);
+        navigate("/organizations");
+      } else if (response.status === 401) {
+        alert("Invalid Username & Password");
       } else {
+        alert("Unknown Error");
       }
     } catch (error) {
       console.error("Error:", error);
-    } finally {
     }
   };
-
   return (
     <>
       <div
@@ -72,22 +76,24 @@ export default function Login() {
           flexDirection: "column",
         }}
       >
-        <div
-          className="Logo"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: "12px ",
-          }}
-        >
-          <img
-            loading="lazy"
-            src={Logo}
-            alt="Logo"
-            style={{ width: "96px", height: "96px" }}
-          />
-        </div>
+        <Link to={`/`}>
+          <div
+            className="Logo"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              padding: "12px ",
+            }}
+          >
+            <img
+              loading="lazy"
+              src={Logo}
+              alt="Logo"
+              style={{ width: "96px", height: "96px" }}
+            />
+          </div>
+        </Link>
 
         <Grid container justifyContent="center" spacing={2}>
           <Grid item xs={12} md={6}>
