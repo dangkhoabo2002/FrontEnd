@@ -21,7 +21,11 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import Button from "@mui/material/Button";
-import { Link } from "react-router-dom";
+import TextField from "@mui/material/TextField";
+import InputAdornment from "@mui/material/InputAdornment";
+import EmailIcon from "@mui/icons-material/Email";
+import PhoneIcon from "@mui/icons-material/Phone";
+import DnsIcon from "@mui/icons-material/Dns";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -32,11 +36,25 @@ import DialogTitle from "@mui/material/DialogTitle";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import "../css/organizationDashboard.css";
 
-// import { Container } from 'tailwind-react-ui'
-import Empty from "../images/empty.png";
-import Footer from "../components/userFooter";
-import ButtonAddServer from "./buttonAddServer";
-import Sidebar from "../components/Sidebar";
+import {
+  Select,
+  MenuItem,
+  Modal,
+  Box,
+  IconButton,
+  Grid,
+  Typography,
+  FormControl,
+  OutlinedInput,
+  FormControlLabel,
+  Checkbox,
+  Chip,
+  Dialog,
+  DialogTitle,
+  DialogContentText,
+  DialogContent,
+  DialogActions,
+} from "@mui/material";
 
 export default function OrganizationDashboard() {
   // DATA API
@@ -402,7 +420,7 @@ export default function OrganizationDashboard() {
         <div className="px-20">
           {/* BodyContainer */}
           <div
-            className=" py-6 text-center border-stone-200"
+            className="py-6 text-center border-stone-200"
             style={{ borderBottom: "1px solid", color: "#D9D9D9" }}
           >
             <div className="header flex flex-row items-center gap-x-3">
@@ -417,7 +435,6 @@ export default function OrganizationDashboard() {
               </p>
             </div>
           </div>
-
           <div
             className=""
             style={{ display: "flex", justifyContent: "center" }}
@@ -441,11 +458,74 @@ export default function OrganizationDashboard() {
       </div>
     );
   }
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   const { name } = organizations[0];
+
+  const handlePhoneChange = (event) => {
+    setPhoneNumber(event.target.value);
+  };
+
+  const handleChangeEmail = (event) => {
+    setEmail(event.target.value);
+  };
+
+  const handleChangeDescription = (event) => {
+    setDescription(event.target.value);
+  };
+
+  // CHANGE USER / SP USER
+  const changeRoleToSuperuser = async (memberId) => {
+    try {
+      const response = await axios.post("/change_role_to_superuser", {
+        memberId: memberId,
+      });
+      console.log(response.data.message);
+    } catch (error) {
+      console.error("Error changing role to superuser:", error);
+    }
+  };
+
+  // Function to change member role to user
+  const changeRoleToUser = async (memberId) => {
+    try {
+      const response = await axios.post("/change_role_to_user", {
+        memberId: memberId,
+      });
+      console.log(response.data.message);
+    } catch (error) {
+      console.error("Error changing role to user:", error);
+    }
+  };
+
+  // Inside OrganizationDashboard component
+  const handleChangeRole = async (memberId, newRole) => {
+    try {
+      const response = await axios.post("/api/change_member_role", {
+        memberId: memberId,
+        newRole: newRole,
+      });
+      console.log(response.data.message);
+    } catch (error) {
+      console.error("Error changing role:", error);
+    }
+  };
+
+  // modal
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 600,
+    bgcolor: "background.paper",
+    borderRadius: "20px",
+    boxShadow: 24,
+    p: 3,
+  };
 
   return (
     <>

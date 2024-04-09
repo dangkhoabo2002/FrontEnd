@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -10,35 +10,38 @@ import {
 
 import "../css/subPackage.css";
 import { Link } from "react-router-dom";
-const packages = [
-  {
-    id: 1,
-    title: "Package 1",
-    orgs: 2,
-    admins: 2,
-    members: 5,
-    price: "$4 / month",
-  },
-  {
-    id: 2,
-    title: "Package 2",
-    orgs: 5,
-    admins: 2,
-    members: 10,
-    price: "$9 / month",
-  },
-  {
-    id: 3,
-    title: "Package 3",
-    orgs: 7,
-    admins: 5,
-    members: 20,
-    price: "$19 / month",
-  },
-];
 
 export default function SubscriptionPackages() {
   const [selectedPackage, setSelectedPackage] = useState(null);
+
+  const [packageData, setPackageData] = useState();
+
+  const handlePackage = async () => {
+    const packageUrl = "http://127.0.0.1:5000/package/get";
+    try {
+      const response = await fetch(packageUrl, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+      if (response.status === 200) {
+        const data = await response.json();
+        setPackageData(data);
+        console.log("");
+      } else {
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+
+  useEffect(() => {
+    handlePackage();
+  }, []);
 
   return (
     <>
@@ -49,7 +52,7 @@ export default function SubscriptionPackages() {
         justifyContent="center"
         className="px-32 py-10"
       >
-        {packages.map((pkg) => (
+        {packageData.map((pkg) => (
           <Grid item xs={12} sm={6} md={4} key={pkg.id}>
             <Card
               style={{
@@ -116,23 +119,24 @@ export default function SubscriptionPackages() {
                   style={{ bottom: "20px", width: "100%", textAlign: "center" }}
                 >
                   <Link to={"/user/subscribe/payment"}>
-                  <Button
-                    variant="contained"
-                    style={{
-                      backgroundColor:
-                        selectedPackage && selectedPackage.id === pkg.id
-                          ? "#3867A5"
-                          : "white",
-                      color:
-                        selectedPackage && selectedPackage.id === pkg.id
-                          ? "white"
-                          : "#3867A5",
-                      margin: "auto",
-                      width: "50%",
-                    }}
-                  >
-                    Buy Now
-                  </Button></Link>
+                    <Button
+                      variant="contained"
+                      style={{
+                        backgroundColor:
+                          selectedPackage && selectedPackage.id === pkg.id
+                            ? "#3867A5"
+                            : "white",
+                        color:
+                          selectedPackage && selectedPackage.id === pkg.id
+                            ? "white"
+                            : "#3867A5",
+                        margin: "auto",
+                        width: "50%",
+                      }}
+                    >
+                      Buy Now
+                    </Button>
+                  </Link>
                 </div>
               </CardActionArea>
             </Card>

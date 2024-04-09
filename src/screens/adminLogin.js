@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  TextField,
-  Checkbox,
-  Button,
-  FormControlLabel,
-  Link,
-} from "@mui/material";
+import { TextField, Button } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useNavigate } from "react-router-dom";
 import bgLogin from "../images/loginBackgr.png";
@@ -13,23 +7,39 @@ import bgLogin from "../images/loginBackgr.png";
 export default function AdminLogin() {
   const navigate = useNavigate();
   const [data, setData] = useState({
-    username: "",
-    password: "",
-    rememberMe: false,
+    manager_username: "",
+    manager_password: "",
   });
 
   const handleChange = (prop) => (event) => {
     setData({ ...data, [prop]: event.target.value });
   };
 
-  const handleCheckboxChange = (event) => {
-    setData({ ...data, rememberMe: event.target.checked });
-  };
+  console.log("dataManagerLogin", data);
 
-  const handleLogin = async () => {
-    // Implement your login logic here
-    console.log("Logging in with:", data);
-    navigate("/admin"); // Example redirection
+  console.log("Logging in with:", data);
+  const handleManagerLogin = async () => {
+    const loginUrl = "http://127.0.0.1:5000/manager/login";
+    try {
+      const response = await fetch(loginUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          manager_username: data.manager_username,
+          manager_password: data.manager_password,
+        }),
+      });
+      if (response.status === 200) {
+        navigate("/admin");
+      } else {
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
   };
 
   return (
@@ -55,16 +65,18 @@ export default function AdminLogin() {
       >
         <div style={{ textAlign: "center" }}>
           <LockOutlinedIcon style={{ fontSize: "48px", color: "#3867A5" }} />
-          <h1 style={{ fontSize: "32px",margin: "10px 0", color: "#3867A5" }}>Admin Sign in</h1>
+          <h1 style={{ fontSize: "32px", margin: "10px 0", color: "#3867A5" }}>
+            Admin Sign in
+          </h1>
         </div>
-        <form onSubmit={handleLogin}>
+        <div>
           <TextField
             label="Username"
             fullWidth
             variant="outlined"
             margin="normal"
-            value={data.username}
-            onChange={handleChange("username")}
+            value={data.manager_username}
+            onChange={handleChange("manager_username")}
           />
           <TextField
             label="Password"
@@ -72,19 +84,12 @@ export default function AdminLogin() {
             variant="outlined"
             type="password"
             margin="normal"
-            value={data.password}
-            onChange={handleChange("password")}
+            value={data.manager_password}
+            onChange={handleChange("manager_password")}
           />
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={data.rememberMe}
-                onChange={handleCheckboxChange}
-              />
-            }
-            label="Remember me"
-          />
+
           <Button
+            onClick={handleManagerLogin}
             type="submit"
             fullWidth
             variant="contained"
@@ -93,7 +98,7 @@ export default function AdminLogin() {
           >
             Sign in
           </Button>
-        </form>
+        </div>
       </div>
     </div>
   );

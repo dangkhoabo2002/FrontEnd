@@ -8,10 +8,6 @@ import "../css/login.css"
 export default function ButtonAddServer() {
   return (
     <>
-    <div
-        className="login-background"
-        style={{ backgroundImage: `url(${bgLogin})` }}
-      ></div>
       <Fab
       className="buttonAddServer"
         color="primary"
