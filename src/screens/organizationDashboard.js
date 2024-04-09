@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { RiServerFill } from "react-icons/ri";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import serverIcon2 from "../images/serverIcon2.png";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -9,19 +10,14 @@ import EmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
 import DnsIcon from "@mui/icons-material/Dns";
 
-import { useNavigate } from "react-router-dom";
-import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
-
 import AddModeratorIcon from "@mui/icons-material/AddModerator";
-import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import Button from "@mui/material/Button";
-import DnsIcon from "@mui/icons-material/Dns";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
