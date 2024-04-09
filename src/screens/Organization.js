@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Footer from "../components/userFooter";
 import ApartmentIcon from "@mui/icons-material/Apartment";
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
 import {
   Grid,
@@ -16,11 +16,13 @@ import {
   Chip,
   IconButton,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 import { styled } from "@mui/material/styles";
 import OrganizationCard from "../components/organizationCard";
 import organizationsData from "../database/organizationsData.json";
 import "../css/Organization.css";
+import axios from 'axios';
 
 export default function LandingPage() {
   const [open, setOpen] = React.useState(false);
@@ -30,19 +32,36 @@ export default function LandingPage() {
   const handleAdd = () => setAddOrg(!addOrg);
   const handleClose = () => setAddOrg(false);
 
-  const [memberInput, setMemberInput] = useState("");
   const [members, setMembers] = useState([]);
 
-  const handleMemberInputChange = (event) => {
-    setMemberInput(event.target.value);
-  };
+  const [orgList, setOrgList] = useState();
 
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter" && memberInput.trim() !== "") {
-      setMembers([...members, memberInput.trim()]);
-      setMemberInput("");
+  const handleShowOrganization = async () => {
+    const getUrl = "http://127.0.0.1:5000/org/get";
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await fetch(getUrl, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": "true",
+        },
+      });
+      if (response.status === 200) {
+        const orgData = await response.json();
+        setOrgList(orgData);
+      }
+    } catch {
+    } finally {
     }
   };
+
+  useEffect(() => {
+    handleShowOrganization();
+  }, []);
 
   const handleMemberDelete = (index) => {
     const updatedMembers = [...members];
@@ -55,6 +74,19 @@ export default function LandingPage() {
     setAddOrg(false);
     setShowConfirmation(true);
   };
+// change role super user / user
+  const handleChangeRoleToSuperuser = async (memberId) => {
+    try {
+        const response = await axios.post('/change_role_to_superuser', { memberId });
+        console.log(response.data); // Handle success, e.g., display a success message
+    } catch (error) {
+        console.error(error); // Handle errors appropriately
+    }
+};
+
+const handleChangeRoleToUser = async (memberId) => {
+    // ... similar implementation for changing to user role
+};
 
   // css
 
@@ -81,7 +113,53 @@ export default function LandingPage() {
     p: 3,
   };
 
+  // Khoa code
+  const handleChange = (prop) => (event) => {
+    setData({ ...data, [prop]: event.target.value });
+  };
   const OrgCard = {};
+  const [data, setData] = useState({
+    name: "",
+    contact_phone: "",
+    contact_email: "",
+    description: "",
+  });
+  // const navigate = useNavigate();
+
+  const handleAddOrg = async () => {
+    const addUrl = "http://127.0.0.1:5000/org/add";
+    const token = localStorage.getItem("access_token");
+
+    try {
+      const response = await fetch(addUrl, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": "true",
+        },
+        body: JSON.stringify({
+          name: data.name,
+          contact_phone: data.contact_phone,
+          contact_email: data.contact_email,
+          description: data.description,
+        }),
+      });
+      if (response.status === 200) {
+        alert("Add server success");
+        handleShowOrganization();
+      } else {
+        alert("Add server fail");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+
+  console.log(data);
 
   return (
     <div>
@@ -100,20 +178,22 @@ export default function LandingPage() {
           </div>
         </div>
 
-        <div className="mt-3 ">
-          {organizationsData.map((organization) => (
-            <Link to={`dashboard/${organization.id}`} key={organization.id}>
-              <OrganizationCard
-                className="org-card"
-                sx={OrgCard}
-                key={organization.id}
-                name={organization.name}
-                membersCount={organization.membersCount}
-                description={organization.description}
-                servers={organization.servers}
-              />
-            </Link>
-          ))}
+        <div className="mt-3">
+          {orgList &&
+            orgList.map((organization) => (
+              <Link
+                to={`dashboard/${organization.organization_id}`}
+                key={organization.organization_id}
+              >
+                <OrganizationCard
+                  className="org-card"
+                  sx={OrgCard}
+                  key={organization.organization_id}
+                  name={organization.name}
+                  description={organization.description}
+                />
+              </Link>
+            ))}
         </div>
 
         <div className="mt-3">
@@ -161,6 +241,8 @@ export default function LandingPage() {
                       inputProps={{
                         "aria-label": "Organization name",
                       }}
+                      onChange={handleChange("name")}
+                      value={data.name}
                     />
                   </FormControl>
                 </Grid>
@@ -184,6 +266,8 @@ export default function LandingPage() {
                       inputProps={{
                         "aria-label": "Phone number",
                       }}
+                      onChange={handleChange("contact_phone")}
+                      value={data.contact_phone}
                     />
                   </FormControl>
                 </Grid>
@@ -207,44 +291,13 @@ export default function LandingPage() {
                       inputProps={{
                         "aria-label": "Email",
                       }}
+                      onChange={handleChange("contact_email")}
+                      value={data.contact_email}
                     />
                   </FormControl>
                 </Grid>
               </Grid>
 
-              <Grid container alignItems="center" spacing={2} mt={0}>
-                <Grid item xs={12} md={3}>
-                  <Typography
-                    className="mt-3"
-                    style={{
-                      fontSize: "16px",
-                      fontWeight: "400",
-                    }}
-                  >
-                    Add member:
-                  </Typography>
-                </Grid>
-                <Grid item xs={12} md={9}>
-                  <FormControl fullWidth variant="outlined">
-                    <OutlinedInput
-                      value={memberInput}
-                      onChange={handleMemberInputChange}
-                      onKeyPress={handleKeyPress} // Added onKeyPress event handler here
-                      inputProps={{
-                        "aria-label": "Member",
-                      }}
-                      endAdornment={members.map((member, index) => (
-                        <Chip
-                          key={index}
-                          label={member}
-                          onDelete={() => handleMemberDelete(index)}
-                          style={{ margin: "5px" }}
-                        />
-                      ))}
-                    />
-                  </FormControl>
-                </Grid>
-              </Grid>
               <Grid className="mt-3">
                 <Grid item>
                   <Typography
@@ -267,6 +320,8 @@ export default function LandingPage() {
                       inputProps={{
                         "aria-label": "Description",
                       }}
+                      onChange={handleChange("description")}
+                      value={data.description}
                     />
                   </FormControl>
                 </Grid>
@@ -277,7 +332,7 @@ export default function LandingPage() {
                     control={<Checkbox />}
                     label={
                       <>
-                        I accept the{" "}
+                        I accept the
                         <Link style={{ color: "#5F94D9" }}>
                           Term of Service.
                         </Link>
@@ -297,7 +352,6 @@ export default function LandingPage() {
                     md={3}
                     className="d-flex justify-content-center align-items-center"
                   >
-                    {" "}
                     <Button onClick={handleClose}>
                       <Typography variant="button" style={{ color: "red" }}>
                         Cancel
@@ -313,11 +367,16 @@ export default function LandingPage() {
                     <Button
                       variant="contained"
                       onClick={handleDone}
+                      style={{ marginLeft: "10px" }}
                       sx={{
-                        width: "100px",
+                        width: "120px",
+                        height: "auto",
                         color: "white",
                         bgcolor: "#6EC882",
-                        "&:hover": { bgcolor: "darkgreen" },
+                        "&:hover": { bgcolor: "#5CA36C" },
+                        fontSize: "14px",
+                        fontWeight: "normal",
+                        textTransform: "none",
                       }}
                     >
                       Done
@@ -367,7 +426,7 @@ export default function LandingPage() {
                 </Button>
                 <Button
                   variant="contained"
-                  onClick={() => {}}
+                  onClick={handleAddOrg}
                   sx={{
                     width: "100px",
                     color: "white",
@@ -382,7 +441,9 @@ export default function LandingPage() {
           </Modal>
         </div>
       </div>
-      <Footer />
+      <div className="mb-0">
+        <Footer />
+      </div>
     </div>
   );
 }

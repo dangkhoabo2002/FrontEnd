@@ -1,0 +1,38 @@
+.textChangeColor {
+    animation-name: blackToWhite;
+    animation-duration: 2.8s;
+}
+
+#imgFadeIn {
+    animation-name: fadeIn;
+    animation-duration: 2s;
+}
+
+.hoverZoom {
+    transition: 0.8s;
+
+}
+
+.hoverZoom:hover {
+    transform: scale(1.09);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes blackToWhite {
+    from {
+        color: black;
+    }
+
+    to {
+        color: white;
+    }
+}

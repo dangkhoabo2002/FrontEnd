@@ -5,15 +5,34 @@ import { Controller, useForm } from "react-hook-form";
 import Logo from "../images/MHDLogo.png";
 import bgLogin from "../images/loginBackgr.png";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Alert from "@mui/material/Alert";
 
 export default function OTP() {
+  const navigate = useNavigate();
+  const [alert, setAlert] = useState(false);
+
+  const [otp, setOtp] = React.useState("");
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+
+  const [data, setData] = useState({
+    otp: otp,
+    email: "",
+  });
+
+  const handleChange = (newValue) => {
+    setOtp(newValue);
+  };
+
+  // const handleChange = (prop) => (event) => {
+  //   setData({ ...data, [prop]: event.target.value });
+  // };
+
   const { control, handleSubmit } = useForm({
     defaultValues: {
       OTP: "",
     },
   });
-
-  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
   const onSubmit = (data) => {
     setShowSuccessAlert(true);
@@ -24,9 +43,62 @@ export default function OTP() {
     // alert(JSON.stringify(data));
   };
 
+  // Handle OTP API
+
+  const handleOTP = async () => {
+    const otpUrl = "http://127.0.0.1:5000/auth/verify_otp";
+    try {
+      const response = await fetch(otpUrl, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          otp: otp,
+          email: data.email,
+        }),
+      });
+      if (response.status === 200) {
+        navigate("/resetPassword");
+      } else {
+        alert("Fail to verify");
+        alert(otp);
+      }
+    } catch {
+    } finally {
+    }
+  };
+
+  const handleResendOtp = async () => {
+    const otpUrl = "http://127.0.0.1:5000/auth/resend_otp";
+    try {
+      const response = await fetch(otpUrl, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          email: data.email,
+        }),
+      });
+      if (response.status === 200) {
+        alert("Resend success, please check out your Email!");
+      } else {
+        alert("Fail to resend password");
+        setAlert(true);
+      }
+    } catch {
+      setAlert(true);
+    } finally {
+    }
+  };
   return (
     <>
-    <div
+      <div
         className="login-background"
         style={{ backgroundImage: `url(${bgLogin})` }}
       ></div>
@@ -46,95 +118,85 @@ export default function OTP() {
           flexDirection: "column",
         }}
       >
-      <div
-          className="Logo"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: "20px 400px",
-          }}
-        >
-          <img
-            src={Logo}
-            alt="Logo"
-            style={{ width: "96px", height: "96px" }}
-          />
-        </div>
-
-      <div className="px-60 py-20">
-        <div className="d-flex flex-row">
-          <p
-            className="lead mb-0"
-            style={{ fontWeight: "900  ", fontSize: "24px" }}
+        <Link to={`/`}>
+          <div
+            className="Logo"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              padding: "20px 400px",
+            }}
           >
-            Email confirmation
-          </p>
-        </div>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <p className="mt-3" style={{ fontSize: "16px", fontWeight: "600" }}>
-            Enter code
-          </p>
-          <Controller
-            control={control}
-            rules={{ validate: (value) => value.length === 6 }}
-            render={({ field, fieldState }) => (
-              <Box>
-                <MuiOtpInput sx={{ gap: 1 }} {...field} length={6} />
-                {fieldState.invalid ? (
-                  <FormHelperText error>OTP invalid</FormHelperText>
-                ) : null}
-              </Box>
-            )}
-            name="OTP"
-          />
-          <Box>
-            <div className="flex flex-row justify-between"
-            > 
-            <div className="">
-            <Button
-              type="cancel"
-              variant="contained"
-              sx={{ mt: 2, mr: 2 }}
-              style={{ backgroundColor: "#F85F60", width: "200px", height: "40px" }}
+            <img
+              loading="lazy"
+              src={Logo}
+              alt="Logo"
+              style={{ width: "96px", height: "96px" }}
+            />
+          </div>
+        </Link>
+        <div className="px-60 py-20">
+          <div className="d-flex flex-row">
+            <p
+              className="lead mb-0"
+              style={{ fontWeight: "900  ", fontSize: "24px" }}
             >
-              Resend
-            </Button>
-            </div>
-            <Link to={"/resetPassword"}>
-              <Button
-                type="submit"
-                variant="contained"
-                sx={{ mt: 2 }}
-                style={{ backgroundColor: "#3867A5", width: "200px",height: "40px" }}
-              >
-                Submit
-              </Button>
-            </Link>
-            </div>
-          </Box>
-          <Box className="mt-3 font-semibold" style={{ color: "#3867A5" }} sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Link to={"/login"} >Cancel</Link>
-            <Link to={"/login/forgotPassword"}>Change email</Link>
-          </Box>
-        </form>
-        {/* {showSuccessAlert && (
-        <div
-          style={{
-            position: "fixed",
-            bottom: "20px",
-            right: "20px",
-            backgroundColor: "#dff0d8",
-            border: "1px solid #c3e6cb",
-            color: "#3c763d",
-            borderRadius: "4px",
-            padding: "15px",
-          }}
-        >
-          <CheckIcon fontSize="inherit" style={{ marginRight: "10px" }} />
+              Email confirmation
+            </p>
+          </div>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <p className="mt-3" style={{ fontSize: "16px", fontWeight: "600" }}>
+              Enter code
+            </p>
+            <MuiOtpInput length={6} value={otp} onChange={handleChange} />
+            <Box>
+              <div className="flex flex-row justify-between">
+                <div className="">
+                  <Button
+                    type="cancel"
+                    variant="contained"
+                    sx={{ mt: 2, mr: 2 }}
+                    style={{
+                      backgroundColor: "#F85F60",
+                      width: "200px",
+                      height: "40px",
+                    }}
+                    onClick={handleResendOtp}
+                  >
+                    Resend
+                  </Button>
+                </div>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{ mt: 2 }}
+                  style={{
+                    backgroundColor: "#3867A5",
+                    width: "200px",
+                    height: "40px",
+                  }}
+                  onClick={handleOTP}
+                >
+                  Submit
+                </Button>
+              </div>
+            </Box>
+            <Box
+              className="mt-3 font-semibold pb-12"
+              style={{ color: "#3867A5" }}
+              sx={{ display: "flex", justifyContent: "space-between" }}
+            >
+              <Link to={"/login"}>Cancel</Link>
+              <Link to={"/login/forgotPassword"}>Change email</Link>
+            </Box>
+          </form>
+          {alert && (
+            <>
+              <Alert severity="error">This is an error Alert.</Alert>
+            </>
+          )}
         </div>
-      )} */}
-      </div>
       </div>
     </>
   );

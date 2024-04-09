@@ -1,7 +1,13 @@
-.btn-cancel{
+.containerOrg {
+    display: grid;
+    grid-template-columns: 1fr 6fr;
+}
+
+.btn-cancel {
     color: #F85F60;
 
 }
+
 
 .serverCard {
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
@@ -23,7 +29,7 @@
 }
 
 .memberInOrganizationTable {
-    width: 100%;
+    width: 80%;
     text-align: center;
 
 }
@@ -45,22 +51,48 @@
 }
 
 #name {
-    width: 600px;
+    width: 500px;
 }
 
 #role {
     width: 200px;
 }
 
-.serverDes{
- 
+.serverDes {
+
     overflow-wrap: break-word;
 }
 
-.org-Dashboard-textField{
+.org-Dashboard-textField {
     margin-top: 100px;
 }
 
-.delOrgBtn{
+.delOrgBtn {
     background-color: #F85F60;
 }
+
+.CustomDropdown {
+    background-color: #f2f2f2;
+    color: #333;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 200px;
+  }
+  
+  .CustomDropdown:hover {
+    background-color: #eaeaea;
+  }
+  
+  .CustomDropdown:focus {
+    outline: none;
+    border-color: #6ec882;
+  }
+  
+  .CustomDropdown option {
+    text-align: center;
+  }
+  
+  .CustomDropdownMenu {
+    width: 200px;
+  }

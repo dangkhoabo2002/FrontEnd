@@ -21,6 +21,7 @@ export default function ResetPassword() {
       setAlertMessage("The password doesn't match");
       setShowAlert(true);
     }
+    handleChangePassword();
   };
 
   const handlePasswordChange = (event) => {
@@ -33,6 +34,29 @@ export default function ResetPassword() {
     setErrorMessage("");
   };
 
+  const handleChangePassword = async () => {
+    const url = "http://127.0.0.1:5000/auth/change_password";
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          new_password: password,
+        }),
+      });
+      if (response.status === 200) {
+        alert("Resend success, please check out your Email!");
+      } else {
+        alert("Fail to resend password");
+      }
+    } catch {
+    } finally {
+    }
+  };
   return (
     <>
       <div
@@ -65,6 +89,7 @@ export default function ResetPassword() {
           }}
         >
           <img
+            loading="lazy"
             src={Logo}
             alt="Logo"
             style={{ width: "96px", height: "96px" }}

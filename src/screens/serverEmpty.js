@@ -31,7 +31,7 @@ export default function ServerEmpty() {
             className=""
             style={{ display: "flex", justifyContent: "center" }}
           >
-            <img
+            <img loading="lazy"
               src={Empty}
               className="img items-center justify-center"
               alt="empty"

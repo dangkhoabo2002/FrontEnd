@@ -3,6 +3,7 @@ import SidebarAdmin from "../components/sidebarAdmin";
 import NavigationAdmin from "../components/navAdmin";
 import { Billings } from "../data/listOfBilling";
 import "../css/adminBilling.css";
+import { Button } from "@mui/material";
 
 export default function AdminBillings() {
   const [Billing, setBilling] = useState({});
@@ -75,12 +76,29 @@ export default function AdminBillings() {
                     )}
                     <td>
                       <a href="#popup1" id="openPopUp">
-                        <button
+                        {/* <button
                           onClick={() => setBilling(bill)}
                           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
                         >
                           View
-                        </button>
+                        </button> */}
+                        <Button
+                          onClick={() => setBilling(bill)}
+                          variant="contained"
+                          sx={{
+                            width: "100px",
+                            height: "25px",
+                            color: "white",
+                            borderRadius: "100px",
+                            bgcolor: "#5F94D9",
+                            "&:hover": { bgcolor: "#4D7AB5" },
+                            fontSize: "14px",
+                            fontWeight: "normal",
+                            textTransform: "none",
+                          }}
+                        >
+                          View
+                        </Button>
                       </a>
                     </td>
                   </tr>

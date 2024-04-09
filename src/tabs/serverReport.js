@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import DownloadIcon from "@mui/icons-material/Download";
 
 const style = {
   position: "absolute",
@@ -32,9 +33,28 @@ const ServerReport = () => {
   return (
     <>
       <div className="">
-        <div className="flex flex-row justify-between pt-2">
-          <h1 className="text-2xl ">Access history</h1>
-          <Button variant="contained">Dowload raw file</Button>
+        <div className="flex flex-row justify-between">
+          <div className="info-title font-semibold my-3">
+            <p>Access History</p>
+          </div>{" "}
+          <Button
+            startIcon={<DownloadIcon />}
+            variant="contained"
+            // onClick={}
+            style={{ marginLeft: "10px" }}
+            sx={{
+              width: "120px",
+              height: "30px",
+              color: "white",
+              bgcolor: "#3867A5",
+              "&:hover": { bgcolor: "#264B7B" },
+              fontSize: "14px",
+              fontWeight: "normal",
+              textTransform: "none",
+            }}
+          >
+            Raw log
+          </Button>
         </div>
         <h1 className="pb-10">
           Review your server history within the last 3 days.

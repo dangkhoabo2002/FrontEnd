@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import bgLogin from "../images/loginBackgr.png";
 import Logo from "../images/MHDLogo.png";
 import loginLeft from "../images/loginLeft.png";
@@ -12,8 +12,48 @@ import {
 } from "@mui/material";
 import "../css/login.css";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+  const navigate = useNavigate();
+  const [data, setData] = useState({
+    username: "",
+    password: "",
+  });
+
+  const handleChange = (prop) => (event) => {
+    setData({ ...data, [prop]: event.target.value });
+  };
+
+  const handleLogin = async () => {
+    const loginUrl = "http://127.0.0.1:5000/auth/login";
+    try {
+      const response = await fetch(loginUrl, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": "true",
+        },
+        body: JSON.stringify({
+          username: data.username,
+          password: data.password,
+        }),
+      });
+      if (response.status === 200) {
+        const data = await response.json();
+        localStorage.setItem("access_token", data.access_token);
+        navigate(`/organizations`);
+      } else if (response.status === 401) {
+        alert("Invalid Username & Password");
+      } else {
+        alert("Unknown Error");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
   return (
     <>
       <div
@@ -36,25 +76,28 @@ export default function Login() {
           flexDirection: "column",
         }}
       >
-        <div
-          className="Logo"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: "12px ",
-          }}
-        >
-          <img
-            src={Logo}
-            alt="Logo"
-            style={{ width: "96px", height: "96px" }}
-          />
-        </div>
+        <Link to={`/`}>
+          <div
+            className="Logo"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              padding: "12px ",
+            }}
+          >
+            <img
+              loading="lazy"
+              src={Logo}
+              alt="Logo"
+              style={{ width: "96px", height: "96px" }}
+            />
+          </div>
+        </Link>
 
         <Grid container justifyContent="center" spacing={2}>
           <Grid item xs={12} md={6}>
-            <img src={loginLeft} alt="Login Left" />
+            <img loading="lazy" src={loginLeft} alt="Login Left" />
           </Grid>
 
           <Grid item xs={12} md={6} className="pr-8">
@@ -80,17 +123,19 @@ export default function Login() {
                 className="mt-3"
                 style={{ fontSize: "16px", fontWeight: "600" }}
               >
-                Root user email address
+                Root username
               </p>
               <p style={{ fontSize: "11px", fontWeight: "600" }}>
                 Used for account recovery and some administrative functions
               </p>
               <div className="textField mt-3">
                 <TextField
-                  label="Email address"
+                  label="Username"
                   fullWidth
                   variant="outlined"
                   className="mb-4"
+                  onChange={handleChange("username")}
+                  value={data.username}
                 />
               </div>
             </div>
@@ -112,6 +157,8 @@ export default function Login() {
                   variant="outlined"
                   type="password"
                   className="mb-4"
+                  onChange={handleChange("password")}
+                  value={data.password}
                 />
               </div>
             </div>
@@ -145,12 +192,15 @@ export default function Login() {
                 variant="contained"
                 color="primary"
                 className="mb-0"
+                onClick={handleLogin}
               >
                 Login
               </Button>
             </div>
-            <div className="text-center pt-2 float-left" 
-            style={{marginBottom:"50px"}}>
+            <div
+              className="text-center pt-2 float-left"
+              style={{ marginBottom: "50px" }}
+            >
               <p className="small fw-bold mt-2 pt-1 flex ">
                 Don't have an account?{" "}
                 <Link to={"/signUp"}>

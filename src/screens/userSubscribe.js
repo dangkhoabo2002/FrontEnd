@@ -1,11 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 
 import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
 import SidebarUser from "../components/sidebarUser";
 import NavigationUser from "../components/navUserProfile";
-import backgroundPackage from "../assets/backgroundUserPackage.png";
 
 import Packages from "../data/packages.json";
 
@@ -15,6 +14,37 @@ import "../css/userSubscribe.css";
 import { Link } from "react-router-dom";
 
 export default function UserSubscribe() {
+  // package
+  const [packageData, setPackageData] = useState([]);
+  console.log("packageData")
+
+  const handlePackage = async () => {
+    const packageUrl = "http://127.0.0.1:5000/package/get";
+
+    try {
+      const response = await fetch(packageUrl, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+      if (response.status === 200) {
+        const data = await response.json();
+        setPackageData(data);
+      } else {
+        console.error("Failed to fetch package data");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  useEffect(() => {
+    handlePackage();
+  }, []);
+
   const [showPackageCard, setShowPackageCard] = useState(true);
   const handleHidePackageCard = () => {
     setShowPackageCard(!showPackageCard);
@@ -57,7 +87,7 @@ export default function UserSubscribe() {
             {showPackageCard && (
               <div className="packageCard">
                 <div className="imgCard">
-                  <img src={chip} />
+                  <img loading="lazy" src={chip} />
                 </div>
                 <Divider orientation="vertical" variant="middle" />
 
@@ -84,26 +114,26 @@ export default function UserSubscribe() {
             )}
             {!showPackageCard && (
               <div className="packageBundle ">
-                {Packages.map((pack) => (
+                {packageData.map((pkg) => (
                   <div className="package">
-                    <h1 className="text-center font-bold text-3xl">
-                      {pack.name}
+                    <h1 className="text-center font-bold text-2xl">
+                      {pkg.package_name}
                     </h1>
                     <Divider orientation="horizontal" variant="middle" />
                     <span className="flex flex-col items-left pl-10 py-4">
-                      <p>{pack.OrganizationSlot} Organizations</p>
+                      <p>{pkg.description} Organizations</p>
                       <p className="py-2">Organization:</p>
                       <ul className="pl-12">
-                        <li>{pack.AdminSlot} Admins</li>
-                        <li>{pack.MemberSlot} Members</li>
+                        <li>{pkg.slot_number} Admins</li>
+                        <li>{pkg.slot_server} Members</li>
                       </ul>
                       <p className="font-bold text-2xl italic	pt-8">
-                        ${pack.price}/ month
+                        ${pkg.price}/ month
                       </p>
                     </span>
                     <div className="flex justify-center">
                       <Link to={`/user/subscribe/payment`}>
-                        <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded shadow-md w-40">
+                        <button class="bg-transparent hover:bg-[#3867A5] text-[#3867A5] font-semibold hover:text-white py-2 px-4 border border-[#3867A5] hover:border-transparent rounded shadow-md w-40">
                           Buy Now
                         </button>
                       </Link>
