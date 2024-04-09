@@ -11,7 +11,6 @@ import Button from "@mui/material/Button";
 import InputAdornment from "@mui/material/InputAdornment";
 import PersonIcon from "@mui/icons-material/Person";
 import EmailIcon from "@mui/icons-material/Email";
-import PhoneIcon from "@mui/icons-material/Phone";
 import LockResetIcon from "@mui/icons-material/LockReset";
 
 import "../css/userProfile.css";
@@ -25,7 +24,6 @@ export default function UserProfile() {
     full_name: "",
     username: "",
     email: "",
-    phone_number: "",
   });
   const { customer_id } = useParams();
 
@@ -141,44 +139,46 @@ export default function UserProfile() {
         </div>
         <div className="profile">
           <div className="profileField px-20 pt-10 flex flex-col gap-10">
-            <div className="username">
-              <h1>Full Name</h1>
+            <div className="profileField  flex flex-row justify-start gap-72">
+              <div className="username">
+                <h1>Full Name</h1>
 
-              <TextField
-                disabled={isDisabled}
-                id="outlined-basic"
-                value={userName}
-                onChange={handleUserNameChange}
-                size="small"
-                sx={{ width: "auto" }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start" className="pr-2">
-                      <PersonIcon />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </div>
+                <TextField
+                  disabled={isDisabled}
+                  id="outlined-basic"
+                  value={userName}
+                  onChange={handleUserNameChange}
+                  size="small"
+                  sx={{ width: "auto" }}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start" className="pr-2">
+                        <PersonIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </div>
 
-            <div className="username">
-              <h1>Username</h1>
+              <div className="username">
+                <h1>Username</h1>
 
-              <TextField
-                disabled={isDisabled}
-                id="outlined-basic"
-                value={userName}
-                onChange={handleUserNameChange}
-                size="small"
-                sx={{ width: "auto" }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start" className="pr-2">
-                      <PersonIcon />
-                    </InputAdornment>
-                  ),
-                }}
-              />
+                <TextField
+                  disabled={isDisabled}
+                  id="outlined-basic"
+                  value={userName}
+                  onChange={handleUserNameChange}
+                  size="small"
+                  sx={{ width: "auto" }}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start" className="pr-2">
+                        <PersonIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </div>
             </div>
             <div className="flex flex-row gap-40 ">
               <div className="email">
@@ -194,24 +194,6 @@ export default function UserProfile() {
                     startAdornment: (
                       <InputAdornment position="start" className="pr-2">
                         <EmailIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </div>
-              <div className="">
-                <h1>Phone Number</h1>
-                <TextField
-                  disabled={isDisabled}
-                  id="outlined-basic"
-                  value={data.phoneNumber}
-                  onChange={handleChangeInput("phone_number")}
-                  size="small"
-                  sx={{ width: "260px" }}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start" className="pr-1">
-                        <PhoneIcon /> <p className="pl-4">+84</p>
                       </InputAdornment>
                     ),
                   }}

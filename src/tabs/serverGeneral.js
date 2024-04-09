@@ -88,7 +88,7 @@ export default function ServerGeneral(serverId) {
   //       credentials: "include",
   //       headers: {
   //         Authorization: `Bearer ${token}`,
-  //         "Content-Type": "application/json",
+  //         "Content-Type": "/json",
   //         "Access-Control-Allow-Origin": "*",
   //       },
   //       body: JSON.stringify({
@@ -299,7 +299,10 @@ export default function ServerGeneral(serverId) {
                     Running Since:{" "}
                   </p>
                 </div>
-                time
+                {/* 
+                {generalData?.map((serverData) => (
+                  <p>{serverData.domain}</p>
+                ))} */}
               </div>
             </div>
             <div className="px-5 mb-2 flex flex-col items-end">
