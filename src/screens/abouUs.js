@@ -10,7 +10,7 @@ export default function AboutUs() {
       <div className="intro-title">
         <div className="intro-title-head my-8">
           <p className="">HI, WE ARE</p>
-          <p>MASTER HELP DESK</p>
+          <p>MASTER HELP DESK DEVELOPERS</p>
         </div>
         <p
           className=""

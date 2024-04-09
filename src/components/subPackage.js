@@ -13,11 +13,13 @@ import { Link } from "react-router-dom";
 
 export default function SubscriptionPackages() {
   const [selectedPackage, setSelectedPackage] = useState(null);
-
-  const [packageData, setPackageData] = useState();
+  
+  const [packageData, setPackageData] = useState([]);
+  console.log("packageData")
 
   const handlePackage = async () => {
     const packageUrl = "http://127.0.0.1:5000/package/get";
+
     try {
       const response = await fetch(packageUrl, {
         method: "GET",
@@ -30,18 +32,26 @@ export default function SubscriptionPackages() {
       if (response.status === 200) {
         const data = await response.json();
         setPackageData(data);
-        console.log("");
       } else {
+        console.error("Failed to fetch package data");
       }
     } catch (error) {
       console.error("Error:", error);
-    } finally {
     }
   };
 
   useEffect(() => {
     handlePackage();
   }, []);
+
+  const handlePackageClick = (pkg) => {
+    if (selectedPackage && selectedPackage.id === pkg.id) {
+      setSelectedPackage(null); // Deselect the package if it's already selected
+    } else {
+      setSelectedPackage(pkg); // Select the clicked package
+    }
+  };
+  
 
   return (
     <>
@@ -67,7 +77,7 @@ export default function SubscriptionPackages() {
               sx={{ maxWidth: 345, m: 2 }}
             >
               <CardActionArea
-                onClick={() => setSelectedPackage(pkg)}
+                onClick={() => handlePackageClick(pkg)}
                 disableRipple
               >
                 <CardContent
@@ -87,31 +97,27 @@ export default function SubscriptionPackages() {
                       fontWeight: "500",
                     }}
                   >
-                    {pkg.title}
+                    {pkg.package_name}
                   </Typography>
                   <span className="pt-10 pl-10">
-                    <h1>{pkg.orgs} Organizations</h1>
+                    <h1>{pkg.description}</h1>
                     <h1>Organization:</h1>
                     <ul>
                       <li>
-                        <h1> {pkg.admins} Admin </h1>
+                        <h1> {pkg.slot_number} slots </h1>
                       </li>
                       <li>
-                        <h1> {pkg.members} Members</h1>
-                      </li>
+                        <h1> {pkg.slot_server} servers</h1>
+                      </li>               
                     </ul>
                   </span>
 
-                  {/* <Typography variant="body2" color="text.secondary">
-                    {pkg.orgs} Organizations Organization: <br />- {pkg.admins}{" "}
-                    Super Admin - {pkg.members} Members
-                  </Typography> */}
                   <Typography
                     className="text-center"
                     color="text.primary"
                     style={{ marginTop: 40, fontSize: "32px", bottom: "10px" }}
                   >
-                    <i>{pkg.price}</i>
+                    <i>${pkg.price}</i>
                   </Typography>
                 </CardContent>
                 <div

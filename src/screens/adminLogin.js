@@ -15,17 +15,19 @@ export default function AdminLogin() {
     setData({ ...data, [prop]: event.target.value });
   };
 
-  console.log("dataManagerLogin", data);
-
   console.log("Logging in with:", data);
   const handleManagerLogin = async () => {
     const loginUrl = "http://127.0.0.1:5000/manager/login";
+    
     try {
       const response = await fetch(loginUrl, {
         method: "POST",
+        credentials: "include",
+
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": "true",
         },
         body: JSON.stringify({
           manager_username: data.manager_username,
@@ -33,12 +35,16 @@ export default function AdminLogin() {
         }),
       });
       if (response.status === 200) {
+        const data = await response.json();
+        localStorage.setItem("access_token", data.access_token);
         navigate("/admin");
+      } else if (response.status === 401) {
+        alert("Invalid Username & Password");
       } else {
+        alert("Unknown Error");
       }
     } catch (error) {
       console.error("Error:", error);
-    } finally {
     }
   };
 

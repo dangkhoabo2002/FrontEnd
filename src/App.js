@@ -16,6 +16,7 @@ import Guide from "./screens/userGuide";
 
 import AdminBilling from "./screens/adminBilling";
 import AdminSetting from "./screens/adminSetting";
+import AdminGuide from "./screens/adminGuideManagement";
 
 import UserProfile from "./screens/userProfile";
 import UserSubscribe from "./screens/userSubscribe";
@@ -40,6 +41,7 @@ export default function App() {
         <Route path="/admin" element={<Admin />}></Route>
         <Route path="/admin/billing" element={<AdminBilling />}></Route>
         <Route path="/admin/setting" element={<AdminSetting />}></Route>
+        <Route path="/admin/guide" element={<AdminGuide />}></Route>
 
         {/* USER ROUTE*/}
         <Route path="/login" element={<Login />}></Route>
