@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import SidebarUser from "../components/sidebarUser";
 import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import NavigationUser from "../components/navUserProfile";
 import TextField from "@mui/material/TextField";
@@ -12,8 +13,6 @@ import PersonIcon from "@mui/icons-material/Person";
 import EmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
 import LockResetIcon from "@mui/icons-material/LockReset";
-import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
 
 import "../css/userProfile.css";
 
@@ -26,6 +25,7 @@ export default function UserProfile() {
     full_name: "",
     username: "",
     email: "",
+    phone_number: "",
   });
   const { customer_id } = useParams();
 
@@ -204,8 +204,8 @@ export default function UserProfile() {
                 <TextField
                   disabled={isDisabled}
                   id="outlined-basic"
-                  value={phoneNumber}
-                  onChange={handlePhoneChange}
+                  value={data.phoneNumber}
+                  onChange={handleChangeInput("phone_number")}
                   size="small"
                   sx={{ width: "260px" }}
                   InputProps={{

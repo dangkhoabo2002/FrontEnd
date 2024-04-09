@@ -3,7 +3,14 @@ import { useState } from "react";
 import { RiServerFill } from "react-icons/ri";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import axios from "axios";
 
+import ButtonAddServer from "./buttonAddServer";
+import Footer from "../components/userFooter";
+import Sidebar from "../components/Sidebar";
+
+import Empty from "../assets/userBackground.png";
 import serverIcon2 from "../images/serverIcon2.png";
 import InputAdornment from "@mui/material/InputAdornment";
 import EmailIcon from "@mui/icons-material/Email";
@@ -229,6 +236,7 @@ export default function OrganizationDashboard() {
     handleClose();
   };
 
+  // GET MEMBER
   const handleGetMember = async () => {
     const memberUrl = `http://127.0.0.1:5000/org/get_user_in_organization/${organization_id}`;
     const token = localStorage.getItem("access_token");
@@ -451,18 +459,6 @@ export default function OrganizationDashboard() {
   };
 
   const { name } = organizations[0];
-
-  const handlePhoneChange = (event) => {
-    setPhoneNumber(event.target.value);
-  };
-
-  const handleChangeEmail = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const handleChangeDescription = (event) => {
-    setDescription(event.target.value);
-  };
 
   // CHANGE USER / SP USER
   const changeRoleToSuperuser = async (memberId) => {
