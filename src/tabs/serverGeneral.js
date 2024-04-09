@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Paper,
   Grid,
@@ -13,23 +13,146 @@ import {
   TextField,
   MenuItem,
 } from "@mui/material";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import AddIcon from "@mui/icons-material/Add";
 import "../css/serverGeneral.css";
 import ServerManager from "../database/listOfServerManager.json";
 import CloseIcon from "@mui/icons-material/Close";
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
+export default function ServerGeneral(serverId) {
+  // Data General
+  const [generalData, setGeneralData] = useState();
 
-export default function ServerGeneral() {
-  // BTN
+  const [data, setData] = useState({
+    password: "",
+  });
+
+  const handleChange = (prop) => (event) => {
+    setData({ ...data, [prop]: event.target.value });
+  };
+  console.log(data);
+  // GET SERVER DATA
+
+  const handleGetServerData = async () => {
+    const getUrl = `http://127.0.0.1:5000/server/get_server_data/${serverId.serverId}`;
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await fetch(getUrl, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+      if (response.status === 200) {
+        const server = await response.json();
+        setGeneralData(server);
+      } else {
+        alert("Update Fail");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+
+  useEffect(() => {
+    handleGetServerData();
+  }, []);
+
+  // Check pass trước khi Delete
+  const [openDeleteServer, setOpenDeleteServer] = React.useState(false);
+
+  const handleOpenDeleteServer = () => {
+    setOpenDeleteServer(true);
+  };
+
+  const handleCloseDeleteServer = () => {
+    setOpenDeleteServer(false);
+  };
+
+  // const handleCheckPass = async () => {
+  //   const checkUrl = `http://127.0.0.1:5000/server/get_server_data/${serverId.serverId}`;
+  //   const token = localStorage.getItem("access_token");
+  //   try {
+  //     const response = await fetch(checkUrl, {
+  //       method: "GET",
+  //       credentials: "include",
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         "Content-Type": "application/json",
+  //         "Access-Control-Allow-Origin": "*",
+  //       },
+  //       body: JSON.stringify({
+  //         password: data.password,
+  //       }),
+  //     });
+  //     if (response.status === 200) {
+  //       const passCheck = await response.json();
+  //       setData(passCheck);
+  //     } else {
+  //       alert("Update Fail");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //   } finally {
+  //   }
+  // };
+
+  // Turn on/off server
+
   const [isServerOn, setIsServerOn] = useState(true);
 
   const handleButtonClick = () => {
     setIsServerOn((prevState) => !prevState);
   };
 
+  const [openChangeStatus, setOpenChangeStatus] = React.useState(false);
+
+  const handleOpenChangeStatus = () => {
+    setOpenChangeStatus(true);
+  };
+
+  const handleCloseChangeStatus = () => {
+    setOpenChangeStatus(false);
+  };
+  // const handleTurnStatus = async () => {
+  //   const url = `http://127.0.0.1:5000/server/get_server_data/${serverId.serverId}`;
+  //   const token = localStorage.getItem("access_token");
+  //   try {
+  //     const response = await fetch(url, {
+  //       method: "PUT",
+  //       credentials: "include",
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         "Content-Type": "application/json",
+  //         "Access-Control-Allow-Origin": "*",
+  //       },
+  //     });
+  //     if (response.status === 200) {
+  //       const server = await response.json();
+  //       handleButtonClick();
+  //     } else {
+  //       alert("Update Fail");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //   } finally {
+  //   }
+  // };
+
+  // BTN
+
   // add member
+
   const [addMember, setAddMember] = React.useState(false);
   const handleAddMeber = () => setAddMember(!addMember);
   const handleClose = () => setAddMember(false);
@@ -58,6 +181,7 @@ export default function ServerGeneral() {
     setShowConfirmation(true);
   };
 
+  // CSS
   const style = {
     position: "absolute",
     top: "50%",
@@ -101,6 +225,10 @@ export default function ServerGeneral() {
     },
   ];
 
+  // POP UP DELETE DIALOG
+
+  console.log("General", generalData);
+
   return (
     <>
       <div>
@@ -108,21 +236,19 @@ export default function ServerGeneral() {
         <div className="info-site mb-5">
           <div className="info-title font-semibold my-3">
             <p>Information</p>
-          </div>{" "}
+          </div>
           <Paper elevation={3} sx={{ padding: 2 }}>
             <div className="flex flex-row justify-between px-5">
               {/* left */}
               <div className="flex flex-col justify-start">
-                <p className="gray-text font-semibold my-2">
-                  hostamyproject.com
-                </p>
+                <p className="gray-text font-semibold my-2">abc.com.vn </p>
                 <div className="flex d-flex">
                   <p className="blue-text font-semibold mr-2">Host IP: </p>
                   <p> 177.0.74.189</p>
                 </div>
                 <div className="flex d-flex my-2">
                   <p className="blue-text font-semibold mr-2">
-                    Operating System:{" "}
+                    Operating System:
                   </p>
                   <p>Linux</p>
                 </div>
@@ -172,8 +298,8 @@ export default function ServerGeneral() {
                   <p className="blue-text font-semibold mr-2">
                     Running Since:{" "}
                   </p>
-                  <p>Thu Apr 5 14:13:18 2020</p>
                 </div>
+                time
               </div>
             </div>
             <div className="px-5 mb-2 flex flex-col items-end">
@@ -231,7 +357,11 @@ export default function ServerGeneral() {
                       <td>{svmg.id}</td>
                       <td>{svmg.email}</td>
                       <td>{svmg.role}</td>
-                      <td><DeleteOutlineOutlinedIcon style={{cursor:"pointer"}}/></td>
+                      <td>
+                        <DeleteOutlineOutlinedIcon
+                          style={{ cursor: "pointer" }}
+                        />
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -250,20 +380,99 @@ export default function ServerGeneral() {
           </div>
           <div className="setting-btn">
             <Button
+              onClick={handleOpenDeleteServer}
               variant="contained"
               color="error"
               sx={{ borderRadius: 1, marginRight: 2 }}
             >
               DELETE SERVER
             </Button>
-
+            <Dialog
+              open={openDeleteServer}
+              onClose={handleCloseDeleteServer}
+              PaperProps={{
+                component: "form",
+                onSubmit: (event) => {
+                  event.preventDefault();
+                  const formData = new FormData(event.currentTarget);
+                  const formJson = Object.fromEntries(formData.entries());
+                  const email = formJson.email;
+                  console.log(email);
+                  handleClose();
+                },
+              }}
+            >
+              <DialogTitle>Delete Server</DialogTitle>
+              <DialogContent>
+                <DialogContentText className="pb-4">
+                  To delete this server, please enter your password.
+                </DialogContentText>
+                <TextField
+                  required
+                  margin="dense"
+                  id="password"
+                  name="password"
+                  label="Password"
+                  type="password"
+                  fullWidth
+                  variant="standard"
+                  onChange={handleChange("password")}
+                  value={data.password}
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleCloseDeleteServer}>Cancel</Button>
+                <Button type="submit">Confirm</Button>
+              </DialogActions>
+            </Dialog>
             <Button
               variant="contained"
               sx={{ borderRadius: 1, marginRight: 2 }}
-              onClick={handleButtonClick}
+              onClick={handleOpenChangeStatus}
             >
               {isServerOn ? "Turn off server" : "Turn on server"}
             </Button>
+            <Dialog
+              open={openChangeStatus}
+              onClose={handleCloseChangeStatus}
+              PaperProps={{
+                component: "form",
+                onSubmit: (event) => {
+                  event.preventDefault();
+                  const formData = new FormData(event.currentTarget);
+                  const formJson = Object.fromEntries(formData.entries());
+                  const email = formJson.email;
+                  console.log(email);
+                  handleCloseChangeStatus();
+                },
+              }}
+            >
+              <DialogTitle>
+                {isServerOn ? "Turn off server" : "Turn on server"}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText className="pb-4">
+                  Your action is critical impact of server!, please enter your
+                  password to continue.
+                </DialogContentText>
+                <TextField
+                  required
+                  margin="dense"
+                  id="password"
+                  name="password"
+                  label="Password"
+                  type="password"
+                  fullWidth
+                  variant="standard"
+                  onChange={handleChange("password")}
+                  value={data.password}
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleCloseChangeStatus}>Cancel</Button>
+                <Button type="submit">Confirm</Button>
+              </DialogActions>
+            </Dialog>
           </div>
         </div>
         {/* End Setting */}

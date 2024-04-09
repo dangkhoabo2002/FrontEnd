@@ -31,7 +31,6 @@ export default function LandingPage() {
   const handleAdd = () => setAddOrg(!addOrg);
   const handleClose = () => setAddOrg(false);
 
-  const [memberInput, setMemberInput] = useState("");
   const [members, setMembers] = useState([]);
 
   const [orgList, setOrgList] = useState();
@@ -52,7 +51,6 @@ export default function LandingPage() {
       });
       if (response.status === 200) {
         const orgData = await response.json();
-        console.log(orgData);
         setOrgList(orgData);
       }
     } catch {
@@ -63,17 +61,6 @@ export default function LandingPage() {
   useEffect(() => {
     handleShowOrganization();
   }, []);
-
-  const handleMemberInputChange = (event) => {
-    setMemberInput(event.target.value);
-  };
-
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter" && memberInput.trim() !== "") {
-      setMembers([...members, memberInput.trim()]);
-      setMemberInput("");
-    }
-  };
 
   const handleMemberDelete = (index) => {
     const updatedMembers = [...members];
@@ -122,7 +109,6 @@ export default function LandingPage() {
     contact_phone: "",
     contact_email: "",
     description: "",
-    org_member: "",
   });
   // const navigate = useNavigate();
 
@@ -145,11 +131,11 @@ export default function LandingPage() {
           contact_phone: data.contact_phone,
           contact_email: data.contact_email,
           description: data.description,
-          org_member: data.org_member,
         }),
       });
       if (response.status === 200) {
         alert("Add server success");
+        handleShowOrganization();
       } else {
         alert("Add server fail");
       }
@@ -158,6 +144,8 @@ export default function LandingPage() {
     } finally {
     }
   };
+
+  console.log(data);
 
   return (
     <div>
@@ -296,39 +284,6 @@ export default function LandingPage() {
                 </Grid>
               </Grid>
 
-              <Grid container alignItems="center" spacing={2} mt={0}>
-                <Grid item xs={12} md={3}>
-                  <Typography
-                    className="mt-3"
-                    style={{
-                      fontSize: "16px",
-                      fontWeight: "400",
-                    }}
-                  >
-                    Add member:
-                  </Typography>
-                </Grid>
-                <Grid item xs={12} md={9}>
-                  <FormControl fullWidth variant="outlined">
-                    <OutlinedInput
-                      value={memberInput}
-                      onChange={handleMemberInputChange}
-                      onKeyPress={handleKeyPress} // Added onKeyPress event handler here
-                      inputProps={{
-                        "aria-label": "Member",
-                      }}
-                      endAdornment={members.map((member, index) => (
-                        <Chip
-                          key={index}
-                          label={member}
-                          onDelete={() => handleMemberDelete(index)}
-                          style={{ margin: "5px" }}
-                        />
-                      ))}
-                    />
-                  </FormControl>
-                </Grid>
-              </Grid>
               <Grid className="mt-3">
                 <Grid item>
                   <Typography
@@ -472,7 +427,9 @@ export default function LandingPage() {
           </Modal>
         </div>
       </div>
-      <Footer />
+      <div className="mb-0">
+        <Footer />
+      </div>
     </div>
   );
 }

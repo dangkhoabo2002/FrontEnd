@@ -43,6 +43,8 @@ export default function OrganizationDashboard() {
   const [organizations, setOrganizations] = useState();
 
   const [serverList, setServerList] = useState();
+
+  const [memberList, setMemberList] = useState();
   //
 
   const [isDisabled, setIsDisabled] = useState(true);
@@ -54,14 +56,17 @@ export default function OrganizationDashboard() {
   const [currentStatus, setCurrentStatus] = useState();
 
   const navigate = useNavigate();
+
   const [data, setData] = useState({
     name: "",
     contact_phone: "",
     contact_email: "",
     description: "",
     status: "",
-    remove_username: "",
+    new_user: "",
   });
+
+  const [removeUser, setRemoveUser] = useState();
 
   const { organization_id } = useParams();
 
@@ -97,7 +102,6 @@ export default function OrganizationDashboard() {
         alert("Update Success");
       } else {
         alert("Update Fail");
-        console.log("orgId", organization_id);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -176,6 +180,7 @@ export default function OrganizationDashboard() {
   };
 
   const handleChangeStatusDone = () => {
+    setData();
     handleChangeStatus();
     handleClose();
   };
@@ -184,22 +189,25 @@ export default function OrganizationDashboard() {
 
   const handleRemoveUserAPI = async () => {
     const loginUrl = "http://127.0.0.1:5000/org/remove_user";
+    const token = localStorage.getItem("access_token");
+
     try {
       const response = await fetch(loginUrl, {
         method: "PUT",
         credentials: "include",
         headers: {
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
         },
         body: JSON.stringify({
-          organization_id: data.organization_id,
-          remove_username: data.remove_username,
+          organization_id: organization_id,
+          remove_username: removeUser,
         }),
       });
       if (response.status === 200) {
+        handleGetMember();
         alert("Remove Success");
-        // getAll để upd lại data
       } else {
         alert("Remove Fail");
       }
@@ -209,9 +217,37 @@ export default function OrganizationDashboard() {
     }
   };
 
-  const handleRemoveUser = () => {
+  const handleRemoveUser = (rmvUser) => {
+    setRemoveUser(rmvUser);
     handleRemoveUserAPI();
-    // handleClose();
+
+    handleClose();
+  };
+
+  const handleGetMember = async () => {
+    const memberUrl = `http://127.0.0.1:5000/org/get_user_in_organization/${organization_id}`;
+    const token = localStorage.getItem("access_token");
+
+    try {
+      const response = await fetch(memberUrl, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+      if (response.status === 200) {
+        const memberData = await response.json();
+        setMemberList(memberData);
+      } else {
+        console.log("Fail to get member");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
   };
 
   // DELETE ORG
@@ -300,6 +336,42 @@ export default function OrganizationDashboard() {
     }
   };
 
+  // Add member in ORG
+
+  const handleAddMember = async () => {
+    const addmemberUrl = "http://127.0.0.1:5000/org/add_user";
+    const token = localStorage.getItem("access_token");
+
+    try {
+      const response = await fetch(addmemberUrl, {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          organization_id: organization_id,
+          new_user: data.new_user,
+        }),
+      });
+      if (response.status === 200) {
+        handleGetMember();
+        alert("Add Success");
+      } else if (response.status === 400) {
+        alert("User is not exist!");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+
+  const handleAddNewUser = () => {
+    handleAddMember();
+    handleCloseAddMember();
+  };
   // Toggle mở đóng Dialog add member
 
   const handleOpenAddMember = () => {
@@ -321,6 +393,7 @@ export default function OrganizationDashboard() {
   useEffect(() => {
     handleGetOrgData();
     handleGetServers();
+    handleGetMember();
   }, []);
 
   if (!organizations) {
@@ -372,10 +445,8 @@ export default function OrganizationDashboard() {
     setValue(newValue);
   };
 
-  const { name, membersCount, description, servers, members } =
-    organizations[0];
+  const { name } = organizations[0];
 
-  console.log("org ne", organizations[0]);
   return (
     <>
       <div className="containerOrg">
@@ -466,15 +537,17 @@ export default function OrganizationDashboard() {
                           }
                         </p>
                       </div>
-                      <Link to={"/server"}>
-                        <div className="serverListRow">
-                          {serverList
-                            ?.filter((server) => server.status === "ACTIVE")
-                            ?.map((server) => (
+                      <div className="serverListRow">
+                        {serverList
+                          ?.filter((server) => server.status === "ACTIVE")
+                          ?.map((server) => (
+                            <Link
+                              to={`/organizations/dashboard/${organization_id}/${server.server_id}`}
+                            >
                               <div className="serverCard flex flex-col justify-between items-center">
                                 <span
                                   className={`text-white px-6 py-1 ${
-                                    server.status == "INACTIVE"
+                                    server.status === "INACTIVE"
                                       ? "bg-gray-400"
                                       : "bg-[#6EC882]"
                                   }`}
@@ -483,6 +556,7 @@ export default function OrganizationDashboard() {
                                 </span>
                                 <h2>{server.server_name}</h2>
                                 <img
+                                  alt="Server Icon"
                                   loading="lazy"
                                   src={serverIcon2}
                                   style={{
@@ -496,9 +570,9 @@ export default function OrganizationDashboard() {
                                 <h2>{server.domain}</h2>
                                 <h2>IP Address: {server.port}</h2>
                               </div>
-                            ))}
-                        </div>
-                      </Link>
+                            </Link>
+                          ))}
+                      </div>
                       <div className="flex flex-row justify-left">
                         <h1 className="text-[#637381] text-2xl font pr-10 my-3">
                           Inactive server
@@ -513,28 +587,38 @@ export default function OrganizationDashboard() {
                       </div>
                       <div className="serverListRow">
                         {serverList
-                          ?.filter((server) => server.status == "INACTIVE")
+                          ?.filter((server) => server.status === "INACTIVE")
                           ?.map((server) => (
-                            <div className="serverCard flex flex-col justify-between items-center">
-                              <span
-                                className={`text-white px-6 py-1 ${
-                                  server.status == "INACTIVE"
-                                    ? "bg-gray-400"
-                                    : "bg-[#6EC882]"
-                                }`}
-                              >
-                                {server.status}
-                              </span>
-                              <h2>{server.server_name}</h2>
-                              <img
-                                loading="lazy"
-                                src={serverIcon2}
-                                style={{ width: "60px", objectFit: "contain" }}
-                              />
-                              <h2 className="text-[#5F94D9]">Shared Hosting</h2>
-                              <h2>{server.domain}</h2>
-                              <h2>IP Address: {server.port}</h2>
-                            </div>
+                            <Link
+                              to={`/organizations/dashboard/${organization_id}/${server.server_id}`}
+                            >
+                              <div className="serverCard flex flex-col justify-between items-center">
+                                <span
+                                  className={`text-white px-6 py-1 ${
+                                    server.status === "INACTIVE"
+                                      ? "bg-gray-400"
+                                      : "bg-[#6EC882]"
+                                  }`}
+                                >
+                                  {server.status}
+                                </span>
+                                <h2>{server.server_name}</h2>
+                                <img
+                                  alt="Server Icon"
+                                  loading="lazy"
+                                  src={serverIcon2}
+                                  style={{
+                                    width: "60px",
+                                    objectFit: "contain",
+                                  }}
+                                />
+                                <h2 className="text-[#5F94D9]">
+                                  Shared Hosting
+                                </h2>
+                                <h2>{server.domain}</h2>
+                                <h2>IP Address: {server.port}</h2>
+                              </div>
+                            </Link>
                           ))}
                       </div>
                     </div>
@@ -565,7 +649,6 @@ export default function OrganizationDashboard() {
                             const formJson = Object.fromEntries(
                               formData.entries()
                             );
-                            const email = formJson.email;
                             handleClose();
                           },
                         }}
@@ -587,11 +670,17 @@ export default function OrganizationDashboard() {
                             type="username"
                             fullWidth
                             variant="standard"
+                            onChange={handleChangeInput("new_user")}
+                            value={data.new_user}
                           />
                         </DialogContent>
                         <DialogActions>
                           <Button onClick={handleCloseAddMember}>Cancel</Button>
-                          <Button type="submit" variant="outlined">
+                          <Button
+                            type="submit"
+                            variant="outlined"
+                            onClick={handleAddNewUser}
+                          >
                             Add
                           </Button>
                         </DialogActions>
@@ -603,15 +692,15 @@ export default function OrganizationDashboard() {
                           <th id="role">ROLE</th>
                           <th id="action">ACTIONS</th>
                         </tr>
-                        {members?.map((member) => (
+                        {memberList?.map((member, index) => (
                           <tr>
-                            <td>{member.id}</td>
-                            <td>{member.name}</td>
-                            <td>{member.role}</td>
+                            <td>{index + 1}</td>
+                            <td>{member.username}</td>
+                            <td>{member.roles}</td>
                             <td>
                               <IconButton
                                 aria-label="delete"
-                                onClick={handleClickOpenRemoveUser}
+                                onClick={() => handleClickOpenRemoveUser()}
                               >
                                 <DeleteIcon />
                               </IconButton>
@@ -622,12 +711,16 @@ export default function OrganizationDashboard() {
                                 aria-describedby="alert-dialog-description"
                               >
                                 <DialogTitle id="alert-dialog-title">
-                                  {"Do you want to remove this member?"}
+                                  {"Do you want to remove this member ?"}
                                 </DialogTitle>
 
                                 <DialogActions>
                                   <Button onClick={handleClose}>No</Button>
-                                  <Button onClick={handleRemoveUser} autoFocus>
+                                  <Button
+                                    onClick={() =>
+                                      handleRemoveUser(member.username)
+                                    }
+                                  >
                                     <p className="text-red">Yes</p>
                                   </Button>
                                 </DialogActions>
@@ -824,7 +917,7 @@ export default function OrganizationDashboard() {
                         </DialogContent>
                         <DialogActions>
                           <Button onClick={handleCloseDelete}>No</Button>
-                          <Button onClick={handleConfirmDelete} autoFocus>
+                          <Button onClick={handleConfirmDelete}>
                             <p className="text-red-600">Yes</p>
                           </Button>
                         </DialogActions>

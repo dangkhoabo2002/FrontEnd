@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useState } from "react";
 
+// MUI
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
@@ -22,11 +25,46 @@ import Data from "../tabs/serverData";
 import "../css/userOrganization.css";
 
 export default function UserServerConfig() {
+  // Data from API
+  const [serverData, setServerData] = useState("");
+  //
   const [value, setValue] = React.useState("1");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  const { server_id } = useParams();
+
+  // Get Server Data - GENERAL
+  // const handleGetServerData = async () => {
+  //   const getUrl = `http://127.0.0.1:5000/server/get_server_data/${server_id}`;
+  //   const token = localStorage.getItem("access_token");
+
+  //   try {
+  //     const response = await fetch(getUrl, {
+  //       method: "GET",
+  //       credentials: "include",
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         "Content-Type": "application/json",
+  //         "Access-Control-Allow-Origin": "*",
+  //       },
+  //     });
+  //     if (response.status === 200) {
+  //       const server = await response.json();
+  //       setServerData(server);
+  //     } else {
+  //       alert("Update Fail");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //   } finally {
+  //   }
+  // };
+  // useEffect(() => {
+  //   handleGetServerData();
+  // }, []);
 
   return (
     <div>
@@ -45,7 +83,7 @@ export default function UserServerConfig() {
                   className="font-semibold"
                   style={{ fontSize: "28px", color: "#637381" }}
                 >
-                  Organizations
+                  Server
                 </p>
               </div>
             </div>
@@ -68,7 +106,7 @@ export default function UserServerConfig() {
                 </TabList>
               </Box>
               <TabPanel value="1">
-                <General />
+                <General serverId={server_id} />
               </TabPanel>
               <TabPanel value="2">
                 <Proxy />
@@ -83,7 +121,7 @@ export default function UserServerConfig() {
                 <Library />
               </TabPanel>
               <TabPanel value="6">
-                <Data/>
+                <Data />
               </TabPanel>
               <TabPanel value="7">
                 <ServerReport />

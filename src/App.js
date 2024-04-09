@@ -64,7 +64,10 @@ export default function App() {
         ></Route>
 
         {/* USER SEVER*/}
-        <Route path="/server" element={<ServerConfig />}></Route>
+        <Route
+          path="/organizations/dashboard/:organization_id/:server_id"
+          element={<ServerConfig />}
+        ></Route>
         <Route path="/serverEmpty" element={<ServerEmpty />}></Route>
 
         <Route path="/server" element={<ServerConfig />}></Route>
