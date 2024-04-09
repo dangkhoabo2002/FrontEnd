@@ -21,10 +21,6 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import InputAdornment from "@mui/material/InputAdornment";
-import EmailIcon from "@mui/icons-material/Email";
-import PhoneIcon from "@mui/icons-material/Phone";
 import DnsIcon from "@mui/icons-material/Dns";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import Dialog from "@mui/material/Dialog";
@@ -49,11 +45,6 @@ import {
   FormControlLabel,
   Checkbox,
   Chip,
-  Dialog,
-  DialogTitle,
-  DialogContentText,
-  DialogContent,
-  DialogActions,
 } from "@mui/material";
 
 export default function OrganizationDashboard() {
