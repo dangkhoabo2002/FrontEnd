@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import InventoryIcon from "@mui/icons-material/Inventory";
-import SettingsIcon from "@mui/icons-material/Settings";
+import ApartmentIcon from "@mui/icons-material/Apartment";
 
 export default function sidebarUser() {
   return (
@@ -43,7 +43,7 @@ export default function sidebarUser() {
           <div className="hoverSection">
             <Link to={`/organizations`}>
               <section className="flex flex-row gap-3 py-4 pl-24 items-center text-[#637381]">
-                <SettingsIcon />
+                <ApartmentIcon />
                 <p className="text-xl font-semibold">Organization</p>
               </section>
             </Link>

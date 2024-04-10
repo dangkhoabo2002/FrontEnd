@@ -6,9 +6,7 @@ import Accordion from "../components/guideAccodion";
 import Footer from "../components/userFooter";
 import { useNavigate } from "react-router-dom";
 
-
 export default function Guide() {
-
   const navigate = useNavigate();
 
   const handleGuide = async () => {
@@ -20,7 +18,6 @@ export default function Guide() {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
         },
-
       });
       if (response.status === 200) {
         const data = await response.json();
@@ -50,9 +47,9 @@ export default function Guide() {
               </p>
             </div>
           </div>
-          {/* <div className="body mt-3">
-          <SearchBar />
-        </div> */}
+          <div className="body mt-3">
+            <SearchBar />
+          </div>
           <div className="body mt-3">
             <Accordion />
           </div>

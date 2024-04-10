@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import Typography from '@mui/material/Typography';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import listOfGuides from '../database/listOfGuide.json';
+import React, { useEffect, useState } from "react";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import Typography from "@mui/material/Typography";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import listOfGuides from "../database/listOfGuide.json";
 import { useNavigate } from "react-router-dom";
 
-
 export default function AccordionExpandIcon() {
-
-  
   const navigate = useNavigate();
 
   const handleGuide = async () => {
@@ -25,7 +22,6 @@ export default function AccordionExpandIcon() {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
         },
-
       });
       if (response.status === 200) {
         const data = await response.json();
@@ -35,7 +31,6 @@ export default function AccordionExpandIcon() {
     } catch (error) {
       console.error("Error:", error);
     } finally {
-
     }
   };
 
@@ -48,7 +43,7 @@ export default function AccordionExpandIcon() {
 
   return (
     <div>
-      {data.map((guide, index) => (
+      {data?.map((guide, index) => (
         <Accordion key={index}>
           <AccordionSummary
             expandIcon={<ArrowDropDownIcon />}
@@ -58,9 +53,7 @@ export default function AccordionExpandIcon() {
             <Typography>{guide.title}</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Typography>
-              {guide.content}
-            </Typography>
+            <Typography>{guide.content}</Typography>
           </AccordionDetails>
         </Accordion>
       ))}

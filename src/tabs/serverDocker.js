@@ -8,9 +8,9 @@ export default function serverDocker() {
   return (
     <div className="flex flex-col gap-12">
       <div className="projectSection">
-      <div className="info-title font-semibold my-3">
-        <p>Docker Project</p>
-      </div>
+        <div className="info-title font-semibold my-3">
+          <p>Docker Project</p>
+        </div>
         <div className="flex flex-col flex-wrap gap-2">
           <h2>Dockerfile</h2>
           <div className="flex flex-row gap-5">
@@ -98,40 +98,40 @@ export default function serverDocker() {
       <div className="imagesSection">
         <h1 className="text-2xl pb-10 pt-2">All images</h1>
         <div className="flex flex-row gap-4 pb-4">
-        <Button
-                variant="contained"
-                // onClick={}
-                style={{ marginLeft: "" }}
-                sx={{
-                  width: "120px",
-                  height: "auto",
-                  color: "white",
-                  bgcolor: "#3867A5",
-                  "&:hover": { bgcolor: "#264B7B" },
-                  fontSize: "14px",
-                  fontWeight: "normal",
-                  textTransform: "none",
-                }}
-              >
-                Create
-              </Button>
-              <Button
-                variant="contained"
-                // onClick={}
-                style={{ marginLeft: "" }}
-                sx={{
-                  width: "120px",
-                  height: "auto",
-                  color: "white",
-                  bgcolor: "#3867A5",
-                  "&:hover": { bgcolor: "#264B7B" },
-                  fontSize: "14px",
-                  fontWeight: "normal",
-                  textTransform: "none",
-                }}
-              >
-                Images
-              </Button>
+          <Button
+            variant="contained"
+            // onClick={}
+            style={{ marginLeft: "" }}
+            sx={{
+              width: "120px",
+              height: "auto",
+              color: "white",
+              bgcolor: "#3867A5",
+              "&:hover": { bgcolor: "#264B7B" },
+              fontSize: "14px",
+              fontWeight: "normal",
+              textTransform: "none",
+            }}
+          >
+            Create
+          </Button>
+          <Button
+            variant="contained"
+            // onClick={}
+            style={{ marginLeft: "" }}
+            sx={{
+              width: "120px",
+              height: "auto",
+              color: "white",
+              bgcolor: "#3867A5",
+              "&:hover": { bgcolor: "#264B7B" },
+              fontSize: "14px",
+              fontWeight: "normal",
+              textTransform: "none",
+            }}
+          >
+            Images
+          </Button>
         </div>
         <TableOfImages />
       </div>
@@ -142,110 +142,110 @@ export default function serverDocker() {
         </textarea>
       </div>
       <div className="containersSection">
-        <h1 className="text-2xl pb-10 pt-2">All images</h1>
+        <h1 className="text-2xl pb-10 pt-2">All containers</h1>
         <div className="flex flex-row gap-4 pb-4">
-        <Button
-                variant="contained"
-                // onClick={}
-                style={{ marginLeft: "" }}
-                sx={{
-                  width: "120px",
-                  height: "auto",
-                  color: "white",
-                  bgcolor: "#3867A5",
-                  "&:hover": { bgcolor: "#264B7B" },
-                  fontSize: "14px",
-                  fontWeight: "normal",
-                  textTransform: "none",
-                }}
-              >
-                PS
-              </Button>
-              <Button
-                variant="contained"
-                // onClick={}
-                style={{ marginLeft: "" }}
-                sx={{
-                  width: "120px",
-                  height: "auto",
-                  color: "white",
-                  bgcolor: "#3867A5",
-                  "&:hover": { bgcolor: "#264B7B" },
-                  fontSize: "14px",
-                  fontWeight: "normal",
-                  textTransform: "none",
-                }}
-              >
-                Start
-              </Button>
-              <Button
-                variant="contained"
-                // onClick={}
-                style={{ marginLeft: "" }}
-                sx={{
-                  width: "120px",
-                  height: "auto",
-                  color: "white",
-                  bgcolor: "#3867A5",
-                  "&:hover": { bgcolor: "#264B7B" },
-                  fontSize: "14px",
-                  fontWeight: "normal",
-                  textTransform: "none",
-                }}
-              >
-                Stop
-              </Button>
-              <Button
-                variant="contained"
-                // onClick={}
-                style={{ marginLeft: "" }}
-                sx={{
-                  width: "120px",
-                  height: "auto",
-                  color: "white",
-                  bgcolor: "#3867A5",
-                  "&:hover": { bgcolor: "#264B7B" },
-                  fontSize: "14px",
-                  fontWeight: "normal",
-                  textTransform: "none",
-                }}
-              >
-                Kill
-              </Button>
-              <Button
-                variant="contained"
-                // onClick={}
-                style={{ marginLeft: "" }}
-                sx={{
-                  width: "120px",
-                  height: "auto",
-                  color: "white",
-                  bgcolor: "#3867A5",
-                  "&:hover": { bgcolor: "#264B7B" },
-                  fontSize: "14px",
-                  fontWeight: "normal",
-                  textTransform: "none",
-                }}
-              >
-                Restart
-              </Button>
-              <Button
-                variant="contained"
-                // onClick={}
-                style={{ marginLeft: "" }}
-                sx={{
-                  width: "120px",
-                  height: "auto",
-                  color: "white",
-                  bgcolor: "#3867A5",
-                  "&:hover": { bgcolor: "#264B7B" },
-                  fontSize: "14px",
-                  fontWeight: "normal",
-                  textTransform: "none",
-                }}
-              >
-                Remove
-              </Button>
+          <Button
+            variant="contained"
+            // onClick={}
+            style={{ marginLeft: "" }}
+            sx={{
+              width: "120px",
+              height: "auto",
+              color: "white",
+              bgcolor: "#3867A5",
+              "&:hover": { bgcolor: "#264B7B" },
+              fontSize: "14px",
+              fontWeight: "normal",
+              textTransform: "none",
+            }}
+          >
+            PS
+          </Button>
+          <Button
+            variant="contained"
+            // onClick={}
+            style={{ marginLeft: "" }}
+            sx={{
+              width: "120px",
+              height: "auto",
+              color: "white",
+              bgcolor: "#3867A5",
+              "&:hover": { bgcolor: "#264B7B" },
+              fontSize: "14px",
+              fontWeight: "normal",
+              textTransform: "none",
+            }}
+          >
+            Start
+          </Button>
+          <Button
+            variant="contained"
+            // onClick={}
+            style={{ marginLeft: "" }}
+            sx={{
+              width: "120px",
+              height: "auto",
+              color: "white",
+              bgcolor: "#3867A5",
+              "&:hover": { bgcolor: "#264B7B" },
+              fontSize: "14px",
+              fontWeight: "normal",
+              textTransform: "none",
+            }}
+          >
+            Stop
+          </Button>
+          <Button
+            variant="contained"
+            // onClick={}
+            style={{ marginLeft: "" }}
+            sx={{
+              width: "120px",
+              height: "auto",
+              color: "white",
+              bgcolor: "#3867A5",
+              "&:hover": { bgcolor: "#264B7B" },
+              fontSize: "14px",
+              fontWeight: "normal",
+              textTransform: "none",
+            }}
+          >
+            Kill
+          </Button>
+          <Button
+            variant="contained"
+            // onClick={}
+            style={{ marginLeft: "" }}
+            sx={{
+              width: "120px",
+              height: "auto",
+              color: "white",
+              bgcolor: "#3867A5",
+              "&:hover": { bgcolor: "#264B7B" },
+              fontSize: "14px",
+              fontWeight: "normal",
+              textTransform: "none",
+            }}
+          >
+            Restart
+          </Button>
+          <Button
+            variant="contained"
+            // onClick={}
+            style={{ marginLeft: "" }}
+            sx={{
+              width: "120px",
+              height: "auto",
+              color: "white",
+              bgcolor: "#3867A5",
+              "&:hover": { bgcolor: "#264B7B" },
+              fontSize: "14px",
+              fontWeight: "normal",
+              textTransform: "none",
+            }}
+          >
+            Remove
+          </Button>
         </div>
         <TableOfContainers />
       </div>

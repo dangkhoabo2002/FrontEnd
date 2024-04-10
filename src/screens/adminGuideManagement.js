@@ -3,8 +3,9 @@ import SidebarAdmin from "../components/sidebarAdmin";
 import NavigationAdmin from "../components/navAdmin";
 import Dialog from "@mui/material/Dialog";
 import DeleteIcon from "@mui/icons-material/Delete";
-import AddModeratorIcon from "@mui/icons-material/AddModerator";
 import CloseIcon from "@mui/icons-material/Close";
+import { useNavigate } from "react-router-dom";
+import EditIcon from '@mui/icons-material/Edit';
 import {
   Grid,
   Button,
@@ -13,12 +14,48 @@ import {
   Typography,
   IconButton,
   TextField,
+  DialogTitle,
+  DialogActions,
 } from "@mui/material";
 
 export default function AdminGuide() {
   const [guideData, setGuideData] = useState([]);
   const [open, setOpen] = useState(false);
   const [guideAdd, setGuideAdd] = useState({ title: "", content: "" });
+  const [openDelete, setOpenDelete] = useState(false);
+  const navigate = useNavigate();
+
+  const handleDeleteGuide = async (guide_id) => {
+    const loginUrl = `http://127.0.0.1:5000/guide/delete/${guide_id}`;
+    const token = localStorage.getItem("access_token");
+
+    try {
+      const response = await fetch(loginUrl, {
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": "true",
+        },
+      });
+      if (response.status === 200) {
+        handleGetGuide();
+        handleCloseDelete();
+      } else {
+        console.log("Delete Fail");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+
+
+  const handleCloseDelete = () => {
+    setOpenDelete(false);
+  };
 
   const handleGetGuide = async () => {
     const guideUrl = `http://127.0.0.1:5000/guide/get`;
@@ -58,20 +95,12 @@ export default function AdminGuide() {
     setOpen(false);
   };
 
-  const handleRemoveGuide = () => {
-    // Handle remove guide here
-  };
-
   const handleClickOpenRemoveGuide = () => {
-    setOpen(true);
+    setOpenDelete(true);
   };
 
   const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleDone = () => {
-    setOpen(false);
+    setOpenDelete(false);
   };
 
   const handleAddGuide = async () => {
@@ -96,6 +125,7 @@ export default function AdminGuide() {
       if (response.status === 201) {
         handleGetGuide();
         alert("Add guide success");
+        handleCloseAddGuide()
       } else {
         alert("Add guide fail");
       }
@@ -142,9 +172,9 @@ export default function AdminGuide() {
                 <th id="content">CONTENT</th>
                 <th id="action">ACTIONS</th>
               </tr>
-              {guideData.map((guide) => (
+              {guideData.map((guide, index) => (
                 <tr key={guide.guide_id}>
-                  <td>{guide.guide_id}</td>
+                  <td>{index + 1}</td>
                   <td>{guide.title}</td>
                   <td>{guide.content}</td>
                   <td>
@@ -155,15 +185,26 @@ export default function AdminGuide() {
                       <DeleteIcon />
                     </IconButton>
                     <Dialog
-                      open={open}
+                      open={openDelete}
                       onClose={handleClose}
                       aria-labelledby="alert-dialog-title"
                       aria-describedby="alert-dialog-description"
                     >
-                      {/* Dialog content for removing guide */}
+                      <DialogTitle id="alert-dialog-title">
+                        {"Do you want to remove this guide ?"}
+                      </DialogTitle>
+
+                      <DialogActions>
+                        <Button onClick={handleCloseDelete}>No</Button>
+                        <Button
+                          onClick={() => handleDeleteGuide(guide.guide_id)}
+                        >
+                          <p className="text-red">Yes</p>
+                        </Button>
+                      </DialogActions>
                     </Dialog>
                     <IconButton aria-label="remote">
-                      <AddModeratorIcon />
+                      <EditIcon />
                     </IconButton>
                   </td>
                 </tr>

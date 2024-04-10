@@ -34,7 +34,7 @@ export default function App() {
         <Route path="/" element={<Homepage />}></Route>
         {/* <Route path="/aboutUs" element={<AboutUs />}></Route> */}
         <Route path="/guide" element={<Guide />}></Route>
-        <Route path="/TermOfService" element={<TermOfService />}></Route>
+        <Route path="/term" element={<TermOfService />}></Route>
 
         {/* ADMIN ROUTE*/}
         <Route path="/adminLogin" element={<AdminLogin />}></Route>
