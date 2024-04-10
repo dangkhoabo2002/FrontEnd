@@ -25,6 +25,8 @@ import ServerManager from "../database/listOfServerManager.json";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
+import handleCheckPass from "../functions/checkPass";
+
 export default function ServerGeneral(serverId) {
   // Data General
   const [generalData, setGeneralData] = useState();
@@ -68,6 +70,38 @@ export default function ServerGeneral(serverId) {
     handleGetServerData();
   }, []);
 
+  //DELETE SERVER
+  const handleDeleteServer = async () => {
+    const getUrl = `http://127.0.0.1:5000/server/delete/${serverId.serverId}`;
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await fetch(getUrl, {
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+      if (response.status === 200) {
+        alert("Delete Success!");
+      } else {
+        alert("Delete Fail!");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+
+  const handleDeleteServerConfirm = () => {
+    if (handleCheckPass(data.password)) {
+      handleDeleteServer();
+    } else {
+      alert("Wrong Password");
+    }
+  };
   // Check pass trước khi Delete
   const [openDeleteServer, setOpenDeleteServer] = React.useState(false);
 
@@ -78,36 +112,6 @@ export default function ServerGeneral(serverId) {
   const handleCloseDeleteServer = () => {
     setOpenDeleteServer(false);
   };
-
-  // const handleCheckPass = async () => {
-  //   const checkUrl = `http://127.0.0.1:5000/server/get_server_data/${serverId.serverId}`;
-  //   const token = localStorage.getItem("access_token");
-  //   try {
-  //     const response = await fetch(checkUrl, {
-  //       method: "GET",
-  //       credentials: "include",
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //         "Content-Type": "/json",
-  //         "Access-Control-Allow-Origin": "*",
-  //       },
-  //       body: JSON.stringify({
-  //         password: data.password,
-  //       }),
-  //     });
-  //     if (response.status === 200) {
-  //       const passCheck = await response.json();
-  //       setData(passCheck);
-  //     } else {
-  //       alert("Update Fail");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //   } finally {
-  //   }
-  // };
-
-  // Turn on/off server
 
   const [isServerOn, setIsServerOn] = useState(true);
 
@@ -227,8 +231,6 @@ export default function ServerGeneral(serverId) {
 
   // POP UP DELETE DIALOG
 
-  console.log("General", generalData);
-
   return (
     <>
       <div>
@@ -299,10 +301,7 @@ export default function ServerGeneral(serverId) {
                     Running Since:{" "}
                   </p>
                 </div>
-                {/* 
-                {generalData?.map((serverData) => (
-                  <p>{serverData.domain}</p>
-                ))} */}
+                <p>{generalData?.domain}</p>
               </div>
             </div>
             <div className="px-5 mb-2 flex flex-col items-end">
@@ -425,7 +424,7 @@ export default function ServerGeneral(serverId) {
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleCloseDeleteServer}>Cancel</Button>
-                <Button type="submit">Confirm</Button>
+                <Button onClick={handleDeleteServer}>Confirm</Button>
               </DialogActions>
             </Dialog>
             <Button

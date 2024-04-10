@@ -6,17 +6,20 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
+// COMPONENTS
+
 import ButtonAddServer from "./buttonAddServer";
 import Footer from "../components/userFooter";
 import Sidebar from "../components/Sidebar";
 
+// ICONS MUI
 import Empty from "../assets/userBackground.png";
 import serverIcon2 from "../images/serverIcon2.png";
 import InputAdornment from "@mui/material/InputAdornment";
 import EmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
 import DnsIcon from "@mui/icons-material/Dns";
-
+import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddModeratorIcon from "@mui/icons-material/AddModerator";
 import TextField from "@mui/material/TextField";
@@ -31,8 +34,9 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+
+// CSS
 import "../css/organizationDashboard.css";
 
 import {
@@ -51,24 +55,237 @@ import {
 } from "@mui/material";
 
 export default function OrganizationDashboard() {
+  const navigate = useNavigate();
+
+  const { organization_id } = useParams();
+
   // DATA API
   const [organizations, setOrganizations] = useState();
 
   const [serverList, setServerList] = useState();
 
   const [memberList, setMemberList] = useState();
-  //
 
-  const [isDisabled, setIsDisabled] = useState(true);
-  const [showResetButton, setShowResetButton] = useState(false);
-  const [open, setOpen] = React.useState(false);
-  const [openDelete, setOpenDelete] = React.useState(false);
+  // ---------------------- VIEW ------------------------
+
+  // --------- FUNCTION ---------
+
+  // GET SERVERS IN ORG
+
+  const handleGetServers = async () => {
+    const getsvUrl = `http://127.0.0.1:5000/server/get_server_in_organization/${organization_id}`;
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await fetch(getsvUrl, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": "true",
+        },
+      });
+      if (response.status === 200) {
+        const servers = await response.json();
+        setServerList(servers);
+      } else if (response.status === 404) {
+        console.log("Not Found Any Server");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+
+  // GET MEMBER
+  const handleGetMember = async () => {
+    const memberUrl = `http://127.0.0.1:5000/org/get_user_in_organization/${organization_id}`;
+    const token = localStorage.getItem("access_token");
+
+    try {
+      const response = await fetch(memberUrl, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+      if (response.status === 200) {
+        const memberData = await response.json();
+        setMemberList(memberData);
+      } else {
+        console.log("Fail to get member");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+
+  // GET information của Org từ API
+  const handleGetOrgData = async () => {
+    const loginUrl = `http://127.0.0.1:5000/org/get_organization_data/${organization_id}`;
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await fetch(loginUrl, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+      if (response.status === 200) {
+        const orgData = await response.json();
+        setOrganizations(orgData);
+      } else {
+        alert("Get Fail");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+
+  // Auto load khi vào trang
+
+  useEffect(() => {
+    handleGetOrgData();
+    handleGetServers();
+    handleGetMember();
+  }, []);
+
+  // ---------------------- ADD ------------------------
+
+  // --------- DATA ----------
+
+  // SEVER ADD  INFO
+  const [addSeverData, setAddServerData] = useState({
+    server_name: "",
+    host: "",
+    server_type: "",
+    domain: "",
+    rsa_key: "",
+  });
+
+  // --------- TOGGLE ---------
+
+  // Toggle mở đóng Dialog add member
+
+  const handleOpenAddMember = () => {
+    setOpenAddMember(true);
+  };
+
+  const handleCloseAddMember = () => {
+    setOpenAddMember(false);
+  };
+
+  // Toggle mở đóng Dialog add server
+
+  const [openAddServer, setOpenAddServer] = useState(false);
+
+  const handleOpenAddServer = () => {
+    setOpenAddServer(true);
+  };
+
+  const handleCloseAddServer = () => {
+    setOpenAddServer(false);
+  };
+
+  // --------- FUNCTION ---------
+
+  // ADD server
+  const handleAddServer = () => {
+    handleAddServerAPI();
+    handleCloseAddServer();
+  };
+
+  const handleAddServerAPI = async () => {
+    const addUrl = `http://127.0.0.1:5000/server/add`;
+    const token = localStorage.getItem("access_token");
+
+    try {
+      const response = await fetch(addUrl, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": "true",
+        },
+        body: JSON.stringify({
+          server_name: addSeverData.server_name,
+          host: addSeverData.host,
+          organization_id: organization_id,
+          server_type: addSeverData.server_type,
+          domain: addSeverData.domain,
+          rsa_key: addSeverData.rsa_key,
+        }),
+      });
+      if (response.status === 200) {
+        alert("Add Success");
+      } else {
+        console.log("Add Fail");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+
+  const handleChangeAddInput = (prop) => (event) => {
+    setAddServerData({ ...addSeverData, [prop]: event.target.value });
+  };
+
+  // ADD member into org
+
   const [openAddMember, setOpenAddMember] = React.useState(false);
 
-  const [currentStatus, setCurrentStatus] = useState();
+  const handleAddMember = async () => {
+    const addmemberUrl = "http://127.0.0.1:5000/org/add_user";
+    const token = localStorage.getItem("access_token");
 
-  const navigate = useNavigate();
+    try {
+      const response = await fetch(addmemberUrl, {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          organization_id: organization_id,
+          new_user: data.new_user,
+        }),
+      });
+      if (response.status === 200) {
+        handleGetMember();
+        alert("Add Success");
+      } else if (response.status === 400) {
+        alert("User is not exist!");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
 
+  const handleAddNewUser = () => {
+    handleAddMember();
+    handleCloseAddMember();
+  };
+
+  // ---------------------- UPDATE / ADJUST ------------------------
+
+  // --------- DATA ---------
+
+  // ORG UPDATE INFO
   const [data, setData] = useState({
     name: "",
     contact_phone: "",
@@ -78,15 +295,23 @@ export default function OrganizationDashboard() {
     new_user: "",
   });
 
-  const [removeUser, setRemoveUser] = useState();
+  // --------- TOGGLE ---------
 
-  const { organization_id } = useParams();
+  // Toggle mở đóng Dialog Change Status
 
-  const handleChangeInput = (prop) => (event) => {
-    setData({ ...data, [prop]: event.target.value });
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
   };
 
-  // Đổi information của Org trong Setting
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  // --------- FUNCTION ---------
+
+  // UPDATE org info
 
   const handleUpdate = async () => {
     const loginUrl = "http://127.0.0.1:5000/org/update_information";
@@ -121,38 +346,18 @@ export default function OrganizationDashboard() {
     }
   };
 
+  const handleChangeInput = (prop) => (event) => {
+    setData({ ...data, [prop]: event.target.value });
+  };
+
   const handleSaveClick = () => {
     handleUpdate();
     handleEditClick();
   };
 
-  // Lấy information của Org từ API
-  const handleGetOrgData = async () => {
-    const loginUrl = `http://127.0.0.1:5000/org/get_organization_data/${organization_id}`;
-    const token = localStorage.getItem("access_token");
-    try {
-      const response = await fetch(loginUrl, {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-      });
-      if (response.status === 200) {
-        const orgData = await response.json();
-        setOrganizations(orgData);
-      } else {
-        alert("Get Fail");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    } finally {
-    }
-  };
-
   // Đổi status của Org - Deactivate
+  const [currentStatus, setCurrentStatus] = useState();
+
   const handleChangeStatus = async () => {
     let newStatus = organizations[0].status;
     if (currentStatus === "ACTIVE") {
@@ -197,7 +402,61 @@ export default function OrganizationDashboard() {
     handleClose();
   };
 
-  // Xóa user ra khỏi Org
+  // CHANGE USER / SP USER in org
+  const changeRoleToSuperuser = async (memberId) => {
+    try {
+      const response = await axios.post("/change_role_to_superuser", {
+        memberId: memberId,
+      });
+      console.log(response.data.message);
+    } catch (error) {
+      console.error("Error changing role to superuser:", error);
+    }
+  };
+
+  // Function to change member role to user
+  const changeRoleToUser = async (memberId) => {
+    try {
+      const response = await axios.post("/change_role_to_user", {
+        memberId: memberId,
+      });
+      console.log(response.data.message);
+    } catch (error) {
+      console.error("Error changing role to user:", error);
+    }
+  };
+
+  // Inside OrganizationDashboard component
+  const handleChangeRole = async (memberId, newRole) => {
+    try {
+      const response = await axios.post("/api/change_member_role", {
+        memberId: memberId,
+        newRole: newRole,
+      });
+      console.log(response.data.message);
+    } catch (error) {
+      console.error("Error changing role:", error);
+    }
+  };
+
+  // modal
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 600,
+    bgcolor: "background.paper",
+    borderRadius: "20px",
+    boxShadow: 24,
+    p: 3,
+  };
+
+  // ---------------------- DELETE ------------------------
+
+  // DELETE user in org
+
+  const [removeUser, setRemoveUser] = useState();
 
   const handleRemoveUserAPI = async () => {
     const loginUrl = "http://127.0.0.1:5000/org/remove_user";
@@ -236,34 +495,9 @@ export default function OrganizationDashboard() {
     handleClose();
   };
 
-  // GET MEMBER
-  const handleGetMember = async () => {
-    const memberUrl = `http://127.0.0.1:5000/org/get_user_in_organization/${organization_id}`;
-    const token = localStorage.getItem("access_token");
+  // DELETE org
 
-    try {
-      const response = await fetch(memberUrl, {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-      });
-      if (response.status === 200) {
-        const memberData = await response.json();
-        setMemberList(memberData);
-      } else {
-        console.log("Fail to get member");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    } finally {
-    }
-  };
-
-  // DELETE ORG
+  const [openDelete, setOpenDelete] = React.useState(false);
 
   const handleDeleteOrg = async () => {
     const loginUrl = `http://127.0.0.1:5000/org/delete/${organization_id}`;
@@ -306,108 +540,20 @@ export default function OrganizationDashboard() {
   };
 
   // Toggle cho phép Edit
+  const [isDisabled, setIsDisabled] = useState(true);
+  const [showResetButton, setShowResetButton] = useState(false);
+
   const handleEditClick = () => {
     setIsDisabled(!isDisabled);
     setShowResetButton(isDisabled);
   };
 
-  // Toggle mở đóng Dialog xóa
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  // GET SERVERS IN ORG
-
-  const handleGetServers = async () => {
-    const getsvUrl = `http://127.0.0.1:5000/server/get_server_in_organization/${organization_id}`;
-    const token = localStorage.getItem("access_token");
-    try {
-      const response = await fetch(getsvUrl, {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Credentials": "true",
-        },
-      });
-      if (response.status === 200) {
-        const servers = await response.json();
-        setServerList(servers);
-      } else if (response.status === 404) {
-        console.log("Not Found Any Server");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    } finally {
-    }
-  };
-
-  // Add member in ORG
-
-  const handleAddMember = async () => {
-    const addmemberUrl = "http://127.0.0.1:5000/org/add_user";
-    const token = localStorage.getItem("access_token");
-
-    try {
-      const response = await fetch(addmemberUrl, {
-        method: "PUT",
-        credentials: "include",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-        body: JSON.stringify({
-          organization_id: organization_id,
-          new_user: data.new_user,
-        }),
-      });
-      if (response.status === 200) {
-        handleGetMember();
-        alert("Add Success");
-      } else if (response.status === 400) {
-        alert("User is not exist!");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    } finally {
-    }
-  };
-
-  const handleAddNewUser = () => {
-    handleAddMember();
-    handleCloseAddMember();
-  };
-  // Toggle mở đóng Dialog add member
-
-  const handleOpenAddMember = () => {
-    setOpenAddMember(true);
-  };
-
-  const handleCloseAddMember = () => {
-    setOpenAddMember(false);
-  };
   // Dialog của Remove User
   const handleClickOpenRemoveUser = () => {
     setOpen(true);
   };
 
   const [value, setValue] = useState("1");
-
-  // Auto load khi vào trang
-
-  useEffect(() => {
-    handleGetOrgData();
-    handleGetServers();
-    handleGetMember();
-  }, []);
 
   if (!organizations) {
     return (
@@ -459,56 +605,6 @@ export default function OrganizationDashboard() {
   };
 
   const { name } = organizations[0];
-
-  // CHANGE USER / SP USER
-  const changeRoleToSuperuser = async (memberId) => {
-    try {
-      const response = await axios.post("/change_role_to_superuser", {
-        memberId: memberId,
-      });
-      console.log(response.data.message);
-    } catch (error) {
-      console.error("Error changing role to superuser:", error);
-    }
-  };
-
-  // Function to change member role to user
-  const changeRoleToUser = async (memberId) => {
-    try {
-      const response = await axios.post("/change_role_to_user", {
-        memberId: memberId,
-      });
-      console.log(response.data.message);
-    } catch (error) {
-      console.error("Error changing role to user:", error);
-    }
-  };
-
-  // Inside OrganizationDashboard component
-  const handleChangeRole = async (memberId, newRole) => {
-    try {
-      const response = await axios.post("/api/change_member_role", {
-        memberId: memberId,
-        newRole: newRole,
-      });
-      console.log(response.data.message);
-    } catch (error) {
-      console.error("Error changing role:", error);
-    }
-  };
-
-  // modal
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 600,
-    bgcolor: "background.paper",
-    borderRadius: "20px",
-    boxShadow: 24,
-    p: 3,
-  };
 
   return (
     <>
@@ -684,6 +780,249 @@ export default function OrganizationDashboard() {
                             </Link>
                           ))}
                       </div>
+                      <button onClick={handleOpenAddServer}>
+                        <ButtonAddServer />
+                      </button>
+                      <Modal
+                        keepMounted
+                        open={openAddServer}
+                        onClose={handleCloseAddServer}
+                        aria-labelledby="keep-mounted-modal-title"
+                        aria-describedby="keep-mounted-modal-description"
+                      >
+                        <Box sx={style}>
+                          <div className="pb-2 text-center border-b-2 border-stone-500">
+                            <div className="flex flex-row items-center justify-between">
+                              <p
+                                className="font-semibold"
+                                style={{ fontSize: "28px", color: "#637381" }}
+                              >
+                                ADD SERVER
+                              </p>
+                              <IconButton onClick={handleCloseAddServer}>
+                                <CloseIcon />
+                              </IconButton>
+                            </div>
+                          </div>
+
+                          <Grid
+                            container
+                            alignItems="center"
+                            spacing={2}
+                            mt={0}
+                          >
+                            <Grid item xs={12} md={3}>
+                              <Typography
+                                className="mt-3"
+                                style={{
+                                  fontSize: "16px",
+                                  fontWeight: "400",
+                                }}
+                              >
+                                Server name:
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={12} md={9}>
+                              <FormControl fullWidth variant="outlined">
+                                <OutlinedInput
+                                  inputProps={{
+                                    "aria-label": "Server name",
+                                  }}
+                                  onChange={handleChangeAddInput("server_name")}
+                                  value={addSeverData.server_name}
+                                />
+                              </FormControl>
+                            </Grid>
+                          </Grid>
+
+                          <Grid
+                            container
+                            alignItems="center"
+                            spacing={2}
+                            mt={0}
+                          >
+                            <Grid item xs={12} md={3}>
+                              <Typography
+                                className="mt-3"
+                                style={{
+                                  fontSize: "16px",
+                                  fontWeight: "400",
+                                }}
+                              >
+                                Host:
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={12} md={9}>
+                              <FormControl fullWidth variant="outlined">
+                                <OutlinedInput
+                                  inputProps={{
+                                    "aria-label": "Host",
+                                  }}
+                                  onChange={handleChangeAddInput("host")}
+                                  value={addSeverData.host}
+                                />
+                              </FormControl>
+                            </Grid>
+                          </Grid>
+
+                          <Grid
+                            container
+                            alignItems="center"
+                            spacing={2}
+                            mt={0}
+                          >
+                            <Grid item xs={12} md={3}>
+                              <Typography
+                                className="mt-3"
+                                style={{
+                                  fontSize: "16px",
+                                  fontWeight: "400",
+                                }}
+                              >
+                                Server type:
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={12} md={9}>
+                              <FormControl fullWidth variant="outlined">
+                                <OutlinedInput
+                                  inputProps={{
+                                    "aria-label": "Server type",
+                                  }}
+                                  onChange={handleChangeAddInput("server_type")}
+                                  value={addSeverData.server_type}
+                                />
+                              </FormControl>
+                            </Grid>
+                          </Grid>
+
+                          <Grid
+                            container
+                            alignItems="center"
+                            spacing={2}
+                            mt={0}
+                          >
+                            <Grid item xs={12} md={3}>
+                              <Typography
+                                className="mt-3"
+                                style={{
+                                  fontSize: "16px",
+                                  fontWeight: "400",
+                                }}
+                              >
+                                Domain:
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={12} md={9}>
+                              <FormControl fullWidth variant="outlined">
+                                <OutlinedInput
+                                  inputProps={{
+                                    "aria-label": "Domain",
+                                  }}
+                                  onChange={handleChangeAddInput("domain")}
+                                  value={addSeverData.domain}
+                                />
+                              </FormControl>
+                            </Grid>
+                          </Grid>
+
+                          <Grid
+                            container
+                            alignItems="center"
+                            spacing={2}
+                            mt={0}
+                          >
+                            <Grid item xs={12} md={3}>
+                              <Typography
+                                className="mt-3"
+                                style={{
+                                  fontSize: "16px",
+                                  fontWeight: "400",
+                                }}
+                              >
+                                Private key:
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={12} md={9}>
+                              <FormControl fullWidth variant="outlined">
+                                <OutlinedInput
+                                  inputProps={{
+                                    "aria-label": "Private key",
+                                  }}
+                                  onChange={handleChangeAddInput("rsa_key")}
+                                  value={addSeverData.rsa_key}
+                                />
+                              </FormControl>
+                            </Grid>
+                          </Grid>
+                          <Box className="mt-3 d-flex">
+                            <div>
+                              <FormControlLabel
+                                control={<Checkbox />}
+                                label={
+                                  <>
+                                    I accept the
+                                    <Link
+                                      to={`/term`}
+                                      style={{
+                                        color: "#5F94D9",
+                                        marginLeft: "4px",
+                                      }}
+                                    >
+                                      Term of Service.
+                                    </Link>
+                                  </>
+                                }
+                              />
+                            </div>
+                          </Box>
+
+                          <Box>
+                            <Grid container spacing={2} mt={0}>
+                              <Grid item xs={12} md={3}></Grid>
+                              <Grid item xs={12} md={3}></Grid>
+                              <Grid
+                                item
+                                xs={12}
+                                md={3}
+                                className="d-flex justify-content-center align-items-center"
+                              >
+                                <Button onClick={handleCloseAddServer}>
+                                  <Typography
+                                    variant="button"
+                                    style={{ color: "red" }}
+                                  >
+                                    Cancel
+                                  </Typography>{" "}
+                                </Button>
+                              </Grid>
+                              <Grid
+                                item
+                                xs={12}
+                                md={3}
+                                className="d-flex justify-content-center align-items-center"
+                              >
+                                <Button
+                                  variant="contained"
+                                  onClick={handleAddServer}
+                                  style={{ marginLeft: "10px" }}
+                                  sx={{
+                                    width: "120px",
+                                    height: "auto",
+                                    color: "white",
+                                    bgcolor: "#6EC882",
+                                    "&:hover": { bgcolor: "#5CA36C" },
+                                    fontSize: "14px",
+                                    fontWeight: "normal",
+                                    textTransform: "none",
+                                  }}
+                                >
+                                  Done
+                                </Button>
+                              </Grid>
+                            </Grid>
+                          </Box>
+                        </Box>
+                      </Modal>
                     </div>
                   </TabPanel>
 
