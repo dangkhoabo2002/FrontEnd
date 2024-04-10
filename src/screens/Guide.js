@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import ApartmentIcon from "@mui/icons-material/Apartment";
 import SearchBar from "../components/searchBar";
 import BookIcon from "@mui/icons-material/Book";
 import Accordion from "../components/guideAccodion";

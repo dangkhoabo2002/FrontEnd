@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function handleCheckPass(pass_input) {
   const handleCheckPass = async () => {
     const getUrl = "http://127.0.0.1:5000/auth/check_pass";

@@ -3,14 +3,9 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import listOfGuides from "../database/listOfGuide.json";
-import { useNavigate } from "react-router-dom";
 
 export default function AccordionExpandIcon() {
-  const navigate = useNavigate();
-
   const handleGuide = async () => {
     const guideUrl = "http://127.0.0.1:5000/guide/get";
     const token = localStorage.getItem("access_token");

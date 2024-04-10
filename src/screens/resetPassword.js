@@ -10,7 +10,6 @@ export default function ResetPassword() {
 
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
 
   const handleConfirmClick = () => {
     if (!password || !confirmPassword) {
@@ -29,12 +28,10 @@ export default function ResetPassword() {
 
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
-    setErrorMessage("");
   };
 
   const handleConfirmPasswordChange = (event) => {
     setConfirmPassword(event.target.value);
-    setErrorMessage("");
   };
 
   const handleChangePassword = async () => {

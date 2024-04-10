@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { MuiOtpInput } from "mui-one-time-password-input";
-import { Box, Button, FormHelperText } from "@mui/material";
-import { Controller, useForm } from "react-hook-form";
+import { Box, Button } from "@mui/material";
 import Logo from "../images/MHDLogo.png";
 import bgLogin from "../images/loginBackgr.png";
 import { Link } from "react-router-dom";

@@ -4,8 +4,7 @@ import NavigationAdmin from "../components/navAdmin";
 import Dialog from "@mui/material/Dialog";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from "@mui/icons-material/Close";
-import { useNavigate } from "react-router-dom";
-import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from "@mui/icons-material/Edit";
 import {
   Grid,
   Button,
@@ -23,7 +22,6 @@ export default function AdminGuide() {
   const [open, setOpen] = useState(false);
   const [guideAdd, setGuideAdd] = useState({ title: "", content: "" });
   const [openDelete, setOpenDelete] = useState(false);
-  const navigate = useNavigate();
 
   const handleDeleteGuide = async (guide_id) => {
     const loginUrl = `http://127.0.0.1:5000/guide/delete/${guide_id}`;
@@ -51,7 +49,6 @@ export default function AdminGuide() {
     } finally {
     }
   };
-
 
   const handleCloseDelete = () => {
     setOpenDelete(false);
@@ -125,7 +122,7 @@ export default function AdminGuide() {
       if (response.status === 201) {
         handleGetGuide();
         alert("Add guide success");
-        handleCloseAddGuide()
+        handleCloseAddGuide();
       } else {
         alert("Add guide fail");
       }

@@ -40,8 +40,6 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import "../css/organizationDashboard.css";
 
 import {
-  Select,
-  MenuItem,
   Modal,
   Box,
   IconButton,
@@ -51,7 +49,6 @@ import {
   OutlinedInput,
   FormControlLabel,
   Checkbox,
-  Chip,
 } from "@mui/material";
 
 export default function OrganizationDashboard() {
