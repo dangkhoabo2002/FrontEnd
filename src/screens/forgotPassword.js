@@ -17,7 +17,7 @@ export default function ForgotPassword() {
     setData({ ...data, [prop]: event.target.value });
   };
 
-  console.log("dataLogin", data);
+
   const handleSubmit = async () => {
     const loginUrl = "http://127.0.0.1:5000/auth/forgot_password";
     try {
@@ -32,6 +32,7 @@ export default function ForgotPassword() {
         }),
       });
       if (response.status === 200) {
+        localStorage.setItem("email", data.email);
         navigate("/otp");
       } else {
         console.log(response.status);

@@ -6,6 +6,8 @@ import { Button, TextField, Alert } from "@mui/material";
 export default function ResetPassword() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [submitPassword, setsubmitPassword] = useState("");
+
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -15,6 +17,7 @@ export default function ResetPassword() {
       setAlertMessage("Please enter both passwords.");
       setShowAlert(true);
     } else if (password === confirmPassword) {
+      setsubmitPassword(password);
       setAlertMessage("Reset password successfully");
       setShowAlert(true);
     } else {
@@ -35,28 +38,32 @@ export default function ResetPassword() {
   };
 
   const handleChangePassword = async () => {
-    const url = "http://127.0.0.1:5000/auth/change_password";
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-        body: JSON.stringify({
-          new_password: password,
-        }),
-      });
-      if (response.status === 200) {
-        alert("Resend success, please check out your Email!");
-      } else {
-        alert("Fail to resend password");
+    if (password === confirmPassword) {
+      const url = "http://127.0.0.1:5000/auth/change_password";
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+          body: JSON.stringify({
+            new_password: submitPassword,
+          }),
+        });
+        if (response.status === 200) {
+          alert("Resend success, please check out your Email!");
+        } else {
+          alert("Fail to resend password");
+        }
+      } catch {
+      } finally {
       }
-    } catch {
-    } finally {
+    } else {
     }
   };
+
   return (
     <>
       <div

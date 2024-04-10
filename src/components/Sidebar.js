@@ -1,12 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Logo from "../assets/logo.png";
-import Navigation from "./Navigation";
 import "../css/Sidebar.css";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import BookIcon from "@mui/icons-material/Book";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
-import SettingsIcon from "@mui/icons-material/Settings";
 
 export default function Sidebar() {
   return (
@@ -21,13 +19,15 @@ export default function Sidebar() {
     >
       <div className="py-10 px-8">
         <Link to={"/"}>
-          <img loading="lazy" style={{ width: "70px" }} src={Logo} />
+          <img alt="logo" loading="lazy" style={{ width: "70px" }} src={Logo} />
         </Link>
       </div>
       <div className="flex flex-col">
         <div
           className="gap-3 py-2 px-11 items-center text-[#212B36]"
-          style={{ fontSize: "12px" }}
+          style={{
+            fontSize: "16px",
+          }}
         >
           <b>GENERAL</b>
         </div>
@@ -49,7 +49,7 @@ export default function Sidebar() {
         </Link>
         <div
           className="gap-3 py-2 mt-4 px-11 items-center text-[#212B36]"
-          style={{ fontSize: "12px" }}
+          style={{ fontSize: "16px" }}
         >
           <b>MANAGEMENT</b>
         </div>
@@ -62,7 +62,7 @@ export default function Sidebar() {
             </section>
           </div>
         </Link>
-        <Link to={`/setting`}>
+        {/* <Link to={`/setting`}>
           <div className="hoverSection">
             <section className="flex flex-row gap-3 py-4 px-11 items-center text-[#637381]">
               <SettingsIcon />
@@ -70,7 +70,7 @@ export default function Sidebar() {
               <p className="text-xl font-semibold">Settings</p>
             </section>
           </div>
-        </Link>
+        </Link> */}
       </div>
     </div>
   );

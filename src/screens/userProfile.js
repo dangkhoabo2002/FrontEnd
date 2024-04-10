@@ -2,7 +2,6 @@ import React from "react";
 import { useState } from "react";
 import SidebarUser from "../components/sidebarUser";
 import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
 
 import NavigationUser from "../components/navUserProfile";
 import TextField from "@mui/material/TextField";
@@ -25,11 +24,8 @@ export default function UserProfile() {
     username: "",
     email: "",
   });
-  const { customer_id } = useParams();
 
-  const [fullname, setFullName] = useState();
-  const [userName, setUserName] = useState();
-  const [email, setUserEmail] = useState();
+  const [userProfile, setUserProfile] = useState();
 
   const handleChangeInput = (prop) => (event) => {
     setData({ ...data, [prop]: event.target.value });
@@ -38,11 +34,11 @@ export default function UserProfile() {
   // Đổi information của Profile
 
   // const handleUpdate = async () => {
-  //   const loginUrl = "http://127.0.0.1:5000/org/update_information";
+  //   const updUrl = "http://127.0.0.1:5000/auth/update_information";
   //   const token = localStorage.getItem("access_token");
 
   //   try {
-  //     const response = await fetch(loginUrl, {
+  //     const response = await fetch(updUrl, {
   //       method: "PUT",
   //       credentials: "include",
   //       headers: {
@@ -51,11 +47,7 @@ export default function UserProfile() {
   //         "Access-Control-Allow-Origin": "*",
   //       },
   //       body: JSON.stringify({
-  //         organization_id: organization_id,
-  //         name: data.name,
-  //         contact_phone: data.contact_phone,
-  //         contact_email: data.contact_email,
-  //         description: data.description,
+  //         full_name: data.full_name,
   //       }),
   //     });
   //     if (response.status === 200) {
@@ -72,11 +64,11 @@ export default function UserProfile() {
   // };
 
   // Lấy information của user từ API
-  // const handleGetCustomerData = async () => {
-  //   const loginUrl = `http://127.0.0.1:5000/auth/get_organization_data/${organization_id}`;
+  // const handleGetUserProfile = async () => {
+  //   const getUrl = `http://127.0.0.1:5000/auth/get`;
   //   const token = localStorage.getItem("access_token");
   //   try {
-  //     const response = await fetch(loginUrl, {
+  //     const response = await fetch(getUrl, {
   //       method: "GET",
   //       credentials: "include",
   //       headers: {
@@ -86,8 +78,8 @@ export default function UserProfile() {
   //       },
   //     });
   //     if (response.status === 200) {
-  //       const orgData = await response.json();
-  //       setOrganizations(orgData);
+  //       const userData = await response.json();
+  //       setUserProfile(userData);
   //     } else {
   //       alert("Get Fail");
   //     }
@@ -98,11 +90,7 @@ export default function UserProfile() {
   // };
 
   // Điền thông tin vào Input
-  const handleUserNameChange = (event) => {
-    setUserName(event.target.value);
-  };
 
-  // Toggle Disabled trong TextField và Editable
   const handleEditClick = () => {
     setIsDisabled(!isDisabled);
     setShowResetButton(isDisabled);
@@ -146,8 +134,8 @@ export default function UserProfile() {
                 <TextField
                   disabled={isDisabled}
                   id="outlined-basic"
-                  value={userName}
-                  onChange={handleUserNameChange}
+                  onChange={handleChangeInput("full_name")}
+                  value={data.full_name}
                   size="small"
                   sx={{ width: "auto" }}
                   InputProps={{
@@ -164,10 +152,10 @@ export default function UserProfile() {
                 <h1>Username</h1>
 
                 <TextField
-                  disabled={isDisabled}
+                  disabled
                   id="outlined-basic"
-                  value={userName}
-                  onChange={handleUserNameChange}
+                  onChange={handleChangeInput("username")}
+                  value={data.username}
                   size="small"
                   sx={{ width: "auto" }}
                   InputProps={{
@@ -187,7 +175,7 @@ export default function UserProfile() {
                 <TextField
                   disabled
                   id="outlined-basic"
-                  value="khangdcse161156@fpt.edu.vn"
+                  value={data.email}
                   size="small"
                   sx={{ width: "400px" }}
                   InputProps={{
