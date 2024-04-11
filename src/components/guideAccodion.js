@@ -4,6 +4,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export default function AccordionExpandIcon() {
   const handleGuide = async () => {
@@ -42,7 +43,8 @@ export default function AccordionExpandIcon() {
       {loading && <CircularProgress />}
       {error && (
         <Typography>
-          Error: {error.split("\n").map((line, index) => (
+          Error:{" "}
+          {error.split("\n").map((line, index) => (
             <React.Fragment key={index}>
               {line}
               <br />
