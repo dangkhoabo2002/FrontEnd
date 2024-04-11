@@ -1,5 +1,7 @@
 import React from "react";
-import background1 from "../assets/homeBackground.png";
+import pic1 from "../assets/mainpage1.png";
+import pic2 from "../assets/mainpage2.png";
+import pic3 from "../assets/mainpage3.png";
 import Footer from "../components/Footer";
 import Navigation from "../components/Navigation";
 import { Accordion, AccordionItem } from "@szhsin/react-accordion";
@@ -55,16 +57,18 @@ export default function Homepage() {
                 <img
                   loading="lazy"
                   class="rounded-t-lg"
-                  src={background1}
+                  src={pic1}
                   alt="imgCard"
                   style={{
                     borderRadius: "20px",
                     objectFit: "cover",
                     padding: "10px",
+                    width: "500px",
+                    height: "200px",
                   }}
                 />
               </div>
-              <div class="p-5 py-14">
+              <div class="p-5">
                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                   Easy to Use
                 </h5>
@@ -80,9 +84,11 @@ export default function Homepage() {
                 <img
                   loading="lazy"
                   class="rounded-t-lg"
-                  src={background1}
+                  src={pic2}
                   alt="imgCard"
                   style={{
+                    width: "500px",
+                    height: "200px",
                     borderRadius: "20px",
                     objectFit: "cover",
                     padding: "10px",
@@ -105,9 +111,11 @@ export default function Homepage() {
                 <img
                   loading="lazy"
                   class="rounded-t-lg"
-                  src={background1}
+                  src={pic3}
                   alt="imgCard"
                   style={{
+                    width: "500px",
+                    height: "200px",
                     borderRadius: "20px",
                     objectFit: "cover",
                     padding: "10px",
@@ -119,9 +127,8 @@ export default function Homepage() {
                   Management capabilities
                 </h5>
                 <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                  With real-time reflection method along with the ability to
-                  store direct impacts on the server side, helping you easily
-                  manage and control the actions of members of the organization
+                  Real-time reflection and server-side impact storage enhance
+                  organizational control and management.
                 </p>
               </div>
             </div>

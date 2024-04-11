@@ -90,11 +90,9 @@ export default function AboutUs() {
               </div>
               <div className="border-left-4 border-solid border-blue-500 pl-2">
                 <Typography variant="body1" sx={{ textAlign: "justify" }}>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book.
+                  Our application prioritizes security with mandatory tokens and
+                  2FA for server interactions, ensuring continuous speed and
+                  responsiveness during attacks.
                 </Typography>
               </div>
             </div>
