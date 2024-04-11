@@ -24,14 +24,14 @@ export default function Navigation() {
           </div>
         </Link>
         <div className="flex flex-row justify-between items-center gap-x-10 ">
-          <a href="#featureNew">
+          <a href="../#featureNew">
             <button className="font-semibold">Feature News</button>
           </a>
 
-          <a href="#aboutUs">
+          <a href="../#aboutUs">
             <button className="font-semibold">About Us</button>
           </a>
-          <a href="#contact">
+          <a href="../#contact">
             <button className="font-semibold">Contact</button>
           </a>
           <Link to={`/login`}>
