@@ -24,12 +24,34 @@ import "../css/serverGeneral.css";
 import ServerManager from "../database/listOfServerManager.json";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import handleCheckPass from "../functions/checkPass";
 
 export default function ServerGeneral(serverId) {
+  // LOADING
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(true);
+    handleGetServerData1();
+    handleGetServerData2();
+  }, []);
+
+  // REFRESH PAGE
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  useEffect(() => {
+    if (isRefreshing) {
+      window.location.reload();
+      setIsRefreshing(false); // Cập nhật trạng thái lại sau khi reload
+      handleGetServerData1();
+      handleGetServerData2();
+    }
+  }, [isRefreshing]);
   // Data General
-  const [generalData, setGeneralData] = useState();
+  const [generalData1, setGeneralData1] = useState();
+  const [generalData2, setGeneralData2] = useState();
 
   const [data, setData] = useState({
     password: "",
@@ -41,7 +63,7 @@ export default function ServerGeneral(serverId) {
   console.log(data);
   // GET SERVER DATA
 
-  const handleGetServerData = async () => {
+  const handleGetServerData1 = async () => {
     const getUrl = `http://127.0.0.1:5000/server/get_server_data/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
@@ -56,7 +78,8 @@ export default function ServerGeneral(serverId) {
       });
       if (response.status === 200) {
         const server = await response.json();
-        setGeneralData(server);
+        setIsLoading(false);
+        setGeneralData1(server);
       } else {
         alert("Update Fail");
       }
@@ -66,9 +89,31 @@ export default function ServerGeneral(serverId) {
     }
   };
 
-  useEffect(() => {
-    handleGetServerData();
-  }, []);
+  const handleGetServerData2 = async () => {
+    const getUrl = `http://127.0.0.1:5000/server/get_server_info/${serverId.serverId}`;
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await fetch(getUrl, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+      if (response.status === 200) {
+        const server = await response.json();
+        setIsLoading(false);
+        setGeneralData2(server);
+      } else {
+        alert("Update Fail");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
 
   //DELETE SERVER
   const handleDeleteServer = async () => {
@@ -86,6 +131,7 @@ export default function ServerGeneral(serverId) {
       });
       if (response.status === 200) {
         alert("Delete Success!");
+        handleCloseDeleteServer();
       } else {
         alert("Delete Fail!");
       }
@@ -243,69 +289,93 @@ export default function ServerGeneral(serverId) {
             <div className="flex flex-row justify-between px-5">
               {/* left */}
               <div className="flex flex-col justify-start">
-                <p className="gray-text font-semibold my-2">abc.com.vn </p>
                 <div className="flex d-flex">
                   <p className="blue-text font-semibold mr-2">Host IP: </p>
-                  <p> 177.0.74.189</p>
+                  <p>
+                    {isLoading && <CircularProgress />}
+                    {generalData1?.hostname}
+                  </p>
                 </div>
                 <div className="flex d-flex my-2">
                   <p className="blue-text font-semibold mr-2">
                     Operating System:
                   </p>
-                  <p>Linux</p>
+                  <p>
+                    {isLoading && <CircularProgress />}
+                    {generalData2?.Operating_System}
+                  </p>
                 </div>
                 <div className="flex d-flex my-2">
                   <p className="blue-text font-semibold mr-2">Port: </p>
-                  <p>3305</p>
+                  <p>
+                    {isLoading && <CircularProgress />}
+                    {generalData1?.port}
+                  </p>
                 </div>
                 <div className="flex d-flex my-2">
                   <p className="blue-text font-semibold mr-2">Version: </p>
-                  <p> 8.0.4-rc-log</p>
-                </div>
-                <div className="flex d-flex my-2">
-                  <p className="blue-text font-semibold mr-2">
-                    Disk Space in Data Dir:{" "}
+                  <p>
+                    {isLoading && <CircularProgress />}
+                    {generalData2?.Version}
                   </p>
-                  <p>99.61GB of 162GB</p>
                 </div>
                 <div className="flex d-flex my-2">
                   <p className="blue-text font-semibold mr-2">
-                    Server Directory:{" "}
+                    Disk Space in Data Dir:
+                  </p>
+                  <p>
+                    {isLoading && <CircularProgress />}
+                    {generalData2?.Disk_Space}
+                  </p>
+                </div>
+                <div className="flex d-flex my-2">
+                  <p className="blue-text font-semibold mr-2">
+                    Server Directory:
                   </p>
                   <p className="link-text">
-                    C:\ProgramData\MySQL\MySQL Server 8.0
+                    {isLoading && <CircularProgress />}
+                    {generalData2?.script_directory}{" "}
                   </p>
                 </div>
               </div>
 
               {/* right */}
               <div className="flex flex-col  items-end">
-                <div className="flex ">
-                  <p className="blue-text font-semibold mr-2">
-                    Configuration File:{" "}
-                  </p>
-                  <p className="link-text">
-                    C:\ProgramData\MySQL\MySQL Server 8.0\my.ini
-                  </p>
-                </div>
                 <div className="flex d-flex my-2">
                   <p className="blue-text font-semibold mr-2">RAM: </p>
-                  <p>8GB</p>
+                  <p>
+                    {isLoading && <CircularProgress />}
+                    {generalData2?.RAM}
+                  </p>
                 </div>
                 <div className="flex d-flex my-2">
                   <p className="blue-text font-semibold mr-2">CPU: </p>
-                  <p>46%</p>
+                  <p>
+                    {isLoading && <CircularProgress />}
+                    {generalData2?.CPU}
+                  </p>
                 </div>
                 <div className="flex d-flex my-2">
                   <p className="blue-text font-semibold mr-2">
-                    Running Since:{" "}
+                    Authen key time:
+                  </p>
+                  <p>
+                    {isLoading && <CircularProgress />}
+                    {generalData1?.authen_key_time}
                   </p>
                 </div>
-                <p>{generalData?.domain}</p>
+                <div className="flex d-flex my-2">
+                  <p className="blue-text font-semibold mr-2">Last Seen:</p>
+                </div>
+                <p>
+                  {isLoading && <CircularProgress />}
+                  {generalData2?.last_seen}
+                </p>
               </div>
             </div>
             <div className="px-5 mb-2 flex flex-col items-end">
               <Button
+                onClick={() => setIsRefreshing(true)}
                 startIcon={<RefreshIcon />}
                 variant="contained"
                 className="refreshBtn"

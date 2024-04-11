@@ -50,6 +50,7 @@ import {
   FormControlLabel,
   Checkbox,
 } from "@mui/material";
+import { Abc } from "@mui/icons-material";
 
 export default function OrganizationDashboard() {
   const navigate = useNavigate();
@@ -230,15 +231,7 @@ export default function OrganizationDashboard() {
       if (response.status === 200) {
         handleGetServers();
         alert("Add Success");
-      } else {
-        console.log("Add Fail");
-        console.log(organization_id);
-        console.log(addSeverData.server_name);
-        console.log(addSeverData.hostname);
-        console.log(addSeverData.username);
-        console.log(addSeverData.password);
-        console.log(addSeverData.port);
-        console.log(addSeverData.rsa_key);
+      } else if (response.status === 500) {
       }
     } catch (error) {
       console.error("Error:", error);
@@ -523,10 +516,9 @@ export default function OrganizationDashboard() {
         },
       });
       if (response.status === 200) {
-        alert("Delete Success");
         navigate("/organizations");
       } else {
-        console.log("Delete Fail");
+        alert("Delete Fail");
       }
     } catch (error) {
       console.error("Error:", error);

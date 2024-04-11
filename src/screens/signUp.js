@@ -231,10 +231,10 @@ export default function SignUp() {
                     label={
                       <>
                         By signing up, I agree to Manimal{" "}
-                        <Link style={{ color: "#5F94D9" }}>
+                        <Link to={`/term`} style={{ color: "#5F94D9" }}>
                           Terms of Service
-                        </Link>{" "}
-                        and{" "}
+                        </Link>
+                        and
                         <Link style={{ color: "#5F94D9" }}>
                           Privacy Policy.
                         </Link>

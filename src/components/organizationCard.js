@@ -61,11 +61,7 @@ export default function OrganizationCard({ id, name, description }) {
               columnGap: "40px",
               alignItems: "center",
             }}
-          >
-            {/* {servers.map((server) => (
-              <img loading="lazy" src={ServerIcon} style={{ width: "50px" }} />
-            ))} */}
-          </div>
+          ></div>
           <Typography
             variant="body2"
             color="text.secondary"

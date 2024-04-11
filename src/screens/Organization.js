@@ -22,12 +22,9 @@ import { styled } from "@mui/material/styles";
 import OrganizationCard from "../components/organizationCard";
 import organizationsData from "../database/organizationsData.json";
 import "../css/Organization.css";
-import axios from 'axios';
+import axios from "axios";
 
 export default function LandingPage() {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(!open);
-
   const [addOrg, setAddOrg] = React.useState(false);
   const handleAdd = () => setAddOrg(!addOrg);
   const handleClose = () => setAddOrg(false);
@@ -63,30 +60,22 @@ export default function LandingPage() {
     handleShowOrganization();
   }, []);
 
-  const handleMemberDelete = (index) => {
-    const updatedMembers = [...members];
-    updatedMembers.splice(index, 1);
-    setMembers(updatedMembers);
-  };
-
   const [showConfirmation, setShowConfirmation] = React.useState(false);
   const handleDone = () => {
     setAddOrg(false);
     setShowConfirmation(true);
   };
-// change role super user / user
+
+  // change role super user / user
   const handleChangeRoleToSuperuser = async (memberId) => {
     try {
-        const response = await axios.post('/change_role_to_superuser', { memberId });
-        console.log(response.data); // Handle success, e.g., display a success message
+      const response = await axios.post("/change_role_to_superuser", {
+        memberId,
+      });
     } catch (error) {
-        console.error(error); // Handle errors appropriately
+      console.error(error);
     }
-};
-
-const handleChangeRoleToUser = async (memberId) => {
-    // ... similar implementation for changing to user role
-};
+  };
 
   // css
 
@@ -148,6 +137,47 @@ const handleChangeRoleToUser = async (memberId) => {
         }),
       });
       if (response.status === 200) {
+        handleShowOrganization();
+        setData({
+          name: "",
+          contact_phone: "",
+          contact_email: "",
+          description: "",
+        });
+        setShowConfirmation(false);
+      } else {
+        alert("Add org fail");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+
+  // GET MEMBER IN ORG
+  const handleGetMemberInOrg = async () => {
+    const getMemberUrl =
+      "http://127.0.0.1:5000/org/get_server_in_organization/${organization_id}";
+    const token = localStorage.getItem("access_token");
+
+    try {
+      const response = await fetch(getMemberUrl, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": "true",
+        },
+        body: JSON.stringify({
+          name: data.name,
+          contact_phone: data.contact_phone,
+          contact_email: data.contact_email,
+          description: data.description,
+        }),
+      });
+      if (response.status === 200) {
         alert("Add server success");
         handleShowOrganization();
       } else {
@@ -158,8 +188,6 @@ const handleChangeRoleToUser = async (memberId) => {
     } finally {
     }
   };
-
-  console.log(data);
 
   return (
     <div>
