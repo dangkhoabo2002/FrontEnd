@@ -163,10 +163,12 @@ export default function OrganizationDashboard() {
   // SEVER ADD  INFO
   const [addSeverData, setAddServerData] = useState({
     server_name: "",
-    host: "",
+    hostname: "",
+    username: "",
+    password: "",
     server_type: "",
-    domain: "",
     rsa_key: "",
+    port: "",
   });
 
   // --------- TOGGLE ---------
@@ -217,17 +219,26 @@ export default function OrganizationDashboard() {
         },
         body: JSON.stringify({
           server_name: addSeverData.server_name,
-          host: addSeverData.host,
+          hostname: addSeverData.hostname,
           organization_id: organization_id,
-          server_type: addSeverData.server_type,
-          domain: addSeverData.domain,
+          username: addSeverData.username,
+          password: addSeverData.password,
+          port: addSeverData.port,
           rsa_key: addSeverData.rsa_key,
         }),
       });
       if (response.status === 200) {
+        handleGetServers();
         alert("Add Success");
       } else {
         console.log("Add Fail");
+        console.log(organization_id);
+        console.log(addSeverData.server_name);
+        console.log(addSeverData.hostname);
+        console.log(addSeverData.username);
+        console.log(addSeverData.password);
+        console.log(addSeverData.port);
+        console.log(addSeverData.rsa_key);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -723,8 +734,8 @@ export default function OrganizationDashboard() {
                                 <h2 className="text-[#5F94D9]">
                                   Shared Hosting
                                 </h2>
-                                <h2>{server.domain}</h2>
-                                <h2>IP Address: {server.port}</h2>
+                                <h2>{server.port}</h2>
+                                <h2>Server username: {server.username}</h2>
                               </div>
                             </Link>
                           ))}
@@ -816,7 +827,7 @@ export default function OrganizationDashboard() {
                                   fontWeight: "400",
                                 }}
                               >
-                                Server name:
+                                Server Name:
                               </Typography>
                             </Grid>
                             <Grid item xs={12} md={9}>
@@ -846,22 +857,21 @@ export default function OrganizationDashboard() {
                                   fontWeight: "400",
                                 }}
                               >
-                                Host:
+                                Host Name:
                               </Typography>
                             </Grid>
                             <Grid item xs={12} md={9}>
                               <FormControl fullWidth variant="outlined">
                                 <OutlinedInput
                                   inputProps={{
-                                    "aria-label": "Host",
+                                    "aria-label": "Host name",
                                   }}
-                                  onChange={handleChangeAddInput("host")}
-                                  value={addSeverData.host}
+                                  onChange={handleChangeAddInput("hostname")}
+                                  value={addSeverData.hostname}
                                 />
                               </FormControl>
                             </Grid>
                           </Grid>
-
                           <Grid
                             container
                             alignItems="center"
@@ -876,37 +886,7 @@ export default function OrganizationDashboard() {
                                   fontWeight: "400",
                                 }}
                               >
-                                Server type:
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={12} md={9}>
-                              <FormControl fullWidth variant="outlined">
-                                <OutlinedInput
-                                  inputProps={{
-                                    "aria-label": "Server type",
-                                  }}
-                                  onChange={handleChangeAddInput("server_type")}
-                                  value={addSeverData.server_type}
-                                />
-                              </FormControl>
-                            </Grid>
-                          </Grid>
-
-                          <Grid
-                            container
-                            alignItems="center"
-                            spacing={2}
-                            mt={0}
-                          >
-                            <Grid item xs={12} md={3}>
-                              <Typography
-                                className="mt-3"
-                                style={{
-                                  fontSize: "16px",
-                                  fontWeight: "400",
-                                }}
-                              >
-                                Domain:
+                                Server Username:
                               </Typography>
                             </Grid>
                             <Grid item xs={12} md={9}>
@@ -915,8 +895,69 @@ export default function OrganizationDashboard() {
                                   inputProps={{
                                     "aria-label": "Domain",
                                   }}
-                                  onChange={handleChangeAddInput("domain")}
-                                  value={addSeverData.domain}
+                                  onChange={handleChangeAddInput("username")}
+                                  value={addSeverData.username}
+                                />
+                              </FormControl>
+                            </Grid>
+                          </Grid>
+
+                          <Grid
+                            container
+                            alignItems="center"
+                            spacing={2}
+                            mt={0}
+                          >
+                            <Grid item xs={12} md={3}>
+                              <Typography
+                                className="mt-3"
+                                style={{
+                                  fontSize: "16px",
+                                  fontWeight: "400",
+                                }}
+                              >
+                                Server Password:
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={12} md={9}>
+                              <FormControl fullWidth variant="outlined">
+                                <OutlinedInput
+                                  type="password"
+                                  inputProps={{
+                                    "aria-label": "Password",
+                                  }}
+                                  onChange={handleChangeAddInput("password")}
+                                  value={addSeverData.password}
+                                />
+                              </FormControl>
+                            </Grid>
+                          </Grid>
+
+                          <Grid
+                            container
+                            alignItems="center"
+                            spacing={2}
+                            mt={0}
+                          >
+                            <Grid item xs={12} md={3}>
+                              <Typography
+                                className="mt-3"
+                                style={{
+                                  fontSize: "16px",
+                                  fontWeight: "400",
+                                }}
+                              >
+                                Port (optional):
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={12} md={9}>
+                              <FormControl fullWidth variant="outlined">
+                                <OutlinedInput
+                                  inputProps={{
+                                    "aria-label": "Host name",
+                                  }}
+                                  onChange={handleChangeAddInput("port")}
+                                  value={addSeverData.port}
                                 />
                               </FormControl>
                             </Grid>
@@ -989,7 +1030,7 @@ export default function OrganizationDashboard() {
                                     style={{ color: "red" }}
                                   >
                                     Cancel
-                                  </Typography>{" "}
+                                  </Typography>
                                 </Button>
                               </Grid>
                               <Grid
@@ -1060,7 +1101,6 @@ export default function OrganizationDashboard() {
                             occasionally.
                           </DialogContentText>
                           <TextField
-                            autoFocus
                             required
                             margin="dense"
                             id="name"
@@ -1092,7 +1132,7 @@ export default function OrganizationDashboard() {
                           <th id="action">ACTIONS</th>
                         </tr>
                         {memberList?.map((member, index) => (
-                          <tr>
+                          <tr key={member.id}>
                             <td>{index + 1}</td>
                             <td>{member.username}</td>
                             <td>{member.roles}</td>

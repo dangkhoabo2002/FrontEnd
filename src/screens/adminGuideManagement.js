@@ -1,59 +1,138 @@
 import React, { useState, useEffect } from "react";
 import SidebarAdmin from "../components/sidebarAdmin";
 import NavigationAdmin from "../components/navAdmin";
-import Dialog from "@mui/material/Dialog";
-import DeleteIcon from "@mui/icons-material/Delete";
-import CloseIcon from "@mui/icons-material/Close";
-import EditIcon from "@mui/icons-material/Edit";
+import { Link } from "react-router-dom";
+
 import {
   Grid,
   Button,
   Modal,
   Box,
   Typography,
-  IconButton,
   TextField,
   DialogTitle,
   DialogActions,
+  IconButton,
+  FormControl,
+  OutlinedInput,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 
+// ICONS MUI
+
+import DeleteIcon from "@mui/icons-material/Delete";
+import Dialog from "@mui/material/Dialog";
+import CloseIcon from "@mui/icons-material/Close";
+import EditIcon from "@mui/icons-material/Edit";
 export default function AdminGuide() {
   const [guideData, setGuideData] = useState([]);
   const [open, setOpen] = useState(false);
   const [guideAdd, setGuideAdd] = useState({ title: "", content: "" });
+
   const [openDelete, setOpenDelete] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
 
-  const handleDeleteGuide = async (guide_id) => {
-    const loginUrl = `http://127.0.0.1:5000/guide/delete/${guide_id}`;
-    const token = localStorage.getItem("access_token");
+  const [currentEditGuide, setCurrentEditGuide] = useState({
+    title: "",
+    content: "",
+  });
 
-    try {
-      const response = await fetch(loginUrl, {
-        method: "DELETE",
-        credentials: "include",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Credentials": "true",
-        },
-      });
-      if (response.status === 200) {
-        handleGetGuide();
-        handleCloseDelete();
-      } else {
-        console.log("Delete Fail");
+  const [currentGuide, setCurrentGuide] = useState("");
+
+  // EDIT GUIDE
+  const handleClickOpenEditGuide = (id) => {
+    console.log("id", id);
+    console.log("id", currentEditGuide.title);
+    console.log("id", currentEditGuide.content);
+    setCurrentGuide(id);
+    setOpenEdit(true);
+  };
+  const handleCloseEditGuide = () => {
+    setOpenEdit(false);
+  };
+
+  const handleChangeEditGuide = (prop) => (event) => {
+    setCurrentEditGuide({ ...currentEditGuide, [prop]: event.target.value });
+  };
+
+  const handleEditGuide = async () => {
+    if (currentGuide) {
+      const editUrl = `http://127.0.0.1:5000/guide/update/${currentGuide}`;
+      const token = localStorage.getItem("access_token");
+
+      try {
+        const response = await fetch(editUrl, {
+          method: "PUT",
+          credentials: "include",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Credentials": "true",
+          },
+          body: JSON.stringify({
+            title: currentEditGuide.title,
+            content: currentEditGuide.content,
+          }),
+        });
+        if (response.status === 200) {
+          handleGetGuide();
+          setCurrentGuide("");
+          handleCloseEditGuide();
+        } else {
+          console.log("Update Fail");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
       }
-    } catch (error) {
-      console.error("Error:", error);
-    } finally {
+    } else {
+      console.log("No id catch");
     }
+  };
+
+  // DELETE GUIDE
+  const handleDeleteGuide = async () => {
+    if (currentGuide) {
+      const deleteUrl = `http://127.0.0.1:5000/guide/delete/${currentGuide}`;
+      const token = localStorage.getItem("access_token");
+
+      try {
+        const response = await fetch(deleteUrl, {
+          method: "DELETE",
+          credentials: "include",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Credentials": "true",
+          },
+        });
+        if (response.status === 200) {
+          handleGetGuide();
+          setCurrentGuide("");
+          handleCloseDelete();
+        } else {
+          console.log("Delete Fail");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+      }
+    }
+  };
+
+  const handleClickOpenRemoveGuide = (id) => {
+    setCurrentGuide(id);
+    setOpenDelete(true);
   };
 
   const handleCloseDelete = () => {
     setOpenDelete(false);
   };
 
+  // GET GUIDE
   const handleGetGuide = async () => {
     const guideUrl = `http://127.0.0.1:5000/guide/get`;
     const token = localStorage.getItem("access_token");
@@ -84,16 +163,14 @@ export default function AdminGuide() {
     handleGetGuide();
   }, []);
 
+  // ADD GUIDE
+
   const handleOpenAddGuide = () => {
     setOpen(true);
   };
 
   const handleCloseAddGuide = () => {
     setOpen(false);
-  };
-
-  const handleClickOpenRemoveGuide = () => {
-    setOpenDelete(true);
   };
 
   const handleClose = () => {
@@ -132,8 +209,22 @@ export default function AdminGuide() {
     }
   };
 
+  // EDIT GUIDE
+
   const handleChange = (prop) => (event) => {
     setGuideAdd({ ...guideAdd, [prop]: event.target.value });
+  };
+
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 600,
+    bgcolor: "background.paper",
+    borderRadius: "20px",
+    boxShadow: 24,
+    p: 3,
   };
 
   return (
@@ -177,35 +268,37 @@ export default function AdminGuide() {
                   <td>
                     <IconButton
                       aria-label="delete"
-                      onClick={handleClickOpenRemoveGuide}
+                      onClick={() => handleClickOpenRemoveGuide(guide.guide_id)}
                     >
                       <DeleteIcon />
                     </IconButton>
-                    <Dialog
-                      open={openDelete}
-                      onClose={handleClose}
-                      aria-labelledby="alert-dialog-title"
-                      aria-describedby="alert-dialog-description"
-                    >
-                      <DialogTitle id="alert-dialog-title">
-                        {"Do you want to remove this guide ?"}
-                      </DialogTitle>
 
-                      <DialogActions>
-                        <Button onClick={handleCloseDelete}>No</Button>
-                        <Button
-                          onClick={() => handleDeleteGuide(guide.guide_id)}
-                        >
-                          <p className="text-red">Yes</p>
-                        </Button>
-                      </DialogActions>
-                    </Dialog>
-                    <IconButton aria-label="remote">
+                    <IconButton
+                      aria-label="edit"
+                      onClick={() => handleClickOpenEditGuide(guide.guide_id)}
+                    >
                       <EditIcon />
                     </IconButton>
                   </td>
                 </tr>
               ))}
+              <Dialog
+                open={openDelete}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+                <DialogTitle id="alert-dialog-title">
+                  {"Do you want to remove this guide ?"}
+                </DialogTitle>
+
+                <DialogActions>
+                  <Button onClick={handleCloseDelete}>No</Button>
+                  <Button onClick={handleDeleteGuide}>
+                    <p className="text-red">Yes</p>
+                  </Button>
+                </DialogActions>
+              </Dialog>
             </table>
           </div>
         </div>
@@ -285,7 +378,7 @@ export default function AdminGuide() {
                 rows={4}
                 variant="outlined"
                 value={guideAdd.content}
-                onChange={handleChange("content")}
+                onChange={handleChangeEditGuide("content")}
               />
             </Grid>
           </Grid>
@@ -329,6 +422,123 @@ export default function AdminGuide() {
                   }}
                 >
                   Add
+                </Button>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+      </Modal>
+
+      <Modal
+        keepMounted
+        open={openEdit}
+        onClose={handleCloseEditGuide}
+        aria-labelledby="keep-mounted-modal-title"
+        aria-describedby="keep-mounted-modal-description"
+      >
+        <Box sx={style}>
+          <div className="pb-2 text-center border-b-2 border-stone-500">
+            <div className="flex flex-row items-center justify-between">
+              <p
+                className="font-semibold"
+                style={{ fontSize: "28px", color: "#637381" }}
+              >
+                EDIT GUIDE
+              </p>
+              <IconButton onClick={handleCloseEditGuide}>
+                <CloseIcon />
+              </IconButton>
+            </div>
+          </div>
+
+          <Grid container alignItems="center" spacing={2} mt={0}>
+            <Grid item xs={12} md={3}>
+              <Typography
+                className="mt-3"
+                style={{
+                  fontSize: "16px",
+                  fontWeight: "400",
+                }}
+              >
+                Title:
+              </Typography>
+            </Grid>
+            <Grid item xs={12} md={9}>
+              <FormControl fullWidth variant="outlined">
+                <OutlinedInput
+                  inputProps={{
+                    "aria-label": "Title",
+                  }}
+                  onChange={handleChangeEditGuide("title")}
+                  value={currentEditGuide.title}
+                />
+              </FormControl>
+            </Grid>
+          </Grid>
+
+          <Grid container alignItems="center" spacing={2} mt={0}>
+            <Grid item xs={12} md={3}>
+              <Typography
+                className="mt-3"
+                style={{
+                  fontSize: "16px",
+                  fontWeight: "400",
+                }}
+              >
+                Content:
+              </Typography>
+            </Grid>
+            <Grid item xs={12} md={9}>
+              <FormControl fullWidth variant="outlined">
+                <OutlinedInput
+                  inputProps={{
+                    "aria-label": "Host",
+                  }}
+                  onChange={handleChangeEditGuide("content")}
+                  value={currentEditGuide.content}
+                />
+              </FormControl>
+            </Grid>
+          </Grid>
+
+          <Box>
+            <Grid container spacing={2} mt={0}>
+              <Grid item xs={12} md={3}></Grid>
+              <Grid item xs={12} md={3}></Grid>
+              <Grid
+                item
+                xs={12}
+                md={3}
+                className="d-flex justify-content-center align-items-center"
+              >
+                <Button onClick={handleCloseEditGuide}>
+                  <Typography variant="button" style={{ color: "red" }}>
+                    Cancel
+                  </Typography>{" "}
+                </Button>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                md={3}
+                className="d-flex justify-content-center align-items-center"
+              >
+                <Button
+                  variant="contained"
+                  onClick={handleEditGuide}
+                  style={{ marginLeft: "10px" }}
+                  sx={{
+                    width: "120px",
+                    height: "auto",
+                    color: "white",
+                    bgcolor: "#6EC882",
+                    "&:hover": { bgcolor: "#5CA36C" },
+                    fontSize: "14px",
+                    fontWeight: "normal",
+                    textTransform: "none",
+                  }}
+                >
+                  Done
                 </Button>
               </Grid>
             </Grid>
