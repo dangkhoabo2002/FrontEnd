@@ -22,36 +22,50 @@ export default function AccordionExpandIcon() {
         const data = await response.json();
         setData(data);
       } else {
+        throw new Error("Failed to fetch guide data");
       }
     } catch (error) {
-      console.error("Error:", error);
-    } finally {
+      setError(error.message);
     }
   };
 
   const [data, setData] = useState();
-  console.log(data);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    handleGuide();
+    handleGuide().finally(() => setLoading(false));
   }, []);
 
   return (
     <div>
-      {data?.map((guide, index) => (
-        <Accordion key={index}>
-          <AccordionSummary
-            expandIcon={<ArrowDropDownIcon />}
-            aria-controls={`panel${index + 1}-content`}
-            id={`panel${index + 1}-header`}
-          >
-            <Typography>{guide.title}</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>{guide.content}</Typography>
-          </AccordionDetails>
-        </Accordion>
-      ))}
+      {loading && <CircularProgress />}
+      {error && (
+        <Typography>
+          Error: {error.split("\n").map((line, index) => (
+            <React.Fragment key={index}>
+              {line}
+              <br />
+            </React.Fragment>
+          ))}
+        </Typography>
+      )}
+      {!loading &&
+        !error &&
+        data?.map((guide, index) => (
+          <Accordion key={index}>
+            <AccordionSummary
+              expandIcon={<ArrowDropDownIcon />}
+              aria-controls={`panel${index + 1}-content`}
+              id={`panel${index + 1}-header`}
+            >
+              <Typography>{guide.title}</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>{guide.content}</Typography>
+            </AccordionDetails>
+          </Accordion>
+        ))}
     </div>
   );
 }
