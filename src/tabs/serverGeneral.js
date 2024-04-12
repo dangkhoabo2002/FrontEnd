@@ -247,36 +247,7 @@ export default function ServerGeneral(serverId) {
     p: 3,
   };
 
-  const role = [
-    {
-      value: "1",
-      label: "Proxy Manager",
-    },
-    {
-      value: "2",
-      label: "Firewall Manager",
-    },
-    {
-      value: "3",
-      label: "Docker Manager",
-    },
-    {
-      value: "4",
-      label: "Library Manager",
-    },
-    {
-      value: "5",
-      label: "Data Manager",
-    },
-    {
-      value: "6",
-      label: "Report Manager",
-    },
-    {
-      value: "7",
-      label: "Execution Manager",
-    },
-  ];
+  
 
   // POP UP DELETE DIALOG
 
@@ -607,57 +578,7 @@ export default function ServerGeneral(serverId) {
             </Grid>
           </Grid>
 
-          <div
-            className="mt-3"
-            style={{ fontSize: "18px", fontWeight: "bold" }}
-          >
-            <p>Add role</p>
-          </div>
-
-          <Grid container alignItems="center" spacing={2} mb={3}>
-            <Grid item xs={12} md={3}>
-              <Typography
-                className="mt-3"
-                style={{
-                  fontSize: "16px",
-                  fontWeight: "400",
-                }}
-              >
-                Role:
-              </Typography>
-            </Grid>
-            <Grid item xs={12} md={9}>
-              <TextField
-                fullWidth
-                id="outlined-select-currency"
-                select
-                label=""
-                defaultValue="1"
-              >
-                {role.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
-          </Grid>
-          <Button
-            startIcon={<AddIcon />}
-            variant="contained"
-            sx={{
-              width: "150px",
-              height: "30px",
-              color: "white",
-              bgcolor: "#3867A5",
-              "&:hover": { bgcolor: "#264B7B" },
-              fontSize: "14px",
-              fontWeight: "normal",
-              textTransform: "none",
-            }}
-          >
-            Add more role
-          </Button>
+          
 
           <Box>
             <Grid container spacing={2} mt={0}>

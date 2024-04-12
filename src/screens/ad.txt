@@ -1,0 +1,8 @@
+'subscription_id','subscription_name','renewable','subscription_type','subscription_status','customer_id','expiration_date'
+'1','Monthly Subscription',True,'1','ACTIVE','anVsaWFfMjAyNDAzMjMxNzI4MTM=','2024-04-30 23:59:59'
+
+'1','Basic Package','2024-04-01 00:00:00','Basic package description','9.99',True,2,2
+
+'anVsaWFfMjAyNDAzMjMxNzI4MTM=','julia','M2wD7lN5g60A6/OceIpzmsX3aUbwUAuoJM1WPZrM1JA=','ACTIVE','Manager'
+
+'1','Monthly Subscription',True,'1','ACTIVE','anVsaWFfMjAyNDAzMjMxNzI4MTM=','2024-04-30 23:59:59'
