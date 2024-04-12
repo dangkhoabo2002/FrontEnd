@@ -44,7 +44,7 @@ export default function sidebarAdmin() {
         <div className="hoverSection">
           <Link to={`/admin/guide`}>
             <section className="flex flex-row gap-3 py-4 pl-12 items-center justify-left text-[#637381]">
-              <InventoryIcon />{" "}
+              <InventoryIcon />
               <p className="text-xl font-semibold">Guide Management</p>
             </section>
           </Link>

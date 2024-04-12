@@ -54,6 +54,48 @@ export default function ServerLibrary(serverId) {
     }
   };
 
+  // GET STATUS LIBRARY
+  const [listLib, setListLib] = useState({
+    nginx: "",
+    docker: "",
+    python: "",
+    pip: "",
+    postgre: "",
+    mongodb: "",
+  });
+  const handleGetStatusLib = async () => {
+    const getUrl = `http://127.0.0.1:5000/server/lib_status/${serverId.serverId}`;
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await fetch(getUrl, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          nginx: listLib.nginx,
+          docker: listLib.docker,
+          python: listLib.python,
+          pip: listLib.pip,
+          postgre: listLib.postgre,
+          mongodb: listLib.mongodb,
+        }),
+      });
+      if (response.status === 200) {
+        const status = await response.json();
+        setLoading(false);
+      } else {
+        alert("Add Fail");
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
   return (
     <>
       <div>
