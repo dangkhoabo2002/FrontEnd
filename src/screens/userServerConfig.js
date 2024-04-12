@@ -112,22 +112,22 @@ export default function UserServerConfig() {
                 <Proxy serverId={server_id} />
               </TabPanel>
               <TabPanel value="3">
-                <Firewall />
+                <Firewall serverId={server_id} />
               </TabPanel>
               <TabPanel value="4">
-                <Docker />
+                <Docker serverId={server_id} />
               </TabPanel>
               <TabPanel value="5">
-                <Library />
+                <Library serverId={server_id} />
               </TabPanel>
               <TabPanel value="6">
-                <Data />
+                <Data serverId={server_id} />
               </TabPanel>
               <TabPanel value="7">
-                <ServerReport />
+                <ServerReport serverId={server_id} />
               </TabPanel>
               <TabPanel value="8">
-                <Execution />
+                <Execution serverId={server_id} />
               </TabPanel>
             </TabContext>
           </div>

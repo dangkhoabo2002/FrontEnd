@@ -5,31 +5,65 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import SaveIcon from "@mui/icons-material/Save";
 import Button from "@mui/material/Button";
 
-export default function ServerLibrary() {
+export default function ServerLibrary(serverId) {
   const [loading, setLoading] = React.useState(false);
   const [filteredLibraries, setFilteredLibraries] = useState(Libraries);
   const [showOnlyNotInstalled, setShowOnlyNotInstalled] = useState(false);
 
-  function handleClick() {
-    setLoading(true);
-  }
+  // function handleFilterClick() {
+  //   setShowOnlyNotInstalled((prev) => !prev);
+  //   const filtered = showOnlyNotInstalled
+  //     ? Libraries.filter((lib) => lib.status === true)
+  //     : Libraries.filter((lib) => lib.status === false);
+  //   setFilteredLibraries(filtered);
+  // }
 
-  function handleFilterClick() {
-    setShowOnlyNotInstalled((prev) => !prev);
-    const filtered = showOnlyNotInstalled
-      ? Libraries.filter((lib) => lib.status === true)
-      : Libraries.filter((lib) => lib.status === false);
-    setFilteredLibraries(filtered);
-  }
+  // INSTALL LIBRARY
+
+  const handleInstallLibrary = (lib) => {
+    console.log(lib);
+    setLoading(true);
+    handleInstallLibraryAPI(lib);
+  };
+
+  const handleInstallLibraryAPI = async (libName) => {
+    const editUrl = `http://127.0.0.1:5000/server/install_lib/${serverId.serverId}`;
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await fetch(editUrl, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          library: libName,
+        }),
+      });
+      if (response.status === 200) {
+        setLoading(false);
+      } else {
+        alert("Add Fail");
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+
   return (
     <>
       <div>
         <div className="flex flex-row justify-between items-center pr-6">
-        <div className="info-title font-semibold my-3">
-        <p>Library</p>
-      </div>          <Button variant="text" size="large" onClick={handleFilterClick}>
+          <div className="info-title font-semibold my-3">
+            <p>Library</p>
+          </div>
+          {/* <Button variant="text" size="large" onClick={handleFilterClick}>
             {showOnlyNotInstalled ? "Not Installed" : "Installed"}
-          </Button>
+          </Button> */}
         </div>
         <div className="flex flex-row flex-wrap gap-10 w-3/3">
           {filteredLibraries.map((lib) => (
@@ -37,14 +71,18 @@ export default function ServerLibrary() {
               key={lib.id}
               className="flex flex-row justify-left items-center gap-8 rounded-md shadow-lg border px-12 py-6 w-2/7"
             >
-              <img loading="lazy" className="w-20 object-contain" src={lib.image} />
+              <img
+                loading="lazy"
+                className="w-20 object-contain"
+                src={lib.image}
+              />
               <div className="flex flex-col items-center">
-                <h1>{lib.name}</h1>
+                <h1 className="uppercase">{lib.name}</h1>
                 <h2 className="text-[14px] pb-2">Version: {lib.version}</h2>
                 <LoadingButton
                   size="small"
                   color="secondary"
-                  onClick={handleClick}
+                  onClick={() => handleInstallLibrary(lib.name)}
                   loading={loading}
                   loadingPosition="start"
                   startIcon={<SaveIcon />}

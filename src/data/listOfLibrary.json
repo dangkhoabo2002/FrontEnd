@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "name": "NGINX",
+    "name": "nginx",
     "image": "https://www.svgrepo.com/show/373924/nginx.svg",
     "version": "1.0.0",
     "detail": "Đây là ứng dụng A với chức năng ...",
@@ -9,7 +9,7 @@
   },
   {
     "id": 2,
-    "name": "DOCKER",
+    "name": "docker",
     "image": "https://blog.glugmvit.com/assets/images/docker-logo.png",
     "version": "2.1.3",
     "detail": "Đây là ứng dụng B với chức năng ...",
@@ -17,8 +17,32 @@
   },
   {
     "id": 3,
-    "name": "PYTHON",
+    "name": "python",
     "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/800px-Python-logo-notext.svg.png",
+    "version": "0.5.2",
+    "detail": "Đây là ứng dụng C với chức năng ...",
+    "status": false
+  },
+  {
+    "id": 4,
+    "name": "pip",
+    "image": "data:image/png;base64,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",
+    "version": "0.5.2",
+    "detail": "Đây là ứng dụng C với chức năng ...",
+    "status": false
+  },
+  {
+    "id": 5,
+    "name": "postgre",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Postgresql_elephant.svg/800px-Postgresql_elephant.svg.png",
+    "version": "0.5.2",
+    "detail": "Đây là ứng dụng C với chức năng ...",
+    "status": false
+  },
+  {
+    "id": 5,
+    "name": "mongodb",
+    "image": "https://cdn.icon-icons.com/icons2/2415/PNG/512/mongodb_original_wordmark_logo_icon_146425.png",
     "version": "0.5.2",
     "detail": "Đây là ứng dụng C với chức năng ...",
     "status": false
