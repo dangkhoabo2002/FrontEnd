@@ -42,13 +42,11 @@ export default function AdminGuide() {
 
   // EDIT GUIDE
   const handleClickOpenEditGuide = (id) => {
-    console.log("id", id);
-    console.log("id", currentEditGuide.title);
-    console.log("id", currentEditGuide.content);
     setCurrentGuide(id);
     setOpenEdit(true);
   };
   const handleCloseEditGuide = () => {
+    setCurrentEditGuide({ title: "", content: "" });
     setOpenEdit(false);
   };
 
@@ -78,7 +76,7 @@ export default function AdminGuide() {
         });
         if (response.status === 200) {
           handleGetGuide();
-          setCurrentGuide("");
+          setCurrentEditGuide({ title: "", content: "" });
           handleCloseEditGuide();
         } else {
           console.log("Update Fail");
@@ -378,7 +376,7 @@ export default function AdminGuide() {
                 rows={4}
                 variant="outlined"
                 value={guideAdd.content}
-                onChange={handleChangeEditGuide("content")}
+                onChange={handleChange("content")}
               />
             </Grid>
           </Grid>

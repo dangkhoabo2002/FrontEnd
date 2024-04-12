@@ -79,7 +79,7 @@ export default function SignUp() {
       setError(newErrors);
       return;
     }
-
+console.log(data.email);
     const signupUrl = "http://127.0.0.1:5000/auth/signup";
     try {
       const response = await fetch(signupUrl, {

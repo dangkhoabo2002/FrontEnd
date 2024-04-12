@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import SidebarUser from "../components/sidebarUser";
 import { useNavigate } from "react-router-dom";
@@ -19,75 +19,76 @@ export default function UserProfile() {
   const [showResetButton, setShowResetButton] = useState(false);
 
   const navigate = useNavigate();
-  const [data, setData] = useState({
+  const [fullNameData, setData] = useState({
     full_name: "",
-    username: "",
-    email: "",
   });
 
   const [userProfile, setUserProfile] = useState();
 
   const handleChangeInput = (prop) => (event) => {
-    setData({ ...data, [prop]: event.target.value });
+    setData({ ...fullNameData, [prop]: event.target.value });
   };
 
   // Đổi information của Profile
+  const handleUpdate = async () => {
+    const updUrl = "http://127.0.0.1:5000/auth/update_information";
+    const token = localStorage.getItem("access_token");
 
-  // const handleUpdate = async () => {
-  //   const updUrl = "http://127.0.0.1:5000/auth/update_information";
-  //   const token = localStorage.getItem("access_token");
-
-  //   try {
-  //     const response = await fetch(updUrl, {
-  //       method: "PUT",
-  //       credentials: "include",
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //         "Content-Type": "application/json",
-  //         "Access-Control-Allow-Origin": "*",
-  //       },
-  //       body: JSON.stringify({
-  //         full_name: data.full_name,
-  //       }),
-  //     });
-  //     if (response.status === 200) {
-  //       handleGetOrgData();
-  //       alert("Update Success");
-  //     } else {
-  //       alert("Update Fail");
-  //       console.log("orgId", organization_id);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //   } finally {
-  //   }
-  // };
+    try {
+      const response = await fetch(updUrl, {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          full_name: fullNameData.full_name,
+          username: userProfile.username,
+          email: userProfile.email,
+        }),
+      });
+      if (response.status === 200) {
+        handleGetUserProfile();
+        alert("Update Success");
+      } else {
+        alert("Update Fail");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+  console.log("hello", fullNameData.full_name);
 
   // Lấy information của user từ API
-  // const handleGetUserProfile = async () => {
-  //   const getUrl = `http://127.0.0.1:5000/auth/get`;
-  //   const token = localStorage.getItem("access_token");
-  //   try {
-  //     const response = await fetch(getUrl, {
-  //       method: "GET",
-  //       credentials: "include",
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //         "Content-Type": "application/json",
-  //         "Access-Control-Allow-Origin": "*",
-  //       },
-  //     });
-  //     if (response.status === 200) {
-  //       const userData = await response.json();
-  //       setUserProfile(userData);
-  //     } else {
-  //       alert("Get Fail");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //   } finally {
-  //   }
-  // };
+  const handleGetUserProfile = async () => {
+    const getUrl = `http://127.0.0.1:5000/auth/get_profile`;
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await fetch(getUrl, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+      if (response.status === 200) {
+        const userData = await response.json();
+        setUserProfile(userData);
+      } else {
+        alert("Get Fail");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+
+  console.log(userProfile);
 
   // Điền thông tin vào Input
 
@@ -96,9 +97,18 @@ export default function UserProfile() {
     setShowResetButton(isDisabled);
   };
 
+  const handleClickUpdate = () => {
+    handleUpdate();
+    handleEditClick();
+  };
+
   const handleResetClick = () => {
     navigate(`/login/forgotPassword`);
   };
+
+  useEffect(() => {
+    handleGetUserProfile();
+  }, []);
 
   return (
     <div className="">
@@ -135,7 +145,8 @@ export default function UserProfile() {
                   disabled={isDisabled}
                   id="outlined-basic"
                   onChange={handleChangeInput("full_name")}
-                  value={data.full_name}
+                  placeholder={userProfile?.full_name}
+                  value={fullNameData?.full_name || userProfile?.full_name}
                   size="small"
                   sx={{ width: "auto" }}
                   InputProps={{
@@ -154,8 +165,8 @@ export default function UserProfile() {
                 <TextField
                   disabled
                   id="outlined-basic"
-                  onChange={handleChangeInput("username")}
-                  value={data.username}
+                  // placeholder={userProfile.username}
+                  value={userProfile?.username}
                   size="small"
                   sx={{ width: "auto" }}
                   InputProps={{
@@ -175,7 +186,8 @@ export default function UserProfile() {
                 <TextField
                   disabled
                   id="outlined-basic"
-                  value={data.email}
+                  // placeholder={userProfile.email}
+                  value={userProfile?.email}
                   size="small"
                   sx={{ width: "400px" }}
                   InputProps={{
@@ -197,7 +209,7 @@ export default function UserProfile() {
 
               {showResetButton && (
                 <>
-                  <Button variant="outlined" onClick={handleEditClick}>
+                  <Button variant="outlined" onClick={handleClickUpdate}>
                     Save Changes
                   </Button>
                   <Button

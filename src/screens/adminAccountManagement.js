@@ -1,11 +1,62 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SidebarAdmin from "../components/sidebarAdmin";
 import NavigationAdmin from "../components/navAdmin";
-import Users from "../data/listOfUserAccount.json";
 import "../css/Admin.css";
 import Button from "@mui/material/Button";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-export default function adminAccountManagement() {
+
+export default function AdminAccountManagement() {
+  const [customerList, setCustomerList] = useState();
+  const [selectedCustomers, setSelectedCustomers] = useState([]);
+
+  const handleClickSelectUser = (customerId) => {
+    // Kiểm tra xem customerId đã tồn tại trong danh sách chưa
+    const isAlreadySelected = selectedCustomers.includes(customerId);
+
+    // Nếu customerId đã được chọn, loại bỏ nó khỏi danh sách đã chọn
+    // Ngược lại, thêm nó vào danh sách đã chọn
+    if (isAlreadySelected) {
+      setSelectedCustomers(selectedCustomers.filter(id => id !== customerId));
+    } else {
+      setSelectedCustomers([...selectedCustomers, customerId]);
+    }
+  };
+
+  const handleClickOpenRemoveUser = () => {
+    setOpen(true);
+  };
+  const [open, setOpen] = React.useState(false);
+
+  const handleGetCustomer = async () => {
+    const customerUrl = `http://127.0.0.1:5000/auth/get_all_profile`;
+    const token = localStorage.getItem("access_token");
+
+    try {
+      const response = await fetch(customerUrl, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": "true",
+        },
+      });
+      if (response.status === 200) {
+        const customerData = await response.json();
+        setCustomerList(customerData);
+      } else {
+        console.log("Fail to get customer");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+
+  useEffect(() => {
+    handleGetCustomer();
+  }, []);
+
   return (
     <div className="">
       {/*-------------- Navigation + Backgroud---------------- */}
@@ -43,8 +94,8 @@ export default function adminAccountManagement() {
               <thead>
                 <tr>
                   <th>ID</th>
+                  <th>USERNAME</th>
                   <th>FULLNAME</th>
-                  <th>ROLE</th>
                   <th>EMAIL</th>
                   <th>ACTION</th>
                   <th>STATUS</th>
@@ -61,14 +112,16 @@ export default function adminAccountManagement() {
                     .
                   </td>
                 </tr>
-                {Users.map((user) => (
-                  <tr>
-                    <td>{user.id}</td>
-                    <td>{user.fullname}</td>
-                    <td>{user.role}</td>
-                    <td>{user.email}</td>
+
+                {customerList?.map((customer, index) => (
+                  <tr key={customer.id}>
+                    <td>{index + 1}</td>
+                    <td>{customer.username}</td>
+                    <td>{customer.full_name}</td>
+                    <td>{customer.email}</td>
                     <td>
                       <Button
+                        onClick={() => handleClickOpenRemoveUser()}
                         variant="contained"
                         sx={{
                           width: "100px",
@@ -85,18 +138,9 @@ export default function adminAccountManagement() {
                         Delete
                       </Button>
                     </td>
-                    {user.status == "Active" ? (
+                    {customer.status == "ACTIVE" ? (
                       <td>
                         <div class="flex justify-center m-5">
-                          {/* <button
-                            id="deleteButton"
-                            data-modal-target="deleteModal"
-                            data-modal-toggle="deleteModal"
-                            className="block text-white bg-[#6EC882] hover:bg-primary-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
-                            type="button"
-                          >
-                            Active
-                          </button> */}
                           <Button
                             variant="contained"
                             sx={{
@@ -118,15 +162,6 @@ export default function adminAccountManagement() {
                     ) : (
                       <td>
                         <div class="flex justify-center m-5">
-                          {/* <button
-                            id="deleteButton"
-                            data-modal-target="deleteModal"
-                            data-modal-toggle="deleteModal"
-                            className="block text-white bg-[#8E8E8E] hover:bg-primary-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
-                            type="button"
-                          >
-                            Inactive
-                          </button> */}
                           <Button
                             variant="contained"
                             sx={{
