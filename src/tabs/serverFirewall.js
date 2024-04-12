@@ -8,8 +8,7 @@ import {
   Button,
 } from "@mui/material";
 
-export default function ServerFirewall() {
-  const [serverLevel, setServerLevel] = useState("");
+export default function ServerFirewall(serverId) {
   const [trustedServices, setTrustedServices] = useState({
     http: false,
     ftp: false,
@@ -18,10 +17,6 @@ export default function ServerFirewall() {
     smtp: false,
   });
 
-  const handleLevelChange = (event) => {
-    setServerLevel(event.target.value);
-  };
-
   const handleServiceChange = (event) => {
     setTrustedServices({
       ...trustedServices,
@@ -29,6 +24,63 @@ export default function ServerFirewall() {
     });
   };
 
+  // FIRE WALL LEVEL
+  const [firewallLevel, setFirewallLevel] = useState("");
+  const [isDisable, setIsDisable] = useState(false);
+
+  const handleLevelChange = (prop) => (event) => {
+    setFirewallLevel({ ...firewallLevel, [prop]: event.target.value });
+    checkDisable();
+  };
+
+  const handleFireWallAction = async () => {
+    const url = `http://127.0.0.1:5000/server/firewall_action/${serverId.serverId}`;
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          action: firewallLevel,
+          port: "",
+          ip: "",
+        }),
+      });
+      if (response.status === 200) {
+        const server = await response.json();
+      } else {
+        alert("Update Fail");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setFirewallLevel("");
+    }
+  };
+
+  const handleChange = (event) => {
+    setFirewallLevel(event.target.value);
+  };
+
+  const checkDisable = () => {
+    console.log(firewallLevel);
+
+    if (firewallLevel == "enable_firewall") {
+      setIsDisable(true);
+    } else if (firewallLevel == "disable_firewall") {
+      setIsDisable(true);
+    } else if (firewallLevel == "reset_firewall") {
+      setIsDisable(true);
+    } else {
+      setIsDisable(false);
+    }
+  };
+  console.log(isDisable);
   return (
     <div>
       <div className="info-title font-semibold my-3">
@@ -45,22 +97,23 @@ export default function ServerFirewall() {
             size="small"
             labelId="demo-select-small-label"
             id="demo-select-small"
-            value={serverLevel}
+            value={firewallLevel}
             label=""
-            onChange={handleLevelChange}
+            onChange={handleChange}
           >
-            <MenuItem value={"1"}>Enable Firwall</MenuItem>
-            <MenuItem value={2}>Disable firewall</MenuItem>
-            <MenuItem value={3}>Enable Port</MenuItem>
-            <MenuItem value={4}>Enable IP</MenuItem>
-            <MenuItem value={5}>Disable Port</MenuItem>
-            <MenuItem value={6}>Disable IP</MenuItem>
+            <MenuItem value={"enable_firewall"}>Enable Firwall</MenuItem>
+            <MenuItem value={"disable_firewall"}>Disable firewall</MenuItem>
+            <MenuItem value={"allow_port"}>Allow Port</MenuItem>
+            <MenuItem value={"allow_ip"}>Allow IP</MenuItem>
+            <MenuItem value={"deny_port"}>Deny Port</MenuItem>
+            <MenuItem value={"deny_ip"}>Deny IP</MenuItem>
+            <MenuItem value={"reset_firewall"}>Reset Firewall</MenuItem>
           </Select>
         </div>
       </div>
       {/* End SL */}
-      {/* TS */}
-      <div className="flex flex-row mt-3">
+      {/* Trusted Service */}
+      {/* <div className="flex flex-row mt-3">
         <div className="flex flex-row gap-28">
           <p>
             <b>Trusted services:</b>
@@ -127,28 +180,31 @@ export default function ServerFirewall() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
       {/*End TS */}
       {/* OP */}
-      <div className="flex flex-row mt-3 gap-32">
-        <div className="flex flex-col w-24">
-          <p className="font-bold">Other ports:</p>
-          <p>1029:tcp </p>
+      {!isDisable && (
+        <div className="flex flex-row mt-3 gap-32">
+          <div className="flex flex-col w-24">
+            <p className="font-bold">Other information:</p>
+            <p>1029:tcp </p>
+          </div>
+          <div className="flex flex-col ml-3">
+            <TextField
+              id="outlined-basic"
+              value={"192.168.x.xx"}
+              onChange={""}
+              size="small"
+              sx={{ width: "800px" }}
+            />
+          </div>
         </div>
-        <div className="flex flex-col ml-3">
-          <TextField
-            id="outlined-basic"
-            value={"192.168.x.xx"}
-            onChange={""}
-            disabled={"isDisabled"}
-            size="small"
-            sx={{ width: "800px" }}
-          />
-        </div>
-      </div>
+      )}
+
       {/* End OP */}
       <div className="my-3">
         <Button
+          onClick={handleFireWallAction}
           variant="contained"
           sx={{
             width: "150px",

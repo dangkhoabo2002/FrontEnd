@@ -253,7 +253,7 @@ export default function SignUp() {
 
               {showTickMessage && (
                 <div className={`error-popup ${showTickMessage ? "show" : ""}`}>
-                  <p className="text-red-700">
+                  <p className="text-red">
                     Please tick the agreement checkbox.
                   </p>
                 </div>
