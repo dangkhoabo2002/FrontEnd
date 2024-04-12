@@ -780,9 +780,7 @@ export default function OrganizationDashboard() {
                             </Link>
                           ))}
                       </div>
-                      <button onClick={handleOpenAddServer}>
-                        <ButtonAddServer />
-                      </button>
+                      <ButtonAddServer onClick={handleOpenAddServer} />
                       <Modal
                         keepMounted
                         open={openAddServer}

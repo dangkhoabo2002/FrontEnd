@@ -109,7 +109,7 @@ export default function UserServerConfig() {
                 <General serverId={server_id} />
               </TabPanel>
               <TabPanel value="2">
-                <Proxy />
+                <Proxy serverId={server_id} />
               </TabPanel>
               <TabPanel value="3">
                 <Firewall />

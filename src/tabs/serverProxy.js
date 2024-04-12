@@ -1,163 +1,539 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
-  TextField,
   Button,
+  Modal,
+  Box,
+  IconButton,
+  Grid,
+  Typography,
   FormControl,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
+  OutlinedInput,
 } from "@mui/material";
-import { withStyles } from "@mui/styles";
 import "../css/serverProxy.css";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 
-export default function ServerProxy() {
-  const [isDisabled, setIsDisabled] = useState(true);
-  const [showResetButton, setShowResetButton] = useState(false);
-  const [showTable, setShowTable] = useState(false);
-  const [DomainOrIP, setDomainOrIP] = useState("10001");
-  const [Port, setPort] = useState("10001");
-  const [selectedOption, setSelectedOption] = useState("enable");
+// ICONS MUI
 
-  // Điền thông tin vào Input
+import CloseIcon from "@mui/icons-material/Close";
+export default function ServerProxy(serverId) {
+  // ADD PROXY
+  const [isOpenAddProxy, setIsOpenAddProxy] = useState(false);
+  const [addProxyData, setAddProxyData] = useState({
+    protocol: "",
+    detail: "",
+  });
 
-  const handleDomainOrIPChange = (event) => {
-    setDomainOrIP(event.target.value);
-  };
-  const handlePortChange = (event) => {
-    setPort(event.target.value);
-  };
-  const handleRadioChange = (event) => {
-    setSelectedOption(event.target.value);
-  };
-
-  // Toggle Disabled trong TextField và Editable
-  const handleEditClick = () => {
-    setIsDisabled(!isDisabled);
-    setShowResetButton(isDisabled);
-  };
-
-  const handleShowTableClick = () => {
-    setShowTable(!showTable);
+  const handleOpenAddProxy = () => {
+    setDeleteProxyData();
+    setIsOpenAddProxy(true);
   };
 
-  // Btn radio color
-  const CustomRadio = withStyles({
-    root: {
-      "&$checked": {
-        color: "#3867A5",
-      },
-    },
-    checked: {},
-  })((props) => <Radio color="default" {...props} />);
+  const handleCloseAddProxy = () => {
+    setIsOpenAddProxy(false);
+  };
 
+  const handleChangeAddInput = (prop) => (event) => {
+    setAddProxyData({ ...addProxyData, [prop]: event.target.value });
+  };
+
+  const handleAddProxyAPI = async () => {
+    const editUrl = `http://127.0.0.1:5000/server/add_proxy/${serverId.serverId}`;
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await fetch(editUrl, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          protocol: addProxyData.protocol,
+          detail: addProxyData.detail,
+        }),
+      });
+      if (response.status === 200) {
+        handleGetProxy();
+      } else {
+        alert("Add Fail");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+
+  console.log("data", addProxyData);
+
+  // DELETE PROXY
+  const [isOpenDelete, setIsOpenDelete] = useState(false);
+  const [deleteProxyData, setDeleteProxyData] = useState({
+    protocol: "",
+    detail: "",
+  });
+
+  const handleOpenDeleteProxy = (selectedProxy) => {
+    setDeleteProxyData(selectedProxy);
+    setIsOpenDelete(true);
+    console.log("delete", deleteProxyData);
+  };
+
+  const handleCloseDeleteProxy = () => {
+    setOpenEditProxy(false);
+  };
+  const handleDeleteProxy = async () => {
+    const editUrl = `http://127.0.0.1:5000/server/delete_proxy/${serverId.serverId}`;
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await fetch(editUrl, {
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          protocol: deleteProxyData.protocol,
+          detail: deleteProxyData.detail,
+        }),
+      });
+      if (response.status === 200) {
+        handleGetProxy();
+      } else {
+        alert("Delete Fail");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+
+  // EDIT PROXY POP UP
+  const [openEditProxy, setOpenEditProxy] = useState(false);
+  const [editProxyData, setEditProxyData] = useState({
+    new_domain: "",
+    new_port: "",
+  });
+
+  const [currentProxy, setCurrentProxy] = useState();
+
+  const handleEditProxy = () => {
+    handleEditProxyAPI();
+    handleCloseEditProxy();
+    setCurrentProxy("");
+  };
+
+  const handleOpenEditProxy = (selectedProxy) => {
+    setCurrentProxy(selectedProxy);
+    setOpenEditProxy(true);
+  };
+
+  const handleCloseEditProxy = () => {
+    setOpenEditProxy(false);
+  };
+
+  const handleChangeEditInput = (prop) => (event) => {
+    setEditProxyData({ ...editProxyData, [prop]: event.target.value });
+  };
+
+  const handleEditProxyAPI = async () => {
+    const editUrl = `http://127.0.0.1:5000/server/update_proxy/${serverId.serverId}`;
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await fetch(editUrl, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          protocol: currentProxy.protocol,
+          detail: currentProxy.details,
+          new_domain: editProxyData.new_domain,
+          new_port: editProxyData.new_port,
+        }),
+      });
+      if (response.status === 200) {
+        handleGetProxy();
+      } else {
+        alert("Update Fail");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+
+  // GET Proxy
+  const [proxyData, setProxyData] = useState("");
+
+  const handleGetProxy = async () => {
+    const getUrl = `http://127.0.0.1:5000/server/get_all_proxy/${serverId.serverId}`;
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await fetch(getUrl, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": "true",
+        },
+      });
+      if (response.status === 200) {
+        const proxyGet = await response.json();
+        setProxyData(proxyGet);
+      } else {
+        alert("Update Fail");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+  useEffect(() => {
+    handleGetProxy();
+  }, []);
+
+  // CSS
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 600,
+    bgcolor: "background.paper",
+    borderRadius: "20px",
+    boxShadow: 24,
+    p: 3,
+  };
   return (
     <div>
       <div className="mb-3">
-        <FormControl>
-          <div className="info-title font-semibold my-3">
-            <p>Proxy Server Setting</p>
-          </div>{" "}
-          <RadioGroup
-            className="mb-3"
-            value={selectedOption}
-            onChange={handleRadioChange}
-            row
-            aria-labelledby="demo-row-radio-buttons-group-label"
-            name="row-radio-buttons-group"
-          >
-            <FormControlLabel
-              className="custom-radio"
-              value="enable"
-              control={<CustomRadio />}
-              label="Enable"
-              disabled={isDisabled}
-            />
-            <FormControlLabel
-              className="custom-radio"
-              value="automatic"
-              control={<CustomRadio />}
-              label="Automatic"
-              disabled={isDisabled}
-            />
-            <FormControlLabel
-              className="custom-radio"
-              value="disable"
-              control={<CustomRadio />}
-              label="Disable"
-              disabled={isDisabled}
-            />
-          </RadioGroup>
-          <div className="flex flex-row gap-40 mb-3">
-            <div className="email">
-              <h1 className="mb-2">Domain or IP</h1>
-
-              <TextField
-                className="textField"
-                mt={1}
-                id="outlined-basic"
-                value={DomainOrIP}
-                onChange={handleDomainOrIPChange}
-                disabled={isDisabled}
-                size="small"
-                sx={{ width: "400px" }}
-              />
-            </div>
-            <div className="">
-              <h1 className="mb-2">Port</h1>
-              <TextField
-                className="textField"
-                mt={1}
-                id="outlined-basic"
-                value={Port}
-                onChange={handlePortChange}
-                disabled={isDisabled}
-                size="small"
-                sx={{ width: "260px" }}
-              />
-            </div>
-          </div>
-        </FormControl>
+        <div className="info-title font-semibold my-3">
+          <p>Proxy Server Setting</p>
+        </div>
+        <Button variant="contained" onClick={handleOpenAddProxy}>
+          Add Proxy
+        </Button>
       </div>
       <div className="server_des mb-3">
-        <Button variant="outlined" onClick={handleEditClick}>
-          {isDisabled ? "Update" : "Save Changes"}
-        </Button>
+        <div>
+          {/* Replace with your actual table implementation */}
+          <table className="w-full">
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>Protocol</th>
+                <th>Detail</th>
+                <th colSpan={2}>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {proxyData &&
+                proxyData?.map((proxy, index) => (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{proxyData[index].protocol}</td>
+                    <td>{proxyData[index].details}</td>
+                    <td>
+                      <IconButton
+                        aria-label="edit"
+                        onClick={() => handleOpenEditProxy(proxyData[index])}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </td>
+                    <td>
+                      <IconButton
+                        aria-label="delete"
+                        onClick={() =>
+                          handleOpenDeleteProxy(
+                            proxyData[index].protocol,
+                            proxyData[index].details
+                          )
+                        }
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
 
-        {showResetButton && (
-          <>
-            <Button size="medium" variant="text" onClick={handleEditClick}>
-              <span className="btn-cancel">Cancel</span>
-            </Button>
-            <div>
-              <Button variant="outlined" onClick={handleShowTableClick}>
-                Show proxy
-              </Button>
-            </div>
-          </>
-        )}
+          {/*Modal of Update Proxy */}
+          <Modal
+            keepMounted
+            open={openEditProxy}
+            onClose={handleCloseEditProxy}
+            aria-labelledby="keep-mounted-modal-title"
+            aria-describedby="keep-mounted-modal-description"
+          >
+            <Box sx={style}>
+              <div className="pb-2 text-center border-b-2 border-stone-500">
+                <div className="flex flex-row items-center justify-between">
+                  <p
+                    className="font-semibold"
+                    style={{ fontSize: "28px", color: "#637381" }}
+                  >
+                    UPDATE PROXY
+                  </p>
+                  <IconButton onClick={handleCloseEditProxy}>
+                    <CloseIcon />
+                  </IconButton>
+                </div>
+              </div>
 
-        {showResetButton && showTable && (
-          <div>
-            {/* Replace with your actual table implementation */}
-            <table className="w-full">
-              <thead>
-                <tr>
-                  <th>Protocol</th>
-                  <th>Detail</th>
-                </tr>
-              </thead>
-              <tbody>
-                {/* Populate table rows with data */}
-                <tr>
-                  <td>Data 1</td>
-                  <td>Data 2</td>
-                  {/* Add more table cells per row */}
-                </tr>
-                {/* Add more table rows as needed */}
-              </tbody>
-            </table>
-          </div>
-        )}
+              <Grid container alignItems="center" spacing={2} mt={0}>
+                <Grid item xs={12} md={3}>
+                  <Typography
+                    className="mt-3"
+                    style={{
+                      fontSize: "16px",
+                      fontWeight: "400",
+                    }}
+                  >
+                    New domain:
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} md={9}>
+                  <FormControl fullWidth variant="outlined">
+                    <OutlinedInput
+                      inputProps={{
+                        "aria-label": "New domain",
+                      }}
+                      onChange={handleChangeEditInput("new_domain")}
+                      value={editProxyData.new_domain}
+                    />
+                  </FormControl>
+                </Grid>
+              </Grid>
+
+              <Grid container alignItems="center" spacing={2} mt={0}>
+                <Grid item xs={12} md={3}>
+                  <Typography
+                    className="mt-3"
+                    style={{
+                      fontSize: "16px",
+                      fontWeight: "400",
+                    }}
+                  >
+                    New port:
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} md={9}>
+                  <FormControl fullWidth variant="outlined">
+                    <OutlinedInput
+                      inputProps={{
+                        "aria-label": "New port",
+                      }}
+                      onChange={handleChangeEditInput("new_port")}
+                      value={editProxyData.new_port}
+                    />
+                  </FormControl>
+                </Grid>
+              </Grid>
+
+              <Box>
+                <Grid container spacing={2} mt={0}>
+                  <Grid item xs={12} md={3}></Grid>
+                  <Grid item xs={12} md={3}></Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    md={3}
+                    className="d-flex justify-content-center align-items-center"
+                  >
+                    <Button onClick={handleCloseEditProxy}>
+                      <Typography variant="button" style={{ color: "red" }}>
+                        Cancel
+                      </Typography>
+                    </Button>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    md={3}
+                    className="d-flex justify-content-center align-items-center"
+                  >
+                    <Button
+                      variant="contained"
+                      onClick={handleEditProxy}
+                      style={{ marginLeft: "10px" }}
+                      sx={{
+                        width: "120px",
+                        height: "auto",
+                        color: "white",
+                        bgcolor: "#6EC882",
+                        "&:hover": { bgcolor: "#5CA36C" },
+                        fontSize: "14px",
+                        fontWeight: "normal",
+                        textTransform: "none",
+                      }}
+                    >
+                      Done
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Box>
+            </Box>
+          </Modal>
+
+          {/*Modal of Delete Proxy */}
+          <Dialog
+            open={isOpenDelete}
+            onClose={handleCloseDeleteProxy}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">DELETE PROXY</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Are you sure to delete this proxy?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseDeleteProxy}>Disagree</Button>
+              <Button onClick={handleOpenDeleteProxy}>Agree</Button>
+            </DialogActions>
+          </Dialog>
+
+          {/*Modal of Add Proxy */}
+          <Modal
+            keepMounted
+            open={isOpenAddProxy}
+            onClose={handleCloseAddProxy}
+            aria-labelledby="keep-mounted-modal-title"
+            aria-describedby="keep-mounted-modal-description"
+          >
+            <Box sx={style}>
+              <div className="pb-2 text-center border-b-2 border-stone-500">
+                <div className="flex flex-row items-center justify-between">
+                  <p
+                    className="font-semibold"
+                    style={{ fontSize: "28px", color: "#637381" }}
+                  >
+                    UPDATE PROXY
+                  </p>
+                  <IconButton onClick={handleCloseAddProxy}>
+                    <CloseIcon />
+                  </IconButton>
+                </div>
+              </div>
+
+              <Grid container alignItems="center" spacing={2} mt={0}>
+                <Grid item xs={12} md={3}>
+                  <Typography
+                    className="mt-3"
+                    style={{
+                      fontSize: "16px",
+                      fontWeight: "400",
+                    }}
+                  >
+                    Protocol:
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} md={9}>
+                  <FormControl fullWidth>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={addProxyData.protocol}
+                      onChange={handleChangeAddInput("protocol")}
+                    >
+                      <MenuItem value={"ftp_proxy"}>ftp_proxy</MenuItem>
+                      <MenuItem value={"http_proxy"}>http_proxy</MenuItem>
+                      <MenuItem value={"https_proxy"}>https_proxy</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+              </Grid>
+
+              <Grid container alignItems="center" spacing={2} mt={0}>
+                <Grid item xs={12} md={3}>
+                  <Typography
+                    className="mt-3"
+                    style={{
+                      fontSize: "16px",
+                      fontWeight: "400",
+                    }}
+                  >
+                    Detail:
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} md={9}>
+                  <FormControl fullWidth variant="outlined">
+                    <OutlinedInput
+                      inputProps={{
+                        "aria-label": "Detail",
+                      }}
+                      onChange={handleChangeAddInput("detail")}
+                      value={addProxyData.detail}
+                    />
+                  </FormControl>
+                </Grid>
+              </Grid>
+
+              <Box>
+                <Grid container spacing={2} mt={0}>
+                  <Grid item xs={12} md={3}></Grid>
+                  <Grid item xs={12} md={3}></Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    md={3}
+                    className="d-flex justify-content-center align-items-center"
+                  >
+                    <Button onClick={handleCloseAddProxy}>
+                      <Typography variant="button" style={{ color: "red" }}>
+                        Cancel
+                      </Typography>
+                    </Button>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    md={3}
+                    className="d-flex justify-content-center align-items-center"
+                  >
+                    <Button
+                      variant="contained"
+                      onClick={handleAddProxyAPI}
+                      style={{ marginLeft: "10px" }}
+                      sx={{
+                        width: "120px",
+                        height: "auto",
+                        color: "white",
+                        bgcolor: "#6EC882",
+                        "&:hover": { bgcolor: "#5CA36C" },
+                        fontSize: "14px",
+                        fontWeight: "normal",
+                        textTransform: "none",
+                      }}
+                    >
+                      Done
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Box>
+            </Box>
+          </Modal>
+        </div>
       </div>
     </div>
   );

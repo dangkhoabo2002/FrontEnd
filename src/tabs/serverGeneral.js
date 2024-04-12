@@ -60,7 +60,6 @@ export default function ServerGeneral(serverId) {
   const handleChange = (prop) => (event) => {
     setData({ ...data, [prop]: event.target.value });
   };
-  console.log(data);
   // GET SERVER DATA
 
   const handleGetServerData1 = async () => {
@@ -469,7 +468,6 @@ export default function ServerGeneral(serverId) {
                   const formData = new FormData(event.currentTarget);
                   const formJson = Object.fromEntries(formData.entries());
                   const email = formJson.email;
-                  console.log(email);
                   handleClose();
                 },
               }}
@@ -514,7 +512,6 @@ export default function ServerGeneral(serverId) {
                   const formData = new FormData(event.currentTarget);
                   const formJson = Object.fromEntries(formData.entries());
                   const email = formJson.email;
-                  console.log(email);
                   handleCloseChangeStatus();
                 },
               }}
