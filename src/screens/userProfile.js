@@ -218,7 +218,7 @@ export default function UserProfile() {
                     onClick={handleResetClick}
                   >
                     <LockResetIcon />
-                    <span className="px-2">Reset Password</span>
+                    <span className="px-2">Change Password</span>
                   </Button>
                   <Button
                     size="medium"

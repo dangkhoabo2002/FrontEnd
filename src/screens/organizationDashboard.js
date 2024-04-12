@@ -38,6 +38,7 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 // CSS
 import "../css/organizationDashboard.css";
+import AddIcon from "@mui/icons-material/Add";
 
 import {
   Modal,
@@ -49,6 +50,7 @@ import {
   OutlinedInput,
   FormControlLabel,
   Checkbox,
+  MenuItem,
 } from "@mui/material";
 import { Abc } from "@mui/icons-material";
 
@@ -196,6 +198,36 @@ export default function OrganizationDashboard() {
     setOpenAddServer(false);
   };
 
+  const role = [
+    {
+      value: "1",
+      label: "Proxy Manager",
+    },
+    {
+      value: "2",
+      label: "Firewall Manager",
+    },
+    {
+      value: "3",
+      label: "Docker Manager",
+    },
+    {
+      value: "4",
+      label: "Library Manager",
+    },
+    {
+      value: "5",
+      label: "Data Manager",
+    },
+    {
+      value: "6",
+      label: "Report Manager",
+    },
+    {
+      value: "7",
+      label: "Execution Manager",
+    },
+  ];
   // --------- FUNCTION ---------
 
   // ADD server
@@ -553,6 +585,10 @@ export default function OrganizationDashboard() {
   // Dialog của Remove User
   const handleClickOpenRemoveUser = () => {
     setOpen(true);
+  };
+
+  const handleClickOpenAddRole = () => {
+    setOpen();
   };
 
   const [value, setValue] = useState("1");
@@ -1071,7 +1107,9 @@ export default function OrganizationDashboard() {
                           Add Member
                         </Button>
                       </div>
-                      <Dialog
+
+                      {/* modal add member */}
+                      <Modal
                         open={openAddMember}
                         onClose={handleCloseAddMember}
                         PaperProps={{
@@ -1086,37 +1124,179 @@ export default function OrganizationDashboard() {
                           },
                         }}
                       >
-                        <DialogTitle>Add new member</DialogTitle>
-                        <DialogContent>
-                          <DialogContentText>
-                            To add member into this organization, please enter
-                            their username here. We will send updates
-                            occasionally.
-                          </DialogContentText>
-                          <TextField
-                            required
-                            margin="dense"
-                            id="name"
-                            name="email"
-                            label="Username"
-                            type="username"
-                            fullWidth
-                            variant="standard"
-                            onChange={handleChangeInput("new_user")}
-                            value={data.new_user}
-                          />
-                        </DialogContent>
-                        <DialogActions>
-                          <Button onClick={handleCloseAddMember}>Cancel</Button>
-                          <Button
-                            type="submit"
-                            variant="outlined"
-                            onClick={handleAddNewUser}
+                        <Box sx={style}>
+                          <div className="pb-2 text-center border-b-2 border-stone-500">
+                            <div className="flex flex-row items-center justify-between">
+                              <p
+                                className="font-semibold"
+                                style={{ fontSize: "28px", color: "#637381" }}
+                              >
+                                ADD MEMBER
+                              </p>
+                              <IconButton onClick={handleCloseAddMember}>
+                                <CloseIcon />
+                              </IconButton>
+                            </div>
+                          </div>
+                          <Grid
+                            container
+                            alignItems="center"
+                            spacing={2}
+                            mt={0}
                           >
-                            Add
-                          </Button>
-                        </DialogActions>
-                      </Dialog>
+                            <Grid item xs={12} md={12}>
+                              To add member into this organization, please enter
+                              their username here. We will send updates
+                              occasionally.
+                            </Grid>
+                            <Grid item xs={12} md={12}>
+                              <TextField
+                                required
+                                margin="dense"
+                                id="name"
+                                name="email"
+                                label="Username"
+                                type="username"
+                                fullWidth
+                                onChange={handleChangeInput("new_user")}
+                                value={data.new_user}
+                              />
+                            </Grid>
+                          </Grid>
+
+                          <DialogActions>
+                            <Button onClick={handleCloseAddMember}>
+                              <Typography
+                                variant="button"
+                                style={{ color: "red" }}
+                              >
+                                Cancel
+                              </Typography>{" "}
+                            </Button>
+                            <Button
+                              variant="contained"
+                              onClick={handleAddNewUser}
+                              sx={{
+                                width: "100px",
+                                color: "white",
+                                bgcolor: "#3867A5",
+                                "&:hover": { bgcolor: "#2A4D7B" },
+                              }}
+                            >
+                              Done
+                            </Button>
+                          </DialogActions>
+                        </Box>
+                      </Modal>
+                      {/* end modal add member */}
+                      {/* modal add role */}
+                      <Modal>
+                        <Box sx={style}>
+                          <div className="pb-2 text-center border-b-2 border-stone-500">
+                            <div className="flex flex-row items-center justify-between">
+                              <p
+                                className="font-semibold"
+                                style={{ fontSize: "28px", color: "#637381" }}
+                              >
+                                ADD ROLE
+                              </p>
+                              <IconButton onClick={"handleCloseAddRole"}>
+                                <CloseIcon />
+                              </IconButton>
+                            </div>
+                          </div>
+                          <Grid
+                            container
+                            alignItems="center"
+                            spacing={2}
+                            mt={0}
+                          >
+                            <div
+                              className="mt-3"
+                              style={{ fontSize: "18px", fontWeight: "bold" }}
+                            >
+                              <p>Add role</p>
+                            </div>
+
+                            <Grid
+                              container
+                              alignItems="center"
+                              spacing={2}
+                              mb={3}
+                            >
+                              <Grid item xs={12} md={3}>
+                                <Typography
+                                  className="mt-3"
+                                  style={{
+                                    fontSize: "16px",
+                                    fontWeight: "400",
+                                  }}
+                                >
+                                  Role:
+                                </Typography>
+                              </Grid>
+                              <Grid item xs={12} md={9}>
+                                <TextField
+                                  fullWidth
+                                  id="outlined-select-currency"
+                                  select
+                                  label=""
+                                  defaultValue="1"
+                                >
+                                  {role.map((option) => (
+                                    <MenuItem
+                                      key={option.value}
+                                      value={option.value}
+                                    >
+                                      {option.label}
+                                    </MenuItem>
+                                  ))}
+                                </TextField>
+                              </Grid>
+                            </Grid>
+                            <Button
+                              startIcon={<AddIcon />}
+                              variant="contained"
+                              sx={{
+                                width: "150px",
+                                height: "30px",
+                                color: "white",
+                                bgcolor: "#3867A5",
+                                "&:hover": { bgcolor: "#264B7B" },
+                                fontSize: "14px",
+                                fontWeight: "normal",
+                                textTransform: "none",
+                              }}
+                            >
+                              Add more role
+                            </Button>
+                          </Grid>
+
+                          <DialogActions>
+                            <Button onClick={"handleCloseAddRole"}>
+                              <Typography
+                                variant="button"
+                                style={{ color: "red" }}
+                              >
+                                Cancel
+                              </Typography>{" "}
+                            </Button>
+                            <Button
+                              variant="contained"
+                              onClick={"handleAddRole"}
+                              sx={{
+                                width: "100px",
+                                color: "white",
+                                bgcolor: "#3867A5",
+                                "&:hover": { bgcolor: "#2A4D7B" },
+                              }}
+                            >
+                              Done
+                            </Button>
+                          </DialogActions>
+                        </Box>
+                      </Modal>
+                      {/* end modal add role */}
                       <table className="memberInOrganizationTable">
                         <tr>
                           <th id="id">#</th>
@@ -1157,7 +1337,10 @@ export default function OrganizationDashboard() {
                                   </Button>
                                 </DialogActions>
                               </Dialog>
-                              <IconButton aria-label="remote">
+                              <IconButton
+                                aria-label="uprole"
+                                onClick={() => handleClickOpenAddRole()}
+                              >
                                 <AddModeratorIcon />
                               </IconButton>
                             </td>
