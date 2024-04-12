@@ -33,7 +33,6 @@ export default function ServerProxy(serverId) {
   });
 
   const handleOpenAddProxy = () => {
-    setDeleteProxyData();
     setIsOpenAddProxy(true);
   };
 
@@ -64,6 +63,7 @@ export default function ServerProxy(serverId) {
       });
       if (response.status === 200) {
         handleGetProxy();
+        handleCloseAddProxy();
       } else {
         alert("Add Fail");
       }
@@ -73,25 +73,30 @@ export default function ServerProxy(serverId) {
     }
   };
 
-  console.log("data", addProxyData);
-
   // DELETE PROXY
   const [isOpenDelete, setIsOpenDelete] = useState(false);
+  const [currentDeleteProxy, setcurrentDeleteProxy] = useState();
   const [deleteProxyData, setDeleteProxyData] = useState({
     protocol: "",
     detail: "",
   });
 
-  const handleOpenDeleteProxy = (selectedProxy) => {
-    setDeleteProxyData(selectedProxy);
+  const handleOpenDeleteProxy = (data) => {
+    setcurrentDeleteProxy(data);
     setIsOpenDelete(true);
-    console.log("delete", deleteProxyData);
+    console.log("data", currentDeleteProxy);
   };
 
   const handleCloseDeleteProxy = () => {
-    setOpenEditProxy(false);
+    setIsOpenDelete(false);
   };
-  const handleDeleteProxy = async () => {
+
+  const handleDeleteProxy = () => {
+    handleDeleteProxyAPI();
+    setIsOpenDelete(false);
+  };
+
+  const handleDeleteProxyAPI = async () => {
     const editUrl = `http://127.0.0.1:5000/server/delete_proxy/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
@@ -104,8 +109,8 @@ export default function ServerProxy(serverId) {
           "Access-Control-Allow-Origin": "*",
         },
         body: JSON.stringify({
-          protocol: deleteProxyData.protocol,
-          detail: deleteProxyData.detail,
+          protocol: currentDeleteProxy.protocol,
+          detail: currentDeleteProxy.details,
         }),
       });
       if (response.status === 200) {
@@ -261,12 +266,7 @@ export default function ServerProxy(serverId) {
                     <td>
                       <IconButton
                         aria-label="delete"
-                        onClick={() =>
-                          handleOpenDeleteProxy(
-                            proxyData[index].protocol,
-                            proxyData[index].details
-                          )
-                        }
+                        onClick={() => handleOpenDeleteProxy(proxyData[index])}
                       >
                         <DeleteIcon />
                       </IconButton>
@@ -409,7 +409,7 @@ export default function ServerProxy(serverId) {
             </DialogContent>
             <DialogActions>
               <Button onClick={handleCloseDeleteProxy}>Disagree</Button>
-              <Button onClick={handleOpenDeleteProxy}>Agree</Button>
+              <Button onClick={handleDeleteProxy}>Agree</Button>
             </DialogActions>
           </Dialog>
 
