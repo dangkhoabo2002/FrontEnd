@@ -94,15 +94,43 @@ export default function UserServerConfig() {
                 <TabList
                   onChange={handleChange}
                   aria-label="lab API tabs example"
+                  sx={{
+                    "& .MuiTabs-flexContainer": {
+                      justifyContent: "space-around",
+                      borderBottom: "1px solid #D9D9D9",
+                    },
+                    "& .MuiTab-root": {
+                      minWidth: "auto",
+                      paddingTop: "10px",
+                      paddingBottom: "10px",
+                      textTransform: "capitalize",
+                      width: "136px",
+                      height: "26px",
+                      fontWeight: "bold",
+                      color: "black",
+                      borderLeft: "1px solid #D9D9D9",
+                      borderRight: "1px solid #D9D9D9",
+                      transition: "background-color 0s, color 0s",
+                      "&.Mui-selected": {
+                        color: "black", // Giữ màu chữ đen khi tab được chọn
+                      },
+                    },
+                    "& .Mui-selected": {
+                      backgroundColor: "#D9D9D9",
+                    },
+                    "& .MuiTabs-indicator": {
+                      backgroundColor: "transparent",
+                    },
+                  }}
                 >
-                  <Tab label="General" value="1" />
-                  <Tab label="Proxy" value="2" />
-                  <Tab label="Firewall" value="3" />
-                  <Tab label="Docker" value="4" />
-                  <Tab label="Library" value="5" />
-                  <Tab label="Data" value="6" />
-                  <Tab label="Report" value="7" />
-                  <Tab label="Execution" value="8" />
+                  <Tab disableRipple label="General" value="1" />
+                  <Tab disableRipple label="Proxy" value="2" />
+                  <Tab disableRipple label="Firewall" value="3" />
+                  <Tab disableRipple label="Docker" value="4" />
+                  <Tab disableRipple label="Library" value="5" />
+                  <Tab disableRipple label="Data" value="6" />
+                  <Tab disableRipple label="Report" value="7" />
+                  <Tab disableRipple label="Execution" value="8" />
                 </TabList>
               </Box>
               <TabPanel value="1">
