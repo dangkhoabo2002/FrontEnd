@@ -25,6 +25,7 @@ import Organizations from "./screens/userOrganization";
 import AdminLogin from "./screens/adminLogin";
 // import AboutUs from "./screens/abouUs";
 import TermOfService from "./screens/termOfService";
+import SubscribeModal from "./components/nonSubModal";
 
 export default function App() {
   return (
@@ -35,6 +36,7 @@ export default function App() {
         {/* <Route path="/aboutUs" element={<AboutUs />}></Route> */}
         <Route path="/guide" element={<Guide />}></Route>
         <Route path="/term" element={<TermOfService />}></Route>
+        <Route path="/sub" element={<SubscribeModal/>}></Route>
 
         {/* ADMIN ROUTE*/}
         <Route path="/adminLogin" element={<AdminLogin />}></Route>

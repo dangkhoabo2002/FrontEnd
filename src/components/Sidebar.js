@@ -5,6 +5,7 @@ import "../css/Sidebar.css";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import BookIcon from "@mui/icons-material/Book";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
+import SubscribeBtn from "./subscribeBtn";
 
 export default function Sidebar() {
   return (
@@ -62,6 +63,8 @@ export default function Sidebar() {
             </section>
           </div>
         </Link>
+
+        <SubscribeBtn sx={{}}/>
         {/* <Link to={`/setting`}>
           <div className="hoverSection">
             <section className="flex flex-row gap-3 py-4 px-11 items-center text-[#637381]">
