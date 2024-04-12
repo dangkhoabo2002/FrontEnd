@@ -54,7 +54,6 @@ export default function Sidebar() {
         >
           <b>MANAGEMENT</b>
         </div>
-
         <Link to={`/user`}>
           <div className="hoverSection">
             <section className="flex flex-row gap-3 py-4 px-11 items-center text-[#637381]">
@@ -63,17 +62,9 @@ export default function Sidebar() {
             </section>
           </div>
         </Link>
-
-        <SubscribeBtn sx={{}}/>
-        {/* <Link to={`/setting`}>
-          <div className="hoverSection">
-            <section className="flex flex-row gap-3 py-4 px-11 items-center text-[#637381]">
-              <SettingsIcon />
-
-              <p className="text-xl font-semibold">Settings</p>
-            </section>
-          </div>
-        </Link> */}
+        <div className="flex flex-row justify-center align-middle mt-60">
+          <SubscribeBtn />
+        </div>
       </div>
     </div>
   );

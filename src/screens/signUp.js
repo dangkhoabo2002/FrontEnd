@@ -79,7 +79,7 @@ export default function SignUp() {
       setError(newErrors);
       return;
     }
-console.log(data.email);
+    console.log(data.email);
     const signupUrl = "http://127.0.0.1:5000/auth/signup";
     try {
       const response = await fetch(signupUrl, {
@@ -125,7 +125,7 @@ console.log(data.email);
           borderRadius: "20px",
         }}
       >
-        <div className="px-40">
+        <div className="px-40 py-10">
           <Link to={`/`}>
             <div
               className="Logo pb-0"
@@ -231,11 +231,18 @@ console.log(data.email);
                     label={
                       <>
                         By signing up, I agree to Manimal{" "}
-                        <Link to={`/term`} style={{ color: "#5F94D9" }}>
+                        <Link
+                          to={`/term`}
+                          style={{
+                            color: "#5F94D9",
+                            paddingLeft: "4px",
+                            paddingRight: "4px",
+                          }}
+                        >
                           Terms of Service
                         </Link>
                         and
-                        <Link style={{ color: "#5F94D9" }}>
+                        <Link style={{ color: "#5F94D9", paddingLeft: "4px" }}>
                           Privacy Policy.
                         </Link>
                       </>
@@ -246,7 +253,9 @@ console.log(data.email);
 
               {showTickMessage && (
                 <div className={`error-popup ${showTickMessage ? "show" : ""}`}>
-                  Please tick the agreement checkbox.
+                  <p className="text-red-700">
+                    Please tick the agreement checkbox.
+                  </p>
                 </div>
               )}
 

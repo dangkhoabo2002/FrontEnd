@@ -202,6 +202,8 @@ export default function OrganizationDashboard() {
   const handleAddServer = () => {
     handleAddServerAPI();
     handleCloseAddServer();
+    handleGetServers();
+    window.location.reload();
   };
 
   const handleAddServerAPI = async () => {
@@ -780,9 +782,10 @@ export default function OrganizationDashboard() {
                             </Link>
                           ))}
                       </div>
-                      <ButtonAddServer onClick={handleOpenAddServer} />
+                      <button onClick={handleOpenAddServer}>
+                        <ButtonAddServer />
+                      </button>
                       <Modal
-                        keepMounted
                         open={openAddServer}
                         onClose={handleCloseAddServer}
                         aria-labelledby="keep-mounted-modal-title"

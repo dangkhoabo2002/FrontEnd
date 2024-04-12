@@ -27,6 +27,8 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import CircularProgress from "@mui/material/CircularProgress";
 
 import handleCheckPass from "../functions/checkPass";
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function ServerGeneral(serverId) {
   // LOADING
@@ -115,6 +117,8 @@ export default function ServerGeneral(serverId) {
   };
 
   //DELETE SERVER
+  const { organization_id } = useParams();
+  const navigate = useNavigate();
   const handleDeleteServer = async () => {
     const getUrl = `http://127.0.0.1:5000/server/delete/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
@@ -129,8 +133,8 @@ export default function ServerGeneral(serverId) {
         },
       });
       if (response.status === 200) {
-        alert("Delete Success!");
         handleCloseDeleteServer();
+        navigate(`/organizations/dashboard/${organization_id}`);
       } else {
         alert("Delete Fail!");
       }
