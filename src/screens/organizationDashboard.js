@@ -55,6 +55,11 @@ import {
 import { Abc } from "@mui/icons-material";
 
 export default function OrganizationDashboard() {
+  // ADD ROLE DATA
+  const [openAddRole, setOpenAddRole] = useState(false);
+  const [addRoleData, setAddRoleData] = useState();
+  //
+
   const navigate = useNavigate();
 
   const { organization_id } = useParams();
@@ -202,30 +207,37 @@ export default function OrganizationDashboard() {
     {
       value: "1",
       label: "Proxy Manager",
+      addData: "proxy",
     },
     {
       value: "2",
       label: "Firewall Manager",
+      addData: "firewall",
     },
     {
       value: "3",
       label: "Docker Manager",
+      addData: "docker",
     },
     {
       value: "4",
       label: "Library Manager",
+      addData: "library",
     },
     {
       value: "5",
       label: "Data Manager",
+      addData: "data",
     },
     {
       value: "6",
       label: "Report Manager",
+      addData: "report",
     },
     {
       value: "7",
       label: "Execution Manager",
+      addData: "execution",
     },
   ];
   // --------- FUNCTION ---------
@@ -643,6 +655,52 @@ export default function OrganizationDashboard() {
   };
 
   const { name } = organizations[0];
+
+  // ADD ROLE
+
+  const handleAddRole = () => {
+    // handleAddRoleAPI();
+    handleCloseAddRole();
+  };
+
+  const handleOpenAddRole = () => {
+    setOpenAddRole(true);
+  };
+
+  const handleCloseAddRole = () => {
+    setOpenAddRole(false);
+  };
+
+  // const handleAddRoleAPI = async () => {
+  //   const loginUrl = `http://127.0.0.1:5000/org/delete/${organization_id}`;
+  //   const token = localStorage.getItem("access_token");
+
+  //   try {
+  //     const response = await fetch(loginUrl, {
+  //       method: "DELETE",
+  //       credentials: "include",
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         "Content-Type": "application/json",
+  //         "Access-Control-Allow-Origin": "*",
+  //         "Access-Control-Allow-Credentials": "true",
+  //       },
+  //    body: JSON.stringify({
+  //        addRole: addRoleData,
+  //      });
+  //     });
+  //     if (response.status === 200) {
+  //   alert("Add role Success"),
+  //     //reload
+
+  //     } else {
+  //       alert("Delete Fail");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //   } finally {
+  //   }
+  // };
 
   return (
     <>
@@ -1188,115 +1246,9 @@ export default function OrganizationDashboard() {
                           </DialogActions>
                         </Box>
                       </Modal>
-                      {/* end modal add member */}
+
                       {/* modal add role */}
-                      <Modal>
-                        <Box sx={style}>
-                          <div className="pb-2 text-center border-b-2 border-stone-500">
-                            <div className="flex flex-row items-center justify-between">
-                              <p
-                                className="font-semibold"
-                                style={{ fontSize: "28px", color: "#637381" }}
-                              >
-                                ADD ROLE
-                              </p>
-                              <IconButton onClick={"handleCloseAddRole"}>
-                                <CloseIcon />
-                              </IconButton>
-                            </div>
-                          </div>
-                          <Grid
-                            container
-                            alignItems="center"
-                            spacing={2}
-                            mt={0}
-                          >
-                            <div
-                              className="mt-3"
-                              style={{ fontSize: "18px", fontWeight: "bold" }}
-                            >
-                              <p>Add role</p>
-                            </div>
 
-                            <Grid
-                              container
-                              alignItems="center"
-                              spacing={2}
-                              mb={3}
-                            >
-                              <Grid item xs={12} md={3}>
-                                <Typography
-                                  className="mt-3"
-                                  style={{
-                                    fontSize: "16px",
-                                    fontWeight: "400",
-                                  }}
-                                >
-                                  Role:
-                                </Typography>
-                              </Grid>
-                              <Grid item xs={12} md={9}>
-                                <TextField
-                                  fullWidth
-                                  id="outlined-select-currency"
-                                  select
-                                  label=""
-                                  defaultValue="1"
-                                >
-                                  {role.map((option) => (
-                                    <MenuItem
-                                      key={option.value}
-                                      value={option.value}
-                                    >
-                                      {option.label}
-                                    </MenuItem>
-                                  ))}
-                                </TextField>
-                              </Grid>
-                            </Grid>
-                            <Button
-                              startIcon={<AddIcon />}
-                              variant="contained"
-                              sx={{
-                                width: "150px",
-                                height: "30px",
-                                color: "white",
-                                bgcolor: "#3867A5",
-                                "&:hover": { bgcolor: "#264B7B" },
-                                fontSize: "14px",
-                                fontWeight: "normal",
-                                textTransform: "none",
-                              }}
-                            >
-                              Add more role
-                            </Button>
-                          </Grid>
-
-                          <DialogActions>
-                            <Button onClick={"handleCloseAddRole"}>
-                              <Typography
-                                variant="button"
-                                style={{ color: "red" }}
-                              >
-                                Cancel
-                              </Typography>{" "}
-                            </Button>
-                            <Button
-                              variant="contained"
-                              onClick={"handleAddRole"}
-                              sx={{
-                                width: "100px",
-                                color: "white",
-                                bgcolor: "#3867A5",
-                                "&:hover": { bgcolor: "#2A4D7B" },
-                              }}
-                            >
-                              Done
-                            </Button>
-                          </DialogActions>
-                        </Box>
-                      </Modal>
-                      {/* end modal add role */}
                       <table className="memberInOrganizationTable">
                         <tr>
                           <th id="id">#</th>
@@ -1312,7 +1264,7 @@ export default function OrganizationDashboard() {
                             <td>
                               <IconButton
                                 aria-label="delete"
-                                onClick={() => handleClickOpenRemoveUser()}
+                                onClick={() => handleCloseAddRole()}
                               >
                                 <DeleteIcon />
                               </IconButton>
@@ -1339,7 +1291,7 @@ export default function OrganizationDashboard() {
                               </Dialog>
                               <IconButton
                                 aria-label="uprole"
-                                onClick={() => handleClickOpenAddRole()}
+                                onClick={() => handleOpenAddRole()}
                               >
                                 <AddModeratorIcon />
                               </IconButton>
@@ -1348,6 +1300,110 @@ export default function OrganizationDashboard() {
                         ))}
                       </table>
                     </div>
+                    <Modal open={openAddRole} onClose={handleCloseAddRole}>
+                      <Box sx={style}>
+                        <div className="pb-2 text-center border-b-2 border-stone-500">
+                          <div className="flex flex-row items-center justify-between">
+                            <p
+                              className="font-semibold"
+                              style={{ fontSize: "28px", color: "#637381" }}
+                            >
+                              ADD ROLE
+                            </p>
+                            <IconButton onClick={handleCloseAddRole}>
+                              <CloseIcon />
+                            </IconButton>
+                          </div>
+                        </div>
+                        <Grid container alignItems="center" spacing={2} mt={0}>
+                          <div
+                            className="mt-3"
+                            style={{ fontSize: "18px", fontWeight: "bold" }}
+                          >
+                            <p>Add role</p>
+                          </div>
+
+                          <Grid
+                            container
+                            alignItems="center"
+                            spacing={2}
+                            mb={3}
+                          >
+                            <Grid item xs={12} md={3}>
+                              <Typography
+                                className="mt-3"
+                                style={{
+                                  fontSize: "16px",
+                                  fontWeight: "400",
+                                }}
+                              >
+                                Role:
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={12} md={9}>
+                              <TextField
+                                fullWidth
+                                id="outlined-select-currency"
+                                select
+                                label=""
+                                defaultValue="1"
+                              >
+                                {role.map((option) => (
+                                  <MenuItem
+                                    onChange={() =>
+                                      setAddRoleData(option.addData)
+                                    }
+                                    key={option.value}
+                                    value={option.value}
+                                  >
+                                    {option.label}
+                                  </MenuItem>
+                                ))}
+                              </TextField>
+                            </Grid>
+                          </Grid>
+                          <Button
+                            startIcon={<AddIcon />}
+                            variant="contained"
+                            sx={{
+                              width: "150px",
+                              height: "30px",
+                              color: "white",
+                              bgcolor: "#3867A5",
+                              "&:hover": { bgcolor: "#264B7B" },
+                              fontSize: "14px",
+                              fontWeight: "normal",
+                              textTransform: "none",
+                            }}
+                          >
+                            Add more role
+                          </Button>
+                        </Grid>
+
+                        <DialogActions>
+                          <Button onClick={handleCloseAddRole}>
+                            <Typography
+                              variant="button"
+                              style={{ color: "red" }}
+                            >
+                              Cancel
+                            </Typography>
+                          </Button>
+                          <Button
+                            variant="contained"
+                            onClick={handleAddRole}
+                            sx={{
+                              width: "100px",
+                              color: "white",
+                              bgcolor: "#3867A5",
+                              "&:hover": { bgcolor: "#2A4D7B" },
+                            }}
+                          >
+                            Done
+                          </Button>
+                        </DialogActions>
+                      </Box>
+                    </Modal>
                   </TabPanel>
 
                   {/* TAB 3 */}
