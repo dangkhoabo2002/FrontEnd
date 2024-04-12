@@ -49,15 +49,6 @@ export default function sidebarAdmin() {
             </section>
           </Link>
         </div>
-        <div className="hoverSection">
-          <Link to={`/admin/setting`}>
-            <section className="flex flex-row gap-3 py-4 pl-12 items-center justify-left text-[#637381]">
-              <SettingsIcon />
-
-              <p className="text-xl font-semibold">Settings</p>
-            </section>
-          </Link>
-        </div>
       </div>
     </div>
   );
