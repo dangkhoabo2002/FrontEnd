@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Checkbox,
   FormControlLabel,
@@ -88,7 +88,7 @@ export default function ServerFirewall(serverId) {
   // firewall table
   const [firewallData, setFirewallData] = useState();
 
-  const handleAddFirewallAPI = async () => {
+  const handleGetFirewallAPI = async () => {
     const editUrl = `http://127.0.0.1:5000/server/firewall_rules/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
@@ -113,6 +113,10 @@ export default function ServerFirewall(serverId) {
     }
   };
 
+  console.log("firewall", firewallData);
+  useEffect(() => {
+    handleGetFirewallAPI();
+  }, []);
   return (
     <div>
       <div className="info-title font-semibold my-3">
@@ -248,26 +252,26 @@ export default function ServerFirewall(serverId) {
         </Button>
       </div>
       <table className="w-full">
-            <thead>
-              <tr>
-                <th>No.</th>
-                <th>To</th>
-                <th>Action</th>
-                <th>From</th>
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>To</th>
+            <th>Action</th>
+            <th>From</th>
+          </tr>
+        </thead>
+        <tbody>
+          {firewallData &&
+            firewallData?.map((firewall, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>{firewall[index].to}</td>
+                <td>{firewall[index].action}</td>
+                <td>{firewall[index].from}</td>
               </tr>
-            </thead>
-            <tbody>
-              {firewallData &&
-                firewallData?.map((firewall, index) => (
-                  <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td>{firewall[index].to}</td>
-                    <td>{firewall[index].action}</td>
-                    <td>{firewall[index].from}</td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
+            ))}
+        </tbody>
+      </table>
     </div>
   );
 }
