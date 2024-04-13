@@ -102,6 +102,7 @@ export default function OrganizationDashboard() {
     } finally {
     }
   };
+  console.log(serverList);
 
   // GET MEMBER
   const handleGetMember = async () => {
@@ -748,17 +749,9 @@ export default function OrganizationDashboard() {
               </span>
             </div>
           </div>
-          <div
-            className=""
-            style={{ display: "flex", justifyContent: "left", width: "100%" }}
-          >
+          <div>
             <div>
-              <Box
-                sx={{
-                  width: "100%",
-                  typography: "body1",
-                }}
-              >
+              <Box>
                 <TabContext value={value}>
                   <Box
                     sx={{
@@ -769,11 +762,36 @@ export default function OrganizationDashboard() {
                     <TabList
                       onChange={handleChange}
                       aria-label="lab API tabs example"
+                      sx={{
+                        "& .MuiTabs-flexContainer": {
+                          borderBottom: "1px solid #D9D9D9",
+                          width: "26.55vw",
+                        },
+                        "& .MuiTab-root": {
+                          minWidth: "auto",
+                          textTransform: "capitalize",
+                          width: "136px",
+                          height: "26px",
+                          fontWeight: "bold",
+                          color: "black",
+                          borderLeft: "1px solid #D9D9D9",
+                          borderRight: "1px solid #D9D9D9",
+                          transition: "background-color 0.3s, color 0.3s", // Thêm hiệu ứng màu sắc khi chuyển đổi tab
+                          "&.Mui-selected": {
+                            color: "black", // Giữ màu chữ đen khi tab được chọn
+                          },
+                        },
+                        "& .Mui-selected": {
+                          backgroundColor: "#D9D9D9",
+                        },
+                        "& .MuiTabs-indicator": {
+                          backgroundColor: "transparent",
+                        },
+                      }}
                     >
-                      <Tab label="Servers" value="1" />
-
-                      <Tab label="Members" value="2" />
-                      <Tab label="Settings" value="3" />
+                      <Tab disableRipple label="Servers" value="1" />
+                      <Tab disableRipple label="Members" value="2" />
+                      <Tab disableRipple label="Settings" value="3" />
                     </TabList>
                   </Box>
 

@@ -6,7 +6,10 @@ import {
   Select,
   TextField,
   Button,
+  IconButton,
 } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 
 export default function ServerFirewall(serverId) {
   const [trustedServices, setTrustedServices] = useState({
@@ -81,6 +84,35 @@ export default function ServerFirewall(serverId) {
     }
   };
   console.log(isDisable);
+
+  // firewall table
+  const [firewallData, setFirewallData] = useState();
+
+  const handleAddFirewallAPI = async () => {
+    const editUrl = `http://127.0.0.1:5000/server/firewall_rules/${serverId.serverId}`;
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await fetch(editUrl, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+      if (response.status === 200) {
+        const firewallGet = await response.json();
+        setFirewallData(firewallGet);
+      } else {
+        alert("Fail");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+
   return (
     <div>
       <div className="info-title font-semibold my-3">
@@ -215,6 +247,27 @@ export default function ServerFirewall(serverId) {
           Update
         </Button>
       </div>
+      <table className="w-full">
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>To</th>
+                <th>Action</th>
+                <th>From</th>
+              </tr>
+            </thead>
+            <tbody>
+              {firewallData &&
+                firewallData?.map((firewall, index) => (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{firewall[index].to}</td>
+                    <td>{firewall[index].action}</td>
+                    <td>{firewall[index].from}</td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
     </div>
   );
 }
