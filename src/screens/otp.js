@@ -171,7 +171,7 @@ export default function OTP() {
           </Box>
           {alert && (
             <>
-              <Alert severity="error">This is an error Alert.</Alert>
+              {/* <Alert severity="error">This is an error Alert.</Alert> */}
             </>
           )}
         </div>

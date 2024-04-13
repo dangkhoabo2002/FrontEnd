@@ -1,53 +1,56 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import ReceiptIcon from "@mui/icons-material/Receipt";
-import SettingsIcon from "@mui/icons-material/Settings";
 import InventoryIcon from "@mui/icons-material/Inventory";
 
-export default function sidebarAdmin() {
-  return (
-    <div
-      style={{
-        borderRight: "1px solid #E5E8EB",
-        width: "100%",
-        height: "auto",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      <div className="font-black py-3 text-lg pl-12"></div>
-      <div
-        className="gap-3 py-2 px-11 items-center text-[#212B36]"
-        style={{ fontSize: "12px" }}
-      >
-        <b>GENERAL</b>
-      </div>
+export default function SidebarAdmin() {
 
+  const [selectedMenu, setSelectedMenu] = useState("account");
+  const location = useLocation();
+
+  useEffect(() => {
+    const path = location.pathname;
+    if (path === "/admin") {
+      setSelectedMenu("account");
+    } else if (path === "/admin/billing") {
+      setSelectedMenu("billing");
+    } else if (path === "/admin/guide") {
+      setSelectedMenu("guide");
+    }
+  }, [location]);
+  return (
+    <div className="sidebar-container">
+      <div className="font-black py-3 text-lg pl-12"></div>
       <div className="flex flex-col">
-        <div className="hoverSection ">
-          <Link to={`/admin`}>
-            <section className="flex flex-row gap-3 py-4 pl-12 items-center justify-left text-[#637381]">
-              <ManageAccountsIcon />
-              <p className="text-xl font-semibold">Account Management</p>
-            </section>
-          </Link>
+        <div className="gap-3 py-2 px-11 items-center" style={{ fontSize: "16px" }}>
+          <b>GENERAL</b>
         </div>
-        <div className="hoverSection">
-          <Link to={`/admin/billing`}>
-            <section className="flex flex-row gap-3 py-4 pl-12 items-center justify-left text-[#637381]">
-              <ReceiptIcon />
-              <p className="text-xl font-semibold">Billings</p>
-            </section>
-          </Link>
-        </div>
-        <div className="hoverSection">
-          <Link to={`/admin/guide`}>
-            <section className="flex flex-row gap-3 py-4 pl-12 items-center justify-left text-[#637381]">
-              <InventoryIcon />
-              <p className="text-xl font-semibold">Guide Management</p>
-            </section>
-          </Link>
+        <div className="flex flex-col">
+          <div className={`hoverSection ${selectedMenu === "account" ? "selectedMenu" : ""}`}>
+            <Link to={`/admin`} onClick={() => setSelectedMenu("account")}>
+              <section className="flex flex-row gap-3 py-4 pl-12 items-center justify-left text-[#637381]">
+                <ManageAccountsIcon style={{ fontSize: "28px" }} />
+                <p className="text-xl font-semibold" style={{ fontSize: "18px" }}>Account Management</p>
+              </section>
+            </Link>
+          </div>
+          <div className={`hoverSection ${selectedMenu === "billing" ? "selectedMenu" : ""}`}>
+            <Link to={`/admin/billing`} onClick={() => setSelectedMenu("billing")}>
+              <section className="flex flex-row gap-3 py-4 pl-12 items-center justify-left text-[#637381]">
+                <ReceiptIcon style={{ fontSize: "28px" }} />
+                <p className="text-xl font-semibold" style={{ fontSize: "18px" }}>Billings</p>
+              </section>
+            </Link>
+          </div>
+          <div className={`hoverSection ${selectedMenu === "guide" ? "selectedMenu" : ""}`}>
+            <Link to={`/admin/guide`} onClick={() => setSelectedMenu("guide")}>
+              <section className="flex flex-row gap-3 py-4 pl-12 items-center justify-left text-[#637381]">
+                <InventoryIcon style={{ fontSize: "28px" }} />
+                <p className="text-xl font-semibold" style={{ fontSize: "18px" }}>Guide Management</p>
+              </section>
+            </Link>
+          </div>
         </div>
       </div>
     </div>
