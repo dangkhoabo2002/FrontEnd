@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Logo from "../assets/logo.png";
 import "../css/Sidebar.css";
@@ -8,6 +8,39 @@ import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import SubscribeBtn from "./subscribeBtn";
 
 export default function Sidebar() {
+
+  const [isSub, setIsSub] = useState();
+
+  const handleGetSub = async () => {
+    const editUrl = `http://127.0.0.1:5000/subscription/check_subscription_by_username`;
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await fetch(editUrl, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+      if (response.status === 200) {
+        setIsSub(true);
+      } else {
+        setIsSub(false);
+
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+  console.log("Is checked", isSub);
+
+  useEffect(() => {
+    handleGetSub();
+  }, []);
+
   return (
     <div
       style={{
@@ -62,9 +95,12 @@ export default function Sidebar() {
             </section>
           </div>
         </Link>
-        <div className="flex flex-row justify-center align-middle mt-60">
-          <SubscribeBtn />
-        </div>
+        { !isSub && (
+                  <div className="flex flex-row justify-center align-middle mt-40">
+                  <SubscribeBtn />
+                </div>
+        )
+}
       </div>
     </div>
   );
