@@ -59,11 +59,10 @@ export default function AboutUs() {
               </div>
               <div className="border-left-4 border-solid border-blue-500 pl-2">
                 <Typography variant="body1" sx={{ textAlign: "justify" }}>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book.
+                  The establishment phase initiates the development of the MHD
+                  server management system for SMBs, identifying needs, forming
+                  partnerships, securing resources, and setting up the project
+                  infrastructure.
                 </Typography>
               </div>
             </div>
@@ -90,9 +89,10 @@ export default function AboutUs() {
               </div>
               <div className="border-left-4 border-solid border-blue-500 pl-2">
                 <Typography variant="body1" sx={{ textAlign: "justify" }}>
-                  Our application prioritizes security with mandatory tokens and
-                  2FA for server interactions, ensuring continuous speed and
-                  responsiveness during attacks.
+                  The vision and scope of the MHD project involve creating a
+                  user-friendly server management system for SMBs, prioritizing
+                  efficiency and accessibility through automated features and
+                  robust security measures.
                 </Typography>
               </div>
             </div>
@@ -121,11 +121,10 @@ export default function AboutUs() {
               </div>
               <div className="border-left-4 border-solid border-blue-500 pl-2">
                 <Typography variant="body1" sx={{ textAlign: "justify" }}>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book.
+                  During development, the MHD system is meticulously crafted,
+                  focusing on architectural design, functional implementation,
+                  rigorous testing, iterative refinement, and active
+                  collaboration with stakeholders to ensure its success.
                 </Typography>
               </div>
             </div>
@@ -152,11 +151,10 @@ export default function AboutUs() {
               </div>
               <div className="border-left-4 border-solid border-blue-500 pl-2">
                 <Typography variant="body1" sx={{ textAlign: "justify" }}>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book.
+                  The MHD system offers cost savings, efficiency gains,
+                  accessibility, scalability, security, and reliability to SMBs,
+                  empowering them with a comprehensive, user-friendly server
+                  management solution.
                 </Typography>
               </div>
             </div>

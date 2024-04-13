@@ -145,13 +145,13 @@ export default function SignUp() {
           </Link>
           <div className="">
             <p
-              className="lead mb-0 pb-6"
+              className="lead mb-0 pb-2"
               style={{ fontWeight: "900  ", fontSize: "24px" }}
             >
               Get started absolutely free.
             </p>
           </div>
-          <div className="flex flex-col gap-12">
+          <div className="flex flex-col gap-5">
             <div className="gridCust">
               <div className="flex flex-col">
                 <div className="textField mt-3">
@@ -182,7 +182,7 @@ export default function SignUp() {
                     label="Email Address"
                     fullWidth
                     variant="outlined"
-                    className="mb-4"
+                    className=""
                     required
                     error={!!error.email}
                     helperText={error.email}
@@ -210,7 +210,7 @@ export default function SignUp() {
                     fullWidth
                     type="password"
                     variant="outlined"
-                    className="mb-4"
+                    className="mb-2"
                     required
                     error={!!error.confirm_password}
                     helperText={error.confirm_password}
@@ -240,10 +240,6 @@ export default function SignUp() {
                           }}
                         >
                           Terms of Service
-                        </Link>
-                        and
-                        <Link style={{ color: "#5F94D9", paddingLeft: "4px" }}>
-                          Privacy Policy.
                         </Link>
                       </>
                     }

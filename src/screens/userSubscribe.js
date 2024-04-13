@@ -63,7 +63,7 @@ export default function UserSubscribe() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "1fr 3fr",
+          gridTemplateColumns: "0fr 3fr",
           height: "52vh",
         }}
       >
