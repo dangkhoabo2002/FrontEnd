@@ -1,10 +1,110 @@
-import React from "react";
+import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
 import TableOfImages from "../components/tableOfImages";
 import TableOfContainers from "../components/tableOfContainers";
-export default function serverDocker() {
+import handleCheckPass from "../functions/checkPass";
+export default function ServerDocker(serverId) {
+  // DOCKER PROJECT
+  const [dockerProject, setDockerProject] = useState({
+    docker_file: "",
+    image_tag: "",
+    docker_compose: "",
+  });
+
+  const handleChangeInput = (prop) => (event) => {
+    setDockerProject({ ...dockerProject, [prop]: event.target.value });
+  };
+
+  const handlebuildeDockerFile = async () => {
+    const url = `http://127.0.0.1:5000/server/docker_build/${serverId.serverId}`;
+    const token = localStorage.getItem("access_token");
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          dockerfile: dockerProject.docker_compose,
+          image_tag: dockerProject.image_tag,
+        }),
+      });
+      if (response.status === 200) {
+        alert("Build Success");
+      } else {
+        alert("Build Fail");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+
+  const handleComposeUp = async () => {
+    const url = `http://127.0.0.1:5000/server/docker_build/${serverId.serverId}`;
+    const token = localStorage.getItem("access_token");
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          compose_yaml: dockerProject.compose_yaml,
+          action: "compose-up",
+        }),
+      });
+      if (response.status === 200) {
+        alert("Compose Up Success");
+      } else {
+        alert("Compose Up Fail");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+
+  const handleComposeDown = async () => {
+    const url = `http://127.0.0.1:5000/server/docker_build/${serverId.serverId}`;
+    const token = localStorage.getItem("access_token");
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          compose_yaml: dockerProject.compose_yaml,
+          action: "compose-down",
+        }),
+      });
+      if (response.status === 200) {
+        alert("Compose Down Success");
+      } else {
+        alert("Compose Down Fail");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+  // ALL IMAGES
+
   return (
     <div className="flex flex-col gap-12">
       <div className="projectSection">
@@ -16,8 +116,24 @@ export default function serverDocker() {
           <div className="flex flex-row gap-5">
             <TextField
               hiddenLabel
+              onChange={handleChangeInput("docker_file")}
               id="filled-hidden-label-small"
-              defaultValue="C:\Users\Nguyen Dang Khoa\Desktop\FPT-Journey\CN5\FER201\REACT_APP\..."
+              placeholder="C:\...\Dockerfile"
+              variant="filled"
+              size="small"
+              sx={{
+                width: "600px",
+              }}
+            />
+          </div>
+          <h2>Image tag</h2>
+
+          <div className="flex flex-row gap-5">
+            <TextField
+              onChange={handleChangeInput("image_tag")}
+              hiddenLabel
+              id="filled-hidden-label-small"
+              placeholder=""
               variant="filled"
               size="small"
               sx={{
@@ -26,7 +142,7 @@ export default function serverDocker() {
             />
             <Button
               variant="contained"
-              // onClick={}
+              onClick={handlebuildeDockerFile}
               style={{ marginLeft: "" }}
               sx={{
                 width: "120px",
@@ -47,8 +163,9 @@ export default function serverDocker() {
           <div className="flex flex-row gap-5">
             <TextField
               hiddenLabel
+              onChange={handleChangeInput("docker_compose")}
               id="filled-hidden-label-small"
-              defaultValue="C:\Users\Nguyen Dang Khoa\Desktop\FPT-Journey\CN5\FER201\REACT_APP\..."
+              placeholder="C:\...\docker-compose.yml"
               variant="filled"
               size="small"
               sx={{
@@ -58,7 +175,7 @@ export default function serverDocker() {
             <div>
               <Button
                 variant="contained"
-                // onClick={}
+                onClick={handleComposeUp}
                 style={{ marginLeft: "" }}
                 sx={{
                   width: "150px",
@@ -76,7 +193,7 @@ export default function serverDocker() {
 
               <Button
                 variant="contained"
-                // onClick={}
+                onClick={handleComposeDown}
                 style={{ marginLeft: "20px" }}
                 sx={{
                   width: "150px",
