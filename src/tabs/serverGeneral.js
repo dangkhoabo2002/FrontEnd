@@ -65,6 +65,7 @@ export default function ServerGeneral(serverId) {
   // GET SERVER DATA
 
   const handleGetServerData1 = async () => {
+    setIsLoading(true);
     const getUrl = `http://127.0.0.1:5000/server/get_server_data/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
@@ -79,7 +80,6 @@ export default function ServerGeneral(serverId) {
       });
       if (response.status === 200) {
         const server = await response.json();
-        setIsLoading(false);
         setGeneralData1(server);
       } else {
         alert("Update Fail");
@@ -87,10 +87,13 @@ export default function ServerGeneral(serverId) {
     } catch (error) {
       console.error("Error:", error);
     } finally {
+      setIsLoading(false);
     }
   };
 
   const handleGetServerData2 = async () => {
+    setIsLoading(true);
+
     const getUrl = `http://127.0.0.1:5000/server/get_server_info/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
@@ -113,6 +116,7 @@ export default function ServerGeneral(serverId) {
     } catch (error) {
       console.error("Error:", error);
     } finally {
+      setIsLoading(false);
     }
   };
 
@@ -247,8 +251,6 @@ export default function ServerGeneral(serverId) {
     p: 3,
   };
 
-  
-
   // POP UP DELETE DIALOG
 
   return (
@@ -260,93 +262,76 @@ export default function ServerGeneral(serverId) {
             <p>Information</p>
           </div>
           <Paper elevation={3} sx={{ padding: 2 }}>
-            <div className="flex flex-row justify-between px-5">
-              {/* left */}
-              <div className="flex flex-col justify-start">
-                <div className="flex d-flex">
-                  <p className="blue-text font-semibold mr-2">Host IP: </p>
-                  <p>
-                    {isLoading && <CircularProgress />}
-                    {generalData1?.hostname}
-                  </p>
+            {isLoading ? (
+              <CircularProgress />
+            ) : (
+              <div className="flex flex-row justify-between px-5">
+                {/* left */}
+                <div className="flex flex-col justify-start">
+                  <div className="flex d-flex">
+                    <p className="blue-text font-semibold mr-2">Host IP: </p>
+                    <p>{generalData1?.hostname}</p>
+                  </div>
+                  <div className="flex d-flex my-2">
+                    <p className="blue-text font-semibold mr-2">
+                      Operating System:
+                    </p>
+                    <p>
+                      {isLoading && <CircularProgress />}
+                      {generalData2?.Operating_System}
+                    </p>
+                  </div>
+                  <div className="flex d-flex my-2">
+                    <p className="blue-text font-semibold mr-2">Port: </p>
+                    <p>
+                      {isLoading && <CircularProgress />}
+                      {generalData1?.port}
+                    </p>
+                  </div>
+                  <div className="flex d-flex my-2">
+                    <p className="blue-text font-semibold mr-2">Version: </p>
+                    <p>{generalData2?.Version}</p>
+                  </div>
+                  <div className="flex d-flex my-2">
+                    <p className="blue-text font-semibold mr-2">
+                      Disk Space in Data Dir:
+                    </p>
+                    <p>{generalData2?.Disk_Space}</p>
+                  </div>
+                  <div className="flex d-flex my-2">
+                    <p className="blue-text font-semibold mr-2">
+                      Server Directory:
+                    </p>
+                    <p className="link-text">
+                      {generalData2?.script_directory}{" "}
+                    </p>
+                  </div>
                 </div>
-                <div className="flex d-flex my-2">
-                  <p className="blue-text font-semibold mr-2">
-                    Operating System:
-                  </p>
-                  <p>
-                    {isLoading && <CircularProgress />}
-                    {generalData2?.Operating_System}
-                  </p>
-                </div>
-                <div className="flex d-flex my-2">
-                  <p className="blue-text font-semibold mr-2">Port: </p>
-                  <p>
-                    {isLoading && <CircularProgress />}
-                    {generalData1?.port}
-                  </p>
-                </div>
-                <div className="flex d-flex my-2">
-                  <p className="blue-text font-semibold mr-2">Version: </p>
-                  <p>
-                    {isLoading && <CircularProgress />}
-                    {generalData2?.Version}
-                  </p>
-                </div>
-                <div className="flex d-flex my-2">
-                  <p className="blue-text font-semibold mr-2">
-                    Disk Space in Data Dir:
-                  </p>
-                  <p>
-                    {isLoading && <CircularProgress />}
-                    {generalData2?.Disk_Space}
-                  </p>
-                </div>
-                <div className="flex d-flex my-2">
-                  <p className="blue-text font-semibold mr-2">
-                    Server Directory:
-                  </p>
-                  <p className="link-text">
-                    {isLoading && <CircularProgress />}
-                    {generalData2?.script_directory}{" "}
-                  </p>
-                </div>
-              </div>
 
-              {/* right */}
-              <div className="flex flex-col  items-end">
-                <div className="flex d-flex my-2">
-                  <p className="blue-text font-semibold mr-2">RAM: </p>
-                  <p>
-                    {isLoading && <CircularProgress />}
-                    {generalData2?.RAM}
-                  </p>
+                {/* right */}
+                <div className="flex flex-col  items-end">
+                  <div className="flex d-flex my-2">
+                    <p className="blue-text font-semibold mr-2">RAM: </p>
+                    <p>{generalData2?.RAM}</p>
+                  </div>
+                  <div className="flex d-flex my-2">
+                    <p className="blue-text font-semibold mr-2">CPU: </p>
+                    <p>{generalData2?.CPU}</p>
+                  </div>
+                  <div className="flex d-flex my-2">
+                    <p className="blue-text font-semibold mr-2">
+                      Authen key time:
+                    </p>
+                    <p>{generalData1?.authen_key_time}</p>
+                  </div>
+                  <div className="flex d-flex my-2">
+                    <p className="blue-text font-semibold mr-2">Last Seen:</p>
+                  </div>
+                  <p>{generalData2?.last_seen}</p>
                 </div>
-                <div className="flex d-flex my-2">
-                  <p className="blue-text font-semibold mr-2">CPU: </p>
-                  <p>
-                    {isLoading && <CircularProgress />}
-                    {generalData2?.CPU}
-                  </p>
-                </div>
-                <div className="flex d-flex my-2">
-                  <p className="blue-text font-semibold mr-2">
-                    Authen key time:
-                  </p>
-                  <p>
-                    {isLoading && <CircularProgress />}
-                    {generalData1?.authen_key_time}
-                  </p>
-                </div>
-                <div className="flex d-flex my-2">
-                  <p className="blue-text font-semibold mr-2">Last Seen:</p>
-                </div>
-                <p>
-                  {isLoading && <CircularProgress />}
-                  {generalData2?.last_seen}
-                </p>
               </div>
-            </div>
+            )}
+
             <div className="px-5 mb-2 flex flex-col items-end">
               <Button
                 onClick={() => setIsRefreshing(true)}
@@ -577,8 +562,6 @@ export default function ServerGeneral(serverId) {
               </FormControl>
             </Grid>
           </Grid>
-
-          
 
           <Box>
             <Grid container spacing={2} mt={0}>

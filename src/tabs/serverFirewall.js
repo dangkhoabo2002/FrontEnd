@@ -29,12 +29,8 @@ export default function ServerFirewall(serverId) {
 
   // FIRE WALL LEVEL
   const [firewallLevel, setFirewallLevel] = useState("");
+  const [port, setPort] = useState("");
   const [isDisable, setIsDisable] = useState(false);
-
-  const handleLevelChange = (prop) => (event) => {
-    setFirewallLevel({ ...firewallLevel, [prop]: event.target.value });
-    checkDisable();
-  };
 
   const handleFireWallAction = async () => {
     const url = `http://127.0.0.1:5000/server/firewall_action/${serverId.serverId}`;
@@ -50,12 +46,12 @@ export default function ServerFirewall(serverId) {
         },
         body: JSON.stringify({
           action: firewallLevel,
-          port: "",
+          port: port,
           ip: "",
         }),
       });
       if (response.status === 200) {
-        const server = await response.json();
+        console.log("Update Fail");
       } else {
         alert("Update Fail");
       }
@@ -66,28 +62,33 @@ export default function ServerFirewall(serverId) {
     }
   };
 
+  const handleChangePort = (event) => {
+    setPort(event.target.value);
+  };
+  console.log("Lay", firewallLevel);
+
   const handleChange = (event) => {
     setFirewallLevel(event.target.value);
-  };
 
-  const checkDisable = () => {
-    console.log(firewallLevel);
-
-    if (firewallLevel == "enable_firewall") {
-      setIsDisable(true);
-    } else if (firewallLevel == "disable_firewall") {
-      setIsDisable(true);
-    } else if (firewallLevel == "reset_firewall") {
+    if (
+      event.target.value === "enable_firewall" ||
+      event.target.value === "disable_firewall" ||
+      event.target.value === "reset_firewall"
+    ) {
       setIsDisable(true);
     } else {
       setIsDisable(false);
     }
   };
-  console.log(isDisable);
+
+  const checkDisable = () => {
+    console.log(firewallLevel);
+  };
 
   // firewall table
   const [firewallData, setFirewallData] = useState();
 
+  console.log(firewallData);
   const handleGetFirewallAPI = async () => {
     const editUrl = `http://127.0.0.1:5000/server/firewall_rules/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
@@ -113,7 +114,6 @@ export default function ServerFirewall(serverId) {
     }
   };
 
-  console.log("firewall", firewallData);
   useEffect(() => {
     handleGetFirewallAPI();
   }, []);
@@ -135,9 +135,10 @@ export default function ServerFirewall(serverId) {
             id="demo-select-small"
             value={firewallLevel}
             label=""
+            defaultValue=""
             onChange={handleChange}
           >
-            <MenuItem value={"enable_firewall"}>Enable Firwall</MenuItem>
+            <MenuItem value={"enable_firewall"}>Enable Firewall</MenuItem>
             <MenuItem value={"disable_firewall"}>Disable firewall</MenuItem>
             <MenuItem value={"allow_port"}>Allow Port</MenuItem>
             <MenuItem value={"allow_ip"}>Allow IP</MenuItem>
@@ -228,8 +229,9 @@ export default function ServerFirewall(serverId) {
           <div className="flex flex-col ml-3">
             <TextField
               id="outlined-basic"
-              value={"192.168.x.xx"}
-              onChange={""}
+              placeholder="192.168.x.xx"
+              value={port}
+              onChange={handleChangePort}
               size="small"
               sx={{ width: "800px" }}
             />
@@ -265,9 +267,9 @@ export default function ServerFirewall(serverId) {
             firewallData?.map((firewall, index) => (
               <tr key={index}>
                 <td>{index + 1}</td>
-                <td>{firewall[index].to}</td>
-                <td>{firewall[index].action}</td>
-                <td>{firewall[index].from}</td>
+                <td>{firewall?.to}</td>
+                <td>{firewall?.action}</td>
+                <td>{firewall?.from}</td>
               </tr>
             ))}
         </tbody>

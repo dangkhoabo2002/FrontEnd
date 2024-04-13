@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Libraries from "../data/listOfLibrary.json";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -7,7 +7,6 @@ import Button from "@mui/material/Button";
 
 export default function ServerLibrary(serverId) {
   const [loading, setLoading] = React.useState(false);
-  const [filteredLibraries, setFilteredLibraries] = useState(Libraries);
   const [showOnlyNotInstalled, setShowOnlyNotInstalled] = useState(false);
 
   // function handleFilterClick() {
@@ -20,13 +19,8 @@ export default function ServerLibrary(serverId) {
 
   // INSTALL LIBRARY
 
-  const handleInstallLibrary = (lib) => {
-    console.log(lib);
-    setLoading(true);
-    handleInstallLibraryAPI(lib);
-  };
-
   const handleInstallLibraryAPI = async (libName) => {
+    console.log(libName);
     const editUrl = `http://127.0.0.1:5000/server/install_lib/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
@@ -43,59 +37,54 @@ export default function ServerLibrary(serverId) {
         }),
       });
       if (response.status === 200) {
-        setLoading(false);
+        console.log("Success to Install");
+        handleGetLib();
       } else {
         alert("Add Fail");
-        setLoading(false);
       }
     } catch (error) {
       console.error("Error:", error);
     } finally {
+      setLoading(false);
     }
   };
 
   // GET STATUS LIBRARY
-  const [listLib, setListLib] = useState({
-    nginx: "",
-    docker: "",
-    python: "",
-    pip: "",
-    postgre: "",
-    mongodb: "",
-  });
-  const handleGetStatusLib = async () => {
+  const [filteredLibraries, setFilteredLibraries] = useState(Libraries);
+  const [listLib, setListLib] = useState();
+
+  const handleGetLib = async () => {
     const getUrl = `http://127.0.0.1:5000/server/lib_status/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(getUrl, {
-        method: "POST",
+        method: "GET",
         credentials: "include",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
         },
-        body: JSON.stringify({
-          nginx: listLib.nginx,
-          docker: listLib.docker,
-          python: listLib.python,
-          pip: listLib.pip,
-          postgre: listLib.postgre,
-          mongodb: listLib.mongodb,
-        }),
       });
       if (response.status === 200) {
-        const status = await response.json();
-        setLoading(false);
+        const lib = await response.json();
+
+        setListLib(lib);
+        // setLoading(true);
       } else {
         alert("Add Fail");
-        setLoading(false);
+        // setLoading(false);
       }
     } catch (error) {
       console.error("Error:", error);
     } finally {
     }
   };
+  console.error("lib:", listLib);
+
+  useEffect(() => {
+    handleGetLib();
+  }, []);
   return (
     <>
       <div>
@@ -108,34 +97,52 @@ export default function ServerLibrary(serverId) {
           </Button> */}
         </div>
         <div className="flex flex-row flex-wrap gap-10 w-3/3">
-          {filteredLibraries.map((lib) => (
-            <div
-              key={lib.id}
-              className="flex flex-row justify-left items-center gap-8 rounded-md shadow-lg border px-12 py-6 w-2/7"
-            >
-              <img
-                loading="lazy"
-                className="w-20 object-contain"
-                src={lib.image}
-              />
-              <div className="flex flex-col items-center">
-                <h1 className="uppercase">{lib.name}</h1>
-                <h2 className="text-[14px] pb-2">Version: {lib.version}</h2>
-                <LoadingButton
-                  size="small"
-                  color="secondary"
-                  onClick={() => handleInstallLibrary(lib.name)}
-                  loading={loading}
-                  loadingPosition="start"
-                  startIcon={<SaveIcon />}
-                  variant="contained"
-                >
-                  {!loading && <span>Install</span>}
-                  {loading && <span>Installing</span>}
-                </LoadingButton>
+          {listLib &&
+            listLib?.map((lib) => (
+              <div
+                key={lib.id}
+                className="flex flex-row justify-left items-center gap-8 rounded-md shadow-lg border px-12 py-6 w-2/7"
+              >
+                <img
+                  loading="lazy"
+                  className="w-20 object-contain"
+                  src={
+                    filteredLibraries
+                      ? filteredLibraries.find(
+                          (libFilter) => libFilter.name === lib?.library
+                        ).image
+                      : ""
+                  }
+                />
+                <div className="flex flex-col items-center">
+                  <h1 className="uppercase">{lib.library}</h1>
+                  <h2 className="text-[14px] pb-2">
+                    {lib.installed == true ? "Installed" : "Not Installed"}
+                  </h2>
+                  {lib.installed == true ? (
+                    <LoadingButton
+                      size="small"
+                      color="secondary"
+                      onClick={() => handleInstallLibraryAPI(lib.library)}
+                      startIcon={<SaveIcon />}
+                      variant="contained"
+                    >
+                      Uninstall
+                    </LoadingButton>
+                  ) : (
+                    <LoadingButton
+                      size="small"
+                      color="secondary"
+                      onClick={() => handleInstallLibraryAPI(lib.library)}
+                      startIcon={<SaveIcon />}
+                      variant="contained"
+                    >
+                      Install
+                    </LoadingButton>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
     </>
