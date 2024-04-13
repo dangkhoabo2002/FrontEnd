@@ -57,7 +57,7 @@ export default function ServerFirewall(serverId) {
       if (response.status === 200) {
         const server = await response.json();
       } else {
-        alert("Update Fail");
+        console.log("Update Fail");
       }
     } catch (error) {
       console.error("Error:", error);
