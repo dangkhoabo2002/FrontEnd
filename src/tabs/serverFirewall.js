@@ -53,7 +53,7 @@ export default function ServerFirewall(serverId) {
       if (response.status === 200) {
         console.log("Update Fail");
       } else {
-        alert("Update Fail");
+        console.log("Update Fail");
       }
     } catch (error) {
       console.error("Error:", error);

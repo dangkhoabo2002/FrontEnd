@@ -82,7 +82,7 @@ export default function ServerGeneral(serverId) {
         const server = await response.json();
         setGeneralData1(server);
       } else {
-        alert("Update Fail");
+        console.log("Update Fail");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -111,7 +111,7 @@ export default function ServerGeneral(serverId) {
         setIsLoading(false);
         setGeneralData2(server);
       } else {
-        alert("Update Fail");
+        console.log("Update Fail");
       }
     } catch (error) {
       console.error("Error:", error);

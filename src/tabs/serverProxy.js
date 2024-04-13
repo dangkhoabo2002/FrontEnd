@@ -174,7 +174,7 @@ export default function ServerProxy(serverId) {
       if (response.status === 200) {
         handleGetProxy();
       } else {
-        alert("Update Fail");
+        console.log("Update Fail");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -203,7 +203,7 @@ export default function ServerProxy(serverId) {
         const proxyGet = await response.json();
         setProxyData(proxyGet);
       } else {
-        alert("Update Fail");
+        console.log("Update Fail");
       }
     } catch (error) {
       console.error("Error:", error);

@@ -386,7 +386,7 @@ export default function OrganizationDashboard() {
         handleGetOrgData();
         alert("Update Success");
       } else {
-        alert("Update Fail");
+        console.log("Update Fail");
       }
     } catch (error) {
       console.error("Error:", error);
