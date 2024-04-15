@@ -607,48 +607,7 @@ export default function OrganizationDashboard() {
   const [value, setValue] = useState("1");
 
   if (!organizations) {
-    return (
-      <div>
-        <div className="px-20">
-          {/* BodyContainer */}
-          <div
-            className="py-6 text-center border-stone-200"
-            style={{ borderBottom: "1px solid", color: "#D9D9D9" }}
-          >
-            <div className="header flex flex-row items-center gap-x-3">
-              <RiServerFill
-                style={{ width: "32px", height: "32px", color: "#637381" }}
-              />
-              <p
-                className="font-semibold"
-                style={{ fontSize: "28px", color: "#637381" }}
-              >
-                Organization is not found
-              </p>
-            </div>
-          </div>
-          <div
-            className=""
-            style={{ display: "flex", justifyContent: "center" }}
-          >
-            <img
-              loading="lazy"
-              src={Empty}
-              className="img items-center justify-center"
-              alt="empty"
-              style={{
-                width: "652px",
-                height: "652px",
-                opacity: "50%",
-                objectFit: "center",
-              }}
-            />
-          </div>
-          <ButtonAddServer />
-        </div>
-        <Footer />
-      </div>
-    );
+    return <div></div>;
   }
 
   const handleChange = (event, newValue) => {
@@ -710,19 +669,21 @@ export default function OrganizationDashboard() {
           <Sidebar />
         </div>
         <div
-          className="pl-14"
-          style={{ width: "100%", boxSizing: "border-box" }}
+          className=""
+          style={{
+            width: "100%",
+            boxSizing: "border-box",
+            backgroundColor: "#f3f3fb",
+          }}
         >
-          {/* BodyContainer */}
           <div
-            className=" py-6 text-center border-stone-200"
+            className=" py-6 text-center gap-10"
             style={{
-              borderBottom: "1px solid",
-              color: "#D9D9D9",
-              width: "80%",
+              backgroundColor: "white",
+              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
             }}
           >
-            <div className="header flex flex-row items-center gap-x-3">
+            <div className="header flex flex-row items-center gap-x-3  px-20">
               <Link
                 to={"/organizations"}
                 className="flex flex-row items-center gap-x-3"
@@ -749,7 +710,10 @@ export default function OrganizationDashboard() {
               </span>
             </div>
           </div>
-          <div>
+
+          {/* BodyContainer */}
+
+          <div className="container px-20 py-3 mt-2">
             <div>
               <Box>
                 <TabContext value={value}>
@@ -765,6 +729,8 @@ export default function OrganizationDashboard() {
                       sx={{
                         "& .MuiTabs-flexContainer": {
                           borderBottom: "1px solid #D9D9D9",
+                          borderTop: "1px solid #D9D9D9",
+
                           width: "26.55vw",
                         },
                         "& .MuiTab-root": {
@@ -774,11 +740,12 @@ export default function OrganizationDashboard() {
                           height: "26px",
                           fontWeight: "bold",
                           color: "black",
+                          backgroundColor: "white",
                           borderLeft: "1px solid #D9D9D9",
                           borderRight: "1px solid #D9D9D9",
-                          transition: "background-color 0.3s, color 0.3s", // Thêm hiệu ứng màu sắc khi chuyển đổi tab
+                          transition: "background-color 0.3s, color 0.3s",
                           "&.Mui-selected": {
-                            color: "black", // Giữ màu chữ đen khi tab được chọn
+                            color: "black",
                           },
                         },
                         "& .Mui-selected": {
@@ -799,10 +766,13 @@ export default function OrganizationDashboard() {
                   <TabPanel value="1">
                     <div className="flex flex-col justify-start">
                       <div className="flex flex-row justify-left">
-                        <h1 className="text-[#637381] text-2xl font pr-10 my-3">
+                        <h1
+                          className="text-[#637381] font pr-10 "
+                          style={{ fontSize: "24px" }}
+                        >
                           Active server
                         </h1>
-                        <p className="text-2xl font pr-10 my-3 text-[#637381]">
+                        <p className="text-2xl font pr-10  text-[#637381]">
                           {
                             serverList?.filter(
                               (server) => server.status === "ACTIVE"
@@ -817,7 +787,10 @@ export default function OrganizationDashboard() {
                             <Link
                               to={`/organizations/dashboard/${organization_id}/${server.server_id}`}
                             >
-                              <div className="serverCard flex flex-col justify-between items-center">
+                              <div
+                                className="serverCard flex flex-col justify-between items-center"
+                                style={{ backgroundColor: "white" }}
+                              >
                                 <span
                                   className={`text-white px-6 py-1 ${
                                     server.status === "INACTIVE"
@@ -838,7 +811,7 @@ export default function OrganizationDashboard() {
                                   }}
                                 />
                                 <h2 className="text-[#5F94D9]">
-                                  Shared Hosting
+                                  SHARED HOSTING
                                 </h2>
                                 <h2>{server.port}</h2>
                                 <h2>Server username: {server.username}</h2>
