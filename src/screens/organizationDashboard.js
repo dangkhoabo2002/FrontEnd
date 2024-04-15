@@ -13,6 +13,7 @@ import Footer from "../components/userFooter";
 import Sidebar from "../components/Sidebar";
 
 // ICONS MUI
+import ClearIcon from "@mui/icons-material/Clear";
 import Empty from "../assets/userBackground.png";
 import serverIcon2 from "../images/serverIcon2.png";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -58,7 +59,19 @@ export default function OrganizationDashboard() {
   // ADD ROLE DATA
   const [openAddRole, setOpenAddRole] = useState(false);
   const [addRoleData, setAddRoleData] = useState();
-  //
+  const [numRoles, setNumRoles] = useState(1);
+  const handleAddRole = () => {
+    if (numRoles < 7) {
+      setNumRoles(numRoles + 1);
+    } else {
+      alert("Maximum number of roles reached!");
+    }
+  };
+  const handleCloseAddRole = () => {
+    setOpenAddRole(false);
+    // Reset số lượng dòng khi đóng modal
+    setNumRoles(1);
+  };
 
   const navigate = useNavigate();
 
@@ -607,48 +620,7 @@ export default function OrganizationDashboard() {
   const [value, setValue] = useState("1");
 
   if (!organizations) {
-    return (
-      <div>
-        <div className="px-20">
-          {/* BodyContainer */}
-          <div
-            className="py-6 text-center border-stone-200"
-            style={{ borderBottom: "1px solid", color: "#D9D9D9" }}
-          >
-            <div className="header flex flex-row items-center gap-x-3">
-              <RiServerFill
-                style={{ width: "32px", height: "32px", color: "#637381" }}
-              />
-              <p
-                className="font-semibold"
-                style={{ fontSize: "28px", color: "#637381" }}
-              >
-                Organization is not found
-              </p>
-            </div>
-          </div>
-          <div
-            className=""
-            style={{ display: "flex", justifyContent: "center" }}
-          >
-            <img
-              loading="lazy"
-              src={Empty}
-              className="img items-center justify-center"
-              alt="empty"
-              style={{
-                width: "652px",
-                height: "652px",
-                opacity: "50%",
-                objectFit: "center",
-              }}
-            />
-          </div>
-          <ButtonAddServer />
-        </div>
-        <Footer />
-      </div>
-    );
+    return <div></div>;
   }
 
   const handleChange = (event, newValue) => {
@@ -659,17 +631,8 @@ export default function OrganizationDashboard() {
 
   // ADD ROLE
 
-  const handleAddRole = () => {
-    // handleAddRoleAPI();
-    handleCloseAddRole();
-  };
-
   const handleOpenAddRole = () => {
     setOpenAddRole(true);
-  };
-
-  const handleCloseAddRole = () => {
-    setOpenAddRole(false);
   };
 
   // const handleAddRoleAPI = async () => {
@@ -710,19 +673,21 @@ export default function OrganizationDashboard() {
           <Sidebar />
         </div>
         <div
-          className="pl-14"
-          style={{ width: "100%", boxSizing: "border-box" }}
+          className=""
+          style={{
+            width: "100%",
+            boxSizing: "border-box",
+            backgroundColor: "#f3f3fb",
+          }}
         >
-          {/* BodyContainer */}
           <div
-            className=" py-6 text-center border-stone-200"
+            className=" py-6 text-center gap-10"
             style={{
-              borderBottom: "1px solid",
-              color: "#D9D9D9",
-              width: "80%",
+              backgroundColor: "white",
+              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
             }}
           >
-            <div className="header flex flex-row items-center gap-x-3">
+            <div className="header flex flex-row items-center gap-x-3  px-20">
               <Link
                 to={"/organizations"}
                 className="flex flex-row items-center gap-x-3"
@@ -749,14 +714,22 @@ export default function OrganizationDashboard() {
               </span>
             </div>
           </div>
-          <div>
+
+          {/* BodyContainer */}
+
+          <div className="container px-20 py-3 mt-2">
             <div>
               <Box>
                 <TabContext value={value}>
                   <Box
                     sx={{
                       borderColor: "divider",
-                      width: "88vw",
+                      width: "26.78vw",
+                      overflow: "hidden",
+                      border: "2px solid #D9D9D9",
+                      borderRadius: "5px",
+
+                      backgroundColor: "white",
                     }}
                   >
                     <TabList
@@ -764,21 +737,21 @@ export default function OrganizationDashboard() {
                       aria-label="lab API tabs example"
                       sx={{
                         "& .MuiTabs-flexContainer": {
-                          borderBottom: "1px solid #D9D9D9",
-                          width: "26.55vw",
+                          // borderBottom: "1px solid #D9D9D9",
+                          // borderTop: "1px solid #D9D9D9",
                         },
                         "& .MuiTab-root": {
                           minWidth: "auto",
                           textTransform: "capitalize",
                           width: "136px",
-                          height: "26px",
                           fontWeight: "bold",
                           color: "black",
-                          borderLeft: "1px solid #D9D9D9",
-                          borderRight: "1px solid #D9D9D9",
-                          transition: "background-color 0.3s, color 0.3s", // Thêm hiệu ứng màu sắc khi chuyển đổi tab
+
+                          // borderLeft: "1px solid #D9D9D9",
+                          // borderRight: "1px solid #D9D9D9",
+                          transition: "background-color 0.3s, color 0.3s",
                           "&.Mui-selected": {
-                            color: "black", // Giữ màu chữ đen khi tab được chọn
+                            color: "black",
                           },
                         },
                         "& .Mui-selected": {
@@ -799,10 +772,13 @@ export default function OrganizationDashboard() {
                   <TabPanel value="1">
                     <div className="flex flex-col justify-start">
                       <div className="flex flex-row justify-left">
-                        <h1 className="text-[#637381] text-2xl font pr-10 my-3">
+                        <h1
+                          className="text-[#637381] font pr-10 "
+                          style={{ fontSize: "24px" }}
+                        >
                           Active server
                         </h1>
-                        <p className="text-2xl font pr-10 my-3 text-[#637381]">
+                        <p className="text-2xl font pr-10  text-[#637381]">
                           {
                             serverList?.filter(
                               (server) => server.status === "ACTIVE"
@@ -817,7 +793,10 @@ export default function OrganizationDashboard() {
                             <Link
                               to={`/organizations/dashboard/${organization_id}/${server.server_id}`}
                             >
-                              <div className="serverCard flex flex-col justify-between items-center">
+                              <div
+                                className="serverCard flex flex-col justify-between items-center"
+                                style={{ backgroundColor: "white" }}
+                              >
                                 <span
                                   className={`text-white px-6 py-1 ${
                                     server.status === "INACTIVE"
@@ -838,7 +817,7 @@ export default function OrganizationDashboard() {
                                   }}
                                 />
                                 <h2 className="text-[#5F94D9]">
-                                  Shared Hosting
+                                  SHARED HOSTING
                                 </h2>
                                 <h2>{server.port}</h2>
                                 <h2>Server username: {server.username}</h2>
@@ -1179,6 +1158,11 @@ export default function OrganizationDashboard() {
                         <Button
                           variant="outlined"
                           onClick={handleOpenAddMember}
+                          sx={{
+                            color: "white",
+                            bgcolor: "#3867A5",
+                            "&:hover": { bgcolor: "#2A4D7B" },
+                          }}
                         >
                           Add Member
                         </Button>
@@ -1266,57 +1250,61 @@ export default function OrganizationDashboard() {
                       </Modal>
 
                       {/* modal add role */}
-
-                      <table className="memberInOrganizationTable">
-                        <tr>
-                          <th id="id">#</th>
-                          <th id="name">NAME</th>
-                          <th id="role">ROLE</th>
-                          <th id="action">ACTIONS</th>
-                        </tr>
-                        {memberList?.map((member, index) => (
-                          <tr key={member.id}>
-                            <td>{index + 1}</td>
-                            <td>{member.username}</td>
-                            <td>{member.roles}</td>
-                            <td>
-                              <IconButton
-                                aria-label="delete"
-                                onClick={() => handleCloseAddRole()}
-                              >
-                                <DeleteIcon />
-                              </IconButton>
-                              <Dialog
-                                open={open}
-                                onClose={handleClose}
-                                aria-labelledby="alert-dialog-title"
-                                aria-describedby="alert-dialog-description"
-                              >
-                                <DialogTitle id="alert-dialog-title">
-                                  {"Do you want to remove this member ?"}
-                                </DialogTitle>
-
-                                <DialogActions>
-                                  <Button onClick={handleClose}>No</Button>
-                                  <Button
-                                    onClick={() =>
-                                      handleRemoveUser(member.username)
-                                    }
-                                  >
-                                    <p className="text-red">Yes</p>
-                                  </Button>
-                                </DialogActions>
-                              </Dialog>
-                              <IconButton
-                                aria-label="uprole"
-                                onClick={() => handleOpenAddRole()}
-                              >
-                                <AddModeratorIcon />
-                              </IconButton>
-                            </td>
+                      <div
+                        className="bg-white mt-4 rounded-md px-8 pb-8 shadow-md"
+                        style={{ border: "1px solid #89A6CC" }}
+                      >
+                        <table className="memberInOrganizationTable">
+                          <tr className="">
+                            <th id="id">#</th>
+                            <th id="name">NAME</th>
+                            <th id="role">ROLE</th>
+                            <th id="action">ACTIONS</th>
                           </tr>
-                        ))}
-                      </table>
+                          {memberList?.map((member, index) => (
+                            <tr key={member.id}>
+                              <td>{index + 1}</td>
+                              <td>{member.username}</td>
+                              <td>{member.roles}</td>
+                              <td>
+                                <IconButton
+                                  aria-label="delete"
+                                  onClick={() => handleCloseAddRole()}
+                                >
+                                  <DeleteIcon />
+                                </IconButton>
+                                <Dialog
+                                  open={open}
+                                  onClose={handleClose}
+                                  aria-labelledby="alert-dialog-title"
+                                  aria-describedby="alert-dialog-description"
+                                >
+                                  <DialogTitle id="alert-dialog-title">
+                                    {"Do you want to remove this member ?"}
+                                  </DialogTitle>
+
+                                  <DialogActions>
+                                    <Button onClick={handleClose}>No</Button>
+                                    <Button
+                                      onClick={() =>
+                                        handleRemoveUser(member.username)
+                                      }
+                                    >
+                                      <p className="text-red">Yes</p>
+                                    </Button>
+                                  </DialogActions>
+                                </Dialog>
+                                <IconButton
+                                  aria-label="uprole"
+                                  onClick={() => handleOpenAddRole()}
+                                >
+                                  <AddModeratorIcon />
+                                </IconButton>
+                              </td>
+                            </tr>
+                          ))}
+                        </table>
+                      </div>
                     </div>
                     <Modal open={openAddRole} onClose={handleCloseAddRole}>
                       <Box sx={style}>
@@ -1334,70 +1322,85 @@ export default function OrganizationDashboard() {
                           </div>
                         </div>
                         <Grid container alignItems="center" spacing={2} mt={0}>
-                          <div
-                            className="mt-3"
-                            style={{ fontSize: "18px", fontWeight: "bold" }}
-                          >
-                            <p>Add role</p>
-                          </div>
 
-                          <Grid
-                            container
-                            alignItems="center"
-                            spacing={2}
-                            mb={3}
-                          >
-                            <Grid item xs={12} md={3}>
-                              <Typography
-                                className="mt-3"
-                                style={{
-                                  fontSize: "16px",
-                                  fontWeight: "400",
-                                }}
+                          {[...Array(numRoles)].map((_, index) => (
+                            <React.Fragment key={index}>
+                              <Grid item xs={12} md={2}>
+                                <Typography
+                                  className="mt-3"
+                                  style={{
+                                    fontSize: "16px",
+                                    fontWeight: "400",
+                                  }}
+                                >
+                                  Role:
+                                </Typography>
+                              </Grid>
+                              <Grid
+                                item
+                                xs={12}
+                                md={8}
+                                sx={{ position: "relative" }}
                               >
-                                Role:
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={12} md={9}>
-                              <TextField
-                                fullWidth
-                                id="outlined-select-currency"
-                                select
-                                label=""
-                                defaultValue="1"
-                              >
-                                {role.map((option) => (
-                                  <MenuItem
-                                    onChange={() =>
-                                      setAddRoleData(option.addData)
-                                    }
-                                    key={option.value}
-                                    value={option.value}
-                                  >
-                                    {option.label}
-                                  </MenuItem>
-                                ))}
-                              </TextField>
-                            </Grid>
+                                {" "}
+                                {/* Thêm CSS để chứa vị trí tương đối */}
+                                <TextField
+                                  fullWidth
+                                  id={`outlined-select-currency-${index}`}
+                                  select
+                                  label=""
+                                  defaultValue="1"
+                                >
+                                  {role.map((option) => (
+                                    <MenuItem
+                                      onChange={() =>
+                                        setAddRoleData(option.addData)
+                                      }
+                                      key={option.value}
+                                      value={option.value}
+                                    >
+                                      {option.label}
+                                    </MenuItem>
+                                  ))}
+                                </TextField>
+                              </Grid>
+                              <Grid item xs={12} md={2}>
+                                <IconButton 
+                                  size="small"
+                                  sx={{
+                                    fontSize: "16px",
+                                    fontWeight: "400",}}
+
+                                  onClick={() => {
+                                    // Xử lý khi người dùng nhấn vào biểu tượng 'x'
+                                    console.log("Clearing input");
+                                  }}
+                                >
+                                  <ClearIcon />
+                                </IconButton>
+                              </Grid>
+                            </React.Fragment>
+                          ))}
+                          <Grid item xs={12} md={12}>
+                            <Button
+                              startIcon={<AddIcon />}
+                              variant="contained"
+                              sx={{
+                                width: "150px",
+                                height: "30px",
+                                color: "white",
+                                bgcolor: "#3867A5",
+                                "&:hover": { bgcolor: "#264B7B" },
+                                fontSize: "14px",
+                                fontWeight: "normal",
+                                textTransform: "none",
+                              }}
+                              onClick={handleAddRole}
+                            >
+                              Add more role
+                            </Button>
                           </Grid>
-                          <Button
-                            startIcon={<AddIcon />}
-                            variant="contained"
-                            sx={{
-                              width: "150px",
-                              height: "30px",
-                              color: "white",
-                              bgcolor: "#3867A5",
-                              "&:hover": { bgcolor: "#264B7B" },
-                              fontSize: "14px",
-                              fontWeight: "normal",
-                              textTransform: "none",
-                            }}
-                          >
-                            Add more role
-                          </Button>
                         </Grid>
-
                         <DialogActions>
                           <Button onClick={handleCloseAddRole}>
                             <Typography
@@ -1443,7 +1446,7 @@ export default function OrganizationDashboard() {
                             defaultValue={data.name}
                             placeholder={organizations[0].name}
                             size="small"
-                            sx={{ width: "auto" }}
+                            sx={{ width: "auto", backgroundColor: "white" }}
                             InputProps={{
                               startAdornment: (
                                 <InputAdornment
@@ -1470,7 +1473,7 @@ export default function OrganizationDashboard() {
                               placeholder={organizations[0].contact_email}
                               defaultValue={data.contact_email}
                               size="small"
-                              sx={{ width: "400px" }}
+                              sx={{ width: "400px", backgroundColor: "white" }}
                               InputProps={{
                                 startAdornment: (
                                   <InputAdornment
@@ -1494,7 +1497,7 @@ export default function OrganizationDashboard() {
                               placeholder={organizations[0].contact_phone}
                               defaultValue={data.contact_phone}
                               size="small"
-                              sx={{ width: "260px" }}
+                              sx={{ width: "260px", backgroundColor: "white" }}
                               InputProps={{
                                 startAdornment: (
                                   <InputAdornment
@@ -1521,7 +1524,11 @@ export default function OrganizationDashboard() {
                             placeholder={organizations[0].description}
                             defaultValue={data.description}
                             size="medium"
-                            sx={{ width: "100%", maxWidth: "820px" }}
+                            sx={{
+                              width: "100%",
+                              maxWidth: "820px",
+                              backgroundColor: "white",
+                            }}
                           />
                         </div>
                         <div className="server_des mb-3">
@@ -1539,6 +1546,12 @@ export default function OrganizationDashboard() {
                               <Button
                                 variant="outlined"
                                 onClick={handleSaveClick}
+                                sx={{
+                                  color: "white",
+                                  bgcolor: "#3867A5",
+                                  marginRight: "10px",
+                                  "&:hover": { bgcolor: "#2A4D7B" },
+                                }}
                               >
                                 Save Change
                               </Button>

@@ -29,9 +29,10 @@
 }
 
 .memberInOrganizationTable {
-    width: 80%;
+    width: 100%;
     text-align: center;
-
+    padding: 8px;
+    /* background-color: white; */
 }
 
 .memberInOrganizationTable th {

@@ -22,7 +22,7 @@ export default function OrganizationCard({ id, name, description }) {
         container
         spacing={2}
         alignItems="center"
-        sx={{ padding: "10px 80px 10px 40px" }}
+        sx={{ padding: "10px 80px 10px 40px", }}
       >
         <Grid item xs={8} container direction="column">
           <div className="flex flex-row justify-start items-center gap-20">
@@ -72,8 +72,8 @@ export default function OrganizationCard({ id, name, description }) {
         </Grid>
 
         <Grid item xs={4} sx={{ display: "flex", justifyContent: "end" }}>
-          <AccountTreeOutlinedIcon
-            style={{ width: "auto", height: "80px", color: "#637381" }}
+          <img src={ServerIcon}
+            style={{ width: "auto", height: "100px", color: "#637381" }}
           />
         </Grid>
       </Grid>
