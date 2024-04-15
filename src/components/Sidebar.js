@@ -8,9 +8,8 @@ import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import SubscribeBtn from "./subscribeBtn";
 import { useHistory } from "react-router-dom";
 
-
 export default function Sidebar() {
-  const [selectedMenu, setSelectedMenu] = useState("organizations"); 
+  const [selectedMenu, setSelectedMenu] = useState("organizations");
   const location = useLocation();
 
   useEffect(() => {
@@ -43,14 +42,12 @@ export default function Sidebar() {
         setIsSub(true);
       } else {
         setIsSub(false);
-
       }
     } catch (error) {
       console.error("Error:", error);
     } finally {
     }
   };
-  console.log("Is checked", isSub);
 
   useEffect(() => {
     handleGetSub();
@@ -67,7 +64,8 @@ export default function Sidebar() {
       }}
     >
       <div className="py-10 px-8">
-        <Link to={"/"}
+        <Link
+          to={"/"}
           style={{ border: "none", background: "none", cursor: "pointer" }}
         >
           <img alt="logo" loading="lazy" style={{ width: "70px" }} src={Logo} />
@@ -120,7 +118,10 @@ export default function Sidebar() {
           <div className="hoverSection">
             <section className="flex flex-row gap-3 py-4 px-11 items-center">
               <PermIdentityIcon style={{ fontSize: "28px" }} />
-              <p style={{ fontSize: "18px", color:"#637381" }} className="text-xl font-semibold ">
+              <p
+                style={{ fontSize: "18px", color: "#637381" }}
+                className="text-xl font-semibold "
+              >
                 Profile
               </p>
             </section>
