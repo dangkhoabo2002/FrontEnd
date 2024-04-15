@@ -23,7 +23,7 @@ export default function AdminBillings() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "1fr 3fr",
+          gridTemplateColumns: "0fr 3fr",
           height: "66vh",
         }}
       >

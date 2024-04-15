@@ -1,35 +1,47 @@
 .hoverSection:hover {
   background-color: #DFEDFF;
   cursor: context-menu;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-  transform: translateY(-3px);
+  transition: background-color 0.3s ease, ;
 }
 
-.hoverSection p{
-  color: #637381; /* Màu chữ khi chưa hover và đã selected */
-  transition: color 0.3s ease; /* Transition cho màu chữ */
-}
-.selectedMenu p {
-  color: #3867A5  ; /* Màu chữ khi chưa hover và đã selected */
-  transition: color 0.3s ease; /* Transition cho màu chữ */
-}
-
-.hoverSection:hover p, .selectedMenu:hover p {
-  color: #3867A5; /* Màu chữ khi hover */
-}
-
-.hoverSection section{
+.hoverSection p {
   color: #637381;
-  transition: color 0.3s ease, transform 0.3s ease; /* Transition cho màu chữ và biểu tượng */
+  /* Màu chữ khi chưa hover và đã selected */
+  transition: color 0.3s ease;
+  /* Transition cho màu chữ */
 }
+
+.selectedMenu p {
+  color: #3867A5;
+  /* Màu chữ khi chưa hover và đã selected */
+  transition: color 0.3s ease;
+  /* Transition cho màu chữ */
+}
+
+.hoverSection:hover p,
+.selectedMenu:hover p {
+  color: #3867A5;
+  /* Màu chữ khi hover */
+}
+
+.hoverSection section {
+  color: #637381;
+  transition: color 0.3s ease, transform 0.3s ease;
+  /* Transition cho màu chữ và biểu tượng */
+}
+
 .selectedMenu section {
   color: #3867A5;
-  transition: color 0.3s ease, transform 0.3s ease; /* Transition cho màu chữ và biểu tượng */
+  transition: color 0.3s ease, transform 0.3s ease;
+  /* Transition cho màu chữ và biểu tượng */
 }
 
-.hoverSection:hover section, .selectedMenu:hover section {
-  color: #3867A5; /* Màu chữ khi hover */
-  transform: translateX(3px); /* Di chuyển biểu tượng sang phải khi hover */
+.hoverSection:hover section,
+.selectedMenu:hover section {
+  color: #3867A5;
+  /* Màu chữ khi hover */
+  transform: translateX(3px);
+  /* Di chuyển biểu tượng sang phải khi hover */
 }
 
 section:hover {
@@ -43,7 +55,8 @@ section:hover {
   border-right: 3px solid #3867A5;
   border-radius: 5px;
   font-weight: 900;
-  transition: background-color 0.3s ease, color 0.3s ease, border-right 0.3s ease, transform 0.3s ease; /* Thêm transition cho background-color, color, border-right và transform */
+  transition: background-color 0.3s ease, color 0.3s ease, border-right 0.3s ease, transform 0.3s ease;
+  /* Thêm transition cho background-color, color, border-right và transform */
   transform: translateY(-3px);
 }
 

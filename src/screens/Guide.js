@@ -46,9 +46,9 @@ export default function Guide() {
               </p>
             </div>
           </div>
-          <div className="body mt-3">
+          {/* <div className="body mt-3">
             <SearchBar />
-          </div>
+          </div> */}
           <div className="body mt-3">
             <Accordion />
           </div>

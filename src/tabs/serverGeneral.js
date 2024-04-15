@@ -326,8 +326,8 @@ export default function ServerGeneral(serverId) {
                   </div>
                   <div className="flex d-flex my-2">
                     <p className="blue-text font-semibold mr-2">Last Seen:</p>
+                    <p>{generalData2?.last_seen}</p>
                   </div>
-                  <p>{generalData2?.last_seen}</p>
                 </div>
               </div>
             )}

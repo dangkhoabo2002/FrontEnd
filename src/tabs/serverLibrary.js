@@ -4,9 +4,11 @@ import Libraries from "../data/listOfLibrary.json";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SaveIcon from "@mui/icons-material/Save";
 import Button from "@mui/material/Button";
+import LinearProgress from "@mui/material/LinearProgress";
+import Box from "@mui/material/Box";
 
 export default function ServerLibrary(serverId) {
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = useState(false);
   const [showOnlyNotInstalled, setShowOnlyNotInstalled] = useState(false);
 
   // function handleFilterClick() {
@@ -20,7 +22,7 @@ export default function ServerLibrary(serverId) {
   // INSTALL LIBRARY
 
   const handleInstallLibraryAPI = async (libName) => {
-    console.log(libName);
+    setLoading(true);
     const editUrl = `http://127.0.0.1:5000/server/install_lib/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
@@ -37,10 +39,42 @@ export default function ServerLibrary(serverId) {
         }),
       });
       if (response.status === 200) {
-        console.log("Success to Install");
+        setLoading(false);
+        alert("Success to Install");
         handleGetLib();
       } else {
+        setLoading(false);
+
         alert("Add Fail");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleUninstallLibraryAPI = async (libName) => {
+    const editUrl = `http://127.0.0.1:5000/server/uninstall_lib/${serverId.serverId}`;
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await fetch(editUrl, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          library: libName,
+        }),
+      });
+      if (response.status === 200) {
+        alert("Success to Uninstall");
+        handleGetLib();
+      } else {
+        alert("Success to Uninstall");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -80,7 +114,6 @@ export default function ServerLibrary(serverId) {
     } finally {
     }
   };
-  console.error("lib:", listLib);
 
   useEffect(() => {
     handleGetLib();
@@ -97,6 +130,12 @@ export default function ServerLibrary(serverId) {
           </Button> */}
         </div>
         <div className="flex flex-row flex-wrap gap-10 w-3/3">
+          {loading && (
+            <Box sx={{ width: "96%" }}>
+              <LinearProgress />
+            </Box>
+          )}
+
           {listLib &&
             listLib?.map((lib) => (
               <div
@@ -117,9 +156,9 @@ export default function ServerLibrary(serverId) {
                 <div className="flex flex-col items-center">
                   <h1 className="uppercase">{lib.library}</h1>
                   <h2 className="text-[14px] pb-2">
-                    {lib.installed == true ? "Installed" : "Not Installed"}
+                    {lib.installed === "False" ? "Not Installed" : "Installed"}
                   </h2>
-                  {lib.installed == true ? (
+                  {lib.installed == "False" ? (
                     <LoadingButton
                       size="small"
                       color="secondary"
@@ -127,7 +166,7 @@ export default function ServerLibrary(serverId) {
                       startIcon={<SaveIcon />}
                       variant="contained"
                     >
-                      Uninstall
+                      Install
                     </LoadingButton>
                   ) : (
                     <LoadingButton
@@ -137,7 +176,7 @@ export default function ServerLibrary(serverId) {
                       startIcon={<SaveIcon />}
                       variant="contained"
                     >
-                      Install
+                      Uninstall
                     </LoadingButton>
                   )}
                 </div>

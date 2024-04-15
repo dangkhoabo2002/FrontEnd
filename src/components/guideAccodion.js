@@ -34,7 +34,6 @@ export default function AccordionExpandIcon() {
   const [data, setData] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
 
   useEffect(() => {
     handleGuide().finally(() => setLoading(false));
@@ -57,16 +56,18 @@ export default function AccordionExpandIcon() {
       {!loading &&
         !error &&
         data?.map((guide, index) => (
-          <Accordion key={index} sx={{backgroundColor:"#F3F8FF"}}>
+          <Accordion key={index} sx={{ backgroundColor: "#F3F8FF" }}>
             <AccordionSummary
               expandIcon={<ArrowDropDownIcon />}
               aria-controls={`panel${index + 1}-content`}
               id={`panel${index + 1}-header`}
             >
-              <Typography><b>{guide.title}</b></Typography>
+              <Typography>
+                <b>{guide.title}</b>
+              </Typography>
             </AccordionSummary>
             <AccordionDetails>
-              {guide.content.split('\n').map((line, index) => (
+              {guide.content.split("\n").map((line, index) => (
                 <Typography key={index}>{line}</Typography>
               ))}
             </AccordionDetails>

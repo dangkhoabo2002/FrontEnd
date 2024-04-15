@@ -51,9 +51,9 @@ export default function ServerFirewall(serverId) {
         }),
       });
       if (response.status === 200) {
-        console.log("Update Fail");
+        alert("Update Success");
       } else {
-        console.log("Update Fail");
+        alert("Update Fail");
       }
     } catch (error) {
       console.error("Error:", error);

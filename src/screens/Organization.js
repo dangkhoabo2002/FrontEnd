@@ -146,7 +146,7 @@ export default function LandingPage() {
         });
         setShowConfirmation(false);
       } else {
-        alert("Add org fail");
+        alert("Please subscribe us first to create organization!");
       }
     } catch (error) {
       console.error("Error:", error);

@@ -231,7 +231,7 @@ export default function AdminGuide() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "1fr 3fr",
+          gridTemplateColumns: "0fr 3fr",
           height: "66vh",
         }}
       >
@@ -244,14 +244,17 @@ export default function AdminGuide() {
           <SidebarAdmin />
         </div>
         <div className="px-12 py-6 bg-[#F3F8FF]">
-          <div className="flex flex-row gap-">
-            <Button variant="outlined" onClick={handleOpenAddGuide}>
+          <div className="flex flex-row gap-10">
+            <button
+              onClick={handleOpenAddGuide}
+              class="bg-transparent hover:bg-[#3867A5] text-[#3867A5] font-semibold hover:text-white  border border-[#3867A5] hover:border-transparent rounded px-8 py-1"
+            >
               Add Guide
-            </Button>
+            </button>
           </div>
 
-          <div className="bg-white mt-4 rounded-md px-8 pb-8 shadow-md">
-            <table className="memberInOrganizationTable">
+          <div className="bg-white mt-4 rounded-md px-8 pb-8 shadow-md ">
+            <table className="">
               <tr>
                 <th id="id">#</th>
                 <th id="title">TITLE</th>

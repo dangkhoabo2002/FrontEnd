@@ -15,7 +15,7 @@ export default function AdminAccountManagement() {
     // Nếu customerId đã được chọn, loại bỏ nó khỏi danh sách đã chọn
     // Ngược lại, thêm nó vào danh sách đã chọn
     if (isAlreadySelected) {
-      setSelectedCustomers(selectedCustomers.filter(id => id !== customerId));
+      setSelectedCustomers(selectedCustomers.filter((id) => id !== customerId));
     } else {
       setSelectedCustomers([...selectedCustomers, customerId]);
     }
@@ -70,7 +70,7 @@ export default function AdminAccountManagement() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "1fr 3fr",
+          gridTemplateColumns: "0fr 3fr",
           height: "66vh",
         }}
       >
