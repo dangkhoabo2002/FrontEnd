@@ -13,6 +13,7 @@ import Footer from "../components/userFooter";
 import Sidebar from "../components/Sidebar";
 
 // ICONS MUI
+import ClearIcon from "@mui/icons-material/Clear";
 import Empty from "../assets/userBackground.png";
 import serverIcon2 from "../images/serverIcon2.png";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -58,7 +59,19 @@ export default function OrganizationDashboard() {
   // ADD ROLE DATA
   const [openAddRole, setOpenAddRole] = useState(false);
   const [addRoleData, setAddRoleData] = useState();
-  //
+  const [numRoles, setNumRoles] = useState(1);
+  const handleAddRole = () => {
+    if (numRoles < 7) {
+      setNumRoles(numRoles + 1);
+    } else {
+      alert("Maximum number of roles reached!");
+    }
+  };
+  const handleCloseAddRole = () => {
+    setOpenAddRole(false);
+    // Reset số lượng dòng khi đóng modal
+    setNumRoles(1);
+  };
 
   const navigate = useNavigate();
 
@@ -618,17 +631,8 @@ export default function OrganizationDashboard() {
 
   // ADD ROLE
 
-  const handleAddRole = () => {
-    // handleAddRoleAPI();
-    handleCloseAddRole();
-  };
-
   const handleOpenAddRole = () => {
     setOpenAddRole(true);
-  };
-
-  const handleCloseAddRole = () => {
-    setOpenAddRole(false);
   };
 
   // const handleAddRoleAPI = async () => {
@@ -742,7 +746,7 @@ export default function OrganizationDashboard() {
                           width: "136px",
                           fontWeight: "bold",
                           color: "black",
-                          
+
                           // borderLeft: "1px solid #D9D9D9",
                           // borderRight: "1px solid #D9D9D9",
                           transition: "background-color 0.3s, color 0.3s",
@@ -765,7 +769,7 @@ export default function OrganizationDashboard() {
                   </Box>
 
                   {/* TAB 1 */}
-                  <TabPanel value="1" >
+                  <TabPanel value="1">
                     <div className="flex flex-col justify-start">
                       <div className="flex flex-row justify-left">
                         <h1
@@ -1246,59 +1250,61 @@ export default function OrganizationDashboard() {
                       </Modal>
 
                       {/* modal add role */}
-                      <div className="bg-white mt-4 rounded-md px-8 pb-8 shadow-md"
-                      style={{border:"1px solid #89A6CC"}}>
-                      <table className="memberInOrganizationTable"
+                      <div
+                        className="bg-white mt-4 rounded-md px-8 pb-8 shadow-md"
+                        style={{ border: "1px solid #89A6CC" }}
                       >
-                        <tr className="">
-                          <th id="id">#</th>
-                          <th id="name">NAME</th>
-                          <th id="role">ROLE</th>
-                          <th id="action">ACTIONS</th>
-                        </tr>
-                        {memberList?.map((member, index) => (
-                          <tr key={member.id}>
-                            <td>{index + 1}</td>
-                            <td>{member.username}</td>
-                            <td>{member.roles}</td>
-                            <td>
-                              <IconButton
-                                aria-label="delete"
-                                onClick={() => handleCloseAddRole()}
-                              >
-                                <DeleteIcon />
-                              </IconButton>
-                              <Dialog
-                                open={open}
-                                onClose={handleClose}
-                                aria-labelledby="alert-dialog-title"
-                                aria-describedby="alert-dialog-description"
-                              >
-                                <DialogTitle id="alert-dialog-title">
-                                  {"Do you want to remove this member ?"}
-                                </DialogTitle>
-
-                                <DialogActions>
-                                  <Button onClick={handleClose}>No</Button>
-                                  <Button
-                                    onClick={() =>
-                                      handleRemoveUser(member.username)
-                                    }
-                                  >
-                                    <p className="text-red">Yes</p>
-                                  </Button>
-                                </DialogActions>
-                              </Dialog>
-                              <IconButton
-                                aria-label="uprole"
-                                onClick={() => handleOpenAddRole()}
-                              >
-                                <AddModeratorIcon />
-                              </IconButton>
-                            </td>
+                        <table className="memberInOrganizationTable">
+                          <tr className="">
+                            <th id="id">#</th>
+                            <th id="name">NAME</th>
+                            <th id="role">ROLE</th>
+                            <th id="action">ACTIONS</th>
                           </tr>
-                        ))}
-                      </table></div>
+                          {memberList?.map((member, index) => (
+                            <tr key={member.id}>
+                              <td>{index + 1}</td>
+                              <td>{member.username}</td>
+                              <td>{member.roles}</td>
+                              <td>
+                                <IconButton
+                                  aria-label="delete"
+                                  onClick={() => handleCloseAddRole()}
+                                >
+                                  <DeleteIcon />
+                                </IconButton>
+                                <Dialog
+                                  open={open}
+                                  onClose={handleClose}
+                                  aria-labelledby="alert-dialog-title"
+                                  aria-describedby="alert-dialog-description"
+                                >
+                                  <DialogTitle id="alert-dialog-title">
+                                    {"Do you want to remove this member ?"}
+                                  </DialogTitle>
+
+                                  <DialogActions>
+                                    <Button onClick={handleClose}>No</Button>
+                                    <Button
+                                      onClick={() =>
+                                        handleRemoveUser(member.username)
+                                      }
+                                    >
+                                      <p className="text-red">Yes</p>
+                                    </Button>
+                                  </DialogActions>
+                                </Dialog>
+                                <IconButton
+                                  aria-label="uprole"
+                                  onClick={() => handleOpenAddRole()}
+                                >
+                                  <AddModeratorIcon />
+                                </IconButton>
+                              </td>
+                            </tr>
+                          ))}
+                        </table>
+                      </div>
                     </div>
                     <Modal open={openAddRole} onClose={handleCloseAddRole}>
                       <Box sx={style}>
@@ -1316,70 +1322,85 @@ export default function OrganizationDashboard() {
                           </div>
                         </div>
                         <Grid container alignItems="center" spacing={2} mt={0}>
-                          <div
-                            className="mt-3"
-                            style={{ fontSize: "18px", fontWeight: "bold" }}
-                          >
-                            <p>Add role</p>
-                          </div>
 
-                          <Grid
-                            container
-                            alignItems="center"
-                            spacing={2}
-                            mb={3}
-                          >
-                            <Grid item xs={12} md={3}>
-                              <Typography
-                                className="mt-3"
-                                style={{
-                                  fontSize: "16px",
-                                  fontWeight: "400",
-                                }}
+                          {[...Array(numRoles)].map((_, index) => (
+                            <React.Fragment key={index}>
+                              <Grid item xs={12} md={2}>
+                                <Typography
+                                  className="mt-3"
+                                  style={{
+                                    fontSize: "16px",
+                                    fontWeight: "400",
+                                  }}
+                                >
+                                  Role:
+                                </Typography>
+                              </Grid>
+                              <Grid
+                                item
+                                xs={12}
+                                md={8}
+                                sx={{ position: "relative" }}
                               >
-                                Role:
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={12} md={9}>
-                              <TextField
-                                fullWidth
-                                id="outlined-select-currency"
-                                select
-                                label=""
-                                defaultValue="1"
-                              >
-                                {role.map((option) => (
-                                  <MenuItem
-                                    onChange={() =>
-                                      setAddRoleData(option.addData)
-                                    }
-                                    key={option.value}
-                                    value={option.value}
-                                  >
-                                    {option.label}
-                                  </MenuItem>
-                                ))}
-                              </TextField>
-                            </Grid>
+                                {" "}
+                                {/* Thêm CSS để chứa vị trí tương đối */}
+                                <TextField
+                                  fullWidth
+                                  id={`outlined-select-currency-${index}`}
+                                  select
+                                  label=""
+                                  defaultValue="1"
+                                >
+                                  {role.map((option) => (
+                                    <MenuItem
+                                      onChange={() =>
+                                        setAddRoleData(option.addData)
+                                      }
+                                      key={option.value}
+                                      value={option.value}
+                                    >
+                                      {option.label}
+                                    </MenuItem>
+                                  ))}
+                                </TextField>
+                              </Grid>
+                              <Grid item xs={12} md={2}>
+                                <IconButton 
+                                  size="small"
+                                  sx={{
+                                    fontSize: "16px",
+                                    fontWeight: "400",}}
+
+                                  onClick={() => {
+                                    // Xử lý khi người dùng nhấn vào biểu tượng 'x'
+                                    console.log("Clearing input");
+                                  }}
+                                >
+                                  <ClearIcon />
+                                </IconButton>
+                              </Grid>
+                            </React.Fragment>
+                          ))}
+                          <Grid item xs={12} md={12}>
+                            <Button
+                              startIcon={<AddIcon />}
+                              variant="contained"
+                              sx={{
+                                width: "150px",
+                                height: "30px",
+                                color: "white",
+                                bgcolor: "#3867A5",
+                                "&:hover": { bgcolor: "#264B7B" },
+                                fontSize: "14px",
+                                fontWeight: "normal",
+                                textTransform: "none",
+                              }}
+                              onClick={handleAddRole}
+                            >
+                              Add more role
+                            </Button>
                           </Grid>
-                          <Button
-                            startIcon={<AddIcon />}
-                            variant="contained"
-                            sx={{
-                              width: "150px",
-                              height: "30px",
-                              color: "white",
-                              bgcolor: "#3867A5",
-                              "&:hover": { bgcolor: "#264B7B" },
-                              fontSize: "14px",
-                              fontWeight: "normal",
-                              textTransform: "none",
-                            }}
-                          >
-                            Add more role
-                          </Button>
                         </Grid>
-
                         <DialogActions>
                           <Button onClick={handleCloseAddRole}>
                             <Typography
@@ -1425,7 +1446,7 @@ export default function OrganizationDashboard() {
                             defaultValue={data.name}
                             placeholder={organizations[0].name}
                             size="small"
-                            sx={{ width: "auto", backgroundColor:"white" }}
+                            sx={{ width: "auto", backgroundColor: "white" }}
                             InputProps={{
                               startAdornment: (
                                 <InputAdornment
@@ -1452,7 +1473,7 @@ export default function OrganizationDashboard() {
                               placeholder={organizations[0].contact_email}
                               defaultValue={data.contact_email}
                               size="small"
-                              sx={{ width: "400px", backgroundColor:"white" }}
+                              sx={{ width: "400px", backgroundColor: "white" }}
                               InputProps={{
                                 startAdornment: (
                                   <InputAdornment
@@ -1476,7 +1497,7 @@ export default function OrganizationDashboard() {
                               placeholder={organizations[0].contact_phone}
                               defaultValue={data.contact_phone}
                               size="small"
-                              sx={{ width: "260px", backgroundColor:"white" }}
+                              sx={{ width: "260px", backgroundColor: "white" }}
                               InputProps={{
                                 startAdornment: (
                                   <InputAdornment
@@ -1503,7 +1524,11 @@ export default function OrganizationDashboard() {
                             placeholder={organizations[0].description}
                             defaultValue={data.description}
                             size="medium"
-                            sx={{ width: "100%", maxWidth: "820px", backgroundColor:"white" }}
+                            sx={{
+                              width: "100%",
+                              maxWidth: "820px",
+                              backgroundColor: "white",
+                            }}
                           />
                         </div>
                         <div className="server_des mb-3">
@@ -1525,7 +1550,7 @@ export default function OrganizationDashboard() {
                                   color: "white",
                                   bgcolor: "#3867A5",
                                   marginRight: "10px",
-                                  "&:hover": { bgcolor: "#2A4D7B"},
+                                  "&:hover": { bgcolor: "#2A4D7B" },
                                 }}
                               >
                                 Save Change
