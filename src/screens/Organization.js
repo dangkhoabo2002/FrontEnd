@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Footer from "../components/userFooter";
 import ApartmentIcon from "@mui/icons-material/Apartment";
-import { Link, redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
 import {
   Grid,
@@ -13,14 +13,11 @@ import {
   Modal,
   FormControl,
   OutlinedInput,
-  Chip,
   IconButton,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 
 import { styled } from "@mui/material/styles";
 import OrganizationCard from "../components/organizationCard";
-import organizationsData from "../database/organizationsData.json";
 import "../css/Organization.css";
 import axios from "axios";
 
@@ -28,8 +25,6 @@ export default function LandingPage() {
   const [addOrg, setAddOrg] = React.useState(false);
   const handleAdd = () => setAddOrg(!addOrg);
   const handleClose = () => setAddOrg(false);
-
-  const [members, setMembers] = useState([]);
 
   const [orgList, setOrgList] = useState();
 
@@ -190,10 +185,13 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="" style={{ backgroundColor: "#f3f3fb", }}>
+    <div className="" style={{ backgroundColor: "#f3f3fb" }}>
       <div
         className=" py-6 text-center gap-10"
-        style={{ backgroundColor: "white", boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"}}  
+        style={{
+          backgroundColor: "white",
+          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+        }}
       >
         <div className="header flex flex-row items-center gap-x-3  px-20">
           <ApartmentIcon
@@ -207,8 +205,7 @@ export default function LandingPage() {
           </p>
         </div>
       </div>
-      <div className="container px-20 py-3"
-      >
+      <div className="container px-20 py-3">
         <div>
           {orgList &&
             orgList.map((organization) => (
@@ -472,7 +469,7 @@ export default function LandingPage() {
           </Modal>
         </div>
       </div>
-      <div className="mb-0" >
+      <div className="mb-0">
         <Footer />
       </div>
     </div>
