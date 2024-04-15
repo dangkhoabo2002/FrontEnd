@@ -720,7 +720,12 @@ export default function OrganizationDashboard() {
                   <Box
                     sx={{
                       borderColor: "divider",
-                      width: "88vw",
+                      width: "26.78vw",
+                      overflow: "hidden",
+                      border: "2px solid #D9D9D9",
+                      borderRadius: "5px",
+
+                      backgroundColor: "white",
                     }}
                   >
                     <TabList
@@ -728,21 +733,18 @@ export default function OrganizationDashboard() {
                       aria-label="lab API tabs example"
                       sx={{
                         "& .MuiTabs-flexContainer": {
-                          borderBottom: "1px solid #D9D9D9",
-                          borderTop: "1px solid #D9D9D9",
-
-                          width: "26.55vw",
+                          // borderBottom: "1px solid #D9D9D9",
+                          // borderTop: "1px solid #D9D9D9",
                         },
                         "& .MuiTab-root": {
                           minWidth: "auto",
                           textTransform: "capitalize",
                           width: "136px",
-                          height: "26px",
                           fontWeight: "bold",
                           color: "black",
-                          backgroundColor: "white",
-                          borderLeft: "1px solid #D9D9D9",
-                          borderRight: "1px solid #D9D9D9",
+                          
+                          // borderLeft: "1px solid #D9D9D9",
+                          // borderRight: "1px solid #D9D9D9",
                           transition: "background-color 0.3s, color 0.3s",
                           "&.Mui-selected": {
                             color: "black",
@@ -763,7 +765,7 @@ export default function OrganizationDashboard() {
                   </Box>
 
                   {/* TAB 1 */}
-                  <TabPanel value="1">
+                  <TabPanel value="1" >
                     <div className="flex flex-col justify-start">
                       <div className="flex flex-row justify-left">
                         <h1
@@ -1152,6 +1154,11 @@ export default function OrganizationDashboard() {
                         <Button
                           variant="outlined"
                           onClick={handleOpenAddMember}
+                          sx={{
+                            color: "white",
+                            bgcolor: "#3867A5",
+                            "&:hover": { bgcolor: "#2A4D7B" },
+                          }}
                         >
                           Add Member
                         </Button>
@@ -1239,9 +1246,11 @@ export default function OrganizationDashboard() {
                       </Modal>
 
                       {/* modal add role */}
-
-                      <table className="memberInOrganizationTable">
-                        <tr>
+                      <div className="bg-white mt-4 rounded-md px-8 pb-8 shadow-md"
+                      style={{border:"1px solid #89A6CC"}}>
+                      <table className="memberInOrganizationTable"
+                      >
+                        <tr className="">
                           <th id="id">#</th>
                           <th id="name">NAME</th>
                           <th id="role">ROLE</th>
@@ -1289,7 +1298,7 @@ export default function OrganizationDashboard() {
                             </td>
                           </tr>
                         ))}
-                      </table>
+                      </table></div>
                     </div>
                     <Modal open={openAddRole} onClose={handleCloseAddRole}>
                       <Box sx={style}>
@@ -1416,7 +1425,7 @@ export default function OrganizationDashboard() {
                             defaultValue={data.name}
                             placeholder={organizations[0].name}
                             size="small"
-                            sx={{ width: "auto" }}
+                            sx={{ width: "auto", backgroundColor:"white" }}
                             InputProps={{
                               startAdornment: (
                                 <InputAdornment
@@ -1443,7 +1452,7 @@ export default function OrganizationDashboard() {
                               placeholder={organizations[0].contact_email}
                               defaultValue={data.contact_email}
                               size="small"
-                              sx={{ width: "400px" }}
+                              sx={{ width: "400px", backgroundColor:"white" }}
                               InputProps={{
                                 startAdornment: (
                                   <InputAdornment
@@ -1467,7 +1476,7 @@ export default function OrganizationDashboard() {
                               placeholder={organizations[0].contact_phone}
                               defaultValue={data.contact_phone}
                               size="small"
-                              sx={{ width: "260px" }}
+                              sx={{ width: "260px", backgroundColor:"white" }}
                               InputProps={{
                                 startAdornment: (
                                   <InputAdornment
@@ -1494,7 +1503,7 @@ export default function OrganizationDashboard() {
                             placeholder={organizations[0].description}
                             defaultValue={data.description}
                             size="medium"
-                            sx={{ width: "100%", maxWidth: "820px" }}
+                            sx={{ width: "100%", maxWidth: "820px", backgroundColor:"white" }}
                           />
                         </div>
                         <div className="server_des mb-3">
@@ -1512,6 +1521,12 @@ export default function OrganizationDashboard() {
                               <Button
                                 variant="outlined"
                                 onClick={handleSaveClick}
+                                sx={{
+                                  color: "white",
+                                  bgcolor: "#3867A5",
+                                  marginRight: "10px",
+                                  "&:hover": { bgcolor: "#2A4D7B"},
+                                }}
                               >
                                 Save Change
                               </Button>
