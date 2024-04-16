@@ -3,7 +3,7 @@ import bgLogin from "../images/loginBackgr.png";
 import Logo from "../images/MHDLogo.png";
 import { Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-
+import toast, { Toaster } from "react-hot-toast";
 import { Link } from "react-router-dom";
 import "../css/login.css";
 
@@ -17,35 +17,65 @@ export default function ForgotPassword() {
     setData({ ...data, [prop]: event.target.value });
   };
 
-
   const handleSubmit = async () => {
-    const loginUrl = "http://127.0.0.1:5000/auth/forgot_password";
-    try {
-      const response = await fetch(loginUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
+    if (data.email === "") {
+      toast.error("Please input your Email first!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
         },
-        body: JSON.stringify({
-          email: data.email,
-        }),
       });
-      if (response.status === 200) {
-        localStorage.setItem("email", data.email);
-        navigate("/otp");
-      } else {
-        console.log(response.status);
-        alert("Fail to OTP");
+    } else {
+      const loginUrl = "http://127.0.0.1:5000/auth/forgot_password";
+      try {
+        const response = await fetch(loginUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+          body: JSON.stringify({
+            email: data.email,
+          }),
+        });
+        if (response.status === 200) {
+          localStorage.setItem("email", data.email);
+          toast.error("OTP sent successfully, Please check your Email!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+          setTimeout(() => {
+            navigate("/otp");
+          }, 2000);
+        } else if (response.status === 500) {
+          toast.error("Failed to send OTP, Please try again!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
       }
-    } catch (error) {
-      console.error("Error:", error);
-    } finally {
     }
   };
 
   return (
     <>
+      <Toaster position="top-center" reverseOrder={false} />
       <div
         className="login-background"
         style={{ backgroundImage: `url(${bgLogin})` }}

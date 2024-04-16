@@ -2,26 +2,47 @@ import React, { useState } from "react";
 import bgLogin from "../images/loginBackgr.png";
 import Logo from "../images/MHDLogo.png";
 import { Button, TextField, Alert } from "@mui/material";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function ResetPassword() {
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [submitPassword, setsubmitPassword] = useState("");
+  const [password, setPassword] = useState();
+  const [confirmPassword, setConfirmPassword] = useState();
+  const [submitPassword, setsubmitPassword] = useState();
 
   const [showAlert, setShowAlert] = useState(false);
-  const [alertMessage, setAlertMessage] = useState("");
 
   const handleConfirmClick = () => {
     if (!password || !confirmPassword) {
-      setAlertMessage("Please enter both passwords.");
-      setShowAlert(true);
+      toast.error("Please enter your new password!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
+        },
+      });
     } else if (password === confirmPassword) {
       setsubmitPassword(password);
-      setAlertMessage("Reset password successfully");
-      setShowAlert(true);
+      toast.success("Reset successfully!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
+        },
+      });
     } else {
-      setAlertMessage("The password doesn't match");
-      setShowAlert(true);
+      toast.error("The password does not match!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
+        },
+      });
     }
     handleChangePassword();
   };
@@ -63,11 +84,11 @@ export default function ResetPassword() {
 
   return (
     <>
+      <Toaster position="top-center" reverseOrder={false} />
       <div
         className="login-background"
         style={{ backgroundImage: `url(${bgLogin})` }}
       ></div>
-
       <div
         className="white-box"
         style={{
@@ -160,38 +181,6 @@ export default function ResetPassword() {
               Confirm
             </Button>
           </div>
-
-          {showAlert && (
-            <Alert
-              severity={
-                alertMessage === "Reset password successfully"
-                  ? "success"
-                  : "error"
-              }
-              onClose={() => setShowAlert(false)}
-              style={{
-                position: "fixed",
-                bottom: "20px",
-                right: "20px",
-                backgroundColor:
-                  alertMessage === "Reset password successfully"
-                    ? "#dff0d8"
-                    : "#f2dede",
-                border:
-                  alertMessage === "Reset password successfully"
-                    ? "1px solid #c3e6cb"
-                    : "1px solid #ebccd1",
-                color:
-                  alertMessage === "Reset password successfully"
-                    ? "#3c763d"
-                    : "#a94442",
-                borderRadius: "4px",
-                padding: "15px",
-              }}
-            >
-              {alertMessage}
-            </Alert>
-          )}
         </div>
       </div>
     </>

@@ -2,7 +2,6 @@ import { Routes, Route } from "react-router-dom";
 import Homepage from "./screens/Homepage";
 import ServerEmpty from "./screens/serverEmpty";
 import OrganizationDashboard from "./screens/organizationDashboard";
-import Test from "./screens/test";
 import Login from "./screens/login";
 import ForgotPassword from "./screens/forgotPassword";
 import SignUp from "./screens/signUp";
@@ -36,7 +35,7 @@ export default function App() {
         {/* <Route path="/aboutUs" element={<AboutUs />}></Route> */}
         <Route path="/guide" element={<Guide />}></Route>
         <Route path="/term" element={<TermOfService />}></Route>
-        <Route path="/sub" element={<SubscribeModal/>}></Route>
+        <Route path="/sub" element={<SubscribeModal />}></Route>
 
         {/* ADMIN ROUTE*/}
         <Route path="/adminLogin" element={<AdminLogin />}></Route>
@@ -56,7 +55,7 @@ export default function App() {
           path="/login/forgotPassword"
           element={<ForgotPassword />}
         ></Route>
-        
+
         <Route path="/ResetPassword" element={<ResetPassword />}></Route>
         <Route path="/payment" element={<Payment />}></Route>
         <Route path="/signUp" element={<SignUp />}></Route>
@@ -78,9 +77,6 @@ export default function App() {
         <Route path="/serverEmpty" element={<ServerEmpty />}></Route>
 
         <Route path="/server" element={<ServerConfig />}></Route>
-
-        {/* DRAFT TEST ROUTE*/}
-        <Route path="/test" element={<Test />}></Route>
       </Routes>
     </div>
   );

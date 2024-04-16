@@ -106,7 +106,7 @@ export default function ServerFirewall(serverId) {
         const firewallGet = await response.json();
         setFirewallData(firewallGet);
       } else {
-        alert("Fail");
+        alert("Fail to get data!");
       }
     } catch (error) {
       console.error("Error:", error);

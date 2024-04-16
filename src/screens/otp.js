@@ -5,43 +5,83 @@ import Logo from "../images/MHDLogo.png";
 import bgLogin from "../images/loginBackgr.png";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import Alert from "@mui/material/Alert";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function OTP() {
   const navigate = useNavigate();
   // const [alert, setAlert] = useState(false);
 
   const emailReset = localStorage.getItem("email");
-  const [otp, setOtp] = useState("");
+  const [otp, setOtp] = useState();
 
   const handleChange = (newValue) => {
     setOtp(newValue);
   };
-  // Handle OTP API
 
   const handleVerifyOtp = async () => {
-    const otpUrl = "http://127.0.0.1:5000/auth/verify_otp";
-    try {
-      const response = await fetch(otpUrl, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
+    if (otp === "") {
+      toast.success("Please input OTP!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
         },
-        body: JSON.stringify({
-          otp: otp,
-          email: emailReset,
-        }),
       });
-      if (response.status === 200) {
-        navigate("/resetPassword");
-      } else {
-        alert("Fail to verify");
+    } else {
+      const otpUrl = "http://127.0.0.1:5000/auth/verify_otp";
+      try {
+        const response = await fetch(otpUrl, {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+          body: JSON.stringify({
+            otp: otp,
+            email: emailReset,
+          }),
+        });
+        if (response.status === 200) {
+          toast.success("Verify successfull!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+          setTimeout(() => {
+            navigate("/resetPassword");
+          }, 2000);
+        } else if (response.status === 500) {
+          toast.error("Wrong OTP, please try again!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else {
+          toast.error("Unknown Error, please try again later!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
       }
-    } catch (error) {
-      console.error("Error:", error);
-    } finally {
     }
   };
 
@@ -61,10 +101,35 @@ export default function OTP() {
         }),
       });
       if (response.status === 200) {
-        alert("Resend success, please check out your Email!");
+        toast.success("Resend OTP success, please check out your Email!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 500) {
+        toast.error("Failed to send OTP!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       } else {
-        alert("Fail to resend password");
-        // setAlert(true);
+        toast.error("Something went wrong!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
     } catch {
       // setAlert(true);
@@ -77,11 +142,11 @@ export default function OTP() {
 
   return (
     <>
+      <Toaster position="top-center" reverseOrder={false} />
       <div
         className="login-background"
         style={{ backgroundImage: `url(${bgLogin})` }}
       ></div>
-
       <div
         className="white-box"
         style={{
@@ -170,9 +235,7 @@ export default function OTP() {
             <Link to={"/login/forgotPassword"}>Change email</Link>
           </Box>
           {alert && (
-            <>
-              {/* <Alert severity="error">This is an error Alert.</Alert> */}
-            </>
+            <>{/* <Alert severity="error">This is an error Alert.</Alert> */}</>
           )}
         </div>
       </div>

@@ -19,6 +19,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import RefreshIcon from "@mui/icons-material/Refresh";
+
 import AddIcon from "@mui/icons-material/Add";
 import "../css/serverGeneral.css";
 import ServerManager from "../database/listOfServerManager.json";
@@ -27,8 +28,10 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import CircularProgress from "@mui/material/CircularProgress";
 
 import handleCheckPass from "../functions/checkPass";
+
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function ServerGeneral(serverId) {
   // LOADING
@@ -46,7 +49,7 @@ export default function ServerGeneral(serverId) {
   useEffect(() => {
     if (isRefreshing) {
       window.location.reload();
-      setIsRefreshing(false); // Cập nhật trạng thái lại sau khi reload
+      setIsRefreshing(false);
       handleGetServerData1();
       handleGetServerData2();
     }
@@ -137,8 +140,15 @@ export default function ServerGeneral(serverId) {
         },
       });
       if (response.status === 200) {
+        toast.success("Successfully deleted!", {
+          style: {
+            backgroundColor: "black",
+          },
+        });
         handleCloseDeleteServer();
-        navigate(`/organizations/dashboard/${organization_id}`);
+        setTimeout(() => {
+          navigate(`/organizations/dashboard/${organization_id}`);
+        }, 2000);
       } else {
         alert("Delete Fail!");
       }
@@ -148,8 +158,9 @@ export default function ServerGeneral(serverId) {
     }
   };
 
-  const handleDeleteServerConfirm = () => {
-    if (handleCheckPass(data.password)) {
+  const handleDeleteServerConfirm = async () => {
+    const checkPass = await handleCheckPass(data.password);
+    if (checkPass === "Success") {
       handleDeleteServer();
     } else {
       alert("Wrong Password");
@@ -238,6 +249,7 @@ export default function ServerGeneral(serverId) {
     setShowConfirmation(true);
   };
 
+  // console.log(handleCheckPass("123456"));
   // CSS
   const style = {
     position: "absolute",
@@ -255,6 +267,8 @@ export default function ServerGeneral(serverId) {
 
   return (
     <>
+      {/* Return Error */}
+      <Toaster position="top-center" reverseOrder={false} />
       <div>
         {/* Information */}
         <div className="info-site mb-5">
@@ -355,7 +369,7 @@ export default function ServerGeneral(serverId) {
 
           <button
             onClick={handleAddMeber}
-            class="bg-transparent hover:bg-[#3867A5] text-[#3867A5] font-semibold hover:text-white  border border-[#3867A5] hover:border-transparent rounded px-8 py-1"
+            className="bg-transparent hover:bg-[#3867A5] text-[#3867A5] font-semibold hover:text-white  border border-[#3867A5] hover:border-transparent rounded px-8 py-1"
           >
             Add member
           </button>
@@ -363,7 +377,7 @@ export default function ServerGeneral(serverId) {
           <div className=" bg-white">
             {/*-------------- Account Table ---------------- */}
             <div className="bg-[#F3F8FF] mt-4 rounded-md px-8 pb-8 shadow-md">
-              <table class="table-auto w-full ">
+              <table className="table-auto w-full ">
                 <thead>
                   <tr>
                     <th>#</th>
@@ -384,7 +398,7 @@ export default function ServerGeneral(serverId) {
                     </td>
                   </tr>
                   {ServerManager.map((svmg) => (
-                    <tr>
+                    <tr key={svmg.id}>
                       <td>{svmg.id}</td>
                       <td>{svmg.email}</td>
                       <td>{svmg.role}</td>
@@ -452,7 +466,7 @@ export default function ServerGeneral(serverId) {
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleCloseDeleteServer}>Cancel</Button>
-                <Button onClick={handleDeleteServer}>Confirm</Button>
+                <Button onClick={handleDeleteServerConfirm}>Confirm</Button>
               </DialogActions>
             </Dialog>
             <Button
@@ -482,7 +496,7 @@ export default function ServerGeneral(serverId) {
               <DialogContent>
                 <DialogContentText className="pb-4">
                   Your action is critical impact of server!, please enter your
-                  password to continue.
+                  User's Password to continue.
                 </DialogContentText>
                 <TextField
                   required
@@ -573,11 +587,10 @@ export default function ServerGeneral(serverId) {
                 md={3}
                 className="d-flex justify-content-center align-items-center"
               >
-                {" "}
                 <Button onClick={handleClose}>
                   <Typography variant="button" style={{ color: "red" }}>
                     Cancel
-                  </Typography>{" "}
+                  </Typography>
                 </Button>
               </Grid>
               <Grid

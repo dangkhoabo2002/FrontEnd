@@ -13,6 +13,7 @@ import {
 import "../css/login.css";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -26,36 +27,63 @@ export default function Login() {
   };
 
   const handleLogin = async () => {
-    const loginUrl = "http://127.0.0.1:5000/auth/login";
-    try {
-      const response = await fetch(loginUrl, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Credentials": "true",
+    if (data.username === "" || data.password === "") {
+      toast.error("Please input your Username & Password!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
         },
-        body: JSON.stringify({
-          username: data.username,
-          password: data.password,
-        }),
       });
-      if (response.status === 200) {
-        const data = await response.json();
-        localStorage.setItem("access_token", data.access_token);
-        navigate(`/organizations`);
-      } else if (response.status === 401) {
-        alert("Invalid Username & Password");
-      } else {
-        alert("Unknown Error");
+    } else {
+      const loginUrl = "http://127.0.0.1:5000/auth/login";
+      try {
+        const response = await fetch(loginUrl, {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Credentials": "true",
+          },
+          body: JSON.stringify({
+            username: data.username,
+            password: data.password,
+          }),
+        });
+        if (response.status === 200) {
+          const data = await response.json();
+          localStorage.setItem("access_token", data.access_token);
+          navigate(`/organizations`);
+        } else if (response.status === 401) {
+          toast.error("Invalid Username or Password!", {
+            style: {
+              border: "1px solid #F85F60",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else {
+          toast.error("Unknown error, please try again later!", {
+            style: {
+              border: "1px solid #F85F60",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
       }
-    } catch (error) {
-      console.error("Error:", error);
     }
   };
   return (
     <>
+      <Toaster position="top-center" reverseOrder={false} />
       <div
         className="login-background"
         style={{ backgroundImage: `url(${bgLogin})` }}
@@ -204,7 +232,7 @@ export default function Login() {
               <p className="small fw-bold mt-2 pt-1 flex ">
                 Don't have an account?{" "}
                 <Link to={"/signUp"}>
-                  <p style={{ color: "#3867A5", marginLeft:"5px" }}>
+                  <p style={{ color: "#3867A5", marginLeft: "5px" }}>
                     <button>Get started</button>
                   </p>
                 </Link>
