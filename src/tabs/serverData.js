@@ -73,7 +73,7 @@ export default function ServerData() {
         <div className="info-title font-semibold my-3">
           <p>Browse File</p>
         </div>
-        <div className="">
+        <div className="" >
           <FormControl>
             <RadioGroup
               value={selectedOptionFile}
@@ -104,7 +104,7 @@ export default function ServerData() {
                 value={pathFile}
                 onChange={handlePathChangeFile}
                 size="small"
-                sx={{ width: "800px" }}
+                sx={{ width: "800px",backgroundColor:"white", }}
                 disabled={selectedOptionFile === "default"}
               />
               <Button
@@ -135,7 +135,7 @@ export default function ServerData() {
                 value={pathFile}
                 onChange={handlePathChangeFile}
                 size="small"
-                sx={{ width: "800px" }}
+                sx={{ width: "800px", backgroundColor:"white",}}
                 disabled={true}
               />
             </div>
@@ -179,7 +179,7 @@ export default function ServerData() {
                 value={pathFolder}
                 onChange={handlePathChangeFolder}
                 size="small"
-                sx={{ width: "800px" }}
+                sx={{ width: "800px" ,backgroundColor:"white"}}
                 disabled={selectedOptionFolder === "default"}
               />
               <Button
@@ -210,7 +210,7 @@ export default function ServerData() {
                 value={pathFolder}
                 onChange={handlePathChangeFolder}
                 size="small"
-                sx={{ width: "800px" }}
+                sx={{ width: "800px" ,backgroundColor:"white"}}
                 disabled={true}
               />
               {/* No Browse button for Default */}
@@ -230,7 +230,7 @@ export default function ServerData() {
             mt={1}
             id="outlined-basic-file"
             size="small"
-            sx={{ width: "800px" }}
+            sx={{ width: "800px",backgroundColor:"white" }}
           />
           <Button
             startIcon={<DownloadIcon />}
@@ -263,7 +263,7 @@ export default function ServerData() {
             mt={1}
             id="outlined-basic-file"
             size="small"
-            sx={{ width: "800px" }}
+            sx={{ width: "800px",backgroundColor:"white" }}
           />
           <Button
             startIcon={<DownloadIcon />}

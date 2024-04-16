@@ -232,49 +232,64 @@ export default function ServerProxy(serverId) {
         <div className="info-title font-semibold my-3">
           <p>Proxy Server Setting</p>
         </div>
-        <Button variant="contained" onClick={handleOpenAddProxy}>
+        <Button
+          variant="contained"
+          onClick={handleOpenAddProxy}
+          sx={{
+            color: "white",
+            bgcolor: "#3867A5",
+            "&:hover": { bgcolor: "#2A4D7B" },
+          }}
+        >
           Add Proxy
         </Button>
       </div>
       <div className="server_des mb-3">
         <div>
           {/* Replace with your actual table implementation */}
-          <table className="w-full">
-            <thead>
-              <tr>
-                <th>No.</th>
-                <th>Protocol</th>
-                <th>Detail</th>
-                <th colSpan={2}>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {proxyData &&
-                proxyData?.map((proxy, index) => (
-                  <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td>{proxyData[index].protocol}</td>
-                    <td>{proxyData[index].details}</td>
-                    <td>
-                      <IconButton
-                        aria-label="edit"
-                        onClick={() => handleOpenEditProxy(proxyData[index])}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                    </td>
-                    <td>
-                      <IconButton
-                        aria-label="delete"
-                        onClick={() => handleOpenDeleteProxy(proxyData[index])}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
+          <div
+            className="bg-[white] mt-4 rounded-md px-8 pb-8 shadow-lg"
+            style={{ border: "1px solid #89A6CC" }}
+          >
+            <table className="w-full">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>Protocol</th>
+                  <th>Detail</th>
+                  <th colSpan={2}>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {proxyData &&
+                  proxyData?.map((proxy, index) => (
+                    <tr key={index}>
+                      <td>{index + 1}</td>
+                      <td>{proxyData[index].protocol}</td>
+                      <td>{proxyData[index].details}</td>
+                      <td>
+                        <IconButton
+                          aria-label="edit"
+                          onClick={() => handleOpenEditProxy(proxyData[index])}
+                        >
+                          <EditIcon />
+                        </IconButton>
+                      </td>
+                      <td>
+                        <IconButton
+                          aria-label="delete"
+                          onClick={() =>
+                            handleOpenDeleteProxy(proxyData[index])
+                          }
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
 
           {/*Modal of Update Proxy */}
           <Modal

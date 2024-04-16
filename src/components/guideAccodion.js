@@ -56,7 +56,7 @@ export default function AccordionExpandIcon() {
       {!loading &&
         !error &&
         data?.map((guide, index) => (
-          <Accordion key={index} sx={{ backgroundColor: "#F3F8FF" }}>
+          <Accordion key={index} sx={{ backgroundColor: "#ffffff" }}>
             <AccordionSummary
               expandIcon={<ArrowDropDownIcon />}
               aria-controls={`panel${index + 1}-content`}

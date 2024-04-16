@@ -668,7 +668,7 @@ export default function OrganizationDashboard() {
 
   return (
     <>
-      <div className="containerOrg">
+      <div className="containerOrg" style={{height: "100vh" }}>
         <div className="sideMenu">
           <Sidebar />
         </div>
@@ -1632,7 +1632,7 @@ export default function OrganizationDashboard() {
           </div>
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

@@ -123,7 +123,7 @@ export default function UserProfile() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "1fr 3fr",
+          gridTemplateColumns: "0fr 3fr",
           height: "52vh",
         }}
       >
@@ -135,13 +135,13 @@ export default function UserProfile() {
         >
           <SidebarUser />
         </div>
-        <div className="profile">
-          <div className="profileField px-20 pt-10 flex flex-col gap-10">
+          <div className="profileField  flex flex-col gap-10 px-20 py-10 bg-[#F3F8FF]">
             <div className="profileField  flex flex-row justify-start gap-72">
               <div className="username">
                 <h1>Full Name</h1>
 
                 <TextField
+                  className="bg-[white]"
                   disabled={isDisabled}
                   id="outlined-basic"
                   onChange={handleChangeInput("full_name")}
@@ -163,6 +163,7 @@ export default function UserProfile() {
                 <h1>Username</h1>
 
                 <TextField
+                  className="bg-[white]"
                   disabled
                   id="outlined-basic"
                   // placeholder={userProfile.username}
@@ -184,6 +185,7 @@ export default function UserProfile() {
                 <h1>Email</h1>
 
                 <TextField
+                  className="bg-[white]"
                   disabled
                   id="outlined-basic"
                   // placeholder={userProfile.email}
@@ -232,7 +234,6 @@ export default function UserProfile() {
             </div>
           </div>
         </div>
-      </div>
 
       {/*-------------- END OF LayoutBody ---------------- */}
     </div>

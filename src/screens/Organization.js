@@ -185,7 +185,8 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="" style={{ backgroundColor: "#f3f3fb" }}>
+    <div>
+    <div className="" style={{ backgroundColor: "#f3f3fb", height: "100vh" }}>
       <div
         className=" py-6 text-center gap-10"
         style={{
@@ -472,6 +473,6 @@ export default function LandingPage() {
       <div className="mb-0">
         <Footer />
       </div>
-    </div>
+    </div></div>
   );
 }
