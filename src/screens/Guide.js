@@ -31,7 +31,7 @@ export default function Guide() {
 
   return (
     <>
-      <div className="" style={{ backgroundColor: "#f3f3fb" }}>
+      <div className="" style={{ backgroundColor: "#f3f3fb" , height: "100vh" }}>
         <div
           className=" py-6 text-center gap-10"
           style={{
@@ -75,7 +75,7 @@ export default function Guide() {
         </div>
       </div>
 
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

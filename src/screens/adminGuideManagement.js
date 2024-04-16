@@ -245,15 +245,21 @@ export default function AdminGuide() {
         </div>
         <div className="px-12 py-6 bg-[#F3F8FF]">
           <div className="flex flex-row gap-10">
-            <button
+            <Button
               onClick={handleOpenAddGuide}
-              class="bg-transparent hover:bg-[#3867A5] text-[#3867A5] font-semibold hover:text-white  border border-[#3867A5] hover:border-transparent rounded px-8 py-1"
+              variant="outlined"
+              sx={{
+                width: "120px",
+                color: "white",
+                bgcolor: "#3867A5",
+                "&:hover": { bgcolor: "#2A4D7B" },
+              }}
             >
               Add Guide
-            </button>
+            </Button>
           </div>
 
-          <div className="bg-white mt-4 rounded-md px-8 pb-8 shadow-md ">
+          <div className="bg-white mt-4 rounded-md px-8 pb-8 shadow-md " style={{ border: "1px solid #89A6CC" }}>
             <table className="">
               <tr>
                 <th id="id">#</th>
@@ -384,49 +390,31 @@ export default function AdminGuide() {
             </Grid>
           </Grid>
 
-          <Box>
-            <Grid container spacing={2} mt={2}>
-              <Grid
-                item
-                xs={12}
-                md={3}
-                className="d-flex justify-content-center align-items-center"
-              >
-                {" "}
-                <Button
-                  variant="contained"
-                  onClick={handleClose}
-                  sx={{
-                    width: "100px",
-                    color: "white",
-                    bgcolor: "#6EC882",
-                    "&:hover": { bgcolor: "darkgreen" },
-                  }}
-                >
-                  Cancel
-                </Button>
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                md={3}
-                className="d-flex justify-content-center align-items-center"
-              >
-                <Button
-                  variant="contained"
-                  onClick={handleAddGuide}
-                  sx={{
-                    width: "100px",
-                    color: "white",
-                    bgcolor: "#6EC882",
-                    "&:hover": { bgcolor: "darkgreen" },
-                  }}
-                >
-                  Add
-                </Button>
-              </Grid>
-            </Grid>
-          </Box>
+          <DialogActions className="mt-5">
+            <Button
+              variant="contained"
+              onClick={handleCloseAddGuide}
+              sx={{
+                width: "100px",
+                color: "white",
+                bgcolor: "#F85F60",
+                "&:hover": { bgcolor: "#D45758" },              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              onClick={handleAddGuide}
+              sx={{
+                width: "100px",
+                color: "white",
+                bgcolor: "#6EC882",
+                "&:hover": { bgcolor: "#63B976" },
+              }}
+            >
+              Add
+            </Button>
+          </DialogActions>
         </Box>
       </Modal>
 
