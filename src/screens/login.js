@@ -153,7 +153,7 @@ export default function Login() {
               >
                 Root username
               </p>
-              <p style={{ fontSize: "11px", fontWeight: "600" }}>
+              <p style={{ fontSize: "11px", fontWeight: "600",  }}>
                 Used for account recovery and some administrative functions
               </p>
               <div className="textField mt-3">
@@ -195,10 +195,7 @@ export default function Login() {
               className="mt-3"
               sx={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)" }}
             >
-              <div
-                className="mt-2 font-semibold"
-                style={{ textAlign: "right" }}
-              >
+              <div className="mt-2 font-semibold" style={{ textAlign: "left" }}>
                 <Link to={`/login/forgotPassword`}>
                   <p style={{ color: "#3867A5" }}>
                     <button>Forgot password?</button>

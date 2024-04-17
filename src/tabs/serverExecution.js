@@ -22,11 +22,12 @@ export default function ServerExecution() {
         </Typography>
         <div className="flex">
           <TextField
+          
             variant="outlined"
             size="small"
             fullWidth
             defaultValue="C:\\Users\\Nguyen Dang Khoa\\Desktop\\FPT-Journey\\CNS\\FER201\\REACT_APP..."
-            sx={{ width: "50%" }}
+            sx={{backgroundColor:"white", width: "70%" }}
           />
           <div
             style={{
@@ -39,22 +40,26 @@ export default function ServerExecution() {
                 <Button
                   variant="contained"
                   sx={{
-                    width: "150px",
                     bgcolor: "#3867A5",
+                    width: "100px",
                     "&:hover": { bgcolor: "#264B7B" },
                   }}
                 >
                   Check
                 </Button>
               </div>
-              <div className="check-btn mx-3 flex flex-col">
-                <Button disable sx={{ width: "150px" }} color="error">
+              <div className="check-btn mx-3 flex flex-col ">
+                <Button disable sx={{ width: "100px " }} color="error">
                   Exists
                 </Button>
               </div>
             </div>
 
-            <Box className="mt-3 d-flex  mx-3">
+          </div>
+          
+        </div>
+
+        <Box className="mt-3 d-flex" sx={{marginLeft:"745px"}}>
               <div className="">
                 <FormControlLabel
                   sx={{ color: "#637381" }}
@@ -68,15 +73,13 @@ export default function ServerExecution() {
                 />
               </div>
             </Box>
-          </div>
-        </div>
       </div>
       <div className="info-title font-semibold my-3">
         <p>Output</p>
       </div>{" "}
       <FormControl fullWidth variant="outlined">
         <OutlinedInput
-          sx={{ width: "70%" }}
+          sx={{ width: "70%", backgroundColor:"white" }}
           className="mt-2"
           style={{}}
           multiline

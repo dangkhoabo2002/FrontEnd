@@ -140,7 +140,8 @@ export default function ServerLibrary(serverId) {
             listLib?.map((lib) => (
               <div
                 key={lib.id}
-                className="flex flex-row justify-left items-center gap-8 rounded-md shadow-lg border px-12 py-6 w-2/7"
+                style={{ border: "1px solid #89A6CC" }}
+                className="bg-[white] flex flex-row justify-left items-center gap-8 rounded-md shadow-lg border px-12 py-6 w-2/7"
               >
                 <img
                   loading="lazy"

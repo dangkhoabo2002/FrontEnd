@@ -177,34 +177,39 @@ export default function ServerFirewall(serverId) {
       )}
 
       {/* SL */}
-      <div className="flex flex-row mt-3 gap-32">
-        <div className="flex flex-col ">
-          <p className="font-bold">Security level:</p>
+
+      <div
+        className="bg-[white] mt-4 rounded-md px-8 py-6  shadow-lg"
+        style={{ border: "1px solid #89A6CC" }}
+      >
+        <div className="flex flex-row mt-3 gap-32">
+          <div className="flex flex-col ">
+            <p className="font-bold">Security level:</p>
+          </div>
+          <div className="flex flex-col">
+            <Select
+              sx={{ width: "800px", marginLeft: "4px" }}
+              size="small"
+              labelId="demo-select-small-label"
+              id="demo-select-small"
+              value={firewallLevel}
+              label=""
+              defaultValue=""
+              onChange={handleChange}
+            >
+              <MenuItem value={"enable_firewall"}>Enable Firewall</MenuItem>
+              <MenuItem value={"disable_firewall"}>Disable firewall</MenuItem>
+              <MenuItem value={"allow_port"}>Allow Port</MenuItem>
+              <MenuItem value={"allow_ip"}>Allow IP</MenuItem>
+              <MenuItem value={"deny_port"}>Deny Port</MenuItem>
+              <MenuItem value={"deny_ip"}>Deny IP</MenuItem>
+              <MenuItem value={"reset_firewall"}>Reset Firewall</MenuItem>
+            </Select>
+          </div>
         </div>
-        <div className="flex flex-col">
-          <Select
-            sx={{ width: "800px", marginLeft: "4px" }}
-            size="small"
-            labelId="demo-select-small-label"
-            id="demo-select-small"
-            value={firewallLevel}
-            label=""
-            defaultValue=""
-            onChange={handleChange}
-          >
-            <MenuItem value={"enable_firewall"}>Enable Firewall</MenuItem>
-            <MenuItem value={"disable_firewall"}>Disable firewall</MenuItem>
-            <MenuItem value={"allow_port"}>Allow Port</MenuItem>
-            <MenuItem value={"allow_ip"}>Allow IP</MenuItem>
-            <MenuItem value={"deny_port"}>Deny Port</MenuItem>
-            <MenuItem value={"deny_ip"}>Deny IP</MenuItem>
-            <MenuItem value={"reset_firewall"}>Reset Firewall</MenuItem>
-          </Select>
-        </div>
-      </div>
-      {/* End SL */}
-      {/* Trusted Service */}
-      {/* <div className="flex flex-row mt-3">
+        {/* End SL */}
+        {/* Trusted Service */}
+        {/* <div className="flex flex-row mt-3">
         <div className="flex flex-row gap-28">
           <p>
             <b>Trusted services:</b>
@@ -272,62 +277,78 @@ export default function ServerFirewall(serverId) {
           </div>
         </div>
       </div> */}
-      {/*End TS */}
-      {/* OP */}
-      {!isDisable && (
-        <div className="flex flex-row mt-3 gap-32">
-          <div className="flex flex-col w-24">
-            <p className="font-bold">Other information:</p>
-            <p>1029:tcp </p>
+        {/*End TS */}
+        {/* OP */}
+        {!isDisable && (
+          <div className="flex flex-row mt-3 gap-32">
+            <div className="flex flex-col w-24">
+              <p className="font-bold">Other information:</p>
+              <p>1029:tcp </p>
+            </div>
+            <div className="flex flex-col ml-3">
+              <TextField
+                id="outlined-basic"
+                placeholder="192.168.x.xx"
+                value={port}
+                onChange={handleChangePort}
+                size="small"
+                sx={{ width: "800px" }}
+              />
+            </div>
           </div>
-          <div className="flex flex-col ml-3">
-            <TextField
-              id="outlined-basic"
-              placeholder="192.168.x.xx"
-              value={port}
-              onChange={handleChangePort}
-              size="small"
-              sx={{ width: "800px" }}
-            />
-          </div>
-        </div>
-      )}
+        )}
 
-      {/* End OP */}
-      <div className="my-3">
-        <Button
-          onClick={handleFireWallAction}
-          variant="contained"
-          sx={{
-            width: "150px",
-            bgcolor: "#3867A5",
-            "&:hover": { bgcolor: "#264B7B" },
-          }}
-        >
-          Update
-        </Button>
+        {/* End OP */}
+        <div className="my-3">
+          <Button
+            onClick={handleFireWallAction}
+            variant="contained"
+            sx={{
+              width: "150px",
+              bgcolor: "#3867A5",
+              "&:hover": { bgcolor: "#264B7B" },
+            }}
+          >
+            Update
+          </Button>
+        </div>
       </div>
-      <table className="w-full">
-        <thead>
-          <tr>
-            <th>No.</th>
-            <th>To</th>
-            <th>Action</th>
-            <th>From</th>
-          </tr>
-        </thead>
-        <tbody>
-          {firewallData &&
-            firewallData?.map((firewall, index) => (
-              <tr key={index}>
-                <td>{index + 1}</td>
-                <td>{firewall?.to}</td>
-                <td>{firewall?.action}</td>
-                <td>{firewall?.from}</td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+      <hr
+        className="my-2"
+        style={{
+          color: "#637381",
+          background: "#637381",
+          border: "0",
+          height: "1px",
+          margin: "20px 0 20px",
+        }}
+      />
+      <div
+        className="bg-[white] rounded-md px-8 pb-8 shadow-lg"
+        style={{ border: "1px solid #89A6CC" }}
+      >
+        <table className="w-full">
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>To</th>
+              <th>Action</th>
+              <th>From</th>
+            </tr>
+          </thead>
+          <tbody>
+            {firewallData &&
+              firewallData?.map((firewall, index) => (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{firewall?.to}</td>
+                  <td>{firewall?.action}</td>
+                  <td>{firewall?.from}</td>
+                </tr>
+              ))}
+          </tbody>
+        </table>{" "}
+      </div>
     </div>
   );
 }

@@ -56,11 +56,13 @@ const ServerReport = () => {
             Raw log
           </Button>
         </div>
-        <h1 className="pb-10">
+        <h1 className="mb-3">
           Review your server history within the last 3 days.
         </h1>
       </div>
-      <table className="table border-2">
+      <div className="bg-[white] mt-4 rounded-md px-8 py-6  shadow-lg"
+        style={{ border: "1px solid #89A6CC" }}>
+      <table className="table">
         <thead>
           <tr>
             <th>Date</th>
@@ -104,7 +106,7 @@ const ServerReport = () => {
           ))}
         </tbody>
       </table>
-
+      </div>
       <Modal
         open={open}
         onClose={handleClose}

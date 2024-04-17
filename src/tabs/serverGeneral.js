@@ -396,17 +396,26 @@ export default function ServerGeneral(serverId) {
             <p>Member</p>
           </div>
 
-          <button
+          <Button
+            variant="outlined"
             onClick={handleAddMeber}
             className="bg-transparent hover:bg-[#3867A5] text-[#3867A5] font-semibold hover:text-white  border border-[#3867A5] hover:border-transparent rounded px-8 py-1"
+            sx={{
+              color: "white",
+              bgcolor: "#3867A5",
+              "&:hover": { bgcolor: "#2A4D7B" },
+            }}
           >
             Add member
-          </button>
+          </Button>
 
           <div className=" bg-white">
             {/*-------------- Account Table ---------------- */}
-            <div className="bg-[#F3F8FF] mt-4 rounded-md px-8 pb-8 shadow-md">
-              <table className="table-auto w-full ">
+            <div
+              className="bg-[white] mt-4 rounded-md px-8 pb-8 shadow-lg"
+              style={{ border: "1px solid #89A6CC" }}
+            >
+              <table class="table-auto w-full ">
                 <thead>
                   <tr>
                     <th>#</th>
@@ -461,6 +470,7 @@ export default function ServerGeneral(serverId) {
             >
               DELETE SERVER
             </Button>
+
             <Dialog
               open={openDeleteServer}
               onClose={handleCloseDeleteServer}
@@ -478,7 +488,8 @@ export default function ServerGeneral(serverId) {
               <DialogTitle>Delete Server</DialogTitle>
               <DialogContent>
                 <DialogContentText className="pb-4">
-                  To delete this server, please enter your password.
+                  Your action is critical impact! Please enter your password to
+                  continue.
                 </DialogContentText>
                 <TextField
                   required
@@ -488,7 +499,7 @@ export default function ServerGeneral(serverId) {
                   label="Password"
                   type="password"
                   fullWidth
-                  variant="standard"
+                  variant="outlined"
                   onChange={handleChange("password")}
                   value={data.password}
                 />
@@ -500,7 +511,14 @@ export default function ServerGeneral(serverId) {
             </Dialog>
             <Button
               variant="contained"
-              sx={{ borderRadius: 1, marginRight: 2 }}
+              sx={{
+                borderRadius: 1,
+                marginRight: 2,
+                bgcolor: isServerOn ? "#6EC882" : "#8E8E8E",
+                "&:hover": {
+                  bgcolor: isServerOn ? "#60A670" : "#646464",
+                },
+              }}
               onClick={handleOpenChangeStatus}
             >
               {isServerOn ? "Turn off server" : "Turn on server"}
@@ -511,8 +529,8 @@ export default function ServerGeneral(serverId) {
               </DialogTitle>
               <DialogContent>
                 <DialogContentText className="pb-4">
-                  Your action is critical impact of server!, please enter your
-                  User's Password to continue.
+                  Your action is critical impact! Please enter your password to
+                  continue.
                 </DialogContentText>
                 <TextField
                   required
@@ -522,7 +540,7 @@ export default function ServerGeneral(serverId) {
                   label="Password"
                   type="password"
                   fullWidth
-                  variant="standard"
+                  variant="outlined"
                   onChange={handleChange("password")}
                   value={data.password}
                 />

@@ -25,7 +25,7 @@ export default function SidebarUser() {
       style={{
         borderRight: "1px solid #E5E8EB",
         width: "300px",
-        height: "1000px",
+        flex: "1",
         display: "flex",
         flexDirection: "column",
       }}

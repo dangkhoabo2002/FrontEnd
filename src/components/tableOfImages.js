@@ -39,7 +39,9 @@ export default function DisableClickSelectionGrid() {
   ];
 
   return (
-    <div style={{ height: 400, width: "100%" }}>
+    <div style={{ height: 400, border: "1px solid #89A6CC" }}
+    className="bg-[white] rounded-md shadow-lg"
+       >
       <DataGrid
         rows={rows}
         columns={columns}

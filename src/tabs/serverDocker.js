@@ -541,8 +541,9 @@ export default function ServerDocker(serverId) {
           </div>
         )}
 
-        <div className="flex flex-col flex-wrap gap-2">
-          <h2>Dockerfile</h2>
+        <div className="flex flex-col flex-wrap gap-2 bg-[white] mt-4 rounded-md px-8 py-6   shadow-lg"
+        style={{ border: "1px solid #89A6CC" }}>
+          <h2 className="font-bold">Dockerfile</h2>
           <div className="flex flex-row gap-5">
             <TextField
               hiddenLabel
@@ -556,7 +557,7 @@ export default function ServerDocker(serverId) {
               }}
             />
           </div>
-          <h2>Image tag</h2>
+          <h2 className="font-bold">Image tag</h2>
 
           <div className="flex flex-row gap-5">
             <TextField
@@ -589,7 +590,7 @@ export default function ServerDocker(serverId) {
             </Button>
           </div>
 
-          <h2 className="pt-4">docker-compose.yml</h2>
+          <h2 className="pt-4 font-bold">docker-compose.yml</h2>
           <div className="flex flex-row gap-5">
             <TextField
               hiddenLabel
@@ -646,7 +647,7 @@ export default function ServerDocker(serverId) {
       {/* ALL IMAGES */}
 
       <div className="imagesSection">
-        <h1 className="text-2xl pb-10 pt-2">All images</h1>
+        <h1 className="text-2xl my-3">All images</h1>
         <div className="flex flex-row gap-4 pb-4">
           <Button
             variant="contained"
@@ -685,13 +686,15 @@ export default function ServerDocker(serverId) {
         <TableOfImages />
       </div>
       <div className="resultOutput">
-        <h1 className="text-2xl pb-10 pt-2">Output result</h1>
-        <textarea class="w-full resize-none rounded-md border-4 p-4">
+        <h1 className="text-2xl my-3">Output result</h1>
+        <textarea class="w-full resize-none rounded-md p-4"
+        style={{ border: "1px solid #89A6CC" }}>
+          
           Build successfully
         </textarea>
       </div>
       <div className="containersSection">
-        <h1 className="text-2xl pb-10 pt-2">All containers</h1>
+        <h1 className="text-2xl  my-3">All containers</h1>
         <div className="flex flex-row gap-4 pb-4">
           {actions.map((action) => (
             <Button
@@ -716,7 +719,9 @@ export default function ServerDocker(serverId) {
         </div>
 
         {/* Table of containers */}
-        <div style={{ height: 400, width: "100%" }}>
+        <div style={{ height: 400, border: "1px solid #89A6CC"}}
+    className="bg-[white] rounded-md shadow-lg"
+       >
           <DataGrid
             rows={rows}
             columns={columns}

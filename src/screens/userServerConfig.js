@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useState } from "react";
 
 // MUI
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
@@ -72,47 +74,102 @@ export default function UserServerConfig() {
         <div className="sideMenu">
           <Sidebar />
         </div>
-        <div className="Organization">
-          <div className="container px-20">
-            <div className=" py-6 text-center border-b-2 border-stone-200 gap-10">
-              <div className="header flex flex-row items-center gap-x-3">
-                <ApartmentIcon
-                  style={{ width: "32px", height: "32px", color: "#637381" }}
-                />
-                <p
-                  className="font-semibold"
-                  style={{ fontSize: "28px", color: "#637381" }}
+        <div
+          className="Organization"
+          style={{
+            width: "100%",
+            boxSizing: "border-box",
+            backgroundColor: "#f3f3fb",
+          }}
+        >
+          <div>
+            <div
+              className="flex py-6 text-center gap-10"
+              style={{
+                backgroundColor: "white",
+                boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+              }}
+            >
+              <div className="header flex flex-row items-center gap-x-3  px-20">
+                <Link
+                  to={"/organizations"}
+                  className="flex flex-row items-center gap-x-3"
                 >
-                  Server
-                </p>
+                  <ApartmentIcon
+                    style={{ width: "32px", height: "32px", color: "#637381" }}
+                  />
+                  <p
+                    className="font-semibold"
+                    style={{ fontSize: "28px", color: "#637381" }}
+                  >
+                    Organizations <ArrowForwardIosIcon />
+                  </p>
+                </Link>
+                <span
+                  className="font-semibold"
+                  style={{
+                    fontSize: "28px",
+                    color: "#637381",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {/* {name} */}
+                </span>
+              </div>
+              <div
+              
+                style={{
+                  marginLeft: "583px",
+                  textAlign: "center",
+                  alignContent: "center",
+                  width: "10%",
+                  color: "white",
+                  borderRadius: "100px",
+                  backgroundColor: "#6EC882",
+                  fontSize: "18px",
+                  fontWeight: "bold",
+                  textTransform: "none",
+                }}
+              >
+                Online
               </div>
             </div>
+          </div>
 
+          <div className="container px-20 py-3 mt-2">
             <div className=""></div>
             <TabContext value={value}>
-              <Box sx={{}}>
+              <Box
+                sx={{
+                  borderColor: "divider",
+                  width: "71vw",
+                  overflow: "hidden",
+                  border: "2px solid #D9D9D9",
+                  borderRadius: "5px",
+
+                  backgroundColor: "white",
+                }}
+              >
                 <TabList
                   onChange={handleChange}
                   aria-label="lab API tabs example"
                   sx={{
                     "& .MuiTabs-flexContainer": {
-                      justifyContent: "space-around",
-                      borderBottom: "1px solid #D9D9D9",
+                      // borderBottom: "1px solid #D9D9D9",
+                      // borderTop: "1px solid #D9D9D9",
                     },
                     "& .MuiTab-root": {
                       minWidth: "auto",
-                      paddingTop: "10px",
-                      paddingBottom: "10px",
                       textTransform: "capitalize",
                       width: "136px",
-                      height: "26px",
                       fontWeight: "bold",
                       color: "black",
-                      borderLeft: "1px solid #D9D9D9",
-                      borderRight: "1px solid #D9D9D9",
-                      transition: "background-color 0s, color 0s",
+
+                      // borderLeft: "1px solid #D9D9D9",
+                      // borderRight: "1px solid #D9D9D9",
+                      transition: "background-color 0.3s, color 0.3s",
                       "&.Mui-selected": {
-                        color: "black", // Giữ màu chữ đen khi tab được chọn
+                        color: "black",
                       },
                     },
                     "& .Mui-selected": {
