@@ -20,9 +20,9 @@ export default function OTP() {
 
   const handleVerifyOtp = async () => {
     if (otp === "") {
-      toast.success("Please input OTP!", {
+      toast.error("Please input OTP!", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #37E030",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",
@@ -47,10 +47,10 @@ export default function OTP() {
         if (response.status === 200) {
           toast.success("Verify successfull!", {
             style: {
-              border: "1px solid #F85F60",
+              border: "1px solid #37E030",
               maxWidth: "900px",
               padding: "16px 24px",
-              color: "red",
+              color: "green",
               fontWeight: "bolder",
             },
           });
@@ -103,10 +103,10 @@ export default function OTP() {
       if (response.status === 200) {
         toast.success("Resend OTP success, please check out your Email!", {
           style: {
-            border: "1px solid #F85F60",
+            border: "1px solid #37E030",
             maxWidth: "900px",
             padding: "16px 24px",
-            color: "red",
+            color: "green",
             fontWeight: "bolder",
           },
         });

@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { RiServerFill } from "react-icons/ri";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
 
 // COMPONENTS
 
@@ -14,7 +14,6 @@ import Sidebar from "../components/Sidebar";
 
 // ICONS MUI
 import ClearIcon from "@mui/icons-material/Clear";
-import Empty from "../assets/userBackground.png";
 import serverIcon2 from "../images/serverIcon2.png";
 import InputAdornment from "@mui/material/InputAdornment";
 import EmailIcon from "@mui/icons-material/Email";
@@ -37,6 +36,9 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
+// FUNCTION
+import handleCheckPass from "../functions/checkPass";
+
 // CSS
 import "../css/organizationDashboard.css";
 import AddIcon from "@mui/icons-material/Add";
@@ -53,7 +55,6 @@ import {
   Checkbox,
   MenuItem,
 } from "@mui/material";
-import { Abc } from "@mui/icons-material";
 
 export default function OrganizationDashboard() {
   // ADD ROLE DATA
@@ -72,7 +73,6 @@ export default function OrganizationDashboard() {
     // Reset số lượng dòng khi đóng modal
     setNumRoles(1);
   };
-
   const navigate = useNavigate();
 
   const { organization_id } = useParams();
@@ -307,6 +307,21 @@ export default function OrganizationDashboard() {
 
   const [openAddMember, setOpenAddMember] = React.useState(false);
 
+  const handleAddNewUser = () => {
+    if (data.new_user === "") {
+      toast.error("Please enter your password!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
+        },
+      });
+    } else {
+      handleAddMember();
+    }
+  };
   const handleAddMember = async () => {
     const addmemberUrl = "http://127.0.0.1:5000/org/add_user";
     const token = localStorage.getItem("access_token");
@@ -327,19 +342,51 @@ export default function OrganizationDashboard() {
       });
       if (response.status === 200) {
         handleGetMember();
-        alert("Add Success");
+        toast.success("Add member success.", {
+          style: {
+            border: "1px solid #37E030",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "green",
+            fontWeight: "bolder",
+          },
+        });
+        handleCloseAddMember();
       } else if (response.status === 400) {
-        alert("User is not exist!");
+        toast.error("User is not exist!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 403) {
+        toast.error("Permission denied!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else {
+        toast.error("Unknown error, please try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
     } catch (error) {
       console.error("Error:", error);
     } finally {
     }
-  };
-
-  const handleAddNewUser = () => {
-    handleAddMember();
-    handleCloseAddMember();
   };
 
   // ---------------------- UPDATE / ADJUST ------------------------
@@ -375,35 +422,78 @@ export default function OrganizationDashboard() {
   // UPDATE org info
 
   const handleUpdate = async () => {
-    const loginUrl = "http://127.0.0.1:5000/org/update_information";
-    const token = localStorage.getItem("access_token");
-
-    try {
-      const response = await fetch(loginUrl, {
-        method: "PUT",
-        credentials: "include",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
+    if (
+      data.name === "" ||
+      data.contact_phone === "" ||
+      data.contact_email === "" ||
+      data.description === ""
+    ) {
+      toast.error("The information can not be empty!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
         },
-        body: JSON.stringify({
-          organization_id: organization_id,
-          name: data.name,
-          contact_phone: data.contact_phone,
-          contact_email: data.contact_email,
-          description: data.description,
-        }),
       });
-      if (response.status === 200) {
-        handleGetOrgData();
-        alert("Update Success");
-      } else {
-        console.log("Update Fail");
+    } else {
+      const loginUrl = "http://127.0.0.1:5000/org/update_information";
+      const token = localStorage.getItem("access_token");
+
+      try {
+        const response = await fetch(loginUrl, {
+          method: "PUT",
+          credentials: "include",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+          body: JSON.stringify({
+            organization_id: organization_id,
+            name: data.name,
+            contact_phone: data.contact_phone,
+            contact_email: data.contact_email,
+            description: data.description,
+          }),
+        });
+        if (response.status === 200) {
+          handleGetOrgData();
+          toast.success("Update organization successfully.", {
+            style: {
+              border: "1px solid #37E030",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "green",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 403) {
+          toast.error("Permission denied!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else {
+          toast.error("Unknown error, please try again later.", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
       }
-    } catch (error) {
-      console.error("Error:", error);
-    } finally {
     }
   };
 
@@ -447,9 +537,25 @@ export default function OrganizationDashboard() {
       if (response.status === 200) {
         setCurrentStatus(newStatus);
         handleGetOrgData();
-        alert("Inactive Success");
+        toast.success(`Organization now is ${newStatus}.`, {
+          style: {
+            border: "1px solid #37E030",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "green",
+            fontWeight: "bolder",
+          },
+        });
       } else {
-        console.log("Inactive Fail");
+        toast.error("Fail to change status!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
     } catch (error) {
       console.error("Error:", error);
@@ -552,14 +658,11 @@ export default function OrganizationDashboard() {
   const handleRemoveUser = (rmvUser) => {
     setRemoveUser(rmvUser);
     handleRemoveUserAPI();
-
-    handleClose();
   };
 
   // DELETE org
 
-  const [openDelete, setOpenDelete] = React.useState(false);
-
+  const [openDeleteOrg, setOpenDelete] = React.useState(false);
   const handleDeleteOrg = async () => {
     const loginUrl = `http://127.0.0.1:5000/org/delete/${organization_id}`;
     const token = localStorage.getItem("access_token");
@@ -576,9 +679,28 @@ export default function OrganizationDashboard() {
         },
       });
       if (response.status === 200) {
-        navigate("/organizations");
-      } else {
-        alert("Delete Fail");
+        toast.success("Organization deleted successfully.", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "green",
+            fontWeight: "bolder",
+          },
+        });
+        setTimeout(() => {
+          navigate("/organizations");
+        }, 2000);
+      } else if (response.status === 403) {
+        toast.error("Permission denied!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
     } catch (error) {
       console.error("Error:", error);
@@ -594,11 +716,33 @@ export default function OrganizationDashboard() {
     setOpenDelete(false);
   };
 
-  const handleConfirmDelete = () => {
-    handleDeleteOrg();
-    handleCloseDelete();
+  // DELETE ORG - Check pass
+
+  const [passDelete, setPassDelete] = useState();
+
+  const handleChangeInputDelete = (event) => {
+    setPassDelete(event.target.value);
   };
 
+  const handleDeleteOrgConfirm = async () => {
+    const checkPass = await handleCheckPass(passDelete);
+    if (checkPass === "Success") {
+      handleDeleteOrg();
+      handleCloseDelete();
+    } else if (checkPass === "") {
+      toast.error("Incorrect password!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
+        },
+      });
+    }
+  };
+
+  console.log(passDelete);
   // Toggle cho phép Edit
   const [isDisabled, setIsDisabled] = useState(true);
   const [showResetButton, setShowResetButton] = useState(false);
@@ -668,6 +812,8 @@ export default function OrganizationDashboard() {
 
   return (
     <>
+      <Toaster position="top-center" reverseOrder={false} />
+
       <div className="containerOrg">
         <div className="sideMenu">
           <Sidebar />
@@ -791,6 +937,7 @@ export default function OrganizationDashboard() {
                           ?.filter((server) => server.status === "ACTIVE")
                           ?.map((server) => (
                             <Link
+                              key={server.id}
                               to={`/organizations/dashboard/${organization_id}/${server.server_id}`}
                             >
                               <div
@@ -842,6 +989,7 @@ export default function OrganizationDashboard() {
                           ?.filter((server) => server.status === "INACTIVE")
                           ?.map((server) => (
                             <Link
+                              key={server.id}
                               to={`/organizations/dashboard/${organization_id}/${server.server_id}`}
                             >
                               <div className="serverCard flex flex-col justify-between items-center">
@@ -1269,10 +1417,14 @@ export default function OrganizationDashboard() {
                               <td>
                                 <IconButton
                                   aria-label="delete"
-                                  onClick={() => handleCloseAddRole()}
+                                  onClick={() =>
+                                    handleRemoveUser(member.username)
+                                  }
                                 >
                                   <DeleteIcon />
                                 </IconButton>
+
+                                {/* DELETE USER DIALOG */}
                                 <Dialog
                                   open={open}
                                   onClose={handleClose}
@@ -1322,7 +1474,6 @@ export default function OrganizationDashboard() {
                           </div>
                         </div>
                         <Grid container alignItems="center" spacing={2} mt={0}>
-
                           {[...Array(numRoles)].map((_, index) => (
                             <React.Fragment key={index}>
                               <Grid item xs={12} md={2}>
@@ -1365,12 +1516,12 @@ export default function OrganizationDashboard() {
                                 </TextField>
                               </Grid>
                               <Grid item xs={12} md={2}>
-                                <IconButton 
+                                <IconButton
                                   size="small"
                                   sx={{
                                     fontSize: "16px",
-                                    fontWeight: "400",}}
-
+                                    fontWeight: "400",
+                                  }}
                                   onClick={() => {
                                     // Xử lý khi người dùng nhấn vào biểu tượng 'x'
                                     console.log("Clearing input");
@@ -1579,6 +1730,8 @@ export default function OrganizationDashboard() {
                       >
                         Change status
                       </Button>
+
+                      {/* CHANGE STATUS ORG */}
                       <Dialog
                         open={open}
                         onClose={handleClose}
@@ -1603,24 +1756,31 @@ export default function OrganizationDashboard() {
                       >
                         DELETE ORGANIZATION
                       </Button>
-                      <Dialog
-                        open={openDelete}
-                        onClose={handleCloseDelete}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description"
-                      >
-                        <DialogTitle id="alert-dialog-title">
-                          {"Do you want to Delete this Organization?"}
-                        </DialogTitle>
+
+                      <Dialog open={openDeleteOrg} onClose={handleCloseDelete}>
+                        {/* DELETE ORG */}
+                        <DialogTitle>Delete Organization</DialogTitle>
                         <DialogContent>
-                          <DialogContentText id="alert-dialog-description">
-                            Your action will not be recovery.
+                          <DialogContentText className="pb-4">
+                            To delete this server, please enter your password.
                           </DialogContentText>
+                          <TextField
+                            required
+                            margin="dense"
+                            id="password"
+                            name="password"
+                            label="Password"
+                            type="password"
+                            fullWidth
+                            variant="standard"
+                            onChange={handleChangeInputDelete}
+                            value={passDelete}
+                          />
                         </DialogContent>
                         <DialogActions>
-                          <Button onClick={handleCloseDelete}>No</Button>
-                          <Button onClick={handleConfirmDelete}>
-                            <p className="text-red-600">Yes</p>
+                          <Button onClick={handleCloseDelete}>Cancel</Button>
+                          <Button onClick={handleDeleteOrgConfirm}>
+                            Confirm
                           </Button>
                         </DialogActions>
                       </Dialog>

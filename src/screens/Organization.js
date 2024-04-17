@@ -16,6 +16,8 @@ import {
   IconButton,
 } from "@mui/material";
 
+import toast, { Toaster } from "react-hot-toast";
+
 import { styled } from "@mui/material/styles";
 import OrganizationCard from "../components/organizationCard";
 import "../css/Organization.css";
@@ -57,8 +59,24 @@ export default function LandingPage() {
 
   const [showConfirmation, setShowConfirmation] = React.useState(false);
   const handleDone = () => {
-    setAddOrg(false);
-    setShowConfirmation(true);
+    if (
+      data.name === "" ||
+      data.contact_phone === "" ||
+      data.contact_email === ""
+    ) {
+      toast.error("Please fill necessary information!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
+        },
+      });
+    } else {
+      setAddOrg(false);
+      setShowConfirmation(true);
+    }
   };
 
   // change role super user / user
@@ -140,8 +158,36 @@ export default function LandingPage() {
           description: "",
         });
         setShowConfirmation(false);
+      } else if (response.status === 403) {
+        toast.error("Permission denied!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 500) {
+        toast.error("You have used up all the slots!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       } else {
-        alert("Please subscribe us first to create organization!");
+        toast.error("Fail to add organization, please try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
     } catch (error) {
       console.error("Error:", error);
@@ -186,6 +232,7 @@ export default function LandingPage() {
 
   return (
     <div className="" style={{ backgroundColor: "#f3f3fb" }}>
+      <Toaster position="top-center" reverseOrder={false} />
       <div
         className=" py-6 text-center gap-10"
         style={{
@@ -355,18 +402,9 @@ export default function LandingPage() {
                 </Grid>
               </Grid>
               <Box className="mt-3 d-flex">
-                <div>
-                  <FormControlLabel
-                    control={<Checkbox />}
-                    label={
-                      <>
-                        I accept the
-                        <Link style={{ color: "#5F94D9" }}>
-                          Term of Service.
-                        </Link>
-                      </>
-                    }
-                  />
+                <div className="text-yellow-600">
+                  Non-binding information can be changed and you will be
+                  responsible for the operations within the organization.
                 </div>
               </Box>
 

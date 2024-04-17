@@ -19,13 +19,13 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import LinearProgress from "@mui/material/LinearProgress";
 
 import AddIcon from "@mui/icons-material/Add";
 import "../css/serverGeneral.css";
 import ServerManager from "../database/listOfServerManager.json";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import CircularProgress from "@mui/material/CircularProgress";
 
 import handleCheckPass from "../functions/checkPass";
 
@@ -35,23 +35,22 @@ import toast, { Toaster } from "react-hot-toast";
 
 export default function ServerGeneral(serverId) {
   // LOADING
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    setIsLoading(true);
     handleGetServerData1();
     handleGetServerData2();
   }, []);
 
   // REFRESH PAGE
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (isRefreshing) {
-      window.location.reload();
-      setIsRefreshing(false);
+      setLoading(true);
       handleGetServerData1();
       handleGetServerData2();
+      setIsRefreshing(false);
     }
   }, [isRefreshing]);
   // Data General
@@ -68,7 +67,6 @@ export default function ServerGeneral(serverId) {
   // GET SERVER DATA
 
   const handleGetServerData1 = async () => {
-    setIsLoading(true);
     const getUrl = `http://127.0.0.1:5000/server/get_server_data/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
@@ -90,13 +88,10 @@ export default function ServerGeneral(serverId) {
     } catch (error) {
       console.error("Error:", error);
     } finally {
-      setIsLoading(false);
     }
   };
 
   const handleGetServerData2 = async () => {
-    setIsLoading(true);
-
     const getUrl = `http://127.0.0.1:5000/server/get_server_info/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
@@ -111,7 +106,6 @@ export default function ServerGeneral(serverId) {
       });
       if (response.status === 200) {
         const server = await response.json();
-        setIsLoading(false);
         setGeneralData2(server);
       } else {
         console.log("Update Fail");
@@ -119,7 +113,7 @@ export default function ServerGeneral(serverId) {
     } catch (error) {
       console.error("Error:", error);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
@@ -140,21 +134,54 @@ export default function ServerGeneral(serverId) {
         },
       });
       if (response.status === 200) {
-        toast.success("Successfully deleted!", {
+        toast.success("Server deleted successfully.", {
           style: {
-            backgroundColor: "black",
+            border: "1px solid #37E030",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "green",
+            fontWeight: "bolder",
           },
         });
         handleCloseDeleteServer();
         setTimeout(() => {
           navigate(`/organizations/dashboard/${organization_id}`);
         }, 2000);
+      } else if (response.status === 403) {
+        toast.error("Permission denied!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 500) {
+        toast.error("Failed to delete server!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       } else {
-        alert("Delete Fail!");
+        toast.error("Unknown error, please try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
     } catch (error) {
       console.error("Error:", error);
     } finally {
+      setLoading(false);
     }
   };
 
@@ -162,18 +189,18 @@ export default function ServerGeneral(serverId) {
     const checkPass = await handleCheckPass(data.password);
     if (checkPass === "Success") {
       handleDeleteServer();
-    } else {
-      alert("Wrong Password");
+      setData((data.password = ""));
     }
   };
   // Check pass trước khi Delete
-  const [openDeleteServer, setOpenDeleteServer] = React.useState(false);
+  const [openDeleteServer, setOpenDeleteServer] = useState(false);
 
   const handleOpenDeleteServer = () => {
     setOpenDeleteServer(true);
   };
 
   const handleCloseDeleteServer = () => {
+    setData((data.password = ""));
     setOpenDeleteServer(false);
   };
 
@@ -184,14 +211,23 @@ export default function ServerGeneral(serverId) {
   };
 
   const [openChangeStatus, setOpenChangeStatus] = React.useState(false);
-
   const handleOpenChangeStatus = () => {
     setOpenChangeStatus(true);
   };
 
   const handleCloseChangeStatus = () => {
     setOpenChangeStatus(false);
+    setData((data.password = ""));
   };
+
+  const handleChangeStatusConfirm = async () => {
+    const check = await handleCheckPass(data.password);
+    if (check === "Success") {
+      // handleTurnStatus();
+      // setData((data.password = ""));
+    }
+  };
+
   // const handleTurnStatus = async () => {
   //   const url = `http://127.0.0.1:5000/server/get_server_data/${serverId.serverId}`;
   //   const token = localStorage.getItem("access_token");
@@ -208,6 +244,7 @@ export default function ServerGeneral(serverId) {
   //     if (response.status === 200) {
   //       const server = await response.json();
   //       handleButtonClick();
+  //       handleCloseChangeStatus();
   //     } else {
   //       alert("Update Fail");
   //     }
@@ -275,77 +312,69 @@ export default function ServerGeneral(serverId) {
           <div className="info-title font-semibold my-3">
             <p>Information</p>
           </div>
+          {loading && (
+            <Box sx={{ width: "100%", paddingBottom: "22px" }}>
+              <LinearProgress />
+            </Box>
+          )}
           <Paper elevation={3} sx={{ padding: 2 }}>
-            {isLoading ? (
-              <CircularProgress />
-            ) : (
-              <div className="flex flex-row justify-between px-5">
-                {/* left */}
-                <div className="flex flex-col justify-start">
-                  <div className="flex d-flex">
-                    <p className="blue-text font-semibold mr-2">Host IP: </p>
-                    <p>{generalData1?.hostname}</p>
-                  </div>
-                  <div className="flex d-flex my-2">
-                    <p className="blue-text font-semibold mr-2">
-                      Operating System:
-                    </p>
-                    <p>
-                      {isLoading && <CircularProgress />}
-                      {generalData2?.Operating_System}
-                    </p>
-                  </div>
-                  <div className="flex d-flex my-2">
-                    <p className="blue-text font-semibold mr-2">Port: </p>
-                    <p>
-                      {isLoading && <CircularProgress />}
-                      {generalData1?.port}
-                    </p>
-                  </div>
-                  <div className="flex d-flex my-2">
-                    <p className="blue-text font-semibold mr-2">Version: </p>
-                    <p>{generalData2?.Version}</p>
-                  </div>
-                  <div className="flex d-flex my-2">
-                    <p className="blue-text font-semibold mr-2">
-                      Disk Space in Data Dir:
-                    </p>
-                    <p>{generalData2?.Disk_Space}</p>
-                  </div>
-                  <div className="flex d-flex my-2">
-                    <p className="blue-text font-semibold mr-2">
-                      Server Directory:
-                    </p>
-                    <p className="link-text">
-                      {generalData2?.script_directory}{" "}
-                    </p>
-                  </div>
+            <div className="flex flex-row justify-between px-5">
+              {/* left */}
+              <div className="flex flex-col justify-start">
+                <div className="flex d-flex">
+                  <p className="blue-text font-semibold mr-2">Host IP: </p>
+                  <p>{generalData1?.hostname}</p>
                 </div>
-
-                {/* right */}
-                <div className="flex flex-col  items-end">
-                  <div className="flex d-flex my-2">
-                    <p className="blue-text font-semibold mr-2">RAM: </p>
-                    <p>{generalData2?.RAM}</p>
-                  </div>
-                  <div className="flex d-flex my-2">
-                    <p className="blue-text font-semibold mr-2">CPU: </p>
-                    <p>{generalData2?.CPU}</p>
-                  </div>
-                  <div className="flex d-flex my-2">
-                    <p className="blue-text font-semibold mr-2">
-                      Authen key time:
-                    </p>
-                    <p>{generalData1?.authen_key_time}</p>
-                  </div>
-                  <div className="flex d-flex my-2">
-                    <p className="blue-text font-semibold mr-2">Last Seen:</p>
-                    <p>{generalData2?.last_seen}</p>
-                  </div>
+                <div className="flex d-flex my-2">
+                  <p className="blue-text font-semibold mr-2">
+                    Operating System:
+                  </p>
+                  <p>{generalData2?.Operating_System}</p>
+                </div>
+                <div className="flex d-flex my-2">
+                  <p className="blue-text font-semibold mr-2">Port: </p>
+                  <p>{generalData1?.port}</p>
+                </div>
+                <div className="flex d-flex my-2">
+                  <p className="blue-text font-semibold mr-2">Version: </p>
+                  <p>{generalData2?.Version}</p>
+                </div>
+                <div className="flex d-flex my-2">
+                  <p className="blue-text font-semibold mr-2">
+                    Disk Space in Data Dir:
+                  </p>
+                  <p>{generalData2?.Disk_Space}</p>
+                </div>
+                <div className="flex d-flex my-2">
+                  <p className="blue-text font-semibold mr-2">
+                    Server Directory:
+                  </p>
+                  <p className="link-text">{generalData2?.script_directory} </p>
                 </div>
               </div>
-            )}
 
+              {/* right */}
+              <div className="flex flex-col  items-end">
+                <div className="flex d-flex my-2">
+                  <p className="blue-text font-semibold mr-2">RAM: </p>
+                  <p>{generalData2?.RAM}</p>
+                </div>
+                <div className="flex d-flex my-2">
+                  <p className="blue-text font-semibold mr-2">CPU: </p>
+                  <p>{generalData2?.CPU}</p>
+                </div>
+                <div className="flex d-flex my-2">
+                  <p className="blue-text font-semibold mr-2">
+                    Authen key time:
+                  </p>
+                  <p>{generalData1?.authen_key_time}</p>
+                </div>
+                <div className="flex d-flex my-2">
+                  <p className="blue-text font-semibold mr-2">Last Seen:</p>
+                  <p>{generalData2?.last_seen}</p>
+                </div>
+              </div>
+            </div>
             <div className="px-5 mb-2 flex flex-col items-end">
               <Button
                 onClick={() => setIsRefreshing(true)}
@@ -476,20 +505,7 @@ export default function ServerGeneral(serverId) {
             >
               {isServerOn ? "Turn off server" : "Turn on server"}
             </Button>
-            <Dialog
-              open={openChangeStatus}
-              onClose={handleCloseChangeStatus}
-              PaperProps={{
-                component: "form",
-                onSubmit: (event) => {
-                  event.preventDefault();
-                  const formData = new FormData(event.currentTarget);
-                  const formJson = Object.fromEntries(formData.entries());
-                  const email = formJson.email;
-                  handleCloseChangeStatus();
-                },
-              }}
-            >
+            <Dialog open={openChangeStatus} onClose={handleCloseChangeStatus}>
               <DialogTitle>
                 {isServerOn ? "Turn off server" : "Turn on server"}
               </DialogTitle>
@@ -513,7 +529,7 @@ export default function ServerGeneral(serverId) {
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleCloseChangeStatus}>Cancel</Button>
-                <Button type="submit">Confirm</Button>
+                <Button onClick={handleChangeStatusConfirm}>Confirm</Button>
               </DialogActions>
             </Dialog>
           </div>

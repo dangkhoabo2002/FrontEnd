@@ -20,11 +20,17 @@ import DialogTitle from "@mui/material/DialogTitle";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+import LinearProgress from "@mui/material/LinearProgress";
+
+import toast, { Toaster } from "react-hot-toast";
 
 // ICONS MUI
 
 import CloseIcon from "@mui/icons-material/Close";
 export default function ServerProxy(serverId) {
+  const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
+
   // ADD PROXY
   const [isOpenAddProxy, setIsOpenAddProxy] = useState(false);
   const [addProxyData, setAddProxyData] = useState({
@@ -38,13 +44,30 @@ export default function ServerProxy(serverId) {
 
   const handleCloseAddProxy = () => {
     setIsOpenAddProxy(false);
+    setAddProxyData({ protocol: "", detail: "" });
+  };
+
+  const handleAddProxy = () => {
+    if (addProxyData.detail === "" || addProxyData.protocol === "") {
+      toast.error("Please enter proxy information first!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
+        },
+      });
+    } else {
+      handleAddProxyAPI();
+    }
   };
 
   const handleChangeAddInput = (prop) => (event) => {
     setAddProxyData({ ...addProxyData, [prop]: event.target.value });
   };
-
   const handleAddProxyAPI = async () => {
+    setLoading2(true);
     const editUrl = `http://127.0.0.1:5000/server/add_proxy/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
@@ -62,14 +85,53 @@ export default function ServerProxy(serverId) {
         }),
       });
       if (response.status === 200) {
-        handleGetProxy();
         handleCloseAddProxy();
+        handleGetProxy();
+        setAddProxyData({ protocol: "", detail: "" });
+        toast.success("Proxy added.", {
+          style: {
+            border: "1px solid #37E030",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "green",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 403) {
+        toast.error("Please enter proxy information first!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 500) {
+        toast.error(`Detail must be formated: "http(s)://domain:port"`, {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       } else {
-        alert("Add Fail");
+        toast.error("Unknown error, please try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
     } catch (error) {
       console.error("Error:", error);
     } finally {
+      setLoading2(false);
     }
   };
 
@@ -84,7 +146,7 @@ export default function ServerProxy(serverId) {
   const handleOpenDeleteProxy = (data) => {
     setcurrentDeleteProxy(data);
     setIsOpenDelete(true);
-    console.log("data", currentDeleteProxy);
+    console.log(currentDeleteProxy);
   };
 
   const handleCloseDeleteProxy = () => {
@@ -97,6 +159,7 @@ export default function ServerProxy(serverId) {
   };
 
   const handleDeleteProxyAPI = async () => {
+    setLoading2(true);
     const editUrl = `http://127.0.0.1:5000/server/delete_proxy/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
@@ -114,13 +177,31 @@ export default function ServerProxy(serverId) {
         }),
       });
       if (response.status === 200) {
+        toast.success("Delete successfully.", {
+          style: {
+            border: "1px solid #37E030",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "green",
+            fontWeight: "bolder",
+          },
+        });
         handleGetProxy();
       } else {
-        alert("Delete Fail");
+        toast.error("Fail to delete Proxy!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
     } catch (error) {
       console.error("Error:", error);
     } finally {
+      setLoading2(false);
     }
   };
 
@@ -134,9 +215,21 @@ export default function ServerProxy(serverId) {
   const [currentProxy, setCurrentProxy] = useState();
 
   const handleEditProxy = () => {
-    handleEditProxyAPI();
-    handleCloseEditProxy();
-    setCurrentProxy("");
+    if (editProxyData.new_port === "" || editProxyData.new_domain === "") {
+      toast.error("The field can not be empty!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
+        },
+      });
+    } else {
+      handleEditProxyAPI();
+      handleCloseEditProxy();
+      setCurrentProxy("");
+    }
   };
 
   const handleOpenEditProxy = (selectedProxy) => {
@@ -146,6 +239,10 @@ export default function ServerProxy(serverId) {
 
   const handleCloseEditProxy = () => {
     setOpenEditProxy(false);
+    setEditProxyData({
+      new_domain: "",
+      new_port: "",
+    });
   };
 
   const handleChangeEditInput = (prop) => (event) => {
@@ -153,6 +250,7 @@ export default function ServerProxy(serverId) {
   };
 
   const handleEditProxyAPI = async () => {
+    setLoading2(true);
     const editUrl = `http://127.0.0.1:5000/server/update_proxy/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
@@ -172,13 +270,51 @@ export default function ServerProxy(serverId) {
         }),
       });
       if (response.status === 200) {
+        toast.success("Proxy updated.", {
+          style: {
+            border: "1px solid #37E030",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "green",
+            fontWeight: "bolder",
+          },
+        });
         handleGetProxy();
+      } else if (response.status === 403) {
+        toast.error("Permission denied!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 500) {
+        toast.error("No data for server!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       } else {
-        console.log("Update Fail");
+        toast.error("Unknown error, please try again!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
     } catch (error) {
       console.error("Error:", error);
     } finally {
+      setLoading2(false);
     }
   };
 
@@ -208,9 +344,12 @@ export default function ServerProxy(serverId) {
     } catch (error) {
       console.error("Error:", error);
     } finally {
+      setLoading(false);
     }
   };
+
   useEffect(() => {
+    setLoading(true);
     handleGetProxy();
   }, []);
 
@@ -228,13 +367,32 @@ export default function ServerProxy(serverId) {
   };
   return (
     <div>
+      <Toaster position="top-center" reverseOrder={false} />
       <div className="mb-3">
-        <div className="info-title font-semibold my-3">
+        <div className="info-title font-semibold my-3 flex flex-row justify-between">
           <p>Proxy Server Setting</p>
+          <Button variant="contained" onClick={handleOpenAddProxy}>
+            Add Proxy
+          </Button>
         </div>
-        <Button variant="contained" onClick={handleOpenAddProxy}>
-          Add Proxy
-        </Button>
+        {loading && (
+          <Box
+            sx={{ width: "100%", paddingBottom: "22px", paddingTop: "22px" }}
+          >
+            <LinearProgress />
+          </Box>
+        )}
+        {loading2 && (
+          <Box
+            sx={{
+              width: "100%",
+              paddingBottom: "22px",
+              paddingTop: "22px",
+            }}
+          >
+            <LinearProgress />
+          </Box>
+        )}
       </div>
       <div className="server_des mb-3">
         <div>
@@ -266,7 +424,7 @@ export default function ServerProxy(serverId) {
                     <td>
                       <IconButton
                         aria-label="delete"
-                        onClick={() => handleOpenDeleteProxy(proxyData[index])}
+                        onClick={() => handleOpenDeleteProxy(proxy)}
                       >
                         <DeleteIcon />
                       </IconButton>
@@ -428,7 +586,7 @@ export default function ServerProxy(serverId) {
                     className="font-semibold"
                     style={{ fontSize: "28px", color: "#637381" }}
                   >
-                    UPDATE PROXY
+                    ADD PROXY
                   </p>
                   <IconButton onClick={handleCloseAddProxy}>
                     <CloseIcon />
@@ -479,6 +637,7 @@ export default function ServerProxy(serverId) {
                 <Grid item xs={12} md={9}>
                   <FormControl fullWidth variant="outlined">
                     <OutlinedInput
+                      placeholder="http(s)://domain:port"
                       inputProps={{
                         "aria-label": "Detail",
                       }}
@@ -513,7 +672,7 @@ export default function ServerProxy(serverId) {
                   >
                     <Button
                       variant="contained"
-                      onClick={handleAddProxyAPI}
+                      onClick={handleAddProxy}
                       style={{ marginLeft: "10px" }}
                       sx={{
                         width: "120px",

@@ -10,8 +10,12 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import LinearProgress from "@mui/material/LinearProgress";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function ServerFirewall(serverId) {
+  const [loading, setLoading] = useState(false);
+
   const [trustedServices, setTrustedServices] = useState({
     http: false,
     ftp: false,
@@ -33,39 +37,79 @@ export default function ServerFirewall(serverId) {
   const [isDisable, setIsDisable] = useState(false);
 
   const handleFireWallAction = async () => {
-    const url = `http://127.0.0.1:5000/server/firewall_action/${serverId.serverId}`;
-    const token = localStorage.getItem("access_token");
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
+    if (firewallLevel === "") {
+      toast.error("Choose security level before update!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
         },
-        body: JSON.stringify({
-          action: firewallLevel,
-          port: port,
-          ip: "",
-        }),
       });
-      if (response.status === 200) {
-        alert("Update Success");
-      } else {
-        alert("Update Fail");
+    } else {
+      setLoading(true);
+      const url = `http://127.0.0.1:5000/server/firewall_action/${serverId.serverId}`;
+      const token = localStorage.getItem("access_token");
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+          body: JSON.stringify({
+            action: firewallLevel,
+            port: port,
+            ip: "",
+          }),
+        });
+        if (response.status === 200) {
+          toast.success("Update successfully.", {
+            style: {
+              border: "1px solid #37E030",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "green",
+              fontWeight: "bolder",
+            },
+          });
+          setPort("");
+        } else if (response.status === 403) {
+          toast.error("Permission denied!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 500) {
+          toast.error("No data for server!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+        setFirewallLevel("");
+        setLoading(false);
       }
-    } catch (error) {
-      console.error("Error:", error);
-    } finally {
-      setFirewallLevel("");
     }
   };
 
   const handleChangePort = (event) => {
     setPort(event.target.value);
   };
-  console.log("Lay", firewallLevel);
 
   const handleChange = (event) => {
     setFirewallLevel(event.target.value);
@@ -90,6 +134,7 @@ export default function ServerFirewall(serverId) {
 
   console.log(firewallData);
   const handleGetFirewallAPI = async () => {
+    setLoading(true);
     const editUrl = `http://127.0.0.1:5000/server/firewall_rules/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
@@ -111,6 +156,7 @@ export default function ServerFirewall(serverId) {
     } catch (error) {
       console.error("Error:", error);
     } finally {
+      setLoading(false);
     }
   };
 
@@ -119,9 +165,17 @@ export default function ServerFirewall(serverId) {
   }, []);
   return (
     <div>
-      <div className="info-title font-semibold my-3">
+      <Toaster position="top-center" reverseOrder={false} />
+
+      <div className="info-title font-semibold pt-3">
         <p>Firewall Server Setting</p>
       </div>
+      {loading && (
+        <div className="py-6">
+          <LinearProgress />{" "}
+        </div>
+      )}
+
       {/* SL */}
       <div className="flex flex-row mt-3 gap-32">
         <div className="flex flex-col ">

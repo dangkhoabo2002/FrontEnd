@@ -14,7 +14,13 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import TableOfImages from "../components/tableOfImages";
+import LinearProgress from "@mui/material/LinearProgress";
+
+import toast, { Toaster } from "react-hot-toast";
+
 export default function ServerDocker(serverId) {
+  const [loading, setLoading] = useState(false);
+
   // DOCKER PROJECT
   const [dockerProject, setDockerProject] = useState({
     docker_file: "",
@@ -27,91 +33,242 @@ export default function ServerDocker(serverId) {
   };
 
   const handlebuildeDockerFile = async () => {
-    const url = `http://127.0.0.1:5000/server/docker_build/${serverId.serverId}`;
-    const token = localStorage.getItem("access_token");
-
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
+    if (dockerProject.docker_file === "" || dockerProject.image_tag === "") {
+      toast.error("Please fill all necessary fields to build!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
         },
-        body: JSON.stringify({
-          dockerfile: dockerProject.docker_compose,
-          image_tag: dockerProject.image_tag,
-        }),
       });
-      if (response.status === 200) {
-        alert("Build Success");
-      } else {
-        alert("Build Fail");
+    } else {
+      setLoading(true);
+      const url = `http://127.0.0.1:5000/server/docker_build/${serverId.serverId}`;
+      const token = localStorage.getItem("access_token");
+
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+          body: JSON.stringify({
+            dockerfile: dockerProject.docker_compose,
+            image_tag: dockerProject.image_tag,
+          }),
+        });
+        if (response.status === 200) {
+          toast.success("Build dockerfile successfully.", {
+            style: {
+              border: "1px solid #37E030",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "green",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 403) {
+          toast.error("Permission denied!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 500) {
+          toast.error("No data for server!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else {
+          toast.error("Unknown error, please try again later!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error("Error:", error);
-    } finally {
     }
   };
 
   const handleComposeUp = async () => {
-    const url = `http://127.0.0.1:5000/server/docker_build/${serverId.serverId}`;
-    const token = localStorage.getItem("access_token");
-
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
+    if (dockerProject.compose_yaml === "") {
+      toast.error("Please enter url of docker-compose.yml !", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
         },
-        body: JSON.stringify({
-          compose_yaml: dockerProject.compose_yaml,
-          action: "compose-up",
-        }),
       });
-      if (response.status === 200) {
-        alert("Compose Up Success");
-      } else {
-        alert("Compose Up Fail");
+    } else {
+      const url = `http://127.0.0.1:5000/server/docker_build/${serverId.serverId}`;
+      const token = localStorage.getItem("access_token");
+
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+          body: JSON.stringify({
+            compose_yaml: dockerProject.compose_yaml,
+            action: "compose-up",
+          }),
+        });
+        if (response.status === 200) {
+          toast.success("Compose up successfull.", {
+            style: {
+              border: "1px solid #37E030",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "green",
+              fontWeight: "bolder",
+            },
+          });
+          setDockerProject({ compose_yaml: "" });
+        } else if (response.status === 403) {
+          toast.error("Permission denied!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 500) {
+          toast.error("No data for server!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else {
+          toast.error("Unknown error, please try again later!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
       }
-    } catch (error) {
-      console.error("Error:", error);
-    } finally {
     }
   };
 
   const handleComposeDown = async () => {
-    const url = `http://127.0.0.1:5000/server/docker_build/${serverId.serverId}`;
-    const token = localStorage.getItem("access_token");
-
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
+    if (dockerProject.compose_yaml === "") {
+      toast.error("Please enter url of docker-compose.yml !", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
         },
-        body: JSON.stringify({
-          compose_yaml: dockerProject.compose_yaml,
-          action: "compose-down",
-        }),
       });
-      if (response.status === 200) {
-        alert("Compose Down Success");
-      } else {
-        alert("Compose Down Fail");
+    } else {
+      setLoading(true);
+      const url = `http://127.0.0.1:5000/server/docker_build/${serverId.serverId}`;
+      const token = localStorage.getItem("access_token");
+
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+          body: JSON.stringify({
+            compose_yaml: dockerProject.compose_yaml,
+            action: "compose-down",
+          }),
+        });
+        if (response.status === 200) {
+          toast.success("Compose down successfull.", {
+            style: {
+              border: "1px solid #37E030",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "green",
+              fontWeight: "bolder",
+            },
+          });
+          setDockerProject({ compose_yaml: "" });
+        } else if (response.status === 403) {
+          toast.error("Permission denied!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 500) {
+          toast.error("No data for server!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else {
+          toast.error("Unknown error, please try again later!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error("Error:", error);
-    } finally {
     }
   };
+
   // GET ALL IMAGES
 
   const [imageList, setImageList] = useState();
@@ -133,8 +290,26 @@ export default function ServerDocker(serverId) {
       if (response.status === 200) {
         const images = await response.json();
         setImageList(images);
+      } else if (response.status === 500) {
+        toast.error("No data for server!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       } else {
-        alert("Fail to get images");
+        toast.error("Something is wrong, try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
     } catch (error) {
       console.error("Error:", error);
@@ -149,6 +324,7 @@ export default function ServerDocker(serverId) {
   const [containerList, setContainerList] = useState();
 
   const handleGetContainersAPI = async () => {
+    setLoading(true);
     const url = `http://127.0.0.1:5000/server/docker_list_containers/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
 
@@ -165,12 +341,31 @@ export default function ServerDocker(serverId) {
       if (response.status === 200) {
         const containers = await response.json();
         setContainerList(containers);
+      } else if (response.status === 500) {
+        toast.error("No data for server!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       } else {
-        alert("Fail to get containers");
+        toast.error("Fail to list containers data!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
     } catch (error) {
       console.error("Error:", error);
     } finally {
+      setLoading(false);
     }
   };
 
@@ -333,12 +528,18 @@ export default function ServerDocker(serverId) {
 
   return (
     <div className="flex flex-col gap-12">
+      <Toaster position="top-center" reverseOrder={false} />
       <div className="projectSection">
         {/* DOCKER PROJECT */}
 
-        <div className="info-title font-semibold my-3">
+        <div className="info-title font-semibold">
           <p>Docker Project</p>
         </div>
+        {loading && (
+          <div className="py-8">
+            <LinearProgress />
+          </div>
+        )}
 
         <div className="flex flex-col flex-wrap gap-2">
           <h2>Dockerfile</h2>

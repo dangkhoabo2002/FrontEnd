@@ -195,10 +195,6 @@ export default function Login() {
               className="mt-3"
               sx={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)" }}
             >
-              <div>
-                <FormControlLabel control={<Checkbox />} label="Remember me" />
-              </div>
-
               <div
                 className="mt-2 font-semibold"
                 style={{ textAlign: "right" }}

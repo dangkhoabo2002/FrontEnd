@@ -1,0 +1,55 @@
+
+------Loading-----
+
+import LinearProgress from "@mui/material/LinearProgress";
+
+const [loading, setLoading] = useState(false);
+
+  {loading && (
+          <div className="py-8">
+            <LinearProgress />
+          </div>
+        )}
+
+
+------HOT TOAST-----
+
+import toast, { Toaster } from "react-hot-toast";
+
+<Toaster position="top-center" reverseOrder={false} />
+
+------SUCESS-----
+
+ toast.success("Unknown error, please try again later!", {
+          style: {
+            border: "1px solid #37E030",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "green",
+            fontWeight: "bolder",
+          },
+        });
+
+------ EROR -----
+
+  toast.error("Unknown error, please try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+
+
+----- Handle Change 1 ------
+
+  const handleChangeInputDelete = (event) => {
+    setPassDelete(event.target.value);
+  };
+
+
+----- Handle Change 1 ------
+
+

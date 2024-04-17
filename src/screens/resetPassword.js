@@ -26,10 +26,10 @@ export default function ResetPassword() {
       setsubmitPassword(password);
       toast.success("Reset successfully!", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #37E030",
           maxWidth: "900px",
           padding: "16px 24px",
-          color: "red",
+          color: "green",
           fontWeight: "bolder",
         },
       });
