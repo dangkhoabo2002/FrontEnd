@@ -215,6 +215,11 @@ export default function OrganizationDashboard() {
 
   const handleCloseAddServer = () => {
     setOpenAddServer(false);
+    addSeverData({
+      server_name: "",
+      hostname: "",
+      username: "",
+    });
   };
 
   const role = [
@@ -257,45 +262,71 @@ export default function OrganizationDashboard() {
   // --------- FUNCTION ---------
 
   // ADD server
-  const handleAddServer = () => {
+  const handleAddServer = ()  => {
     handleAddServerAPI();
-    handleCloseAddServer();
     handleGetServers();
-    window.location.reload();
   };
 
   const handleAddServerAPI = async () => {
-    const addUrl = `http://127.0.0.1:5000/server/add`;
-    const token = localStorage.getItem("access_token");
-
-    try {
-      const response = await fetch(addUrl, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Credentials": "true",
+    if (
+      addSeverData.server_name === "" ||
+      addSeverData.hostname === "" ||
+      addSeverData.username === ""
+    ) {
+      toast.error("Please fill all necessary fields!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
         },
-        body: JSON.stringify({
-          server_name: addSeverData.server_name,
-          hostname: addSeverData.hostname,
-          organization_id: organization_id,
-          username: addSeverData.username,
-          password: addSeverData.password,
-          port: addSeverData.port,
-          rsa_key: addSeverData.rsa_key,
-        }),
       });
-      if (response.status === 200) {
-        handleGetServers();
-        alert("Add Success");
-      } else if (response.status === 500) {
+    } else {
+      if (addSeverData.password === "" && addSeverData.rsa_key === "") {
+        toast.error("Please enter server password or private key!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else {
+        const addUrl = `http://127.0.0.1:5000/server/add`;
+        const token = localStorage.getItem("access_token");
+
+        try {
+          const response = await fetch(addUrl, {
+            method: "POST",
+            credentials: "include",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Credentials": "true",
+            },
+            body: JSON.stringify({
+              server_name: addSeverData.server_name,
+              hostname: addSeverData.hostname,
+              organization_id: organization_id,
+              username: addSeverData.username,
+              password: addSeverData.password,
+              port: addSeverData.port,
+              rsa_key: addSeverData.rsa_key,
+            }),
+          });
+          if (response.status === 201) {
+            handleGetServers();
+            handleCloseAddServer();
+          } else if (response.status === 500) {
+          }
+        } catch (error) {
+          console.error("Error:", error);
+        } finally {
+        }
       }
-    } catch (error) {
-      console.error("Error:", error);
-    } finally {
     }
   };
 
