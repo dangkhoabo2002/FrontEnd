@@ -38,7 +38,17 @@ export default function Login() {
         },
       });
     } else {
-      const loginUrl = "http://127.0.0.1:5000/auth/login";
+      toast.loading("In processing...", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
+        },
+      });
+      const loginUrl =
+        "http://127.0.0.1:5000/auth/login";
       try {
         const response = await fetch(loginUrl, {
           method: "POST",
@@ -54,10 +64,12 @@ export default function Login() {
           }),
         });
         if (response.status === 200) {
+          toast.dismiss();
           const data = await response.json();
           localStorage.setItem("access_token", data.access_token);
           navigate(`/organizations`);
         } else if (response.status === 401) {
+          toast.dismiss();
           toast.error("Invalid Username or Password!", {
             style: {
               border: "1px solid #F85F60",
@@ -67,6 +79,8 @@ export default function Login() {
             },
           });
         } else {
+          toast.dismiss();
+
           toast.error("Unknown error, please try again later!", {
             style: {
               border: "1px solid #F85F60",
@@ -78,9 +92,11 @@ export default function Login() {
         }
       } catch (error) {
         console.error("Error:", error);
+      } finally {
       }
     }
   };
+
   return (
     <>
       <Toaster position="top-center" reverseOrder={false} />
@@ -153,7 +169,7 @@ export default function Login() {
               >
                 Root username
               </p>
-              <p style={{ fontSize: "11px", fontWeight: "600",  }}>
+              <p style={{ fontSize: "11px", fontWeight: "600" }}>
                 Used for account recovery and some administrative functions
               </p>
               <div className="textField mt-3">

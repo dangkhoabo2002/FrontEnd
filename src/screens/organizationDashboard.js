@@ -108,14 +108,21 @@ export default function OrganizationDashboard() {
         const servers = await response.json();
         setServerList(servers);
       } else if (response.status === 404) {
-        console.log("Not Found Any Server");
+        toast.error("Not found any server!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
     } catch (error) {
       console.error("Error:", error);
     } finally {
     }
   };
-  console.log(serverList);
 
   // GET MEMBER
   const handleGetMember = async () => {
@@ -215,10 +222,14 @@ export default function OrganizationDashboard() {
 
   const handleCloseAddServer = () => {
     setOpenAddServer(false);
-    addSeverData({
+    setAddServerData({
       server_name: "",
       hostname: "",
       username: "",
+      password: "",
+      server_type: "",
+      rsa_key: "",
+      port: "",
     });
   };
 
@@ -262,7 +273,7 @@ export default function OrganizationDashboard() {
   // --------- FUNCTION ---------
 
   // ADD server
-  const handleAddServer = ()  => {
+  const handleAddServer = () => {
     handleAddServerAPI();
     handleGetServers();
   };
@@ -606,7 +617,6 @@ export default function OrganizationDashboard() {
       const response = await axios.post("/change_role_to_superuser", {
         memberId: memberId,
       });
-      console.log(response.data.message);
     } catch (error) {
       console.error("Error changing role to superuser:", error);
     }
@@ -618,7 +628,6 @@ export default function OrganizationDashboard() {
       const response = await axios.post("/change_role_to_user", {
         memberId: memberId,
       });
-      console.log(response.data.message);
     } catch (error) {
       console.error("Error changing role to user:", error);
     }
@@ -631,7 +640,6 @@ export default function OrganizationDashboard() {
         memberId: memberId,
         newRole: newRole,
       });
-      console.log(response.data.message);
     } catch (error) {
       console.error("Error changing role:", error);
     }
@@ -773,7 +781,6 @@ export default function OrganizationDashboard() {
     }
   };
 
-  console.log(passDelete);
   // Toggle cho phép Edit
   const [isDisabled, setIsDisabled] = useState(true);
   const [showResetButton, setShowResetButton] = useState(false);
@@ -997,8 +1004,7 @@ export default function OrganizationDashboard() {
                                 <h2 className="text-[#5F94D9]">
                                   SHARED HOSTING
                                 </h2>
-                                <h2>{server.port}</h2>
-                                <h2>Server username: {server.username}</h2>
+                                <h2>{server.hostname}</h2>
                               </div>
                             </Link>
                           ))}
@@ -1554,7 +1560,6 @@ export default function OrganizationDashboard() {
                                     fontWeight: "400",
                                   }}
                                   onClick={() => {
-                                    // Xử lý khi người dùng nhấn vào biểu tượng 'x'
                                     console.log("Clearing input");
                                   }}
                                 >

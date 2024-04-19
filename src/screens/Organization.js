@@ -265,6 +265,7 @@ export default function LandingPage() {
                   className="org-card"
                   sx={OrgCard}
                   key={organization.organization_id}
+                  id={organization.organization_id}
                   name={organization.name}
                   description={organization.description}
                 />
