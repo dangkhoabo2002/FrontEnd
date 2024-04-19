@@ -87,7 +87,7 @@ export default function OrganizationCard({ id, name, description }) {
         alignItems: "center",
       }}
     >
-      <Toaster position="top-center" reverseOrder={false} />
+      <Toaster position="bottom-right" reverseOrder={false} />
 
       <Grid
         container

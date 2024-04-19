@@ -305,7 +305,7 @@ export default function ServerGeneral(serverId) {
   return (
     <>
       {/* Return Error */}
-      <Toaster position="top-center" reverseOrder={false} />
+      <Toaster position="bottom-right" reverseOrder={false} />
       <div>
         {/* Information */}
         <div className="info-site mb-5">

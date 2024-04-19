@@ -528,7 +528,7 @@ export default function ServerDocker(serverId) {
 
   return (
     <div className="flex flex-col gap-12">
-      <Toaster position="top-center" reverseOrder={false} />
+      <Toaster position="bottom-right" reverseOrder={false} />
       <div className="projectSection">
         {/* DOCKER PROJECT */}
 

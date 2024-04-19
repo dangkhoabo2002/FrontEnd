@@ -3,11 +3,10 @@ import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import { useNavigate } from "react-router-dom";
-import { Typography } from "@mui/material";
+import toast, { Toaster } from "react-hot-toast";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -37,7 +36,25 @@ export default function AlertDialogSlide() {
       });
       if (response.status === 200) {
         navigate("/");
-        console.log("Logout Success");
+        toast.success("Logout success.", {
+          style: {
+            border: "1px solid #37E030",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "green",
+            fontWeight: "bolder",
+          },
+        });
+      } else {
+        toast.error("Can not Logout, please try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
     } catch (error) {
     } finally {
@@ -46,7 +63,13 @@ export default function AlertDialogSlide() {
 
   return (
     <React.Fragment>
-      <Button variant="contained" sx={{backgroundColor:"#3867A5","&:hover": { bgcolor: "#2B4B75" },}} onClick={handleClickOpen}>
+      <Toaster position="bottom-right" reverseOrder={false} />
+
+      <Button
+        variant="contained"
+        sx={{ backgroundColor: "#3867A5", "&:hover": { bgcolor: "#2B4B75" } }}
+        onClick={handleClickOpen}
+      >
         Logout
       </Button>
       <Dialog

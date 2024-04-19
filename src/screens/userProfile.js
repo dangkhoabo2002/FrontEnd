@@ -17,6 +17,7 @@ import Box from "@mui/material/Box";
 import { Alert, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { motion } from "framer-motion";
+import toast, { Toaster } from "react-hot-toast";
 
 import "../css/userProfile.css";
 
@@ -48,32 +49,72 @@ export default function UserProfile() {
   };
 
   const handleUpdate = async () => {
-    const updUrl = "http://127.0.0.1:5000/auth/update_information";
-    const token = localStorage.getItem("access_token");
-
-    try {
-      const response = await fetch(updUrl, {
-        method: "PUT",
-        credentials: "include",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
+    if (fullNameData.full_name === "") {
+      toast.error("Fullname can not be empty!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
         },
-        body: JSON.stringify({
-          full_name: fullNameData.full_name,
-          username: userProfile.username,
-          email: userProfile.email,
-        }),
       });
-      if (response.status === 200) {
-        handleGetUserProfile();
-        alert("Update Success");
-      } else {
-        console.log("Update Fail");
+    } else {
+      const updUrl = "http://127.0.0.1:5000/auth/update_information";
+      const token = localStorage.getItem("access_token");
+
+      try {
+        const response = await fetch(updUrl, {
+          method: "PUT",
+          credentials: "include",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+          body: JSON.stringify({
+            full_name: fullNameData.full_name,
+            username: userProfile.username,
+            email: userProfile.email,
+          }),
+        });
+        if (response.status === 200) {
+          handleGetUserProfile();
+          toast.success("Update successfully.", {
+            style: {
+              border: "1px solid #37E030",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "green",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 403) {
+          toast.error("Unauthorized, please login again!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else {
+          toast.error("Fail to update, please try again later!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+        handleEditClick();
       }
-    } catch (error) {
-      console.error("Error:", error);
     }
   };
 
@@ -103,7 +144,6 @@ export default function UserProfile() {
 
   const handleClickUpdate = () => {
     handleUpdate();
-    handleEditClick();
   };
 
   const handleResetClick = () => {
@@ -140,6 +180,7 @@ export default function UserProfile() {
 
   return (
     <div className="" style={{ height: "100vh" }}>
+      <Toaster position="bottom-right" reverseOrder={false} />
       <NavigationUser />
       <div
         style={{
@@ -166,7 +207,7 @@ export default function UserProfile() {
                 id="outlined-basic"
                 onChange={handleChangeInput("full_name")}
                 placeholder={userProfile?.full_name}
-                value={fullNameData?.full_name || userProfile?.full_name}
+                value={fullNameData?.full_name}
                 size="small"
                 sx={{ width: "auto" }}
                 InputProps={{

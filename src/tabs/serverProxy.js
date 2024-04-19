@@ -367,7 +367,7 @@ export default function ServerProxy(serverId) {
   };
   return (
     <div>
-      <Toaster position="top-center" reverseOrder={false} />
+      <Toaster position="bottom-right" reverseOrder={false} />
       <div className="mb-3">
         <div className="info-title font-semibold my-3 flex flex-row justify-between">
           <p>Proxy Server Setting</p>

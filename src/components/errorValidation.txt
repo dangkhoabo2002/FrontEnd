@@ -16,7 +16,7 @@ const [loading, setLoading] = useState(false);
 
 import toast, { Toaster } from "react-hot-toast";
 
-<Toaster position="top-center" reverseOrder={false} />
+<Toaster position="bottom-right" reverseOrder={false} />
 
 ------SUCESS-----
 

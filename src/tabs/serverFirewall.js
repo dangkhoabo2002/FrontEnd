@@ -165,7 +165,7 @@ export default function ServerFirewall(serverId) {
   }, []);
   return (
     <div>
-      <Toaster position="top-center" reverseOrder={false} />
+      <Toaster position="bottom-right" reverseOrder={false} />
 
       <div className="info-title font-semibold pt-3">
         <p>Firewall Server Setting</p>

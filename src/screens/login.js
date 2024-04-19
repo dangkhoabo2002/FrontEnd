@@ -99,7 +99,7 @@ export default function Login() {
 
   return (
     <>
-      <Toaster position="top-center" reverseOrder={false} />
+      <Toaster position="bottom-right" reverseOrder={false} />
       <div
         className="login-background"
         style={{ backgroundImage: `url(${bgLogin})` }}

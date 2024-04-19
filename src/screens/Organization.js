@@ -232,7 +232,7 @@ export default function LandingPage() {
 
   return (
     <div className="" style={{ backgroundColor: "#f3f3fb", height: "100vh" }}>
-      <Toaster position="top-center" reverseOrder={false} />
+      <Toaster position="bottom-right" reverseOrder={false} />
 
       <div
         className=" py-6 text-center gap-10"

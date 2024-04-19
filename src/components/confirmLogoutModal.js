@@ -8,6 +8,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import { useNavigate } from "react-router-dom";
 import { Typography } from "@mui/material";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function AlertDialogSlide() {
   const [open, setOpen] = React.useState(false);
@@ -38,7 +39,15 @@ export default function AlertDialogSlide() {
       if (response.status === 200) {
         navigate("/");
       } else {
-        alert("fail to logout");
+        toast.error("Logout fail, please try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
     } catch (error) {
       console.error("Error:", error);
@@ -48,6 +57,8 @@ export default function AlertDialogSlide() {
 
   return (
     <React.Fragment>
+      <Toaster position="bottom-right" reverseOrder={false} />
+
       <Button
         variant="contained"
         sx={{ backgroundColor: "#3867A5", "&:hover": { bgcolor: "#2B4B75" } }}

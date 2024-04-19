@@ -850,7 +850,7 @@ export default function OrganizationDashboard() {
 
   return (
     <>
-      <Toaster position="top-center" reverseOrder={false} />
+      <Toaster position="bottom-right" reverseOrder={false} />
 
       <div className="containerOrg" style={{ height: "100vh" }}>
         <div className="sideMenu">
