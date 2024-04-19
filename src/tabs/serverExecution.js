@@ -13,7 +13,7 @@ import {
 export default function ServerExecution() {
   return (
     <div>
-      <div className="info-title font-semibold my-3">
+      <div className="info-title font-semibold">
         <p>Execute code</p>
       </div>
       <div className="default-url">
@@ -74,22 +74,16 @@ export default function ServerExecution() {
               </div>
             </Box>
       </div>
-      <div className="info-title font-semibold my-3">
-        <p>Output</p>
-      </div>{" "}
-      <FormControl fullWidth variant="outlined">
-        <OutlinedInput
-          sx={{ width: "70%", backgroundColor:"white" }}
-          className="mt-2"
-          style={{}}
-          multiline
-          rows={7}
-          defaultValue="printf(Hello world).printf(Hello world).printf(Hello world).printf(Hello world).printf(Hello world).printf(Hello world).printf(Hello world).printf(Hello world).printf(Hello world).printf(Hello world)."
-          inputProps={{
-            "aria-label": "url",
-          }}
-        />
-      </FormControl>
+
+      <div className="resultOutput mt-10">
+        <h1 className="text-2xl my-3">Output result</h1>
+        <textarea
+          class="w-full resize-none rounded-md p-4"
+          style={{ border: "1px solid #89A6CC" }}
+        >
+          Build successfully
+        </textarea>
+      </div>
     </div>
   );
 }

@@ -36,6 +36,7 @@ export default function UserServerConfig() {
     setValue(newValue);
   };
 
+  
   const { server_id } = useParams();
 
   // Get Server Data - GENERAL

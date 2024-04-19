@@ -68,85 +68,89 @@ export default function ServerData() {
 
   return (
     <div>
-      {/* Browse File */}
-      <div>
-        <div className="info-title font-semibold my-3">
-          <p>Browse File</p>
+        <div className="info-title font-semibold">
+          <p>Data</p>
         </div>
-        <div className="" >
-          <FormControl>
-            <RadioGroup
-              value={selectedOptionFile}
-              onChange={handleDefaultChangeFile}
-              row
-              aria-labelledby="demo-row-radio-buttons-group-label-file"
-              name="row-radio-buttons-group-file"
-            >
-              <FormControlLabel
-                className="custom-radio"
-                value="default"
-                control={<CustomRadio />}
-                label="Default"
-              />
-              <FormControlLabel
-                className="custom-radio"
-                value="path"
-                control={<CustomRadio />}
-                label="Path"
-              />
-            </RadioGroup>
-          </FormControl>
-          {selectedOptionFile === "path" && (
-            <div className="mb-2">
-              <TextField
-                mt={1}
-                id="outlined-basic-file"
-                value={pathFile}
-                onChange={handlePathChangeFile}
-                size="small"
-                sx={{ width: "800px",backgroundColor:"white", }}
-                disabled={selectedOptionFile === "default"}
-              />
-              <Button
-                startIcon={<UploadIcon />}
-                variant="contained"
-                onClick={handleBrowseClick}
-                style={{ marginLeft: "10px" }}
-                sx={{
-                  width: "120px",
-                  height: "auto",
-                  color: "white",
-                  bgcolor: "#3867A5",
-                  "&:hover": { bgcolor: "#264B7B" },
-                  fontSize: "14px",
-                  fontWeight: "normal",
-                  textTransform: "none",
-                }}
+              {/* Browse File */}
+
+        <div className="my-3">
+          <div className="info-title font-semibold">
+            <p style={{ fontSize: "18px" }}>Browse File</p>
+          </div>
+          <div className="">
+            <FormControl>
+              <RadioGroup
+                value={selectedOptionFile}
+                onChange={handleDefaultChangeFile}
+                row
+                aria-labelledby="demo-row-radio-buttons-group-label-file"
+                name="row-radio-buttons-group-file"
               >
-                Browse
-              </Button>
-            </div>
-          )}
-          {selectedOptionFile === "default" && (
-            <div className="mb-2">
-              <TextField
-                mt={1}
-                id="outlined-basic-file"
-                value={pathFile}
-                onChange={handlePathChangeFile}
-                size="small"
-                sx={{ width: "800px", backgroundColor:"white",}}
-                disabled={true}
-              />
-            </div>
-          )}
+                <FormControlLabel
+                  className="custom-radio"
+                  value="default"
+                  control={<CustomRadio />}
+                  label="Default"
+                />
+                <FormControlLabel
+                  className="custom-radio"
+                  value="path"
+                  control={<CustomRadio />}
+                  label="Path"
+                />
+              </RadioGroup>
+            </FormControl>
+            {selectedOptionFile === "path" && (
+              <div className="mb-2">
+                <TextField
+                  mt={1}
+                  id="outlined-basic-file"
+                  value={pathFile}
+                  onChange={handlePathChangeFile}
+                  size="small"
+                  sx={{ width: "800px", backgroundColor: "white" }}
+                  disabled={selectedOptionFile === "default"}
+                />
+                <Button
+                  startIcon={<UploadIcon />}
+                  variant="contained"
+                  onClick={handleBrowseClick}
+                  style={{ marginLeft: "10px" }}
+                  sx={{
+                    width: "120px",
+                    height: "auto",
+                    color: "white",
+                    bgcolor: "#3867A5",
+                    "&:hover": { bgcolor: "#264B7B" },
+                    fontSize: "14px",
+                    fontWeight: "normal",
+                    textTransform: "none",
+                  }}
+                >
+                  Browse
+                </Button>
+              </div>
+            )}
+            {selectedOptionFile === "default" && (
+              <div className="mb-2">
+                <TextField
+                  mt={1}
+                  id="outlined-basic-file"
+                  value={pathFile}
+                  onChange={handlePathChangeFile}
+                  size="small"
+                  sx={{ width: "800px", backgroundColor: "white" }}
+                  disabled={true}
+                />
+              </div>
+            )}
+          </div>
         </div>
-      </div>
 
       {/* Browse Folder */}
-      <div>
-        <div className="info-title font-semibold my-3">
-          <p>Browse Folder</p>
+      <div className="my-3">
+        <div className="info-title font-semibold">
+          <p style={{ fontSize: "18px" }}>Browse Folder</p>
         </div>
         <div className="">
           <FormControl>
@@ -179,7 +183,7 @@ export default function ServerData() {
                 value={pathFolder}
                 onChange={handlePathChangeFolder}
                 size="small"
-                sx={{ width: "800px" ,backgroundColor:"white"}}
+                sx={{ width: "800px", backgroundColor: "white" }}
                 disabled={selectedOptionFolder === "default"}
               />
               <Button
@@ -210,7 +214,7 @@ export default function ServerData() {
                 value={pathFolder}
                 onChange={handlePathChangeFolder}
                 size="small"
-                sx={{ width: "800px" ,backgroundColor:"white"}}
+                sx={{ width: "800px", backgroundColor: "white" }}
                 disabled={true}
               />
               {/* No Browse button for Default */}
@@ -221,16 +225,16 @@ export default function ServerData() {
 
       {/* Download File */}
 
-      <div>
-        <div className="info-title font-semibold my-3">
-          <p>Download File</p>
+      <div className="my-3">
+        <div className="info-title font-semibold">
+          <p style={{ fontSize: "18px" }}>Download File</p>
         </div>
         <div className="mb-2">
           <TextField
             mt={1}
             id="outlined-basic-file"
             size="small"
-            sx={{ width: "800px",backgroundColor:"white" }}
+            sx={{ width: "800px", backgroundColor: "white" }}
           />
           <Button
             startIcon={<DownloadIcon />}
@@ -254,16 +258,16 @@ export default function ServerData() {
       </div>
 
       {/* Download Folder */}
-      <div>
-        <div className="info-title font-semibold my-3">
-          <p>Download Folder</p>
+      <div className="my-3">
+        <div className="info-title font-semibold">
+          <p style={{ fontSize: "18px" }}>Download Folder</p>
         </div>
         <div className="mb-2">
           <TextField
             mt={1}
             id="outlined-basic-file"
             size="small"
-            sx={{ width: "800px",backgroundColor:"white" }}
+            sx={{ width: "800px", backgroundColor: "white" }}
           />
           <Button
             startIcon={<DownloadIcon />}
@@ -284,6 +288,15 @@ export default function ServerData() {
             Download
           </Button>
         </div>
+      </div>
+      <div className="resultOutput mt-10">
+        <h1 className="text-2xl my-3">Output result</h1>
+        <textarea
+          class="w-full resize-none rounded-md p-4"
+          style={{ border: "1px solid #89A6CC" }}
+        >
+          Build successfully
+        </textarea>
       </div>
     </div>
   );

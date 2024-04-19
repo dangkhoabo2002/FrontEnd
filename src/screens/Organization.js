@@ -15,9 +15,11 @@ import {
   OutlinedInput,
   IconButton,
   DialogActions,
+  Tooltip,
 } from "@mui/material";
 
 import toast, { Toaster } from "react-hot-toast";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
 import { styled } from "@mui/material/styles";
 import OrganizationCard from "../components/organizationCard";
@@ -65,7 +67,6 @@ export default function LandingPage() {
       !isValidEmail(data.contact_email) ||
       !isValidPhoneNumber(data.contact_phone)
     ) {
-      // Display error messages in the desired order
       if (data.name === "") {
         toast.error("Please fill necessary information!", {
           style: {
@@ -76,6 +77,19 @@ export default function LandingPage() {
             fontWeight: "bolder",
           },
         });
+      } else if (data.name.length < 3 || data.name.length > 50) {
+        toast.error(
+          "Organization name must be between 3 and 50 characters long!",
+          {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          }
+        );
       } else if (!isValidPhoneNumber(data.contact_phone)) {
         toast.error("Please enter a valid phone number!", {
           style: {
@@ -102,15 +116,14 @@ export default function LandingPage() {
       setShowConfirmation(true);
     }
   };
-  
+
   // ... (other functions remain the same)
-  
-  
+
   const isValidEmail = (email) => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailPattern.test(email);
   };
-  
+
   const isValidPhoneNumber = (phoneNumber) => {
     const phoneNumberPattern = /^\d+$/;
     return phoneNumberPattern.test(phoneNumber);
@@ -337,7 +350,7 @@ export default function LandingPage() {
                 </div>
               </div>
 
-              <Grid container alignItems="center" spacing={2} mt={0}>
+              <Grid container alignItems="center" spacing={3} mt={0}>
                 <Grid item xs={12} md={3}>
                   <Typography
                     className="mt-3"
@@ -349,7 +362,7 @@ export default function LandingPage() {
                     Organization name:
                   </Typography>
                 </Grid>
-                <Grid item xs={12} md={9}>
+                <Grid item xs={12} md={8}>
                   <FormControl fullWidth variant="outlined">
                     <OutlinedInput
                       inputProps={{
@@ -360,9 +373,22 @@ export default function LandingPage() {
                     />
                   </FormControl>
                 </Grid>
+                <Grid item xs={12} md={1}>
+                  <Tooltip
+                    title="Organization name must be between 3 and 50 characters long!"
+                    placement="right"
+                  >
+                    <HelpOutlineIcon
+                      style={{
+                        fontSize: "20px",
+                        fontWeight: "400",
+                      }}
+                    />
+                  </Tooltip>
+                </Grid>
               </Grid>
 
-              <Grid container alignItems="center" spacing={2} mt={0}>
+              <Grid container alignItems="center" spacing={3} mt={0}>
                 <Grid item xs={12} md={3}>
                   <Typography
                     className="mt-3"
@@ -374,7 +400,7 @@ export default function LandingPage() {
                     Phone number:
                   </Typography>
                 </Grid>
-                <Grid item xs={12} md={9}>
+                <Grid item xs={12} md={8}>
                   <FormControl fullWidth variant="outlined">
                     <OutlinedInput
                       inputProps={{
@@ -385,9 +411,22 @@ export default function LandingPage() {
                     />
                   </FormControl>
                 </Grid>
+                <Grid item xs={12} md={1}>
+                  <Tooltip
+                    title="Enter the correct phone number."
+                    placement="right"
+                  >
+                    <HelpOutlineIcon
+                      style={{
+                        fontSize: "20px",
+                        fontWeight: "400",
+                      }}
+                    />
+                  </Tooltip>
+                </Grid>
               </Grid>
 
-              <Grid container alignItems="center" spacing={2} mt={0}>
+              <Grid container alignItems="center" spacing={3} mt={0}>
                 <Grid item xs={12} md={3}>
                   <Typography
                     className="mt-3"
@@ -399,7 +438,7 @@ export default function LandingPage() {
                     Email:
                   </Typography>
                 </Grid>
-                <Grid item xs={12} md={9}>
+                <Grid item xs={12} md={8}>
                   <FormControl fullWidth variant="outlined">
                     <OutlinedInput
                       inputProps={{
@@ -409,6 +448,19 @@ export default function LandingPage() {
                       value={data.contact_email}
                     />
                   </FormControl>
+                </Grid>
+                <Grid item xs={12} md={1}>
+                  <Tooltip
+                    title="Enter the correct email, If entered incorrectly, access will not be possible.."
+                    placement="right"
+                  >
+                    <HelpOutlineIcon
+                      style={{
+                        fontSize: "20px",
+                        fontWeight: "400",
+                      }}
+                    />
+                  </Tooltip>
                 </Grid>
               </Grid>
 

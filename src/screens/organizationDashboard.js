@@ -1308,7 +1308,7 @@ export default function OrganizationDashboard() {
                               </FormControl>
                             </Grid>
                             <Grid item xs={12} md={1}>
-                              <Tooltip
+                              {/* <Tooltip
                                 title="Please enter the correct Host name of the server, as incorrect input will result in connection failure."
                                 placement="right"
                               >
@@ -1318,7 +1318,7 @@ export default function OrganizationDashboard() {
                                     fontWeight: "400",
                                   }}
                                 />
-                              </Tooltip>
+                              </Tooltip> */}
                             </Grid>
                           </Grid>
 
