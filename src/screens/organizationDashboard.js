@@ -928,9 +928,10 @@ export default function OrganizationDashboard() {
 
           <div className="container px-20 py-3 mt-2">
             <div>
-              <Box>
+              <Box >
                 <TabContext value={value}>
                   <Box
+                  
                     sx={{
                       borderColor: "divider",
                       width: "26.78vw",
@@ -976,9 +977,9 @@ export default function OrganizationDashboard() {
                       <Tab disableRipple label="Settings" value="3" />
                     </TabList>
                   </Box>
-
+                  
                   {/* TAB 1 */}
-                  <TabPanel value="1">
+                  <TabPanel sx={{ pt: 3, px:0}} value="1">
                     <div className="flex flex-col justify-start">
                       <div className="flex flex-row justify-left">
                         <h1
@@ -1475,9 +1476,9 @@ export default function OrganizationDashboard() {
                   </TabPanel>
 
                   {/* TAB 2 */}
-                  <TabPanel value="2">
+                  <TabPanel sx={{ pt: 3, px:0}} value="2">
                     <div className="memberTab">
-                      <h1 className="text-[#637381] text-2xl font pr-16 my-3">
+                      <h1 className="text-[#637381] text-2xl font pr-16 mb-3">
                         Member
                       </h1>
                       <div className="flex flex-row gap-">
@@ -1761,8 +1762,8 @@ export default function OrganizationDashboard() {
                   </TabPanel>
 
                   {/* TAB 3 */}
-                  <TabPanel value="3">
-                    <h1 className="text-[#637381] text-2xl font pr-16 my-3">
+                  <TabPanel sx={{ pt: 3, px:0}} value="3">
+                    <h1 className="text-[#637381] text-2xl font pr-16 mb-3">
                       Slot(s) available: 1/5
                     </h1>
                     <div className="server">
@@ -1968,6 +1969,7 @@ export default function OrganizationDashboard() {
                       </Dialog>
                     </div>
                   </TabPanel>
+
                 </TabContext>
               </Box>
             </div>

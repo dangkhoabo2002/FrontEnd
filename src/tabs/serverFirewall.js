@@ -171,7 +171,7 @@ export default function ServerFirewall(serverId) {
         <p>Firewall Server Setting</p>
       </div>
       {loading && (
-        <div className="py-6">
+        <div className="py-8">
           <LinearProgress />{" "}
         </div>
       )}
