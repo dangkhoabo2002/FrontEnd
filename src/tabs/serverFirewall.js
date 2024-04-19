@@ -167,11 +167,11 @@ export default function ServerFirewall(serverId) {
     <div>
       <Toaster position="bottom-right" reverseOrder={false} />
 
-      <div className="info-title font-semibold pt-3">
+      <div className="info-title font-semibold">
         <p>Firewall Server Setting</p>
       </div>
       {loading && (
-        <div className="py-6">
+        <div className="py-8">
           <LinearProgress />{" "}
         </div>
       )}
@@ -348,6 +348,15 @@ export default function ServerFirewall(serverId) {
               ))}
           </tbody>
         </table>{" "}
+      </div>
+      <div className="resultOutput mt-10">
+        <h1 className="text-2xl my-3">Output result</h1>
+        <textarea
+          class="w-full resize-none rounded-md p-4"
+          style={{ border: "1px solid #89A6CC" }}
+        >
+          Build successfully
+        </textarea>
       </div>
     </div>
   );

@@ -27,6 +27,7 @@ import toast, { Toaster } from "react-hot-toast";
 // ICONS MUI
 
 import CloseIcon from "@mui/icons-material/Close";
+import { DataGrid } from "@mui/x-data-grid";
 export default function ServerProxy(serverId) {
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
@@ -369,11 +370,8 @@ export default function ServerProxy(serverId) {
     <div>
       <Toaster position="bottom-right" reverseOrder={false} />
       <div className="mb-3">
-        <div className="info-title font-semibold my-3 flex flex-row justify-between">
+        <div className="info-title font-semibold pb-3 flex flex-row justify-between">
           <p>Proxy Server Setting</p>
-          <Button variant="contained" onClick={handleOpenAddProxy}>
-            Add Proxy
-          </Button>
         </div>
         {loading && (
           <Box
@@ -405,7 +403,7 @@ export default function ServerProxy(serverId) {
           Add Proxy
         </Button>
       </div>
-      <div className="server_des mb-3">
+      <div className="server_des mb-3 ">
         <div>
           {/* Replace with your actual table implementation */}
           <div
@@ -711,6 +709,16 @@ export default function ServerProxy(serverId) {
             </Box>
           </Modal>
         </div>
+      </div>
+
+      <div className="resultOutput mt-10">
+        <h1 className="text-2xl my-3">Output result</h1>
+        <textarea
+          class="w-full resize-none rounded-md p-4"
+          style={{ border: "1px solid #89A6CC" }}
+        >
+          Build successfully
+        </textarea>
       </div>
     </div>
   );

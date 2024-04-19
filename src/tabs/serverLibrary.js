@@ -122,7 +122,7 @@ export default function ServerLibrary(serverId) {
     <>
       <div>
         <div className="flex flex-row justify-between items-center pr-6">
-          <div className="info-title font-semibold my-3">
+          <div className="info-title font-semibold mb-3">
             <p>Library</p>
           </div>
           {/* <Button variant="text" size="large" onClick={handleFilterClick}>
@@ -184,6 +184,15 @@ export default function ServerLibrary(serverId) {
               </div>
             ))}
         </div>
+        <div className="resultOutput mt-10">
+        <h1 className="text-2xl my-3">Output result</h1>
+        <textarea
+          class="w-full resize-none rounded-md p-4"
+          style={{ border: "1px solid #89A6CC" }}
+        >
+          Build successfully
+        </textarea>
+      </div>
       </div>
     </>
   );

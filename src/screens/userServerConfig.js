@@ -36,6 +36,7 @@ export default function UserServerConfig() {
     setValue(newValue);
   };
 
+  
   const { server_id } = useParams();
 
   // Get Server Data - GENERAL
@@ -190,28 +191,28 @@ export default function UserServerConfig() {
                   <Tab disableRipple label="Execution" value="8" />
                 </TabList>
               </Box>
-              <TabPanel value="1">
+              <TabPanel sx={{ pt: 3, px:0}} value="1">
                 <General serverId={server_id} />
               </TabPanel>
-              <TabPanel value="2">
+              <TabPanel sx={{ pt: 3, px:0}} value="2">
                 <Proxy serverId={server_id} />
               </TabPanel>
-              <TabPanel value="3">
+              <TabPanel sx={{ pt: 3, px:0}} value="3">
                 <Firewall serverId={server_id} />
               </TabPanel>
-              <TabPanel value="4">
+              <TabPanel sx={{ pt: 3, px:0}} value="4">
                 <Docker serverId={server_id} />
               </TabPanel>
-              <TabPanel value="5">
+              <TabPanel sx={{ pt: 3, px:0}} value="5">
                 <Library serverId={server_id} />
               </TabPanel>
-              <TabPanel value="6">
+              <TabPanel sx={{ pt: 3, px:0}} value="6">
                 <Data serverId={server_id} />
               </TabPanel>
-              <TabPanel value="7">
+              <TabPanel sx={{ pt: 3, px:0}} value="7">
                 <ServerReport serverId={server_id} />
               </TabPanel>
-              <TabPanel value="8">
+              <TabPanel sx={{ pt: 3, px:0}} value="8">
                 <Execution serverId={server_id} />
               </TabPanel>
             </TabContext>

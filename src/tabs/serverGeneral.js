@@ -309,7 +309,7 @@ export default function ServerGeneral(serverId) {
       <div>
         {/* Information */}
         <div className="info-site mb-5">
-          <div className="info-title font-semibold my-3">
+          <div className="info-title font-semibold pb-3">
             <p>Information</p>
           </div>
           {loading && (

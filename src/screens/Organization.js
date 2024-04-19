@@ -14,9 +14,12 @@ import {
   FormControl,
   OutlinedInput,
   IconButton,
+  DialogActions,
+  Tooltip,
 } from "@mui/material";
 
 import toast, { Toaster } from "react-hot-toast";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
 import { styled } from "@mui/material/styles";
 import OrganizationCard from "../components/organizationCard";
@@ -61,22 +64,69 @@ export default function LandingPage() {
   const handleDone = () => {
     if (
       data.name === "" ||
-      data.contact_phone === "" ||
-      data.contact_email === ""
+      !isValidEmail(data.contact_email) ||
+      !isValidPhoneNumber(data.contact_phone)
     ) {
-      toast.error("Please fill necessary information!", {
-        style: {
-          border: "1px solid #F85F60",
-          maxWidth: "900px",
-          padding: "16px 24px",
-          color: "red",
-          fontWeight: "bolder",
-        },
-      });
+      if (data.name === "") {
+        toast.error("Please fill necessary information!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (data.name.length < 3 || data.name.length > 50) {
+        toast.error(
+          "Organization name must be between 3 and 50 characters long!",
+          {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          }
+        );
+      } else if (!isValidPhoneNumber(data.contact_phone)) {
+        toast.error("Please enter a valid phone number!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (!isValidEmail(data.contact_email)) {
+        toast.error("Please enter a valid email address!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      }
     } else {
       setAddOrg(false);
       setShowConfirmation(true);
     }
+  };
+
+  // ... (other functions remain the same)
+
+  const isValidEmail = (email) => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email);
+  };
+
+  const isValidPhoneNumber = (phoneNumber) => {
+    const phoneNumberPattern = /^\d+$/;
+    return phoneNumberPattern.test(phoneNumber);
   };
 
   // change role super user / user
@@ -300,7 +350,7 @@ export default function LandingPage() {
                 </div>
               </div>
 
-              <Grid container alignItems="center" spacing={2} mt={0}>
+              <Grid container alignItems="center" spacing={3} mt={0}>
                 <Grid item xs={12} md={3}>
                   <Typography
                     className="mt-3"
@@ -312,7 +362,7 @@ export default function LandingPage() {
                     Organization name:
                   </Typography>
                 </Grid>
-                <Grid item xs={12} md={9}>
+                <Grid item xs={12} md={8}>
                   <FormControl fullWidth variant="outlined">
                     <OutlinedInput
                       inputProps={{
@@ -323,9 +373,22 @@ export default function LandingPage() {
                     />
                   </FormControl>
                 </Grid>
+                <Grid item xs={12} md={1}>
+                  <Tooltip
+                    title="Organization name must be between 3 and 50 characters long!"
+                    placement="right"
+                  >
+                    <HelpOutlineIcon
+                      style={{
+                        fontSize: "20px",
+                        fontWeight: "400",
+                      }}
+                    />
+                  </Tooltip>
+                </Grid>
               </Grid>
 
-              <Grid container alignItems="center" spacing={2} mt={0}>
+              <Grid container alignItems="center" spacing={3} mt={0}>
                 <Grid item xs={12} md={3}>
                   <Typography
                     className="mt-3"
@@ -337,7 +400,7 @@ export default function LandingPage() {
                     Phone number:
                   </Typography>
                 </Grid>
-                <Grid item xs={12} md={9}>
+                <Grid item xs={12} md={8}>
                   <FormControl fullWidth variant="outlined">
                     <OutlinedInput
                       inputProps={{
@@ -348,9 +411,22 @@ export default function LandingPage() {
                     />
                   </FormControl>
                 </Grid>
+                <Grid item xs={12} md={1}>
+                  <Tooltip
+                    title="Enter the correct phone number."
+                    placement="right"
+                  >
+                    <HelpOutlineIcon
+                      style={{
+                        fontSize: "20px",
+                        fontWeight: "400",
+                      }}
+                    />
+                  </Tooltip>
+                </Grid>
               </Grid>
 
-              <Grid container alignItems="center" spacing={2} mt={0}>
+              <Grid container alignItems="center" spacing={3} mt={0}>
                 <Grid item xs={12} md={3}>
                   <Typography
                     className="mt-3"
@@ -362,7 +438,7 @@ export default function LandingPage() {
                     Email:
                   </Typography>
                 </Grid>
-                <Grid item xs={12} md={9}>
+                <Grid item xs={12} md={8}>
                   <FormControl fullWidth variant="outlined">
                     <OutlinedInput
                       inputProps={{
@@ -372,6 +448,19 @@ export default function LandingPage() {
                       value={data.contact_email}
                     />
                   </FormControl>
+                </Grid>
+                <Grid item xs={12} md={1}>
+                  <Tooltip
+                    title="Enter the correct email, If entered incorrectly, access will not be possible.."
+                    placement="right"
+                  >
+                    <HelpOutlineIcon
+                      style={{
+                        fontSize: "20px",
+                        fontWeight: "400",
+                      }}
+                    />
+                  </Tooltip>
                 </Grid>
               </Grid>
 
@@ -410,48 +499,32 @@ export default function LandingPage() {
                 </div>
               </Box>
 
-              <Box>
-                <Grid container spacing={2} mt={0}>
-                  <Grid item xs={12} md={3}></Grid>
-                  <Grid item xs={12} md={3}></Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    md={3}
-                    className="d-flex justify-content-center align-items-center"
-                  >
-                    <Button onClick={handleClose}>
-                      <Typography variant="button" style={{ color: "red" }}>
-                        Cancel
-                      </Typography>{" "}
-                    </Button>
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    md={3}
-                    className="d-flex justify-content-center align-items-center"
-                  >
-                    <Button
-                      variant="contained"
-                      onClick={handleDone}
-                      style={{ marginLeft: "10px" }}
-                      sx={{
-                        width: "120px",
-                        height: "auto",
-                        color: "white",
-                        bgcolor: "#6EC882",
-                        "&:hover": { bgcolor: "#5CA36C" },
-                        fontSize: "14px",
-                        fontWeight: "normal",
-                        textTransform: "none",
-                      }}
-                    >
-                      Done
-                    </Button>
-                  </Grid>
-                </Grid>
-              </Box>
+              <DialogActions className="mt-5">
+                <Button
+                  variant="contained"
+                  onClick={handleClose}
+                  sx={{
+                    width: "100px",
+                    color: "white",
+                    bgcolor: "#F85F60",
+                    "&:hover": { bgcolor: "#D45758" },
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={handleDone}
+                  sx={{
+                    width: "100px",
+                    color: "white",
+                    bgcolor: "#6EC882",
+                    "&:hover": { bgcolor: "#63B976" },
+                  }}
+                >
+                  Add
+                </Button>
+              </DialogActions>
             </Box>
           </Modal>
 
