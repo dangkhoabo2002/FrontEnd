@@ -304,6 +304,16 @@ export default function OrganizationDashboard() {
             fontWeight: "bolder",
           },
         });
+      } else if (addSeverData.server_name.length > 50) {
+        toast.error("Server name must be maximum 50 characters long!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       } else {
         const addUrl = `http://127.0.0.1:5000/server/add`;
         const token = localStorage.getItem("access_token");
