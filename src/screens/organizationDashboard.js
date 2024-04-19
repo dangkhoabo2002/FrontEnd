@@ -13,6 +13,7 @@ import Footer from "../components/userFooter";
 import Sidebar from "../components/Sidebar";
 
 // ICONS MUI
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import ClearIcon from "@mui/icons-material/Clear";
 import serverIcon2 from "../images/serverIcon2.png";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -30,6 +31,7 @@ import TabPanel from "@mui/lab/TabPanel";
 import Button from "@mui/material/Button";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import Dialog from "@mui/material/Dialog";
+import Tooltip from "@mui/material/Tooltip";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
@@ -83,6 +85,15 @@ export default function OrganizationDashboard() {
   const [serverList, setServerList] = useState();
 
   const [memberList, setMemberList] = useState();
+
+  // term of service
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  const handleCheckboxChange = (event) => {
+    setAcceptedTerms(event.target.checked);
+    setShowTooltip(false);
+  };
 
   // ---------------------- VIEW ------------------------
 
@@ -274,6 +285,10 @@ export default function OrganizationDashboard() {
 
   // ADD server
   const handleAddServer = () => {
+    if (!acceptedTerms) {
+      setShowTooltip(true);
+      return;
+    }
     handleAddServerAPI();
     handleGetServers();
   };
@@ -296,6 +311,16 @@ export default function OrganizationDashboard() {
     } else {
       if (addSeverData.password === "" && addSeverData.rsa_key === "") {
         toast.error("Please enter server password or private key!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (addSeverData.server_name.length > 50) {
+        toast.error("Server name must be maximum 50 characters long!", {
           style: {
             border: "1px solid #F85F60",
             maxWidth: "900px",
@@ -1085,7 +1110,7 @@ export default function OrganizationDashboard() {
                           <Grid
                             container
                             alignItems="center"
-                            spacing={2}
+                            spacing={3}
                             mt={0}
                           >
                             <Grid item xs={12} md={3}>
@@ -1099,7 +1124,7 @@ export default function OrganizationDashboard() {
                                 Server Name:
                               </Typography>
                             </Grid>
-                            <Grid item xs={12} md={9}>
+                            <Grid item xs={12} md={8}>
                               <FormControl fullWidth variant="outlined">
                                 <OutlinedInput
                                   inputProps={{
@@ -1110,12 +1135,25 @@ export default function OrganizationDashboard() {
                                 />
                               </FormControl>
                             </Grid>
+                            <Grid item xs={12} md={1}>
+                              {/* <Tooltip
+                                title="Please enter the correct Host name of the server, as incorrect input will result in connection failure."
+                                placement="right"
+                              >
+                                <HelpOutlineIcon
+                                  style={{
+                                    fontSize: "20px",
+                                    fontWeight: "400",
+                                  }}
+                                />
+                              </Tooltip> */}
+                            </Grid>
                           </Grid>
 
                           <Grid
                             container
                             alignItems="center"
-                            spacing={2}
+                            spacing={3}
                             mt={0}
                           >
                             <Grid item xs={12} md={3}>
@@ -1129,7 +1167,7 @@ export default function OrganizationDashboard() {
                                 Host Name:
                               </Typography>
                             </Grid>
-                            <Grid item xs={12} md={9}>
+                            <Grid item xs={12} md={8}>
                               <FormControl fullWidth variant="outlined">
                                 <OutlinedInput
                                   inputProps={{
@@ -1140,11 +1178,24 @@ export default function OrganizationDashboard() {
                                 />
                               </FormControl>
                             </Grid>
+                            <Grid item xs={12} md={1}>
+                              <Tooltip
+                                title="Please enter the correct Host name of the server, as incorrect input will result in connection failure."
+                                placement="right"
+                              >
+                                <HelpOutlineIcon
+                                  style={{
+                                    fontSize: "20px",
+                                    fontWeight: "400",
+                                  }}
+                                />
+                              </Tooltip>
+                            </Grid>
                           </Grid>
                           <Grid
                             container
                             alignItems="center"
-                            spacing={2}
+                            spacing={3}
                             mt={0}
                           >
                             <Grid item xs={12} md={3}>
@@ -1158,7 +1209,7 @@ export default function OrganizationDashboard() {
                                 Server Username:
                               </Typography>
                             </Grid>
-                            <Grid item xs={12} md={9}>
+                            <Grid item xs={12} md={8}>
                               <FormControl fullWidth variant="outlined">
                                 <OutlinedInput
                                   inputProps={{
@@ -1169,12 +1220,25 @@ export default function OrganizationDashboard() {
                                 />
                               </FormControl>
                             </Grid>
+                            <Grid item xs={12} md={1}>
+                              <Tooltip
+                                title="Please enter the correct Server Username of the server, as incorrect input will result in connection failure."
+                                placement="right"
+                              >
+                                <HelpOutlineIcon
+                                  style={{
+                                    fontSize: "20px",
+                                    fontWeight: "400",
+                                  }}
+                                />
+                              </Tooltip>
+                            </Grid>
                           </Grid>
 
                           <Grid
                             container
                             alignItems="center"
-                            spacing={2}
+                            spacing={3}
                             mt={0}
                           >
                             <Grid item xs={12} md={3}>
@@ -1188,7 +1252,7 @@ export default function OrganizationDashboard() {
                                 Server Password:
                               </Typography>
                             </Grid>
-                            <Grid item xs={12} md={9}>
+                            <Grid item xs={12} md={8}>
                               <FormControl fullWidth variant="outlined">
                                 <OutlinedInput
                                   type="password"
@@ -1200,12 +1264,25 @@ export default function OrganizationDashboard() {
                                 />
                               </FormControl>
                             </Grid>
+                            <Grid item xs={12} md={1}>
+                              <Tooltip
+                                title="Please enter the correct Server password of the server, as incorrect input will result in connection failure."
+                                placement="right"
+                              >
+                                <HelpOutlineIcon
+                                  style={{
+                                    fontSize: "20px",
+                                    fontWeight: "400",
+                                  }}
+                                />
+                              </Tooltip>
+                            </Grid>
                           </Grid>
 
                           <Grid
                             container
                             alignItems="center"
-                            spacing={2}
+                            spacing={3}
                             mt={0}
                           >
                             <Grid item xs={12} md={3}>
@@ -1219,7 +1296,7 @@ export default function OrganizationDashboard() {
                                 Port (optional):
                               </Typography>
                             </Grid>
-                            <Grid item xs={12} md={9}>
+                            <Grid item xs={12} md={8}>
                               <FormControl fullWidth variant="outlined">
                                 <OutlinedInput
                                   inputProps={{
@@ -1230,12 +1307,25 @@ export default function OrganizationDashboard() {
                                 />
                               </FormControl>
                             </Grid>
+                            <Grid item xs={12} md={1}>
+                              <Tooltip
+                                title="Please enter the correct Host name of the server, as incorrect input will result in connection failure."
+                                placement="right"
+                              >
+                                <HelpOutlineIcon
+                                  style={{
+                                    fontSize: "20px",
+                                    fontWeight: "400",
+                                  }}
+                                />
+                              </Tooltip>
+                            </Grid>
                           </Grid>
 
                           <Grid
                             container
                             alignItems="center"
-                            spacing={2}
+                            spacing={3}
                             mt={0}
                           >
                             <Grid item xs={12} md={3}>
@@ -1249,7 +1339,7 @@ export default function OrganizationDashboard() {
                                 Private key:
                               </Typography>
                             </Grid>
-                            <Grid item xs={12} md={9}>
+                            <Grid item xs={12} md={8}>
                               <FormControl fullWidth variant="outlined">
                                 <OutlinedInput
                                   inputProps={{
@@ -1260,30 +1350,81 @@ export default function OrganizationDashboard() {
                                 />
                               </FormControl>
                             </Grid>
+                            <Grid item xs={12} md={1}>
+                              <Tooltip
+                                title="Please enter the correct Private key of the server, as incorrect input will result in connection failure."
+                                placement="right"
+                              >
+                                <HelpOutlineIcon
+                                  style={{
+                                    fontSize: "20px",
+                                    fontWeight: "400",
+                                  }}
+                                />
+                              </Tooltip>
+                            </Grid>
                           </Grid>
                           <Box className="mt-3 d-flex">
                             <div>
                               <FormControlLabel
-                                control={<Checkbox />}
+                                control={
+                                  <Checkbox
+                                    checked={acceptedTerms}
+                                    onChange={handleCheckboxChange}
+                                  />
+                                }
                                 label={
                                   <>
                                     I accept the
-                                    <Link
-                                      to={`/term`}
-                                      style={{
-                                        color: "#5F94D9",
-                                        marginLeft: "4px",
-                                      }}
+                                    <Tooltip
+                                      title="Please accept the Terms of Service"
+                                      open={showTooltip}
+                                      placement="right"
                                     >
-                                      Term of Service.
-                                    </Link>
+                                      <span
+                                        style={{
+                                          color: "#5F94D9",
+                                          marginLeft: "4px",
+                                        }}
+                                      >
+                                        Terms of Service
+                                      </span>
+                                    </Tooltip>
+                                    .
                                   </>
                                 }
                               />
                             </div>
                           </Box>
 
-                          <Box>
+                          <DialogActions className="">
+                            <Button
+                              variant="contained"
+                              onClick={handleCloseAddServer}
+                              sx={{
+                                width: "100px",
+                                color: "white",
+                                bgcolor: "#F85F60",
+                                "&:hover": { bgcolor: "#D45758" },
+                              }}
+                            >
+                              Cancel
+                            </Button>
+                            <Button
+                              variant="contained"
+                              onClick={handleAddServer}
+                              sx={{
+                                width: "100px",
+                                color: "white",
+                                bgcolor: "#6EC882",
+                                "&:hover": { bgcolor: "#63B976" },
+                              }}
+                            >
+                              Add
+                            </Button>
+                          </DialogActions>
+
+                          {/* <Box>
                             <Grid container spacing={2} mt={0}>
                               <Grid item xs={12} md={3}></Grid>
                               <Grid item xs={12} md={3}></Grid>
@@ -1327,7 +1468,7 @@ export default function OrganizationDashboard() {
                                 </Button>
                               </Grid>
                             </Grid>
-                          </Box>
+                          </Box> */}
                         </Box>
                       </Modal>
                     </div>
@@ -1413,7 +1554,12 @@ export default function OrganizationDashboard() {
                             <Button onClick={handleCloseAddMember}>
                               <Typography
                                 variant="button"
-                                style={{ color: "red" }}
+                                sx={{
+                                  width: "100px",
+                                  color: "white",
+                                  bgcolor: "#F85F60",
+                                  "&:hover": { bgcolor: "#D45758" },
+                                }}
                               >
                                 Cancel
                               </Typography>{" "}

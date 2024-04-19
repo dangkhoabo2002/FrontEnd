@@ -14,6 +14,7 @@ import {
   FormControl,
   OutlinedInput,
   IconButton,
+  DialogActions,
 } from "@mui/material";
 
 import toast, { Toaster } from "react-hot-toast";
@@ -61,22 +62,58 @@ export default function LandingPage() {
   const handleDone = () => {
     if (
       data.name === "" ||
-      data.contact_phone === "" ||
-      data.contact_email === ""
+      !isValidEmail(data.contact_email) ||
+      !isValidPhoneNumber(data.contact_phone)
     ) {
-      toast.error("Please fill necessary information!", {
-        style: {
-          border: "1px solid #F85F60",
-          maxWidth: "900px",
-          padding: "16px 24px",
-          color: "red",
-          fontWeight: "bolder",
-        },
-      });
+      // Display error messages in the desired order
+      if (data.name === "") {
+        toast.error("Please fill necessary information!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (!isValidPhoneNumber(data.contact_phone)) {
+        toast.error("Please enter a valid phone number!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (!isValidEmail(data.contact_email)) {
+        toast.error("Please enter a valid email address!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      }
     } else {
       setAddOrg(false);
       setShowConfirmation(true);
     }
+  };
+  
+  // ... (other functions remain the same)
+  
+  
+  const isValidEmail = (email) => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email);
+  };
+  
+  const isValidPhoneNumber = (phoneNumber) => {
+    const phoneNumberPattern = /^\d+$/;
+    return phoneNumberPattern.test(phoneNumber);
   };
 
   // change role super user / user
@@ -410,48 +447,32 @@ export default function LandingPage() {
                 </div>
               </Box>
 
-              <Box>
-                <Grid container spacing={2} mt={0}>
-                  <Grid item xs={12} md={3}></Grid>
-                  <Grid item xs={12} md={3}></Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    md={3}
-                    className="d-flex justify-content-center align-items-center"
-                  >
-                    <Button onClick={handleClose}>
-                      <Typography variant="button" style={{ color: "red" }}>
-                        Cancel
-                      </Typography>{" "}
-                    </Button>
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    md={3}
-                    className="d-flex justify-content-center align-items-center"
-                  >
-                    <Button
-                      variant="contained"
-                      onClick={handleDone}
-                      style={{ marginLeft: "10px" }}
-                      sx={{
-                        width: "120px",
-                        height: "auto",
-                        color: "white",
-                        bgcolor: "#6EC882",
-                        "&:hover": { bgcolor: "#5CA36C" },
-                        fontSize: "14px",
-                        fontWeight: "normal",
-                        textTransform: "none",
-                      }}
-                    >
-                      Done
-                    </Button>
-                  </Grid>
-                </Grid>
-              </Box>
+              <DialogActions className="mt-5">
+                <Button
+                  variant="contained"
+                  onClick={handleClose}
+                  sx={{
+                    width: "100px",
+                    color: "white",
+                    bgcolor: "#F85F60",
+                    "&:hover": { bgcolor: "#D45758" },
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={handleDone}
+                  sx={{
+                    width: "100px",
+                    color: "white",
+                    bgcolor: "#6EC882",
+                    "&:hover": { bgcolor: "#63B976" },
+                  }}
+                >
+                  Add
+                </Button>
+              </DialogActions>
             </Box>
           </Modal>
 
