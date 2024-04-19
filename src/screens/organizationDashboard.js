@@ -467,8 +467,7 @@ export default function OrganizationDashboard() {
     if (
       data.name === "" ||
       data.contact_phone === "" ||
-      data.contact_email === "" ||
-      data.description === ""
+      data.contact_email === ""
     ) {
       toast.error("The information can not be empty!", {
         style: {
@@ -545,7 +544,6 @@ export default function OrganizationDashboard() {
 
   const handleSaveClick = () => {
     handleUpdate();
-    handleEditClick();
   };
 
   // Đổi status của Org - Deactivate
@@ -602,6 +600,7 @@ export default function OrganizationDashboard() {
     } catch (error) {
       console.error("Error:", error);
     } finally {
+      handleEditClick();
     }
   };
 
