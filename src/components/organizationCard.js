@@ -75,7 +75,7 @@ export default function OrganizationCard({ id, name, description }) {
   }, []);
 
   console.log(serverCount);
-  console.log(memberCount.number_users);
+  // console.log(memberCount.number_users);
   return (
     <Paper
       className="mt-3 mb-8"
@@ -119,7 +119,7 @@ export default function OrganizationCard({ id, name, description }) {
               gutterBottom
               sx={{ marginBottom: "18px" }}
             >
-              {memberCount.number_users} member(s)
+              {/* {memberCount.number_users} member(s) */}
             </Typography>
           </div>
           <div
