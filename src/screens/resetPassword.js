@@ -3,16 +3,19 @@ import bgLogin from "../images/loginBackgr.png";
 import Logo from "../images/MHDLogo.png";
 import { Button, TextField, Alert } from "@mui/material";
 import toast, { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export default function ResetPassword() {
+  const navigate = useNavigate();
+
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
-  const [submitPassword, setsubmitPassword] = useState();
+  const emailReset = localStorage.getItem("email");
 
   const [showAlert, setShowAlert] = useState(false);
 
   const handleConfirmClick = () => {
-    if (!password || !confirmPassword) {
+    if (!password) {
       toast.error("Please enter your new password!", {
         style: {
           border: "1px solid #F85F60",
@@ -22,17 +25,18 @@ export default function ResetPassword() {
           fontWeight: "bolder",
         },
       });
-    } else if (password === confirmPassword) {
-      setsubmitPassword(password);
-      toast.success("Reset successfully!", {
+    } else if (!confirmPassword) {
+      toast.error("Confirm password can not be empty", {
         style: {
-          border: "1px solid #37E030",
+          border: "1px solid #F85F60",
           maxWidth: "900px",
           padding: "16px 24px",
-          color: "green",
+          color: "red",
           fontWeight: "bolder",
         },
       });
+    } else if (password === confirmPassword) {
+      handleChangePassword();
     } else {
       toast.error("The password does not match!", {
         style: {
@@ -44,7 +48,6 @@ export default function ResetPassword() {
         },
       });
     }
-    handleChangePassword();
   };
 
   const handlePasswordChange = (event) => {
@@ -56,29 +59,60 @@ export default function ResetPassword() {
   };
 
   const handleChangePassword = async () => {
-    if (password === confirmPassword) {
-      const url = "http://127.0.0.1:5000/auth/change_password";
-      try {
-        const response = await fetch(url, {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
+    const url = "http://127.0.0.1:5000/auth/reset_password";
+    const otpToken = localStorage.getItem("otp_verified");
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${otpToken}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          email: emailReset,
+          new_password: password,
+        }),
+      });
+      if (response.status === 200) {
+        toast.success("Your password is updated successfully.", {
+          style: {
+            border: "1px solid #37E030",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "green",
+            fontWeight: "bolder",
           },
-          body: JSON.stringify({
-            new_password: submitPassword,
-          }),
         });
-        if (response.status === 200) {
-          alert("Resend success, please check out your Email!");
-        } else {
-          alert("Fail to resend password");
-        }
-      } catch {
-      } finally {
+        localStorage.removeItem("otp_verified");
+        setTimeout(() => {
+          navigate(`/login`);
+        }, 2000);
+      } else if (response.status === 403) {
+        toast.error("Verify OTP first!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else {
+        toast.error("Unknown error, please try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
-    } else {
+    } catch {
+    } finally {
     }
   };
 

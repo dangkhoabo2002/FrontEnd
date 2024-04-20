@@ -47,8 +47,7 @@ export default function Login() {
           fontWeight: "bolder",
         },
       });
-      const loginUrl =
-        "http://127.0.0.1:5000/auth/login";
+      const loginUrl = "http://127.0.0.1:5000/auth/login";
       try {
         const response = await fetch(loginUrl, {
           method: "POST",

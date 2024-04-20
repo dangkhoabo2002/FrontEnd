@@ -29,6 +29,7 @@ export default function ForgotPassword() {
         },
       });
     } else {
+      toast.loading("OTP is sending, please wait...");
       const loginUrl = "http://127.0.0.1:5000/auth/forgot_password";
       try {
         const response = await fetch(loginUrl, {
@@ -42,8 +43,23 @@ export default function ForgotPassword() {
           }),
         });
         if (response.status === 200) {
+          toast.dismiss();
           localStorage.setItem("email", data.email);
-          toast.error("OTP sent successfully, Please check your Email!", {
+          toast.success("OTP sent successfully, Please check your Email!!", {
+            style: {
+              border: "1px solid #37E030",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "green",
+              fontWeight: "bolder",
+            },
+          });
+          setTimeout(() => {
+            navigate("/otp");
+          }, 2000);
+        } else if (response.status === 500) {
+          toast.dismiss();
+          toast.error("Your email is not registered!", {
             style: {
               border: "1px solid #F85F60",
               maxWidth: "900px",
@@ -52,11 +68,9 @@ export default function ForgotPassword() {
               fontWeight: "bolder",
             },
           });
-          setTimeout(() => {
-            navigate("/otp");
-          }, 2000);
-        } else if (response.status === 500) {
-          toast.error("Failed to send OTP, Please try again!", {
+        } else {
+          toast.dismiss();
+          toast.error("Unknown error, please try again later!", {
             style: {
               border: "1px solid #F85F60",
               maxWidth: "900px",

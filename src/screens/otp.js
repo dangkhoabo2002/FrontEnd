@@ -45,6 +45,8 @@ export default function OTP() {
           }),
         });
         if (response.status === 200) {
+          const data = await response.json();
+          localStorage.setItem("otp_verified", data.otp_verified);
           toast.success("Verify successfull!", {
             style: {
               border: "1px solid #37E030",
@@ -56,7 +58,7 @@ export default function OTP() {
           });
           setTimeout(() => {
             navigate("/resetPassword");
-          }, 2000);
+          }, 1400);
         } else if (response.status === 500) {
           toast.error("Wrong OTP, please try again!", {
             style: {
@@ -136,9 +138,6 @@ export default function OTP() {
     } finally {
     }
   };
-
-  console.log("otp", otp);
-  console.log("email", emailReset);
 
   return (
     <>

@@ -29,8 +29,7 @@ export default function UserProfile() {
   const [showResetButton, setShowResetButton] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [isOtpVerified, setIsOtpVerified] = useState(false);
-  const [showResetPasswordAlert, setShowResetPasswordAlert] = useState(false);
+  const [oldPassword, setOldPassword] = useState("");
   const [showOtpDialog, setShowOtpDialog] = useState(false);
   const [showPasswordDialog, setShowPasswordDialog] = useState(false);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
@@ -147,37 +146,223 @@ export default function UserProfile() {
   };
 
   const handleResetClick = () => {
-    setShowResetPasswordAlert(true);
+    handleSendOtp();
     setShowOtpDialog(true);
-  };
-
-  const handleCloseResetPasswordAlert = () => {
-    setShowResetPasswordAlert(false);
   };
 
   const handleCloseOtpDialog = () => {
     setShowOtpDialog(false);
   };
 
-  const handleOtpVerification = () => {
-    setIsOtpVerified(true);
-    setShowOtpDialog(false);
-    setShowPasswordDialog(true);
-  };
-
-  const handleChangePassword = (newPassword) => {
-    setShowPasswordDialog(false);
-  };
-
-  const handleChangePasswordFormSubmit = () => {
-    if (password !== confirmPassword) {
-      alert("Passwords do not match");
-      return;
+  // SEND OTP
+  const handleSendOtp = async () => {
+    if (userProfile.email === "") {
+      toast.error("Not found account's email!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
+        },
+      });
+    } else {
+      toast.loading(" OTP is being sent to your email...");
+      const sendUrl = "http://127.0.0.1:5000/auth/forgot_password";
+      try {
+        const response = await fetch(sendUrl, {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+          body: JSON.stringify({
+            email: userProfile.email,
+          }),
+        });
+        if (response.status === 200) {
+          toast.dismiss();
+          toast.success("OTP sent successfully.", {
+            style: {
+              border: "1px solid #37E030",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "green",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 500) {
+          toast.dismiss();
+          toast.error("Fail to sent OTP!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else {
+          toast.dismiss();
+          toast.error("Unknown error, please try again later!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+        handleEditClick();
+      }
     }
-    handleChangePassword(password);
-    setShowSuccessAlert(true);
+  };
+  // VERIFY OTP
+  const [otp, setOtp] = useState();
+  const handleChangeOtp = (newOtp) => {
+    setOtp(newOtp);
   };
 
+  const handleCheckOtp = async () => {
+    if (otp === "") {
+      toast.error("Please input the OTP!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
+        },
+      });
+    } else {
+      const checkOtpUrl = `http://127.0.0.1:5000/auth/verify_otp`;
+      try {
+        const response = await fetch(checkOtpUrl, {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+          body: JSON.stringify({
+            email: userProfile.email,
+            otp: otp,
+          }),
+        });
+        if (response.status === 200) {
+          const data = await response.json();
+          localStorage.setItem("otp_verified_profile", data.otp_verified);
+          toast.success("OTP Verified.", {
+            style: {
+              border: "1px solid #37E030",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "green",
+              fontWeight: "bolder",
+            },
+          });
+          setShowOtpDialog(false);
+          setShowPasswordDialog(true);
+        } else if (response.status === 500) {
+          toast.error("OTP verification failed!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else {
+          toast.error("Unknown error, please try again later!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    }
+  };
+
+  // CHANGE NEW PASSWORD
+  const handleNewPassword = async () => {
+    if (password === confirmPassword) {
+      const changeUrl = "http://127.0.0.1:5000/auth/change_password";
+      try {
+        const response = await fetch(changeUrl, {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+          body: JSON.stringify({
+            old_password: oldPassword,
+            new_password: password,
+          }),
+        });
+        if (response.status === 200) {
+          toast.dismiss();
+          toast.success("OTP sent successfully.", {
+            style: {
+              border: "1px solid #37E030",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "green",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 500) {
+          toast.dismiss();
+          toast.error("Fail to sent OTP!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else {
+          toast.dismiss();
+          toast.error("Unknown error, please try again later!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+        handleEditClick();
+      }
+    } else {
+      toast.error("Confirm password does not match!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
+        },
+      });
+    }
+  };
   return (
     <div className="" style={{ height: "100vh" }}>
       <Toaster position="bottom-right" reverseOrder={false} />
@@ -319,41 +504,6 @@ export default function UserProfile() {
         </div>
       </div>
 
-      {/* Thông báo gửi OTP */}
-      {showResetPasswordAlert && (
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 50 }}
-          transition={{ duration: 0.5 }}
-          style={{
-            position: "fixed",
-            bottom: "20px",
-            right: "20px",
-            zIndex: 9999,
-          }}
-        >
-          <Alert
-            open={true}
-            onClose={handleCloseResetPasswordAlert}
-            severity="info"
-            action={
-              <IconButton
-                aria-label="close"
-                color="inherit"
-                size="small"
-                onClick={handleCloseResetPasswordAlert}
-              >
-                <CloseIcon fontSize="inherit" />
-              </IconButton>
-            }
-          >
-            An email with the OTP has been sent to your registered email
-            address. Please check your email to continue.
-          </Alert>
-        </motion.div>
-      )}
-
       {/* Dialog nhập OTP */}
       <Dialog
         open={showOtpDialog}
@@ -365,7 +515,7 @@ export default function UserProfile() {
           <p className="mt-3" style={{ fontSize: "16px", fontWeight: "600" }}>
             Enter code
           </p>
-          <MuiOtpInput length={6} value={""} onChange={""} />
+          <MuiOtpInput onChange={handleChangeOtp} value={otp} length={6} />
           <Box>
             <div className="flex flex-row justify-between">
               <div className="">
@@ -406,7 +556,7 @@ export default function UserProfile() {
               width: "100px",
               height: "40px",
             }}
-            onClick={handleOtpVerification}
+            onClick={handleCheckOtp}
           >
             Submit
           </Button>
@@ -421,6 +571,15 @@ export default function UserProfile() {
       >
         <DialogTitle id="form-dialog-title">Change Password</DialogTitle>
         <DialogContent>
+          <TextField
+            value={oldPassword}
+            onChange={(e) => setOldPassword(e.target.value)}
+            label="Old Password"
+            type="password"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+          />
           <TextField
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -452,7 +611,7 @@ export default function UserProfile() {
             Cancel
           </Button>
           <Button
-            onClick={handleChangePasswordFormSubmit}
+            onClick={handleNewPassword}
             variant="contained"
             style={{
               marginRight: "16px",
