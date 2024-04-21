@@ -6,8 +6,6 @@ import Button from "@mui/material/Button";
 import SidebarUser from "../components/sidebarUser";
 import NavigationUser from "../components/navUserProfile";
 
-import Packages from "../data/packages.json";
-
 import chip from "../assets/chip.png";
 
 import "../css/userSubscribe.css";
