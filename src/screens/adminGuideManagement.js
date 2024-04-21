@@ -259,7 +259,10 @@ export default function AdminGuide() {
             </Button>
           </div>
 
-          <div className="bg-white mt-4 rounded-md px-8 pb-8 shadow-md " style={{ border: "1px solid #89A6CC" }}>
+          <div
+            className="bg-white mt-4 rounded-md px-8 pb-8 shadow-md"
+            style={{ border: "1px solid #89A6CC" }}
+          >
             <table className="">
               <tr>
                 <th id="id">#</th>
@@ -268,7 +271,7 @@ export default function AdminGuide() {
                 <th id="action">ACTIONS</th>
               </tr>
               {guideData.map((guide, index) => (
-                <tr key={guide.guide_id}>
+                <tr key={guide.guide_id} >
                   <td>{index + 1}</td>
                   <td>{guide.title}</td>
                   <td>{guide.content}</td>
@@ -398,7 +401,8 @@ export default function AdminGuide() {
                 width: "100px",
                 color: "white",
                 bgcolor: "#F85F60",
-                "&:hover": { bgcolor: "#D45758" },              }}
+                "&:hover": { bgcolor: "#D45758" },
+              }}
             >
               Cancel
             </Button>
@@ -490,48 +494,32 @@ export default function AdminGuide() {
             </Grid>
           </Grid>
 
-          <Box>
-            <Grid container spacing={2} mt={0}>
-              <Grid item xs={12} md={3}></Grid>
-              <Grid item xs={12} md={3}></Grid>
-              <Grid
-                item
-                xs={12}
-                md={3}
-                className="d-flex justify-content-center align-items-center"
-              >
-                <Button onClick={handleCloseEditGuide}>
-                  <Typography variant="button" style={{ color: "red" }}>
-                    Cancel
-                  </Typography>{" "}
-                </Button>
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                md={3}
-                className="d-flex justify-content-center align-items-center"
-              >
-                <Button
-                  variant="contained"
-                  onClick={handleEditGuide}
-                  style={{ marginLeft: "10px" }}
-                  sx={{
-                    width: "120px",
-                    height: "auto",
-                    color: "white",
-                    bgcolor: "#6EC882",
-                    "&:hover": { bgcolor: "#5CA36C" },
-                    fontSize: "14px",
-                    fontWeight: "normal",
-                    textTransform: "none",
-                  }}
-                >
-                  Done
-                </Button>
-              </Grid>
-            </Grid>
-          </Box>
+          <DialogActions className="mt-5">
+            <Button
+              variant="contained"
+              onClick={handleCloseEditGuide}
+              sx={{
+                width: "100px",
+                color: "white",
+                bgcolor: "#F85F60",
+                "&:hover": { bgcolor: "#D45758" },
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              onClick={handleEditGuide}
+              sx={{
+                width: "100px",
+                color: "white",
+                bgcolor: "#6EC882",
+                "&:hover": { bgcolor: "#63B976" },
+              }}
+            >
+              Add
+            </Button>
+          </DialogActions>
         </Box>
       </Modal>
     </div>
