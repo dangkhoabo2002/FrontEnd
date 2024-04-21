@@ -60,52 +60,54 @@ const ServerReport = () => {
           Review your server history within the last 3 days.
         </h1>
       </div>
-      <div className="bg-[white] mt-4 rounded-md px-8 py-6  shadow-lg"
-        style={{ border: "1px solid #89A6CC" }}>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Time</th>
-            <th>Username</th>
-            <th>Action</th>
-            <th>Level</th>
-            <th>Detail</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Logs.map((row) => (
-            <tr key={row.date + row.time}>
-              <td>{row.date}</td>
-              <td>{row.time}</td>
-              <td>{row.username}</td>
-              <td>{row.action}</td>
-              <td
-                className="text-[#637381]"
-                style={{
-                  backgroundColor:
-                    row.level === "Debug"
-                      ? "#DDDDDD"
-                      : row.level === "Info"
-                      ? "#B7FFB9"
-                      : row.level === "Warning"
-                      ? "#FCFF53"
-                      : row.level === "Error"
-                      ? "#FFC266"
-                      : row.level === "Critical"
-                      ? "#FF6868"
-                      : "",
-                }}
-              >
-                {row.level}
-              </td>
-              <td>
-                <Button onClick={handleRowClick}>More</Button>
-              </td>
+      <div
+        className="bg-[white] mt-4 rounded-md px-8 py-6  shadow-lg"
+        style={{ border: "1px solid #89A6CC" }}
+      >
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Username</th>
+              <th>Action</th>
+              <th>Level</th>
+              <th>Detail</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {Logs.map((row) => (
+              <tr key={row.date + row.time}>
+                <td>{row.date}</td>
+                <td>{row.time}</td>
+                <td>{row.username}</td>
+                <td>{row.action}</td>
+                <td
+                  className="text-[#637381]"
+                  style={{
+                    backgroundColor:
+                      row.level === "Debug"
+                        ? "#DDDDDD"
+                        : row.level === "Info"
+                        ? "#B7FFB9"
+                        : row.level === "Warning"
+                        ? "#FCFF53"
+                        : row.level === "Error"
+                        ? "#FFC266"
+                        : row.level === "Critical"
+                        ? "#FF6868"
+                        : "",
+                  }}
+                >
+                  {row.level}
+                </td>
+                <td>
+                  <Button onClick={handleRowClick}>More</Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
       <Modal
         open={open}
@@ -131,8 +133,12 @@ const ServerReport = () => {
       <div className="resultOutput mt-10">
         <h1 className="text-2xl my-3">Output result</h1>
         <textarea
-          class="w-full resize-none rounded-md p-4"
-          style={{ border: "1px solid #89A6CC" }}
+          className="w-full resize-none rounded-md p-4"
+          style={{
+            border: "1px solid #89A6CC",
+            maxHeight: "8em",
+            overflow: "auto",
+          }}
         >
           Build successfully
         </textarea>

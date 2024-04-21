@@ -22,12 +22,11 @@ export default function ServerExecution() {
         </Typography>
         <div className="flex">
           <TextField
-          
             variant="outlined"
             size="small"
             fullWidth
             defaultValue="C:\\Users\\Nguyen Dang Khoa\\Desktop\\FPT-Journey\\CNS\\FER201\\REACT_APP..."
-            sx={{backgroundColor:"white", width: "70%" }}
+            sx={{ backgroundColor: "white", width: "70%" }}
           />
           <div
             style={{
@@ -54,32 +53,31 @@ export default function ServerExecution() {
                 </Button>
               </div>
             </div>
-
           </div>
-          
         </div>
 
-        <Box className="mt-3 d-flex" sx={{marginLeft:"745px"}}>
-              <div className="">
-                <FormControlLabel
-                  sx={{ color: "#637381" }}
-                  control={
-                    <Checkbox
-                      className="font-light"
-                      sx={{ color: "#637381" }}
-                    />
-                  }
-                  label={<p className="font-light">Run as administrator</p>}
-                />
-              </div>
-            </Box>
+        <Box className="mt-3 d-flex" sx={{ marginLeft: "745px" }}>
+          <div className="">
+            <FormControlLabel
+              sx={{ color: "#637381" }}
+              control={
+                <Checkbox className="font-light" sx={{ color: "#637381" }} />
+              }
+              label={<p className="font-light">Run as administrator</p>}
+            />
+          </div>
+        </Box>
       </div>
 
       <div className="resultOutput mt-10">
         <h1 className="text-2xl my-3">Output result</h1>
         <textarea
-          class="w-full resize-none rounded-md p-4"
-          style={{ border: "1px solid #89A6CC" }}
+          className="w-full resize-none rounded-md p-4"
+          style={{
+            border: "1px solid #89A6CC",
+            maxHeight: "8em",
+            overflow: "auto",
+          }}
         >
           Build successfully
         </textarea>

@@ -292,8 +292,12 @@ export default function ServerData() {
       <div className="resultOutput mt-10">
         <h1 className="text-2xl my-3">Output result</h1>
         <textarea
-          class="w-full resize-none rounded-md p-4"
-          style={{ border: "1px solid #89A6CC" }}
+          className="w-full resize-none rounded-md p-4"
+          style={{
+            border: "1px solid #89A6CC",
+            maxHeight: "8em",
+            overflow: "auto",
+          }}
         >
           Build successfully
         </textarea>
