@@ -127,12 +127,12 @@ export default function Sidebar() {
             </section>
           </div>
         </Link>
-        {/* { !isSub && (
+        { !isSub && (
                   <div className="flex flex-row justify-center align-middle mt-40">
                   <SubscribeBtn />
                 </div>
         )
-} */}
+}
       </div>
     </div>
   );

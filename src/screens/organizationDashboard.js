@@ -1549,21 +1549,20 @@ export default function OrganizationDashboard() {
                           </Grid>
 
                           <DialogActions>
-                            <Button onClick={handleCloseAddMember}>
-                              <Typography
-                                variant="button"
-                                sx={{
-                                  width: "100px",
-                                  color: "white",
-                                  bgcolor: "#F85F60",
-                                  "&:hover": { bgcolor: "#D45758" },
-                                }}
-                              >
-                                Cancel
-                              </Typography>{" "}
+                            <Button
+                              contained
+                              sx={{
+                                width: "100px",
+                                color: "white",
+                                bgcolor: "#F85F60",
+                                "&:hover": { bgcolor: "#D45758" },
+                              }}
+                              onClick={handleCloseAddMember}
+                            >
+                              Cancel
                             </Button>
                             <Button
-                              variant="contained"
+                              variant=""
                               onClick={handleAddNewUser}
                               sx={{
                                 width: "100px",
