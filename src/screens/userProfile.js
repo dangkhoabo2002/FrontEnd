@@ -20,6 +20,7 @@ import { motion } from "framer-motion";
 import toast, { Toaster } from "react-hot-toast";
 
 import "../css/userProfile.css";
+import { set } from "react-hook-form";
 
 export default function UserProfile() {
   const navigate = useNavigate();
@@ -151,7 +152,19 @@ export default function UserProfile() {
   };
 
   const handleCloseOtpDialog = () => {
+    setOtp("");
+    setOldPassword("");
+    setPassword("");
+    setConfirmPassword("");
     setShowOtpDialog(false);
+  };
+
+  const handleCloseChangePassword = () => {
+    setOtp("");
+    setOldPassword("");
+    setPassword("");
+    setConfirmPassword("");
+    setShowPasswordDialog(false);
   };
 
   // SEND OTP
@@ -218,7 +231,6 @@ export default function UserProfile() {
       } catch (error) {
         console.error("Error:", error);
       } finally {
-        handleEditClick();
       }
     }
   };
@@ -295,10 +307,11 @@ export default function UserProfile() {
     }
   };
 
-  // CHANGE NEW PASSWORD
-  const handleNewPassword = async () => {
-    if (password === confirmPassword) {
-      const changeUrl = "http://127.0.0.1:5000/auth/change_password";
+  // RESEND OTP
+  const handleResendOtp = async () => {
+    if (userProfile.email) {
+      toast.loading(" OTP is being sent to your email...");
+      const changeUrl = "http://127.0.0.1:5000/auth/resend_otp";
       try {
         const response = await fetch(changeUrl, {
           method: "POST",
@@ -308,8 +321,7 @@ export default function UserProfile() {
             "Access-Control-Allow-Origin": "*",
           },
           body: JSON.stringify({
-            old_password: oldPassword,
-            new_password: password,
+            email: userProfile.email,
           }),
         });
         if (response.status === 200) {
@@ -336,6 +348,91 @@ export default function UserProfile() {
           });
         } else {
           toast.dismiss();
+          toast.error("Can not resend, please try again later!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+      }
+    } else if (userProfile.email === "") {
+      toast.error("Email is not collected!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
+        },
+      });
+    }
+  };
+
+  // CHANGE NEW PASSWORD
+  const handleNewPassword = async () => {
+    if (password === confirmPassword) {
+      const token = localStorage.getItem("access_token");
+      const rsToken = localStorage.getItem("otp_verified_profile");
+      const changeUrl = "http://127.0.0.1:5000/auth/change_password";
+      try {
+        const response = await fetch(changeUrl, {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            Authorization: `Bearer ${rsToken}, Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            username: userProfile.username,
+            old_password: oldPassword,
+            new_password: password,
+          }),
+        });
+        if (response.status === 200) {
+          toast.dismiss();
+          toast.success("Change password successfully.", {
+            style: {
+              border: "1px solid #37E030",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "green",
+              fontWeight: "bolder",
+            },
+          });
+          setShowPasswordDialog(false);
+        } else if (response.status === 500) {
+          toast.dismiss();
+          toast.error("Fail to change password!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 403) {
+          toast.dismiss();
+          toast.error("Verify OTP first!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else {
+          toast.dismiss();
+
           toast.error("Unknown error, please try again later!", {
             style: {
               border: "1px solid #F85F60",
@@ -349,7 +446,6 @@ export default function UserProfile() {
       } catch (error) {
         console.error("Error:", error);
       } finally {
-        handleEditClick();
       }
     } else {
       toast.error("Confirm password does not match!", {
@@ -363,6 +459,7 @@ export default function UserProfile() {
       });
     }
   };
+
   return (
     <div className="" style={{ height: "100vh" }}>
       <Toaster position="bottom-right" reverseOrder={false} />
@@ -528,7 +625,7 @@ export default function UserProfile() {
                     width: "100px",
                     height: "40px",
                   }}
-                  onClick={"handleResendOtp"}
+                  onClick={handleResendOtp}
                 >
                   Resend
                 </Button>
@@ -566,7 +663,7 @@ export default function UserProfile() {
       {/* Dialog nhập mật khẩu mới */}
       <Dialog
         open={showPasswordDialog}
-        onClose={() => setShowPasswordDialog(false)}
+        onClose={handleCloseChangePassword}
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="form-dialog-title">Change Password</DialogTitle>
@@ -601,7 +698,7 @@ export default function UserProfile() {
         </DialogContent>
         <DialogActions>
           <Button
-            onClick={() => setShowPasswordDialog(false)}
+            onClick={handleCloseChangePassword}
             style={{
               color: "#F85F60",
               width: "100px",

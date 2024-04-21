@@ -74,6 +74,7 @@ export default function OrganizationCard({ id, name, description }) {
     handleGetNumberMember();
   }, []);
 
+  console.log(serverCount);
   return (
     <Paper
       className="mt-3 mb-8"
