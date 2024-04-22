@@ -25,6 +25,7 @@ import AdminLogin from "./screens/adminLogin";
 // import AboutUs from "./screens/abouUs";
 import TermOfService from "./screens/termOfService";
 import SubscribeModal from "./components/nonSubModal";
+import Error404 from "./screens/Error404";
 
 export default function App() {
   return (
@@ -36,6 +37,7 @@ export default function App() {
         <Route path="/guide" element={<Guide />}></Route>
         <Route path="/term" element={<TermOfService />}></Route>
         <Route path="/sub" element={<SubscribeModal />}></Route>
+        <Route path="/error404" element={<Error404 />}></Route>
 
         {/* ADMIN ROUTE*/}
         <Route path="/adminLogin" element={<AdminLogin />}></Route>

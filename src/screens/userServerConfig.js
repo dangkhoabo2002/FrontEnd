@@ -36,7 +36,6 @@ export default function UserServerConfig() {
     setValue(newValue);
   };
 
-  
   const { server_id } = useParams();
 
   // Get Server Data - GENERAL
@@ -68,6 +67,14 @@ export default function UserServerConfig() {
   // useEffect(() => {
   //   handleGetServerData();
   // }, []);
+
+  const [currentStatus, setCurrentStatus] = useState("");
+
+  const handleChangeStatus = async () => {
+    let newStatus = currentStatus === "ACTIVE" ? "INACTIVE" : "ACTIVE";
+
+    setCurrentStatus(newStatus);
+  };
 
   return (
     <div>
@@ -117,8 +124,8 @@ export default function UserServerConfig() {
                   {/* {name} */}
                 </span>
               </div>
+              {/* Online status */}
               <div
-              
                 style={{
                   marginLeft: "583px",
                   textAlign: "center",
@@ -126,14 +133,33 @@ export default function UserServerConfig() {
                   width: "10%",
                   color: "white",
                   borderRadius: "100px",
-                  backgroundColor: "#6EC882",
+                  backgroundColor:
+                    currentStatus === "ACTIVE" ? "#6EC882" : "#999999",
                   fontSize: "18px",
                   fontWeight: "bold",
                   textTransform: "none",
                 }}
               >
-                Online
+                {currentStatus === "ACTIVE" ? "Online" : "Offline"}
               </div>
+
+              {/* Online status */}
+              {/* <div
+  style={{
+    marginLeft: "583px",
+    textAlign: "center",
+    alignContent: "center",
+    width: "10%",
+    color: "white",
+    borderRadius: "100px",
+    backgroundColor: status === "ACTIVE" ? "#6EC882" : "#999999",
+    fontSize: "18px",
+    fontWeight: "bold",
+    textTransform: "none",
+  }}
+>
+  {status === "ACTIVE" ? "Online" : "Offline"}
+</div> */}
             </div>
           </div>
 
@@ -191,28 +217,28 @@ export default function UserServerConfig() {
                   <Tab disableRipple label="Execution" value="8" />
                 </TabList>
               </Box>
-              <TabPanel sx={{ pt: 3, px:0}} value="1">
+              <TabPanel sx={{ pt: 3, px: 0 }} value="1">
                 <General serverId={server_id} />
               </TabPanel>
-              <TabPanel sx={{ pt: 3, px:0}} value="2">
+              <TabPanel sx={{ pt: 3, px: 0 }} value="2">
                 <Proxy serverId={server_id} />
               </TabPanel>
-              <TabPanel sx={{ pt: 3, px:0}} value="3">
+              <TabPanel sx={{ pt: 3, px: 0 }} value="3">
                 <Firewall serverId={server_id} />
               </TabPanel>
-              <TabPanel sx={{ pt: 3, px:0}} value="4">
+              <TabPanel sx={{ pt: 3, px: 0 }} value="4">
                 <Docker serverId={server_id} />
               </TabPanel>
-              <TabPanel sx={{ pt: 3, px:0}} value="5">
+              <TabPanel sx={{ pt: 3, px: 0 }} value="5">
                 <Library serverId={server_id} />
               </TabPanel>
-              <TabPanel sx={{ pt: 3, px:0}} value="6">
+              <TabPanel sx={{ pt: 3, px: 0 }} value="6">
                 <Data serverId={server_id} />
               </TabPanel>
-              <TabPanel sx={{ pt: 3, px:0}} value="7">
+              <TabPanel sx={{ pt: 3, px: 0 }} value="7">
                 <ServerReport serverId={server_id} />
               </TabPanel>
-              <TabPanel sx={{ pt: 3, px:0}} value="8">
+              <TabPanel sx={{ pt: 3, px: 0 }} value="8">
                 <Execution serverId={server_id} />
               </TabPanel>
             </TabContext>
