@@ -34,6 +34,9 @@ export default function UserProfile() {
   const [showOtpDialog, setShowOtpDialog] = useState(false);
   const [showPasswordDialog, setShowPasswordDialog] = useState(false);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [error, setError] = useState({
+    password: null,
+  });
 
   useEffect(() => {
     handleGetUserProfile();
@@ -377,7 +380,39 @@ export default function UserProfile() {
 
   // CHANGE NEW PASSWORD
   const handleNewPassword = async () => {
-    if (password === confirmPassword) {
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,30}$/;
+    let newErrors = { password: null };
+
+    if (!password) {
+      toast.error("Please enter your new password!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
+        },
+      });
+    } else if (!confirmPassword) {
+      toast.error("Confirm password can not be empty", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
+        },
+      });
+    } else if (!passwordRegex.test(password)) {
+      newErrors.password =
+        "Password must contain at least one lowercase letter, one uppercase letter, one digit, one special character, and be 8-30 characters long.";
+
+      if (newErrors.password) {
+        setError(newErrors);
+        return;
+      }
+    } else if (password === confirmPassword) {
       const token = localStorage.getItem("access_token");
       const rsToken = localStorage.getItem("otp_verified_profile");
       const changeUrl = "http://127.0.0.1:5000/auth/change_password";
@@ -685,6 +720,8 @@ export default function UserProfile() {
             variant="outlined"
             fullWidth
             margin="normal"
+            error={!!error.password}
+            helperText={error.password}
           />
           <TextField
             value={confirmPassword}

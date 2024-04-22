@@ -11,10 +11,19 @@ export default function ResetPassword() {
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
   const emailReset = localStorage.getItem("email");
+  const [error, setError] = useState({
+    password: null,
+  });
 
-  const [showAlert, setShowAlert] = useState(false);
+  
 
   const handleConfirmClick = () => {
+
+
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,30}$/;
+    let newErrors = { password: null };
+
     if (!password) {
       toast.error("Please enter your new password!", {
         style: {
@@ -35,7 +44,21 @@ export default function ResetPassword() {
           fontWeight: "bolder",
         },
       });
-    } else if (password === confirmPassword) {
+    } else if (!passwordRegex.test(password)) {
+
+        newErrors.password =
+          "Password must contain at least one lowercase letter, one uppercase letter, one digit, one special character, and be 8-30 characters long.";
+    
+      
+      if (
+        newErrors.password
+      ) {
+        setError(newErrors);
+        return;
+      }
+    
+    } 
+    else if (password === confirmPassword) {
       handleChangePassword();
     } else {
       toast.error("The password does not match!", {
@@ -177,6 +200,8 @@ export default function ResetPassword() {
                 className="mb-4"
                 value={password}
                 onChange={handlePasswordChange}
+                error={!!error.password}
+                helperText={error.password}
                 required
               />
             </div>
