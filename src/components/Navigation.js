@@ -4,6 +4,8 @@ import Logo from "../assets/logo.png";
 import { Button } from "@mui/material";
 
 export default function Navigation() {
+  const token = localStorage.getItem("access_token");
+
   return (
     <div style={{ backgroundColor: "white" }}>
       <div className="flex flex-row justify-between items-center px-20 py-4">
@@ -27,18 +29,26 @@ export default function Navigation() {
           <a href="../#featureNew">
             <button className="font-semibold">Feature News</button>
           </a>
-
           <a href="../#aboutUs">
             <button className="font-semibold">About Us</button>
           </a>
           <a href="../#contact">
             <button className="font-semibold">Contact</button>
           </a>
-          <Link to={`/login`}>
-            <button className="bg-[#3867A5] hover:bg-[#2B4B75] text-white py-2 px-6 rounded-full w-40 tracking-widest	">
-              <b>SIGN IN</b>
-            </button>
-          </Link>
+          {!token && (
+            <Link to={`/login`}>
+              <button className="bg-[#3867A5] hover:bg-[#2B4B75] text-white py-2 px-6 rounded-full w-40 tracking-widest	">
+                <b>SIGN IN</b>
+              </button>
+            </Link>
+          )}
+          {token && (
+            <Link to={`/organizations`}>
+              <button className="bg-[#3867A5] hover:bg-[#2B4B75] text-white py-2 px-6 rounded-full w-40 tracking-widest	">
+                <b>Dashboard</b>
+              </button>
+            </Link>
+          )}
         </div>
       </div>
     </div>

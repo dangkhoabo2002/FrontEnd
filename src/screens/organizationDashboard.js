@@ -374,7 +374,7 @@ export default function OrganizationDashboard() {
   const [openAddMember, setOpenAddMember] = React.useState(false);
 
   const handleAddNewUser = () => {
-    if (data.new_user === "") {
+    if (data?.new_user === "") {
       toast.error("Please enter your password!", {
         style: {
           border: "1px solid #F85F60",
@@ -489,9 +489,9 @@ export default function OrganizationDashboard() {
 
   const handleUpdate = async () => {
     if (
-      data.name === "" ||
-      data.contact_phone === "" ||
-      data.contact_email === ""
+      data?.name === "" ||
+      data?.contact_phone === "" ||
+      data?.contact_email === ""
     ) {
       toast.error("The information can not be empty!", {
         style: {
@@ -624,7 +624,6 @@ export default function OrganizationDashboard() {
     } catch (error) {
       console.error("Error:", error);
     } finally {
-      handleEditClick();
     }
   };
 
@@ -1129,7 +1128,7 @@ export default function OrganizationDashboard() {
                                     "aria-label": "Server name",
                                   }}
                                   onChange={handleChangeAddInput("server_name")}
-                                  value={addSeverData.server_name}
+                                  value={addSeverData?.server_name}
                                 />
                               </FormControl>
                             </Grid>
@@ -1543,7 +1542,7 @@ export default function OrganizationDashboard() {
                                 type="username"
                                 fullWidth
                                 onChange={handleChangeInput("new_user")}
-                                value={data.new_user}
+                                value={data?.new_user}
                               />
                             </Grid>
                           </Grid>
@@ -1773,7 +1772,7 @@ export default function OrganizationDashboard() {
                             disabled={isDisabled}
                             id="outlined-basic"
                             onChange={handleChangeInput("name")}
-                            defaultValue={data.name}
+                            defaultValue={data?.name}
                             placeholder={organizations[0].name}
                             size="small"
                             sx={{ width: "auto", backgroundColor: "white" }}
@@ -1801,7 +1800,7 @@ export default function OrganizationDashboard() {
                               id="outlined-basic"
                               onChange={handleChangeInput("contact_email")}
                               placeholder={organizations[0].contact_email}
-                              defaultValue={data.contact_email}
+                              defaultValue={data?.contact_email}
                               size="small"
                               sx={{ width: "400px", backgroundColor: "white" }}
                               InputProps={{
@@ -1825,7 +1824,7 @@ export default function OrganizationDashboard() {
                               id="outlined-basic"
                               onChange={handleChangeInput("contact_phone")}
                               placeholder={organizations[0].contact_phone}
-                              defaultValue={data.contact_phone}
+                              defaultValue={data?.contact_phone}
                               size="small"
                               sx={{ width: "260px", backgroundColor: "white" }}
                               InputProps={{
@@ -1852,7 +1851,7 @@ export default function OrganizationDashboard() {
                             id="outlined-multiline-static"
                             onChange={handleChangeInput("description")}
                             placeholder={organizations[0].description}
-                            defaultValue={data.description}
+                            defaultValue={data?.description}
                             size="medium"
                             sx={{
                               width: "100%",
@@ -1927,6 +1926,9 @@ export default function OrganizationDashboard() {
                           </Button>
                         </DialogActions>
                       </Dialog>
+
+                      {/* DELETE ORG */}
+
                       <Button
                         variant="text"
                         color="error"
@@ -1937,7 +1939,6 @@ export default function OrganizationDashboard() {
                       </Button>
 
                       <Dialog open={openDeleteOrg} onClose={handleCloseDelete}>
-                        {/* DELETE ORG */}
                         <DialogTitle>Delete Organization</DialogTitle>
                         <DialogContent>
                           <DialogContentText className="pb-4">
