@@ -34,7 +34,7 @@ export default async function handleCheckPass(pass_input) {
         });
         return false;
       } else {
-        toast.error("Unknown error, please try again later!", {
+        toast.error("Something wrong, please try again later!", {
           style: {
             border: "1px solid #F85F60",
             maxWidth: "900px",

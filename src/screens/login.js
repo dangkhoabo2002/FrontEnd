@@ -66,6 +66,7 @@ export default function Login() {
           toast.dismiss();
           const data = await response.json();
           localStorage.setItem("access_token", data.access_token);
+          localStorage.setItem("login_token", true);
           navigate(`/organizations`);
         } else if (response.status === 401) {
           toast.dismiss();
@@ -80,7 +81,7 @@ export default function Login() {
         } else {
           toast.dismiss();
 
-          toast.error("Unknown error, please try again later!", {
+          toast.error("Something wrong, please try again later!", {
             style: {
               border: "1px solid #F85F60",
               padding: "16px 24px",

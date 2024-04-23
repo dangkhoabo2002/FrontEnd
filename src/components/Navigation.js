@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Logo from "../assets/logo.png";
-import { Button } from "@mui/material";
 
 export default function Navigation() {
-  const token = localStorage.getItem("access_token");
+  const isLogin = localStorage.getItem("login_token");
 
+  console.log("login_token", isLogin);
   return (
     <div style={{ backgroundColor: "white" }}>
       <div className="flex flex-row justify-between items-center px-20 py-4">
@@ -35,14 +35,14 @@ export default function Navigation() {
           <a href="../#contact">
             <button className="font-semibold">Contact</button>
           </a>
-          {!token && (
+          {!isLogin && (
             <Link to={`/login`}>
               <button className="bg-[#3867A5] hover:bg-[#2B4B75] text-white py-2 px-6 rounded-full w-40 tracking-widest	">
                 <b>SIGN IN</b>
               </button>
             </Link>
           )}
-          {token && (
+          {isLogin && (
             <Link to={`/organizations`}>
               <button className="bg-[#3867A5] hover:bg-[#2B4B75] text-white py-2 px-6 rounded-full w-40 tracking-widest	">
                 <b>Dashboard</b>

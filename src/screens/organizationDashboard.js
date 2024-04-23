@@ -162,6 +162,33 @@ export default function OrganizationDashboard() {
     }
   };
 
+  const [numberMember, setNumberMember] = useState();
+  const handleNumberMember = async () => {
+    const memberUrl = `http://127.0.0.1:5000/org/get_number_of_users/${organization_id}`;
+    const token = localStorage.getItem("access_token");
+
+    try {
+      const response = await fetch(memberUrl, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+      if (response.status === 200) {
+        const memberCount = await response.json();
+        setNumberMember(memberCount);
+      } else {
+        console.log("Fail to get member");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+
   // GET information của Org từ API
   const handleGetOrgData = async () => {
     const loginUrl = `http://127.0.0.1:5000/org/get_organization_data/${organization_id}`;
@@ -193,6 +220,7 @@ export default function OrganizationDashboard() {
   useEffect(() => {
     handleGetOrgData();
     handleGetServers();
+    // handleNumberMember();
     handleGetMember();
   }, []);
 
@@ -439,7 +467,7 @@ export default function OrganizationDashboard() {
           },
         });
       } else {
-        toast.error("Unknown error, please try again later!", {
+        toast.error("Something wrong, please try again later!", {
           style: {
             border: "1px solid #F85F60",
             maxWidth: "900px",
@@ -545,7 +573,7 @@ export default function OrganizationDashboard() {
             },
           });
         } else {
-          toast.error("Unknown error, please try again later.", {
+          toast.error("Something wrong, please try again later.", {
             style: {
               border: "1px solid #F85F60",
               maxWidth: "900px",
@@ -1420,52 +1448,6 @@ export default function OrganizationDashboard() {
                               Add
                             </Button>
                           </DialogActions>
-
-                          {/* <Box>
-                            <Grid container spacing={2} mt={0}>
-                              <Grid item xs={12} md={3}></Grid>
-                              <Grid item xs={12} md={3}></Grid>
-                              <Grid
-                                item
-                                xs={12}
-                                md={3}
-                                className="d-flex justify-content-center align-items-center"
-                              >
-                                <Button onClick={handleCloseAddServer}>
-                                  <Typography
-                                    variant="button"
-                                    style={{ color: "red" }}
-                                  >
-                                    Cancel
-                                  </Typography>
-                                </Button>
-                              </Grid>
-                              <Grid
-                                item
-                                xs={12}
-                                md={3}
-                                className="d-flex justify-content-center align-items-center"
-                              >
-                                <Button
-                                  variant="contained"
-                                  onClick={handleAddServer}
-                                  style={{ marginLeft: "10px" }}
-                                  sx={{
-                                    width: "120px",
-                                    height: "auto",
-                                    color: "white",
-                                    bgcolor: "#6EC882",
-                                    "&:hover": { bgcolor: "#5CA36C" },
-                                    fontSize: "14px",
-                                    fontWeight: "normal",
-                                    textTransform: "none",
-                                  }}
-                                >
-                                  Done
-                                </Button>
-                              </Grid>
-                            </Grid>
-                          </Box> */}
                         </Box>
                       </Modal>
                     </div>
@@ -1474,9 +1456,17 @@ export default function OrganizationDashboard() {
                   {/* TAB 2 */}
                   <TabPanel sx={{ pt: 3, px: 0 }} value="2">
                     <div className="memberTab">
-                      <h1 className="text-[#637381] text-2xl font pr-16 mb-3">
-                        Member
-                      </h1>
+                      <div className="flex flex-row justify-between">
+                        <h1 className="text-[#637381] text-2xl font pr-16 mb-3">
+                          Member
+                        </h1>
+                        {/* <h1 className="text-[#637381] text-2xl font mb-3">
+                          {numberMember?.number_users}
+                          {numberMember?.number_users === 1
+                            ? " user"
+                            : " users"}
+                        </h1> */}
+                      </div>
                       <div className="flex flex-row gap-">
                         <Button
                           variant="outlined"

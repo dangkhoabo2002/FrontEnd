@@ -51,7 +51,7 @@ export default function AdminLogin() {
       } else if (response.status === 401) {
         alert("Invalid Username & Password");
       } else {
-        alert("Unknown Error");
+        alert("Something wrong");
       }
     } catch (error) {
       console.error("Error:", error);

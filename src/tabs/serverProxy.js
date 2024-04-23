@@ -119,7 +119,7 @@ export default function ServerProxy(serverId) {
           },
         });
       } else {
-        toast.error("Unknown error, please try again later!", {
+        toast.error("Something wrong, please try again later!", {
           style: {
             border: "1px solid #F85F60",
             maxWidth: "900px",
@@ -302,7 +302,7 @@ export default function ServerProxy(serverId) {
           },
         });
       } else {
-        toast.error("Unknown error, please try again!", {
+        toast.error("Something wrong, please try again!", {
           style: {
             border: "1px solid #F85F60",
             maxWidth: "900px",

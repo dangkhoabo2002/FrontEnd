@@ -93,7 +93,7 @@ export default function ServerDocker(serverId) {
             },
           });
         } else {
-          toast.error("Unknown error, please try again later!", {
+          toast.error("Something wrong, please try again later!", {
             style: {
               border: "1px solid #F85F60",
               maxWidth: "900px",
@@ -172,7 +172,7 @@ export default function ServerDocker(serverId) {
             },
           });
         } else {
-          toast.error("Unknown error, please try again later!", {
+          toast.error("Something wrong, please try again later!", {
             style: {
               border: "1px solid #F85F60",
               maxWidth: "900px",
@@ -251,7 +251,7 @@ export default function ServerDocker(serverId) {
             },
           });
         } else {
-          toast.error("Unknown error, please try again later!", {
+          toast.error("Something wrong, please try again later!", {
             style: {
               border: "1px solid #F85F60",
               maxWidth: "900px",
@@ -443,7 +443,7 @@ export default function ServerDocker(serverId) {
       } else if (response.status === 500) {
         alert("No data for server!");
       } else {
-        alert("Unknown Error!");
+        alert("Something wrong!");
       }
     } catch (error) {
       console.error("Error:", error);

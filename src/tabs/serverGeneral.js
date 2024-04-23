@@ -20,12 +20,11 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import LinearProgress from "@mui/material/LinearProgress";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-import AddIcon from "@mui/icons-material/Add";
 import "../css/serverGeneral.css";
 import ServerManager from "../database/listOfServerManager.json";
 import CloseIcon from "@mui/icons-material/Close";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 import handleCheckPass from "../functions/checkPass";
 
@@ -39,6 +38,7 @@ export default function ServerGeneral(serverId) {
   useEffect(() => {
     handleGetServerData1();
     handleGetServerData2();
+    handleGetMember();
   }, []);
 
   // REFRESH PAGE
@@ -168,7 +168,7 @@ export default function ServerGeneral(serverId) {
           },
         });
       } else {
-        toast.error("Unknown error, please try again later!", {
+        toast.error("Something wrong, please try again later!", {
           style: {
             border: "1px solid #F85F60",
             maxWidth: "900px",
@@ -256,11 +256,64 @@ export default function ServerGeneral(serverId) {
 
   // BTN
 
-  // add member
+  // GET MEMBER IN SERVER
 
-  const [addMember, setAddMember] = React.useState(false);
-  const handleAddMeber = () => setAddMember(!addMember);
-  const handleClose = () => setAddMember(false);
+  const [memberList, setMemberList] = useState();
+  console.log("memberList", memberList);
+  const handleGetMember = async () => {
+    const url = `http://127.0.0.1:5000/server/get_server_members/${serverId.serverId}`;
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+      if (response.status === 200) {
+        const memberServer = await response.json();
+        setMemberList(memberServer);
+      } else if (response.status === 400) {
+        toast.error("Can not found server!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 403) {
+        toast.error("Server not found or there is no member in server!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else {
+        toast.error("Something wrong, please try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+
+  // add member
 
   const [memberInput, setMemberInput] = useState("");
   const [members, setMembers] = useState([]);
@@ -269,10 +322,102 @@ export default function ServerGeneral(serverId) {
     setMemberInput(event.target.value);
   };
 
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter" && memberInput.trim() !== "") {
-      setMembers([...members, memberInput.trim()]);
-      setMemberInput(""); // Reset memberInput after adding member
+  const [addMember, setAddMember] = React.useState(false);
+  const handleAddMeber = () => setAddMember(!addMember);
+  const handleClose = () => {
+    setMemberInput("");
+    setAddMember(false);
+  };
+
+  const handleAddMember = async () => {
+    if (memberInput === "") {
+      toast.error(
+        "Please enter the username of the member you want to add first!",
+        {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        }
+      );
+    } else {
+      const url = `http://127.0.0.1:5000/server/add_member`;
+      const token = localStorage.getItem("access_token");
+      try {
+        const response = await fetch(url, {
+          method: "PUT",
+          credentials: "include",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+          body: JSON.stringify({
+            server_id: serverId.serverId,
+            new_user: memberInput,
+          }),
+        });
+        if (response.status === 200) {
+          toast.success("New member successfully joined.", {
+            style: {
+              border: "1px solid #37E030",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "green",
+              fontWeight: "bolder",
+            },
+          });
+          handleGetMember();
+          setMemberInput("");
+          setAddMember(false);
+        } else if (response.status === 400) {
+          toast.error("This user does not exist!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 403) {
+          toast.error("Permission denied!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 500) {
+          toast.error("This user is already a member of server!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else {
+          toast.error("Something wrong, please try again later!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+      }
     }
   };
 
@@ -280,13 +425,109 @@ export default function ServerGeneral(serverId) {
     const updatedMembers = members.filter((_, i) => i !== index); // Filter out the deleted member
     setMembers(updatedMembers);
   };
-  const [showConfirmation, setShowConfirmation] = React.useState(false);
-  const handleDone = () => {
-    setAddMember(false);
-    setShowConfirmation(true);
+
+  // REMOVE MEMBER IN SERVER
+
+  const [removeMem, setRemoveMem] = useState();
+
+  const [openRemove, setOpenRemove] = useState();
+
+  const handleOpenRemove = () => {
+    setOpenRemove(true);
   };
 
-  // console.log(handleCheckPass("123456"));
+  const handleCloseRemove = () => {
+    setRemoveMem("");
+    setOpenRemove(false);
+  };
+
+  const handleRemoveMember = async () => {
+    if (removeMem === "") {
+      toast.error("Please choose the member to delete!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
+        },
+      });
+    } else {
+      const url = `http://127.0.0.1:5000/server/remove_member`;
+      const token = localStorage.getItem("access_token");
+      try {
+        const response = await fetch(url, {
+          method: "PUT",
+          credentials: "include",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+          body: JSON.stringify({
+            server_id: serverId.serverId,
+            remove_username: removeMem,
+          }),
+        });
+        if (response.status === 200) {
+          toast.success("Member removed sucessfully.", {
+            style: {
+              border: "1px solid #37E030",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "green",
+              fontWeight: "bolder",
+            },
+          });
+          handleGetMember();
+          setRemoveMem("");
+        } else if (response.status === 400) {
+          toast.error("This user does not exist!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 403) {
+          toast.error("Permission denied!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 500) {
+          toast.error("This user is already a member of server!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else {
+          toast.error("Something wrong, please try again later!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+      }
+    }
+  };
   // CSS
   const style = {
     position: "absolute",
@@ -441,9 +682,12 @@ export default function ServerGeneral(serverId) {
                       <td>{svmg.email}</td>
                       <td>{svmg.role}</td>
                       <td>
-                        <DeleteOutlineOutlinedIcon
-                          style={{ cursor: "pointer" }}
-                        />
+                        <IconButton
+                          aria-label="delete"
+                          onClick={handleOpenRemove}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
                       </td>
                     </tr>
                   ))}
@@ -594,18 +838,9 @@ export default function ServerGeneral(serverId) {
                 <OutlinedInput
                   value={memberInput}
                   onChange={handleMemberInputChange}
-                  onKeyPress={handleKeyPress} // Added onKeyPress event handler here
                   inputProps={{
                     "aria-label": "Member",
                   }}
-                  endAdornment={members.map((member, index) => (
-                    <Chip
-                      key={index}
-                      label={member}
-                      onDelete={() => handleMemberDelete(index)}
-                      style={{ margin: "5px" }}
-                    />
-                  ))}
                 />
               </FormControl>
             </Grid>
@@ -635,7 +870,7 @@ export default function ServerGeneral(serverId) {
               >
                 <Button
                   variant="contained"
-                  onClick={handleDone}
+                  onClick={handleAddMember}
                   sx={{
                     width: "100px",
                     color: "white",
@@ -651,6 +886,29 @@ export default function ServerGeneral(serverId) {
           {/* End modal */}
         </Box>
       </Modal>
+
+      {/* Dialog remove member alert */}
+
+      <Dialog
+        open={openRemove}
+        onClose={handleCloseRemove}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Do you want to remove this member?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            They will no longer have access to the server or configure its
+            features.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseRemove}>Disagree</Button>
+          <Button onClick={handleRemoveMember}>Agree</Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

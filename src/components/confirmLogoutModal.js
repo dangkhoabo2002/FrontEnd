@@ -28,15 +28,19 @@ export default function AlertDialogSlide() {
 
   const handleLogout = async () => {
     const logoutUrl = "http://127.0.0.1:5000/auth/logout";
+    const token = localStorage.getItem("access_token");
+
     try {
       const response = await fetch(logoutUrl, {
         method: "POST",
         headers: {
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
         },
       });
       if (response.status === 200) {
+        localStorage.removeItem("login_token");
         navigate("/");
       } else {
         toast.error("Logout fail, please try again later!", {
