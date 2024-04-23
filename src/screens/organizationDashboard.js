@@ -860,7 +860,7 @@ export default function OrganizationDashboard() {
   };
 
   const { name } = organizations[0];
-
+  localStorage.setItem("org_name", name);
   // ADD ROLE
 
   const handleOpenAddRole = () => {

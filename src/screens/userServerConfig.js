@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useState } from "react";
 
 // MUI
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -38,6 +37,8 @@ export default function UserServerConfig() {
 
   const { server_id } = useParams();
 
+  const orgName = localStorage.getItem("org_name");
+  console.log("orgName", orgName);
   // Get Server Data - GENERAL
   // const handleGetServerData = async () => {
   //   const getUrl = `http://127.0.0.1:5000/server/get_server_data/${server_id}`;
@@ -75,6 +76,39 @@ export default function UserServerConfig() {
 
     setCurrentStatus(newStatus);
   };
+
+  // GET SERVER BY ID
+  const [data, setData] = useState();
+  const handleGetServer = async () => {
+    const loginUrl = `http://127.0.0.1:5000/server/get_server_by_id/${server_id}`;
+    const token = localStorage.getItem("access_token");
+
+    try {
+      const response = await fetch(loginUrl, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": "true",
+        },
+      });
+      if (response.status === 200) {
+        const data = await response.json();
+        setData(data);
+      } else {
+        alert("Delete Fail");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+
+  useEffect(() => {
+    handleGetServer();
+  }, []);
 
   return (
     <div>
@@ -121,7 +155,16 @@ export default function UserServerConfig() {
                     textTransform: "uppercase",
                   }}
                 >
-                  {/* {name} */}
+                  {orgName} <ArrowForwardIosIcon />
+                </span>
+                <span
+                  className="font-semibold"
+                  style={{
+                    fontSize: "28px",
+                    color: "#637381",
+                  }}
+                >
+                  {data?.server_name}
                 </span>
               </div>
               {/* Online status */}
@@ -142,24 +185,6 @@ export default function UserServerConfig() {
               >
                 {currentStatus === "ACTIVE" ? "Online" : "Offline"}
               </div>
-
-              {/* Online status */}
-              {/* <div
-  style={{
-    marginLeft: "583px",
-    textAlign: "center",
-    alignContent: "center",
-    width: "10%",
-    color: "white",
-    borderRadius: "100px",
-    backgroundColor: status === "ACTIVE" ? "#6EC882" : "#999999",
-    fontSize: "18px",
-    fontWeight: "bold",
-    textTransform: "none",
-  }}
->
-  {status === "ACTIVE" ? "Online" : "Offline"}
-</div> */}
             </div>
           </div>
 
