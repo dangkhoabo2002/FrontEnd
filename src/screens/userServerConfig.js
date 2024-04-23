@@ -39,42 +39,35 @@ export default function UserServerConfig() {
   const { server_id } = useParams();
 
   // Get Server Data - GENERAL
-  // const handleGetServerData = async () => {
-  //   const getUrl = `http://127.0.0.1:5000/server/get_server_data/${server_id}`;
-  //   const token = localStorage.getItem("access_token");
+  const handleGetServerData = async () => {
+    const getUrl = `http://127.0.0.1:5000/server/get_server_data/${server_id}`;
+    const token = localStorage.getItem("access_token");
 
-  //   try {
-  //     const response = await fetch(getUrl, {
-  //       method: "GET",
-  //       credentials: "include",
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //         "Content-Type": "application/json",
-  //         "Access-Control-Allow-Origin": "*",
-  //       },
-  //     });
-  //     if (response.status === 200) {
-  //       const server = await response.json();
-  //       setServerData(server);
-  //     } else {
-  //       alert("Update Fail");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //   } finally {
-  //   }
-  // };
-  // useEffect(() => {
-  //   handleGetServerData();
-  // }, []);
-
-  const [currentStatus, setCurrentStatus] = useState("");
-
-  const handleChangeStatus = async () => {
-    let newStatus = currentStatus === "ACTIVE" ? "INACTIVE" : "ACTIVE";
-
-    setCurrentStatus(newStatus);
+    try {
+      const response = await fetch(getUrl, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+      if (response.status === 200) {
+        const server = await response.json();
+        setServerData(server);
+      } else {
+        alert("Update Fail");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
   };
+  useEffect(() => {
+    handleGetServerData();
+  }, []);
+
 
   return (
     <div>
@@ -125,23 +118,30 @@ export default function UserServerConfig() {
                 </span>
               </div>
               {/* Online status */}
-              <div
-                style={{
-                  marginLeft: "583px",
-                  textAlign: "center",
-                  alignContent: "center",
-                  width: "10%",
-                  color: "white",
-                  borderRadius: "100px",
-                  backgroundColor:
-                    currentStatus === "ACTIVE" ? "#6EC882" : "#999999",
-                  fontSize: "18px",
-                  fontWeight: "bold",
-                  textTransform: "none",
-                }}
-              >
-                {currentStatus === "ACTIVE" ? "Online" : "Offline"}
-              </div>
+
+              {serverData && (
+                <div
+                  style={{
+                    marginLeft: "583px",
+                    textAlign: "center",
+                    alignContent: "center",
+                    width: "10%",
+                    color: "white",
+                    borderRadius: "100px",
+                    backgroundColor:
+                    serverData.status === "ACTIVE"
+                        ? "#6EC882"
+                        : "#999999",
+                    fontSize: "18px",
+                    fontWeight: "bold",
+                    textTransform: "none",
+                  }}
+                >
+                  {serverData.status === "ACTIVE"
+                    ? "Online"
+                    : "Offline"}
+                </div>
+              )}
 
               {/* Online status */}
               {/* <div
