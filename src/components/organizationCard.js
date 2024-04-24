@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+
 import { Box, Typography, Paper, Grid, Avatar } from "@mui/material";
 import OrganizationIcon from "@mui/icons-material/Apartment";
 import ServerIcon from "../images/serverIcon2.png";
@@ -10,6 +12,35 @@ export default function OrganizationCard({ id, name, description }) {
 
   const [serverCount, setServerCount] = useState();
   const [memberCount, setMemberCount] = useState();
+
+  const [organizations, setOrganizations] = useState();
+
+  
+  // GET information của Org từ API
+  const handleGetOrgData = async () => {
+    const loginUrl = `http://127.0.0.1:5000/org/get_organization_data/${id}`;
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await fetch(loginUrl, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+      if (response.status === 200) {
+        const orgData = await response.json();
+        setOrganizations(orgData);
+      } else {
+        alert("Get Fail");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
 
   // GET NUMBER OF SERVER IN ORG
   const handleGetNumberServer = async () => {
@@ -34,6 +65,8 @@ export default function OrganizationCard({ id, name, description }) {
     } finally {
     }
   };
+
+  console.log(serverCount);
 
   // GET NUMBER OF MEMBER IN ORG
   const handleGetNumberMember = async () => {
@@ -69,12 +102,16 @@ export default function OrganizationCard({ id, name, description }) {
     }
   };
 
+  
+
+  // console.log("Organizations", organizations.status);
+
   useEffect(() => {
+    handleGetOrgData();
     handleGetNumberServer();
     handleGetNumberMember();
   }, []);
 
-  console.log(serverCount);
   return (
     <Paper
       className="mt-3 mb-8"
@@ -85,10 +122,28 @@ export default function OrganizationCard({ id, name, description }) {
         height: "200px",
         flexGrow: 1,
         alignItems: "center",
+        position: "relative",
       }}
     >
       <Toaster position="bottom-right" reverseOrder={false} />
-
+      {/* Online indicator */}
+      {organizations && (
+        <div
+          style={{
+            position: "absolute",
+            top: "10px",
+            right: "10px",
+            backgroundColor:
+              organizations[0].organization_status === "ACTIVE"
+                ? "#6EC882"
+                : "#999999",
+            width: "20px",
+            height: "20px",
+            borderRadius: "50%",
+            zIndex: 1,
+          }}
+        />
+      )}
       <Grid
         container
         spacing={2}
