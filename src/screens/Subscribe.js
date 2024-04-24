@@ -4,8 +4,7 @@ import "../css/Subscribe.css";
 import Logo from "../images/MHDLogo.png";
 
 export default function Subscribe() {
-
-
+  
   return (
     <div className="">
       <div class="bg-overlay"></div>

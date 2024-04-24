@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Box, Typography, Paper, Grid, Avatar } from "@mui/material";
-import OrganizationIcon from "@mui/icons-material/Apartment";
 import ServerIcon from "../images/serverIcon2.png";
-import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
 import toast, { Toaster } from "react-hot-toast";
+import DnsIcon from "@mui/icons-material/Dns";
+import { color } from "framer-motion";
 
 export default function OrganizationCard({ id, name, description }) {
   const shortDescription = `${description.substring(0, 50)}...`;
@@ -11,6 +11,14 @@ export default function OrganizationCard({ id, name, description }) {
   const [serverCount, setServerCount] = useState();
   const [memberCount, setMemberCount] = useState();
 
+  const numberServer = serverCount?.number_server;
+
+  const serverIcons = [];
+  for (let i = 0; i < numberServer; i++) {
+    serverIcons.push(
+      <DnsIcon key={i} style={{ color: "gray", fontSize: "4rem" }} />
+    );
+  }
   // GET NUMBER OF SERVER IN ORG
   const handleGetNumberServer = async () => {
     const getUrl = `http://127.0.0.1:5000/server/get_number_server/${id}`;
@@ -74,7 +82,6 @@ export default function OrganizationCard({ id, name, description }) {
     handleGetNumberMember();
   }, []);
 
-  console.log(serverCount);
   return (
     <Paper
       className="mt-3 mb-8"
@@ -132,8 +139,11 @@ export default function OrganizationCard({ id, name, description }) {
               justifyContent: "left",
               columnGap: "40px",
               alignItems: "center",
+              paddingBottom: "12px",
             }}
-          ></div>
+          >
+            {serverIcons}
+          </div>
           <Typography
             variant="body2"
             color="text.secondary"

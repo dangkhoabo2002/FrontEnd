@@ -898,6 +898,7 @@ export default function OrganizationDashboard() {
   //   }
   // };
 
+  console.log(organizations);
   return (
     <>
       <Toaster position="bottom-right" reverseOrder={false} />

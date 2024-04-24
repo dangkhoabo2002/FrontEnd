@@ -36,6 +36,7 @@ export default function UserServerConfig() {
   };
 
   const { server_id } = useParams();
+  const { organization_id } = useParams();
 
   const orgName = localStorage.getItem("org_name");
   console.log("orgName", orgName);
@@ -147,16 +148,18 @@ export default function UserServerConfig() {
                     Organizations <ArrowForwardIosIcon />
                   </p>
                 </Link>
-                <span
-                  className="font-semibold"
-                  style={{
-                    fontSize: "28px",
-                    color: "#637381",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  {orgName} <ArrowForwardIosIcon />
-                </span>
+                <Link to={`/organizations/dashboard/${organization_id}`}>
+                  <span
+                    className="font-semibold"
+                    style={{
+                      fontSize: "28px",
+                      color: "#637381",
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    {orgName} <ArrowForwardIosIcon />
+                  </span>
+                </Link>
                 <span
                   className="font-semibold"
                   style={{
