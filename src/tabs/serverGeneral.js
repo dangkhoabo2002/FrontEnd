@@ -21,6 +21,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import LinearProgress from "@mui/material/LinearProgress";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Fingerprint from "@mui/icons-material/Fingerprint";
 
 import "../css/serverGeneral.css";
 import ServerManager from "../database/listOfServerManager.json";
@@ -57,13 +58,12 @@ export default function ServerGeneral(serverId) {
   const [generalData1, setGeneralData1] = useState();
   const [generalData2, setGeneralData2] = useState();
 
-  const [data, setData] = useState({
-    password: "",
-  });
+  const [password, setPassword] = useState();
 
-  const handleChange = (prop) => (event) => {
-    setData({ ...data, [prop]: event.target.value });
+  const handleChange = (event) => {
+    setPassword(event.target.value);
   };
+
   // GET SERVER DATA
 
   const handleGetServerData1 = async () => {
@@ -186,10 +186,10 @@ export default function ServerGeneral(serverId) {
   };
 
   const handleDeleteServerConfirm = async () => {
-    const checkPass = await handleCheckPass(data.password);
+    const checkPass = await handleCheckPass(password);
     if (checkPass === "Success") {
       handleDeleteServer();
-      setData((data.password = ""));
+      setPassword("");
     }
   };
   // Check pass trước khi Delete
@@ -200,7 +200,7 @@ export default function ServerGeneral(serverId) {
   };
 
   const handleCloseDeleteServer = () => {
-    setData((data.password = ""));
+    setPassword("");
     setOpenDeleteServer(false);
   };
 
@@ -217,14 +217,14 @@ export default function ServerGeneral(serverId) {
 
   const handleCloseChangeStatus = () => {
     setOpenChangeStatus(false);
-    setData((data.password = ""));
+    setPassword("");
   };
 
   const handleChangeStatusConfirm = async () => {
-    const check = await handleCheckPass(data.password);
+    const check = await handleCheckPass(password);
     if (check === "Success") {
       // handleTurnStatus();
-      // setData((data.password = ""));
+      // setPassword((password = ""));
     }
   };
 
@@ -543,6 +543,128 @@ export default function ServerGeneral(serverId) {
 
   // POP UP DELETE DIALOG
 
+  const [openCheckPassRsa, setOpenCheckPassRsa] = useState(false);
+  const [openNewRsa, setOpenNewRsa] = useState(false);
+  const [newRsa, setNewRsa] = useState();
+
+  const handleChangeNewRsa = (event) => {
+    setNewRsa(event.target.value);
+  };
+
+  const handleCloseCheckPassRsa = () => {
+    setPassword("");
+    setNewRsa("");
+    setOpenCheckPassRsa(false);
+  };
+
+  const handleOpenUpdateRsa = async () => {
+    const checkPass = await handleCheckPass(password);
+    if (checkPass === "Success") {
+      setOpenCheckPassRsa(false);
+      setOpenNewRsa(true);
+      setPassword("");
+    }
+  };
+
+  const handleCloseUpdateRsa = async () => {
+    setPassword("");
+    setNewRsa("");
+    setOpenNewRsa(false);
+  };
+
+  const handleUpdateRsa = async () => {
+    handleUpdateRsaAPI();
+    setOpenNewRsa(false);
+  };
+
+  const handleUpdateRsaAPI = async () => {
+    const getUrl = `http://127.0.0.1:5000/server/update_rsa_key/${serverId.serverId}`;
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await fetch(getUrl, {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          rsa_key: newRsa,
+        }),
+      });
+      if (response.status === 200) {
+        toast.success("Server's RSA Key is updated successfully.", {
+          style: {
+            border: "1px solid #37E030",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "green",
+            fontWeight: "bolder",
+          },
+        });
+        handleCloseCheckPassRsa();
+      } else if (response.status === 400) {
+        const error = await response.json();
+        if (error.message === "Server is not indentified yet!") {
+          toast.error("Permission denied!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else {
+          toast.error("Missing new RSA key!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        }
+      } else if (response.status === 403) {
+        toast.error("Permission denied!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 500) {
+        toast.error("Failed to update RSA Key!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else {
+        toast.error("Something wrong, please try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       {/* Return Error */}
@@ -701,103 +823,116 @@ export default function ServerGeneral(serverId) {
         {/* End Member */}
 
         {/* Setting */}
-        <div className="setting-site mb-5">
-          <div className="info-title font-semibold my-3">
-            <p>Setting</p>
+        <div className="info-title font-semibold my-3">
+          <p>Setting</p>
+        </div>
+        <div className="setting-site mb-5 flex flex-row justify-between">
+          <div>
+            <Button
+              variant="outlined"
+              startIcon={<Fingerprint />}
+              onClick={() => setOpenCheckPassRsa(true)}
+            >
+              RSA KEY
+            </Button>
           </div>
-          <div className="setting-btn">
-            <Button
-              onClick={handleOpenDeleteServer}
-              variant="contained"
-              color="error"
-              sx={{ borderRadius: 1, marginRight: 2 }}
-            >
-              DELETE SERVER
-            </Button>
+          <div>
+            <div className="setting-btn">
+              <Button
+                onClick={handleOpenDeleteServer}
+                variant="contained"
+                color="error"
+                sx={{ borderRadius: 1, marginRight: 2 }}
+              >
+                DELETE SERVER
+              </Button>
 
-            <Dialog
-              open={openDeleteServer}
-              onClose={handleCloseDeleteServer}
-              PaperProps={{
-                component: "form",
-                onSubmit: (event) => {
-                  event.preventDefault();
-                  const formData = new FormData(event.currentTarget);
-                  const formJson = Object.fromEntries(formData.entries());
-                  const email = formJson.email;
-                  handleClose();
-                },
-              }}
-            >
-              <DialogTitle>Delete Server</DialogTitle>
-              <DialogContent>
-                <DialogContentText className="pb-4">
-                  Your action is critical impact! Please enter your password to
-                  continue.
-                </DialogContentText>
-                <TextField
-                  required
-                  margin="dense"
-                  id="password"
-                  name="password"
-                  label="Password"
-                  type="password"
-                  fullWidth
-                  variant="outlined"
-                  onChange={handleChange("password")}
-                  value={data.password}
-                />
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleCloseDeleteServer}>Cancel</Button>
-                <Button onClick={handleDeleteServerConfirm}>Confirm</Button>
-              </DialogActions>
-            </Dialog>
-            <Button
-              variant="contained"
-              sx={{
-                borderRadius: 1,
-                marginRight: 2,
-                bgcolor: isServerOn ? "#6EC882" : "#8E8E8E",
-                "&:hover": {
-                  bgcolor: isServerOn ? "#60A670" : "#646464",
-                },
-              }}
-              onClick={handleOpenChangeStatus}
-            >
-              {isServerOn ? "Turn off server" : "Turn on server"}
-            </Button>
-            <Dialog open={openChangeStatus} onClose={handleCloseChangeStatus}>
-              <DialogTitle>
+              <Button
+                variant="contained"
+                sx={{
+                  borderRadius: 1,
+                  marginRight: 2,
+                  bgcolor: isServerOn ? "#6EC882" : "#8E8E8E",
+                  "&:hover": {
+                    bgcolor: isServerOn ? "#60A670" : "#646464",
+                  },
+                }}
+                onClick={handleOpenChangeStatus}
+              >
                 {isServerOn ? "Turn off server" : "Turn on server"}
-              </DialogTitle>
-              <DialogContent>
-                <DialogContentText className="pb-4">
-                  Your action is critical impact! Please enter your password to
-                  continue.
-                </DialogContentText>
-                <TextField
-                  required
-                  margin="dense"
-                  id="password"
-                  name="password"
-                  label="Password"
-                  type="password"
-                  fullWidth
-                  variant="outlined"
-                  onChange={handleChange("password")}
-                  value={data.password}
-                />
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleCloseChangeStatus}>Cancel</Button>
-                <Button onClick={handleChangeStatusConfirm}>Confirm</Button>
-              </DialogActions>
-            </Dialog>
+              </Button>
+              <Dialog open={openChangeStatus} onClose={handleCloseChangeStatus}>
+                <DialogTitle>
+                  {isServerOn ? "Turn off server" : "Turn on server"}
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText className="pb-4">
+                    Your action is critical impact! Please enter your password
+                    to continue.
+                  </DialogContentText>
+                  <TextField
+                    required
+                    margin="dense"
+                    id="password"
+                    name="password"
+                    label="Password"
+                    type="password"
+                    fullWidth
+                    variant="outlined"
+                    onChange={handleChange}
+                    value={password}
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleCloseChangeStatus}>Cancel</Button>
+                  <Button onClick={handleChangeStatusConfirm}>Confirm</Button>
+                </DialogActions>
+              </Dialog>
+            </div>
           </div>
         </div>
         {/* End Setting */}
       </div>
+
+      {/* DELETE CONFIRMATION */}
+      <Dialog
+        open={openDeleteServer}
+        onClose={handleCloseDeleteServer}
+        PaperProps={{
+          component: "form",
+          onSubmit: (event) => {
+            event.preventDefault();
+            const formData = new FormData(event.currentTarget);
+            const formJson = Object.fromEntries(formData.entries());
+            const email = formJson.email;
+            handleClose();
+          },
+        }}
+      >
+        <DialogTitle>Delete Server</DialogTitle>
+        <DialogContent>
+          <DialogContentText className="pb-4">
+            Your action is critical impact! Please enter your password to
+            continue.
+          </DialogContentText>
+          <TextField
+            required
+            margin="dense"
+            id="password"
+            name="password"
+            label="Password"
+            type="password"
+            fullWidth
+            variant="outlined"
+            onChange={handleChange}
+            value={password}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDeleteServer}>Cancel</Button>
+          <Button onClick={handleDeleteServerConfirm}>Confirm</Button>
+        </DialogActions>
+      </Dialog>
 
       {/* Modal add member */}
       <Modal
@@ -907,6 +1042,59 @@ export default function ServerGeneral(serverId) {
         <DialogActions>
           <Button onClick={handleCloseRemove}>Disagree</Button>
           <Button onClick={handleRemoveMember}>Agree</Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* RSA CONFIRM */}
+      <Dialog open={openCheckPassRsa} onClose={handleCloseCheckPassRsa}>
+        <DialogTitle>Update RSA key</DialogTitle>
+        <DialogContent>
+          <DialogContentText className="pb-4">
+            Your action is critical impact! Please enter your password to
+            continue.
+          </DialogContentText>
+          <TextField
+            required
+            margin="dense"
+            id="password"
+            name="password"
+            label="Password"
+            type="password"
+            fullWidth
+            variant="outlined"
+            onChange={handleChange}
+            value={password}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseCheckPassRsa}>Cancel</Button>
+          <Button onClick={handleOpenUpdateRsa}>Confirm</Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* RSA UPDATE INPUT */}
+      <Dialog open={openNewRsa} onClose={handleCloseUpdateRsa}>
+        <DialogTitle>Set new RSA key!</DialogTitle>
+        <DialogContent>
+          <DialogContentText className="pb-4">
+            Your action is critical impact! Input new rsa key here.
+          </DialogContentText>
+          <TextField
+            required
+            margin="dense"
+            id="password"
+            name="password"
+            label="Password"
+            type="password"
+            fullWidth
+            variant="outlined"
+            onChange={handleChangeNewRsa}
+            value={newRsa}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleUpdateRsa}>Confirm</Button>
         </DialogActions>
       </Dialog>
     </>
