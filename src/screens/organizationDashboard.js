@@ -942,7 +942,6 @@ export default function OrganizationDashboard() {
                 style={{
                   fontSize: "28px",
                   color: "#637381",
-                  textTransform: "uppercase",
                 }}
               >
                 {name}

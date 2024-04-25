@@ -118,15 +118,16 @@ export default function UserServerConfig() {
             backgroundColor: "#f3f3fb",
           }}
         >
-          <div>
             <div
-              className="flex py-6 text-center gap-10"
+              className="flex flex-row py-6 text-center gap-10"
               style={{
+                
                 backgroundColor: "white",
                 boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
               }}
             >
-              <div className="header flex flex-row items-center gap-x-3  px-20">
+              <div className="">
+              <div className="header flex flex-row items-center gap-x-3  pl-20">
                 <Link
                   to={"/organizations"}
                   className="flex flex-row items-center gap-x-3"
@@ -163,12 +164,12 @@ export default function UserServerConfig() {
                   {data?.server_name}
                 </span>
               </div>
-              {/* Online status */}
-
+              </div>            
+              
+              
               {serverData && (
                 <div
                   style={{
-                    marginLeft: "583px",
                     textAlign: "center",
                     alignContent: "center",
                     width: "10%",
@@ -188,6 +189,11 @@ export default function UserServerConfig() {
                     : "Offline"}
                 </div>
               )}
+              
+              </div>
+
+              {/* Online status */}
+
 
               {/* Online status */}
               {/* <div
@@ -206,10 +212,8 @@ export default function UserServerConfig() {
 >
   {status === "ACTIVE" ? "Online" : "Offline"}
 </div> */}
-            </div>
-          </div>
 
-          <div className="container px-20 py-3 mt-2">
+          <div className="container px-16 py-3 mt-2">
             <div className=""></div>
             <TabContext value={value}>
               <Box
@@ -263,7 +267,7 @@ export default function UserServerConfig() {
                   <Tab disableRipple label="Execution" value="8" />
                 </TabList>
               </Box>
-              <TabPanel sx={{ pt: 3, px: 0 }} value="1">
+              <TabPanel sx={{ pt: 3, px: 0}} value="1">
                 <General serverId={server_id} />
               </TabPanel>
               <TabPanel sx={{ pt: 3, px: 0 }} value="2">

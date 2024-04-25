@@ -5,6 +5,7 @@ import { Box, Typography, Paper, Grid, Avatar } from "@mui/material";
 import ServerIcon from "../images/serverIcon2.png";
 import toast, { Toaster } from "react-hot-toast";
 import DnsIcon from "@mui/icons-material/Dns";
+import OrgIcon from "../assets/orgIcon.png";
 
 export default function OrganizationCard({ id, name, description }) {
   const shortDescription = `${description.substring(0, 50)}...`;
@@ -17,7 +18,21 @@ export default function OrganizationCard({ id, name, description }) {
   const serverIcons = [];
   for (let i = 0; i < numberServer; i++) {
     serverIcons.push(
-      <DnsIcon key={i} style={{ color: "gray", fontSize: "4rem" }} />
+      <img
+        src={ServerIcon}
+        style={{
+          border: "1px solid #3867A5",
+          borderRadius: "5px",
+          width: "auto",
+          height: "50px",
+          color: "#637381",
+          padding: "9px",
+        }}
+      />
+      // <DnsIcon key={i} style={{
+      //   border: "1px solid #3867A5",
+      //   borderRadius: "5px",
+      //   color: "#637381", fontSize: "3rem" }} />
     );
   }
   const [organizations, setOrganizations] = useState();
@@ -71,7 +86,6 @@ export default function OrganizationCard({ id, name, description }) {
     } finally {
     }
   };
-
 
   // GET NUMBER OF MEMBER IN ORG
   const handleGetNumberMember = async () => {
@@ -182,19 +196,20 @@ export default function OrganizationCard({ id, name, description }) {
           <div
             style={{
               width: "auto",
-              height: "56px",
+              height: "65px",
               objectFit: "contain",
               overflow: "hidden",
               display: "flex",
               flexDirection: "row",
               justifyContent: "left",
-              columnGap: "40px",
+              columnGap: "8px",
               alignItems: "center",
               paddingBottom: "12px",
             }}
           >
             {serverIcons}
           </div>
+
           <Typography
             variant="body2"
             color="text.secondary"
@@ -205,10 +220,17 @@ export default function OrganizationCard({ id, name, description }) {
         </Grid>
 
         <Grid item xs={4} sx={{ display: "flex", justifyContent: "end" }}>
+        {/* <DnsIcon style={{
+        border: "1px solid #3867A5",
+        borderRadius: "5px",
+        color: "#637381", fontSize: "3rem" }} /> */}
           <img
-            src={ServerIcon}
-            style={{ width: "auto", height: "100px", color: "#637381" }}
-          />
+            src={OrgIcon}
+            style={{
+              filter: "brightness(0) saturate(100%) invert(11%) sepia(13%) saturate(7467%) hue-rotate(204deg) brightness(95%) contrast(96%)",
+              width: "auto",
+              height: "120px",
+          }}          />
         </Grid>
       </Grid>
     </Paper>
