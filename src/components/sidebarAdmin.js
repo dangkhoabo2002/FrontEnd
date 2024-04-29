@@ -16,6 +16,10 @@ export default function SidebarAdmin() {
       setSelectedMenu("billing");
     } else if (path === "/admin/guide") {
       setSelectedMenu("guide");
+    } else if (path === "/admin/role") {
+      setSelectedMenu("role");
+    } else if (path === "/admin/package") {
+      setSelectedMenu("package");
     }
   }, [location]);
   return (
@@ -88,6 +92,43 @@ export default function SidebarAdmin() {
                   style={{ fontSize: "18px" }}
                 >
                   Guide Management
+                </p>
+              </section>
+            </Link>
+          </div>
+          <div
+            className={`hoverSection ${
+              selectedMenu === "package" ? "selectedMenu" : ""
+            }`}
+          >
+            <Link
+              to={`/admin/package`}
+              onClick={() => setSelectedMenu("guide")}
+            >
+              <section className="flex flex-row gap-3 py-4 pl-12 items-center justify-left text-[#637381]">
+                <InventoryIcon style={{ fontSize: "28px" }} />
+                <p
+                  className="text-xl font-semibold"
+                  style={{ fontSize: "18px" }}
+                >
+                  Package Management
+                </p>
+              </section>
+            </Link>
+          </div>
+          <div
+            className={`hoverSection ${
+              selectedMenu === "role" ? "selectedMenu" : ""
+            }`}
+          >
+            <Link to={`/admin/role`} onClick={() => setSelectedMenu("guide")}>
+              <section className="flex flex-row gap-3 py-4 pl-12 items-center justify-left text-[#637381]">
+                <InventoryIcon style={{ fontSize: "28px" }} />
+                <p
+                  className="text-xl font-semibold"
+                  style={{ fontSize: "18px" }}
+                >
+                  Role Management
                 </p>
               </section>
             </Link>
