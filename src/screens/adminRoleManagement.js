@@ -4,8 +4,11 @@ import NavigationAdmin from "../components/navAdmin";
 import "../css/adminBilling.css";
 import { Button } from "@mui/material";
 import toast, { Toaster } from "react-hot-toast";
+
 import IconButton from "@mui/material/IconButton";
+import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -76,6 +79,7 @@ export default function AdminRoleManagement() {
   };
 
   const handleAddRole = async () => {
+    toast.loading("In processing...");
     const customerUrl = `http://127.0.0.1:5000/role/add`;
     const token = localStorage.getItem("access_token");
 
@@ -106,6 +110,7 @@ export default function AdminRoleManagement() {
           }),
         });
         if (response.status === 201) {
+          toast.dismiss();
           toast.success("New role has created.", {
             style: {
               border: "1px solid #37E030",
@@ -118,6 +123,8 @@ export default function AdminRoleManagement() {
           handleGetRole();
           clickCloseAddRole();
         } else if (response.status === 500) {
+          toast.dismiss();
+
           toast.error("Failed to add role!", {
             style: {
               border: "1px solid #F85F60",
@@ -128,6 +135,8 @@ export default function AdminRoleManagement() {
             },
           });
         } else if (response.status === 400) {
+          toast.dismiss();
+
           toast.error("Missing name or description!", {
             style: {
               border: "1px solid #F85F60",
@@ -160,11 +169,11 @@ export default function AdminRoleManagement() {
   };
 
   const handleDeleteRole = async () => {
-    console.log(roleId_del);
     const customerUrl = `http://127.0.0.1:5000/role/delete/${roleId_del}`;
     const token = localStorage.getItem("access_token");
 
     try {
+      toast.loading("Deleting...");
       const response = await fetch(customerUrl, {
         method: "DELETE",
         credentials: "include",
@@ -176,6 +185,7 @@ export default function AdminRoleManagement() {
         },
       });
       if (response.status === 200) {
+        toast.dismiss();
         toast.success("Deleted success.", {
           style: {
             border: "1px solid #37E030",
@@ -188,6 +198,8 @@ export default function AdminRoleManagement() {
         clickCloseDelete();
         handleGetRole();
       } else if (response.status === 500) {
+        toast.dismiss();
+
         toast.error("Failed to delete role!", {
           style: {
             border: "1px solid #F85F60",
@@ -198,6 +210,8 @@ export default function AdminRoleManagement() {
           },
         });
       } else if (response.status === 400) {
+        toast.dismiss();
+
         toast.error("Missing choosen role!", {
           style: {
             border: "1px solid #F85F60",
@@ -211,6 +225,114 @@ export default function AdminRoleManagement() {
     } catch (error) {
       console.error("Error:", error);
     } finally {
+    }
+  };
+
+  // EDIT ROLE
+
+  const [openEdit, setOpenEdit] = useState(false);
+  const [selectedRole, setSelectedRole] = useState();
+
+  const [editRole, setEditRole] = useState({
+    role_name: "",
+    description: "",
+  });
+
+  const handleChangeEdit = (prop) => (event) => {
+    setEditRole({ ...editRole, [prop]: event.target.value });
+  };
+
+  const clickOpenEdit = (roleId) => {
+    setOpenEdit(true);
+    setSelectedRole(roleId);
+  };
+  const clickCloseEdit = () => {
+    setOpenEdit(false);
+    setEditRole({ role_name: "", description: "" });
+    setSelectedRole("");
+  };
+
+  const handleEditRole = async () => {
+    if (editRole.role_name === "" || editRole.role_name === "") {
+      toast.error("Please enter all fields!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
+        },
+      });
+    } else if (selectedRole === "") {
+      toast.error("Role is not selected!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
+        },
+      });
+    } else {
+      toast.loading("Updating...");
+      const customerUrl = `http://127.0.0.1:5000/role/update/${selectedRole}`;
+      const token = localStorage.getItem("access_token");
+
+      try {
+        const response = await fetch(customerUrl, {
+          method: "PUT",
+          credentials: "include",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Credentials": "true",
+          },
+          body: JSON.stringify({
+            role_name: editRole.role_name,
+            description: editRole.description,
+          }),
+        });
+        if (response.status === 200) {
+          toast.dismiss();
+          toast.success("New role has changed.", {
+            style: {
+              border: "1px solid #37E030",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "green",
+              fontWeight: "bolder",
+            },
+          });
+          handleGetRole();
+          clickCloseEdit();
+        } else if (response.status === 500) {
+          toast.dismiss();
+          toast.error("Failed to add role!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 400) {
+          toast.dismiss();
+          toast.error("Missing name or description!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+      }
     }
   };
 
@@ -267,7 +389,7 @@ export default function AdminRoleManagement() {
                   <th>ROLE NAME</th>
                   <th>ROLE ID</th>
                   <th>DESCRIPTION</th>
-                  <th>EDIT</th>
+                  <th>ACTION</th>
                 </tr>
               </thead>
               <tbody>
@@ -292,6 +414,12 @@ export default function AdminRoleManagement() {
                         onClick={() => clickOpenDelete(role?.role_id)}
                       >
                         <DeleteIcon />
+                      </IconButton>
+                      <IconButton
+                        aria-label="edit"
+                        onClick={() => clickOpenEdit(role?.role_id)}
+                      >
+                        <EditIcon />
                       </IconButton>
                     </td>
                   </tr>
@@ -366,6 +494,45 @@ export default function AdminRoleManagement() {
         <DialogActions>
           <Button onClick={clickCloseDelete}>Disagree</Button>
           <Button onClick={handleDeleteRole}>Agree</Button>
+        </DialogActions>
+      </Dialog>
+
+      {/*-------------- EDIT ALERT ---------------- */}
+      <Dialog open={openEdit} onClose={clickCloseEdit}>
+        <DialogTitle>Update role</DialogTitle>
+        <DialogContent>
+          <DialogContentText className="pb-4">
+            Input new role's information.
+          </DialogContentText>
+          <TextField
+            required
+            margin="dense"
+            id="role"
+            name="role"
+            label="Role name"
+            type="text"
+            fullWidth
+            variant="outlined"
+            onChange={handleChangeEdit("role_name")}
+            value={editRole.role_name}
+          />
+          <TextField
+            required
+            id="outlined-multiline-static"
+            label="Description"
+            multiline
+            rows={4}
+            margin="dense"
+            name="role"
+            type="text"
+            fullWidth
+            onChange={handleChangeEdit("description")}
+            value={editRole.description}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={clickCloseAddRole}>Cancel</Button>
+          <Button onClick={handleEditRole}>Confirm</Button>
         </DialogActions>
       </Dialog>
     </div>
