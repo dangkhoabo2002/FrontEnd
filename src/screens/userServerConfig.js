@@ -148,7 +148,6 @@ export default function UserServerConfig() {
                     style={{
                       fontSize: "28px",
                       color: "#637381",
-                      textTransform: "uppercase",
                     }}
                   >
                     {orgName} <ArrowForwardIosIcon />

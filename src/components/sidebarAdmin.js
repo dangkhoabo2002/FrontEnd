@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import SupervisorAccountOutlinedIcon from '@mui/icons-material/SupervisorAccountOutlined';
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import InventoryIcon from "@mui/icons-material/Inventory";
+import BookIcon from '@mui/icons-material/Book';
+import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined';
 
 export default function SidebarAdmin() {
   const [selectedMenu, setSelectedMenu] = useState("account");
@@ -49,7 +52,7 @@ export default function SidebarAdmin() {
           >
             <Link to={`/admin`} onClick={() => setSelectedMenu("account")}>
               <section className="flex flex-row gap-3 py-4 pl-12 items-center justify-left text-[#637381]">
-                <ManageAccountsIcon style={{ fontSize: "28px" }} />
+                <SupervisorAccountOutlinedIcon style={{ fontSize: "28px" }} />
                 <p
                   className="text-xl font-semibold"
                   style={{ fontSize: "18px" }}
@@ -86,7 +89,7 @@ export default function SidebarAdmin() {
           >
             <Link to={`/admin/guide`} onClick={() => setSelectedMenu("guide")}>
               <section className="flex flex-row gap-3 py-4 pl-12 items-center justify-left text-[#637381]">
-                <InventoryIcon style={{ fontSize: "28px" }} />
+                <BookIcon style={{ fontSize: "28px" }} />
                 <p
                   className="text-xl font-semibold"
                   style={{ fontSize: "18px" }}
@@ -123,7 +126,7 @@ export default function SidebarAdmin() {
           >
             <Link to={`/admin/role`} onClick={() => setSelectedMenu("guide")}>
               <section className="flex flex-row gap-3 py-4 pl-12 items-center justify-left text-[#637381]">
-                <InventoryIcon style={{ fontSize: "28px" }} />
+                <ManageAccountsOutlinedIcon style={{ fontSize: "28px" }} />
                 <p
                   className="text-xl font-semibold"
                   style={{ fontSize: "18px" }}

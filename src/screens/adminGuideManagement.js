@@ -275,7 +275,7 @@ export default function AdminGuide() {
                   <td>{index + 1}</td>
                   <td>{guide.title}</td>
                   <td>{guide.content}</td>
-                  <td>
+                  <td style={{ padding: "6px 0px" }}>
                     <IconButton
                       aria-label="delete"
                       onClick={() => handleClickOpenRemoveGuide(guide.guide_id)}
