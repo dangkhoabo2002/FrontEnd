@@ -58,7 +58,7 @@ export default function Sidebar() {
       style={{
         borderRight: "1px solid #E5E8EB",
         width: "300px",
-        height: "100vh",
+        height: "100%",
         display: "flex",
         flexDirection: "column",
       }}

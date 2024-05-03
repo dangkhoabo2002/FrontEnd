@@ -105,8 +105,8 @@ export default function UserServerConfig() {
   }, []);
 
   return (
-    <div>
-      <div className="containerOrg" style={{ overflowX: "hidden" }}>
+    <div >
+      <div className="containerOrg" style={{ overflowX: "hidden", height: "100vh"  }} >
         <div className="sideMenu">
           <Sidebar />
         </div>
