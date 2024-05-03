@@ -232,13 +232,13 @@ export default function AdminGuide() {
         style={{
           display: "grid",
           gridTemplateColumns: "0fr 3fr",
-          height: "66vh",
+          height: "100%",
         }}
       >
         <div
           style={{
             display: "flex",
-            flexDirection: "column",
+            flexDirection: "column", height: "90vh",
           }}
         >
           <SidebarAdmin />

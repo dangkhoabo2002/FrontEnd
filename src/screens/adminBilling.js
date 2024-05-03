@@ -30,7 +30,7 @@ export default function AdminBillings() {
         <div
           style={{
             display: "flex",
-            flexDirection: "column",
+            flexDirection: "column", height: "70vh"
           }}
         >
           <SidebarAdmin />

@@ -341,6 +341,8 @@ export default function AdminPackageManagement() {
           style={{
             display: "flex",
             flexDirection: "column",
+            height: "70vh",
+
           }}
         >
           <SidebarAdmin />

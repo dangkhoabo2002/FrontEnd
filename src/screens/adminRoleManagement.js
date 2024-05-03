@@ -358,7 +358,8 @@ export default function AdminRoleManagement() {
         <div
           style={{
             display: "flex",
-            flexDirection: "column",
+            flexDirection: "column",            height: "70vh",
+
           }}
         >
           <SidebarAdmin />
