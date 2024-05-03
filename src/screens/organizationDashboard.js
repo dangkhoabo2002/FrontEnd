@@ -1752,7 +1752,7 @@ export default function OrganizationDashboard() {
                       Slot(s) available: 1/5
                     </h1>
                     <div className="server">
-                      <div className="profileField flex flex-col gap-10">
+                      <div className="profileField flex flex-col gap-5">
                         <div className="org_name">
                           <h1 className="mb-2">Organization name</h1>
 

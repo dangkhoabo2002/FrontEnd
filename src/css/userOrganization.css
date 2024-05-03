@@ -8,8 +8,8 @@
   
   .status-tag .highlight {
     display: inline-block;
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     margin-right: 8px;
 
@@ -19,16 +19,16 @@
   
   @keyframes pulse {
     0% {
-      transform: scale(1); /* Kích thước ban đầu */
-      opacity: 1; /* Độ trong suốt ban đầu */
+      transform: scale(1);
+      opacity: 1;
     }
     50% {
-      transform: scale(2); /* Kích thước tăng lên */
-      opacity: 0.5; /* Độ trong suốt giảm xuống */
+      transform: scale(2);
+      opacity: 0.5;
     }
     100% {
-      transform: scale(3); /* Kích thước tăng lên tối đa */
-      opacity: 0; /* Độ trong suốt giảm xuống 0 */
+      transform: scale(3);
+      opacity: 0;
     }
   }
   
@@ -38,6 +38,8 @@
   
   .inactive-medium {
     color: #999999;
+    animation: none !important;
+
   }
   
   .highlight.inactive-medium {
