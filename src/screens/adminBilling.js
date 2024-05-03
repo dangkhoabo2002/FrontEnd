@@ -36,7 +36,7 @@ export default function AdminBillings() {
           <SidebarAdmin />
         </div>
         <div className="px-12 py-6 bg-[#F3F8FF]">
-          <Button
+          {/* <Button
             variant="outlined"
             sx={{
               width: "120px",
@@ -46,7 +46,7 @@ export default function AdminBillings() {
             }}
           >
             Select
-          </Button>
+          </Button> */}
 
           {/*-------------- Billing Table ---------------- */}
 

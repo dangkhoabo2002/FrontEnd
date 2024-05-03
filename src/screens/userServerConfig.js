@@ -40,6 +40,7 @@ export default function UserServerConfig() {
 
   const orgName = localStorage.getItem("org_name");
   console.log("orgName", orgName);
+  
   // Get Server Data - GENERAL
   const handleGetServerData = async () => {
     const getUrl = `http://127.0.0.1:5000/server/get_server_data/${server_id}`;
@@ -106,7 +107,7 @@ export default function UserServerConfig() {
 
   return (
     <div>
-      <div className="containerOrg">
+      <div className="containerOrg" style={{overflowX:"hidden",}}>
         <div className="sideMenu">
           <Sidebar />
         </div>
@@ -218,7 +219,7 @@ export default function UserServerConfig() {
               <Box
                 sx={{
                   borderColor: "divider",
-                  width: "71vw",
+                  width: "72.1vw",
                   overflow: "hidden",
                   border: "2px solid #D9D9D9",
                   borderRadius: "5px",
@@ -237,7 +238,7 @@ export default function UserServerConfig() {
                     "& .MuiTab-root": {
                       minWidth: "auto",
                       textTransform: "capitalize",
-                      width: "136px",
+                      width: "138px",
                       fontWeight: "bold",
                       color: "black",
 

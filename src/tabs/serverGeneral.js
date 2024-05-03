@@ -666,12 +666,13 @@ export default function ServerGeneral(serverId) {
   };
 
   return (
-    <>
+    <div 
+    >
       {/* Return Error */}
       <Toaster position="bottom-right" reverseOrder={false} />
       <div>
         {/* Information */}
-        <div className="info-site mb-5">
+        <div className="info-site mb-3">
           <div className="info-title font-semibold pb-3">
             <p>Information</p>
           </div>
@@ -1097,6 +1098,6 @@ export default function ServerGeneral(serverId) {
           <Button onClick={handleUpdateRsa}>Confirm</Button>
         </DialogActions>
       </Dialog>
-    </>
+    </div>
   );
 }
