@@ -1,0 +1,46 @@
+.status-tag {
+    display: inline-flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  .status-tag .highlight {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 8px;
+
+    background-color: #6ec882;
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0% {
+      transform: scale(1); /* Kích thước ban đầu */
+      opacity: 1; /* Độ trong suốt ban đầu */
+    }
+    50% {
+      transform: scale(2); /* Kích thước tăng lên */
+      opacity: 0.5; /* Độ trong suốt giảm xuống */
+    }
+    100% {
+      transform: scale(3); /* Kích thước tăng lên tối đa */
+      opacity: 0; /* Độ trong suốt giảm xuống 0 */
+    }
+  }
+  
+  .positive-medium {
+    color: #6ec882;
+  }
+  
+  .inactive-medium {
+    color: rgb(112, 112, 112);
+  }
+  
+  .highlight.inactive-medium {
+    background-color: rgb(112, 112, 112);
+  }
+  

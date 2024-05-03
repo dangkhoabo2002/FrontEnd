@@ -582,9 +582,7 @@ export default function LandingPage() {
           </Modal>
         </div>
       </div>
-      <div className="mb-0">
-        <Footer />
-      </div>
+
     </div>
   );
 }

@@ -40,7 +40,7 @@ export default function UserServerConfig() {
 
   const orgName = localStorage.getItem("org_name");
   console.log("orgName", orgName);
-  
+
   // Get Server Data - GENERAL
   const handleGetServerData = async () => {
     const getUrl = `http://127.0.0.1:5000/server/get_server_data/${server_id}`;
@@ -70,7 +70,6 @@ export default function UserServerConfig() {
   useEffect(() => {
     handleGetServerData();
   }, []);
-
 
   // GET SERVER BY ID
   const [data, setData] = useState();
@@ -107,7 +106,7 @@ export default function UserServerConfig() {
 
   return (
     <div>
-      <div className="containerOrg" style={{overflowX:"hidden",}}>
+      <div className="containerOrg" style={{ overflowX: "hidden" }}>
         <div className="sideMenu">
           <Sidebar />
         </div>
@@ -117,17 +116,17 @@ export default function UserServerConfig() {
             width: "100%",
             boxSizing: "border-box",
             backgroundColor: "#f3f3fb",
+            flexDirection: "row",
           }}
         >
-            <div
-              className="flex flex-row py-6 text-center gap-10"
-              style={{
-                
-                backgroundColor: "white",
-                boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-              }}
-            >
-              <div className="">
+          <div
+            className="flex flex-row py-6 text-center gap-10"
+            style={{
+              backgroundColor: "white",
+              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+            }}
+          >
+            <div className="">
               <div className="header flex flex-row items-center gap-x-3  pl-20">
                 <Link
                   to={"/organizations"}
@@ -164,39 +163,40 @@ export default function UserServerConfig() {
                   {data?.server_name}
                 </span>
               </div>
-              </div>            
-              
-              
-              {serverData && (
-                <div
-                  style={{
-                    textAlign: "center",
-                    alignContent: "center",
-                    width: "10%",
-                    color: "white",
-                    borderRadius: "100px",
-                    backgroundColor:
-                    serverData.status === "ACTIVE"
-                        ? "#6EC882"
-                        : "#999999",
-                    fontSize: "18px",
-                    fontWeight: "bold",
-                    textTransform: "none",
-                  }}
-                >
-                  {serverData.status === "ACTIVE"
-                    ? "Online"
-                    : "Offline"}
-                </div>
-              )}
-              
-              </div>
+            </div>
 
-              {/* Online status */}
+            {serverData && (
+              <div
+              className={`status-tag ${
+                serverData.status === "ACTIVE"
+                  ? "positive-medium active"
+                  : "inactive-medium"
+              }`}
+              style={{ display: "flex", alignItems: "center", }}
+            >
+              <span
+                className={`highlight ${
+                  serverData.status === "ACTIVE"
+                    ? "positive-medium active"
+                    : "inactive-medium"
+                }`}
+                style={{
+                  "--iteration-count":
+                    serverData.status === "ACTIVE" ? "infinite" : "5",
+                  marginRight: "15px",
+                }}
+              ></span>
+              <p className="status-tag__txt" style={{ marginRight: "8px" }}>
+                {serverData.status === "ACTIVE" ? "Online" : "Offline"}
+              </p>
+            </div>
+            )}
+          </div>
 
+          {/* Online status */}
 
-              {/* Online status */}
-              {/* <div
+          {/* Online status */}
+          {/* <div
   style={{
     marginLeft: "583px",
     textAlign: "center",
@@ -267,7 +267,7 @@ export default function UserServerConfig() {
                   <Tab disableRipple label="Execution" value="8" />
                 </TabList>
               </Box>
-              <TabPanel sx={{ pt: 3, px: 0}} value="1">
+              <TabPanel sx={{ pt: 3, px: 0 }} value="1">
                 <General serverId={server_id} />
               </TabPanel>
               <TabPanel sx={{ pt: 3, px: 0 }} value="2">
