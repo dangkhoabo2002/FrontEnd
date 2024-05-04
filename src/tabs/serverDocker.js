@@ -13,13 +13,13 @@ import {
   TextField,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import TableOfImages from "../components/tableOfImages";
 import LinearProgress from "@mui/material/LinearProgress";
 
 import toast, { Toaster } from "react-hot-toast";
 
 export default function ServerDocker(serverId) {
   const [loading, setLoading] = useState(false);
+  const [loadingContainer, setLoadingContainer] = useState(false);
 
   // DOCKER PROJECT
   const [dockerProject, setDockerProject] = useState({
@@ -271,10 +271,12 @@ export default function ServerDocker(serverId) {
 
   // GET ALL IMAGES
 
-  const [imageList, setImageList] = useState();
+  const [imageList, setImageList] = useState([]);
 
   const handleGetImagesAPI = async () => {
-    const url = `http://127.0.0.1:5000/server/docker_list_containers/${serverId.serverId}`;
+    setLoading(true);
+
+    const url = `http://127.0.0.1:5000/server/docker_list_images/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
 
     try {
@@ -314,6 +316,7 @@ export default function ServerDocker(serverId) {
     } catch (error) {
       console.error("Error:", error);
     } finally {
+      setLoading(false);
     }
   };
 
@@ -321,10 +324,10 @@ export default function ServerDocker(serverId) {
 
   // GET ALL CONTAINERS
 
-  const [containerList, setContainerList] = useState();
+  const [containerList, setContainerList] = useState([]);
 
   const handleGetContainersAPI = async () => {
-    setLoading(true);
+    setLoadingContainer(true);
     const url = `http://127.0.0.1:5000/server/docker_list_containers/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
 
@@ -365,99 +368,192 @@ export default function ServerDocker(serverId) {
     } catch (error) {
       console.error("Error:", error);
     } finally {
-      setLoading(false);
+      setLoadingContainer(false);
     }
   };
 
   // ACTION IN CONTAINER
 
-  const [action, setAction] = useState();
-
-  const actions = ["ps", "start", "stop", "remove", "build", "restart", "kill"];
-
-  const handleClickChooseAction = (actionName) => () => {
-    setAction(actionName);
-    handleContainerActionAPI();
-  };
-
-  // --------------------
-
-  const [rows, setRows] = useState([
-    {
-      id: 1,
-      repository: "Repository A",
-      tag: "Tag",
-      imageId: "Image Id",
-      price: 10.5,
-      size: "170MB",
-    },
-    {
-      id: 2,
-      repository: "Repository A",
-      tag: "Tag",
-      imageId: "Image Id",
-      price: 10.5,
-      size: "170MB",
-    },
-  ]);
-
-  const handleRowClick = (row) => {
-    console.log("Container:", row.row);
-  };
-
   const columns = [
     {
-      field: "id",
+      field: "container_id",
       headerName: "ID",
-      width: 100,
+      width: 200,
     },
-    { field: "repository", headerName: "Repository", width: 200, flex: 1 },
+    { field: "names", headerName: "Name", width: 200, flex: 1 },
+    { field: "command", headerName: "Command", width: 200, flex: 1 },
+    { field: "created", headerName: "Created", width: 200, flex: 1 },
+    { field: "status", headerName: "Status", width: 200, flex: 1 },
+    { field: "image", headerName: "Image Id", width: 200, flex: 1 },
+    { field: "ports", headerName: "Port", width: 200, flex: 1 },
+  ];
+
+  const columnsImg = [
+    {
+      field: "repository",
+      headerName: "Repository",
+      width: 300,
+    },
     { field: "tag", headerName: "Tag", width: 200, flex: 1 },
-    { field: "imageId", headerName: "Image Id", width: 200, flex: 1 },
+    { field: "image_id", headerName: "Image Id", width: 200, flex: 1 },
+    { field: "created", headerName: "Created", width: 300, flex: 1 },
     { field: "size", headerName: "Size", width: 200, flex: 1 },
   ];
 
-  const handleContainerActionAPI = async () => {
-    const url = `http://127.0.0.1:5000/server/docker_containers/${serverId.serverId}`;
-    const token = localStorage.getItem("access_token");
+  const [selectContainer, setSelectContainer] = useState();
+  const [selectImage, setSelectImage] = useState();
 
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
+  let actions = ["start", "stop", "remove", "restart", "kill"];
+
+  const handleClickChooseAction = (actionName) => () => {
+    handleContainerActionAPI(actionName);
+  };
+
+  const handleRowClick = (row) => {
+    setSelectContainer(row.row);
+  };
+
+  const handleRowClickImage = (row) => {
+    setSelectImage(row.row);
+  };
+
+  const handleContainerActionAPI = async (actionName) => {
+    console.log(selectContainer?.container_id);
+    console.log(actionName);
+    if (
+      selectContainer?.container_id === "" ||
+      selectContainer?.container_id === undefined ||
+      selectContainer?.container_id === null
+    ) {
+      toast.error("Please choose your container first!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
         },
-        body: JSON.stringify({
-          container: "",
-          action: action,
-        }),
       });
-      if (response.status === 200) {
-        const containers = await response.json();
-        setContainerList(containers);
-      } else if (response.status === 403) {
-        alert("Permission denied!");
-      } else if (response.status === 500) {
-        alert("No data for server!");
-      } else {
-        alert("Something wrong!");
+    } else if (
+      actionName === "" ||
+      actionName === null ||
+      actionName === undefined
+    ) {
+      toast.error("Missing action!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
+        },
+      });
+    } else {
+      toast.loading(`Your action is under process, please wait...`);
+      const url = `http://127.0.0.1:5000/server/docker_containers/${serverId.serverId}`;
+      const token = localStorage.getItem("access_token");
+
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+          body: JSON.stringify({
+            container: selectContainer?.container_id,
+            action: actionName,
+          }),
+        });
+        if (response.status === 200) {
+          toast.dismiss();
+          toast.success(`${actionName} successfully.`, {
+            style: {
+              border: "1px solid #37E030",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "green",
+              fontWeight: "bolder",
+              textTransform: "capitalize",
+            },
+          });
+          handleGetContainersAPI();
+        } else if (response.status === 403) {
+          toast.dismiss();
+          toast.error("Permission denied, please try again!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 500) {
+          toast.dismiss();
+          toast.error("No data for server, please try again!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else {
+          toast.dismiss();
+          toast.error("Something wrong, please try again later!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
       }
-    } catch (error) {
-      console.error("Error:", error);
-    } finally {
     }
   };
 
   // CREATE CONTAINERS
 
   const [openAddContainer, setOpenAddContainer] = useState(false);
+  const [addContainer, setAddContainer] = useState({
+    image: "",
+    container_name: "",
+  });
 
   const handleCreateContainer = () => {
-    handleCreateContainerAPI();
-    setOpenAddContainer(false);
+    if (addContainer.image === "") {
+      toast.error("Image's field can not be empty!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
+        },
+      });
+    } else if (addContainer.container_name === "") {
+      toast.error("Container name can not be empty!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
+        },
+      });
+    } else {
+      handleCreateContainerAPI();
+      setOpenAddContainer(false);
+    }
   };
 
   const handleOpenCreateContainer = () => {
@@ -465,21 +561,17 @@ export default function ServerDocker(serverId) {
   };
   const handleCloseCreateContainer = () => {
     setOpenAddContainer(false);
+    setAddContainer({ image: "", container_name: "" });
   };
-
-  const [addContainer, setAddContainer] = useState({
-    image: "",
-    container_name: "",
-  });
 
   const handleChangeInputAddContainer = (prop) => (event) => {
     setAddContainer({ ...addContainer, [prop]: event.target.value });
   };
 
   const handleCreateContainerAPI = async () => {
+    toast.loading("Adding new container, please wait...");
     const url = `http://127.0.0.1:5000/server/docker_create_containers/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
-
     try {
       const response = await fetch(url, {
         method: "POST",
@@ -495,13 +587,54 @@ export default function ServerDocker(serverId) {
         }),
       });
       if (response.status === 200) {
-        alert("Add Container Success!");
+        toast.dismiss();
+        toast.success("Add Container Successfully.", {
+          style: {
+            border: "1px solid #37E030",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "green",
+            fontWeight: "bolder",
+          },
+        });
+        handleGetContainersAPI();
+        handleCloseCreateContainer();
       } else if (response.status === 403) {
-        alert("Permission denied!");
+        toast.dismiss();
+
+        toast.error("Permission denied!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       } else if (response.status === 500) {
-        alert("No data for container!");
+        toast.dismiss();
+
+        toast.error("No data for container, please try again!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       } else {
-        alert("Something is wrong!");
+        toast.dismiss();
+
+        toast.error("Something wrong, please try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
     } catch (error) {
       console.error("Error:", error);
@@ -511,6 +644,7 @@ export default function ServerDocker(serverId) {
 
   useEffect(() => {
     handleGetContainersAPI();
+    handleGetImagesAPI();
   }, []);
 
   // CSS POP UP
@@ -535,14 +669,10 @@ export default function ServerDocker(serverId) {
         <div className="info-title font-semibold">
           <p>Docker Project</p>
         </div>
-        {loading && (
-          <div className="py-8">
-            <LinearProgress />
-          </div>
-        )}
-
-        <div className="flex flex-col flex-wrap gap-2 bg-[white] mt-4 rounded-md px-8 py-6   shadow-lg"
-        style={{ border: "1px solid #89A6CC" }}>
+        <div
+          className="flex flex-col flex-wrap gap-2 bg-[white] mt-4 rounded-md px-8 py-6   shadow-lg"
+          style={{ border: "1px solid #89A6CC" }}
+        >
           <h2 className="font-bold">Dockerfile</h2>
           <div className="flex flex-row gap-5">
             <TextField
@@ -648,6 +778,11 @@ export default function ServerDocker(serverId) {
 
       <div className="imagesSection">
         <h1 className="text-2xl my-3">All images</h1>
+        {loading && (
+          <div className="pb-8 pt-4">
+            <LinearProgress />
+          </div>
+        )}
         <div className="flex flex-row gap-4 pb-4">
           <Button
             variant="contained"
@@ -667,8 +802,7 @@ export default function ServerDocker(serverId) {
           </Button>
           <Button
             variant="contained"
-            // onClick={}
-            style={{ marginLeft: "" }}
+            onClick={handleGetImagesAPI}
             sx={{
               width: "120px",
               height: "auto",
@@ -680,28 +814,46 @@ export default function ServerDocker(serverId) {
               textTransform: "none",
             }}
           >
-            Images
+            Refresh
           </Button>
         </div>
-        <TableOfImages />
+        <div
+          style={{ height: 400, border: "1px solid #89A6CC" }}
+          className="bg-[white] rounded-md shadow-lg"
+        >
+          <DataGrid
+            rows={imageList}
+            getRowId={(row) => row.image_id}
+            columns={columnsImg}
+            onRowClick={handleRowClickImage}
+            initialState={{
+              pagination: { paginationModel: { pageSize: 5 } },
+            }}
+            pageSizeOptions={[5, 10, 25]}
+          />
+        </div>
       </div>
       <div className="resultOutput">
         <h1 className="text-2xl my-3">Output result</h1>
-        <textarea class="w-full resize-none rounded-md p-4"
-        style={{ border: "1px solid #89A6CC" }}>
-          
+        <textarea
+          class="w-full resize-none rounded-md p-4"
+          style={{ border: "1px solid #89A6CC" }}
+        >
           Build successfully
         </textarea>
       </div>
       <div className="containersSection">
         <h1 className="text-2xl  my-3">All containers</h1>
-        <div className="flex flex-row gap-4 pb-4">
-          {actions.map((action) => (
+        {loadingContainer && (
+          <div className="pt-4 pb-8">
+            <LinearProgress />
+          </div>
+        )}
+        <div className="flex flex-row justify-between ">
+          <div className="flex flex-row gap-4 pb-4">
             <Button
-              key={action}
               variant="contained"
-              onClick={handleClickChooseAction(action)}
-              style={{ marginLeft: "" }}
+              onClick={handleGetContainersAPI}
               sx={{
                 width: "120px",
                 height: "auto",
@@ -713,17 +865,49 @@ export default function ServerDocker(serverId) {
                 textTransform: "none",
               }}
             >
-              {action}
+              ps
             </Button>
-          ))}
+            {actions.map((action) => (
+              <Button
+                key={action}
+                variant="contained"
+                onClick={handleClickChooseAction(action)}
+                style={{ marginLeft: "" }}
+                sx={{
+                  width: "120px",
+                  height: "auto",
+                  color: "white",
+                  bgcolor: "#3867A5",
+                  "&:hover": { bgcolor: "#264B7B" },
+                  fontSize: "14px",
+                  fontWeight: "normal",
+                  textTransform: "none",
+                }}
+              >
+                {action}
+              </Button>
+            ))}
+          </div>
+          <div className="flex flex-row pb-4 items-center">
+            {selectContainer && (
+              <>
+                <p className="text-center px-2">Selected Container:</p>
+                <p className="font-bold text-center px-4">
+                  {selectContainer?.names}
+                </p>
+              </>
+            )}
+          </div>
         </div>
 
         {/* Table of containers */}
-        <div style={{ height: 400, border: "1px solid #89A6CC"}}
-    className="bg-[white] rounded-md shadow-lg"
-       >
+        <div
+          style={{ height: 400, border: "1px solid #89A6CC" }}
+          className="bg-[white] rounded-md shadow-lg"
+        >
           <DataGrid
-            rows={rows}
+            rows={containerList}
+            getRowId={(row) => row.container_id}
             columns={columns}
             onRowClick={handleRowClick}
             initialState={{
@@ -748,7 +932,7 @@ export default function ServerDocker(serverId) {
                 className="font-semibold"
                 style={{ fontSize: "28px", color: "#637381" }}
               >
-                ADD MEMBER
+                Add Image
               </p>
               <IconButton onClick={handleCloseCreateContainer}>
                 <CloseIcon />
@@ -798,9 +982,6 @@ export default function ServerDocker(serverId) {
                 <OutlinedInput
                   value={addContainer.image}
                   onChange={handleChangeInputAddContainer("image")}
-                  inputProps={{
-                    "aria-label": "mage",
-                  }}
                 />
               </FormControl>
             </Grid>
@@ -819,7 +1000,7 @@ export default function ServerDocker(serverId) {
                 <Button onClick={handleCloseCreateContainer}>
                   <Typography variant="button" style={{ color: "red" }}>
                     Cancel
-                  </Typography>{" "}
+                  </Typography>
                 </Button>
               </Grid>
               <Grid
