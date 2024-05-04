@@ -3,6 +3,9 @@ import Footer from "../components/userFooter";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import { Link } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
+import nonIcon from "../assets/non-icon.png";
+import SubBtn from "../components/subscribeBtn";
+
 import {
   Grid,
   Checkbox,
@@ -28,7 +31,18 @@ import axios from "axios";
 
 export default function LandingPage() {
   const [addOrg, setAddOrg] = React.useState(false);
-  const handleAdd = () => setAddOrg(!addOrg);
+
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleAdd = () => {
+    if (isSub) {
+      setAddOrg(!addOrg);
+    } else {
+      setOpenModal(true);
+    }
+  };
+  const handleCloseModal = () => setOpenModal(false);
+    
   const handleClose = () => setAddOrg(false);
 
   const [orgList, setOrgList] = useState();
@@ -56,7 +70,34 @@ export default function LandingPage() {
     }
   };
 
+  const [isSub, setIsSub] = useState();
+
+  const handleGetSub = async () => {
+    const editUrl = `http://127.0.0.1:5000/subscription/check_subscription_by_username`;
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await fetch(editUrl, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+      if (response.status === 200) {
+        setIsSub(true);
+      } else {
+        setIsSub(false);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+
   useEffect(() => {
+    handleGetSub();
     handleShowOrganization();
   }, []);
 
@@ -329,6 +370,46 @@ export default function LandingPage() {
           </ColorButton>
 
           <Modal
+        open={openModal}
+        onClose={handleCloseModal}
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
+      >
+        <Box
+          sx={{
+            justifyContent: "center",
+            textAlign: "center",
+            alignItems: "center",
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            borderRadius: "15px",
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <div className="flex flex-row justify-center mb-5">
+            <img loading="lazy" src={nonIcon} style={{ width: "50px" }} />
+          </div>
+          <Typography id="modal-title" variant="h6" component="h2">
+            Package is not activated yet!
+          </Typography>
+          <Typography id="modal-description" sx={{ mt: 2 }}>
+            Please purchase the package to activate the function and have the
+            best experience.
+          </Typography>
+          <Link to={"../subscribe"}>
+            <div className="mt-5">
+              <SubBtn sx={{}} />
+            </div>
+          </Link>
+        </Box>
+      </Modal>
+
+          <Modal
             keepMounted
             open={addOrg}
             onClose={handleClose}
@@ -582,9 +663,7 @@ export default function LandingPage() {
           </Modal>
         </div>
       </div>
-      <div className="mb-0">
-        <Footer />
-      </div>
+
     </div>
   );
 }

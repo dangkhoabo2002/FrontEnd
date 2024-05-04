@@ -6,6 +6,7 @@ import ServerIcon from "../images/serverIcon2.png";
 import toast, { Toaster } from "react-hot-toast";
 import DnsIcon from "@mui/icons-material/Dns";
 import OrgIcon from "../assets/orgIcon.png";
+import "../css/orgCard.css";
 
 export default function OrganizationCard({ id, name, description }) {
   const shortDescription = `${description.substring(0, 50)}...`;
@@ -145,22 +146,28 @@ export default function OrganizationCard({ id, name, description }) {
       <Toaster position="bottom-right" reverseOrder={false} />
       {/* Online indicator */}
       {organizations && (
-        <div
-          style={{
-            position: "absolute",
-            top: "10px",
-            right: "10px",
-            backgroundColor:
-              organizations[0].organization_status === "ACTIVE"
-                ? "#6EC882"
-                : "#999999",
-            width: "20px",
-            height: "20px",
-            borderRadius: "50%",
-            zIndex: 1,
-          }}
-        />
-      )}
+  <div
+    style={{
+      position: "absolute",
+      top: "10px",
+      right: "10px",
+      width: "20px",
+      height: "20px",
+      borderRadius: "50%",
+      zIndex: 1,
+      overflow: "hidden",
+    }}
+  >
+    <i
+      className={
+        organizations[0].organization_status === "ACTIVE"
+          ? "status-icon positive"
+          : "status-icon2 negative"
+      }
+    ></i>
+  </div>
+)}
+
       <Grid
         container
         spacing={2}
@@ -220,17 +227,19 @@ export default function OrganizationCard({ id, name, description }) {
         </Grid>
 
         <Grid item xs={4} sx={{ display: "flex", justifyContent: "end" }}>
-        {/* <DnsIcon style={{
+          {/* <DnsIcon style={{
         border: "1px solid #3867A5",
         borderRadius: "5px",
         color: "#637381", fontSize: "3rem" }} /> */}
           <img
             src={OrgIcon}
             style={{
-              filter: "brightness(0) saturate(100%) invert(11%) sepia(13%) saturate(7467%) hue-rotate(204deg) brightness(95%) contrast(96%)",
+              filter:
+                "brightness(0) saturate(100%) invert(11%) sepia(13%) saturate(7467%) hue-rotate(204deg) brightness(95%) contrast(96%)",
               width: "auto",
               height: "120px",
-          }}          />
+            }}
+          />
         </Grid>
       </Grid>
     </Paper>

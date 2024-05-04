@@ -1,0 +1,48 @@
+.status-tag {
+    display: inline-flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  .status-tag .highlight {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 8px;
+
+    background-color: #6EC882;
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(2);
+      opacity: 0.5;
+    }
+    100% {
+      transform: scale(3);
+      opacity: 0;
+    }
+  }
+  
+  .positive-medium {
+    color: #6EC882;
+  }
+  
+  .inactive-medium {
+    color: #999999;
+    animation: none !important;
+
+  }
+  
+  .highlight.inactive-medium {
+    background-color: #999999;
+  }
+  

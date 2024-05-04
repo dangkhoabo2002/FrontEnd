@@ -232,13 +232,13 @@ export default function AdminGuide() {
         style={{
           display: "grid",
           gridTemplateColumns: "0fr 3fr",
-          height: "66vh",
+          height: "100%",
         }}
       >
         <div
           style={{
             display: "flex",
-            flexDirection: "column",
+            flexDirection: "column", height: "90vh",
           }}
         >
           <SidebarAdmin />
@@ -275,7 +275,7 @@ export default function AdminGuide() {
                   <td>{index + 1}</td>
                   <td>{guide.title}</td>
                   <td>{guide.content}</td>
-                  <td>
+                  <td style={{ padding: "6px 0px" }}>
                     <IconButton
                       aria-label="delete"
                       onClick={() => handleClickOpenRemoveGuide(guide.guide_id)}

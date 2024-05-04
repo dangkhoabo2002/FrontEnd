@@ -77,21 +77,12 @@ export default function AdminAccountManagement() {
         <div
           style={{
             display: "flex",
-            flexDirection: "column",
+            flexDirection: "column", height: "70vh"
           }}
         >
           <SidebarAdmin />
         </div>
         <div className="px-12 py-6 bg-[#F3F8FF]">
-          <Button variant="outlined"
-                          sx={{
-                            width: "120px",
-                            color: "white",
-                            bgcolor: "#3867A5",
-                            "&:hover": { bgcolor: "#2A4D7B" },
-                          }}>
-            Select
-          </Button>
 
           {/*-------------- Account Table ---------------- */}
 

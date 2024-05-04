@@ -5,7 +5,7 @@ import Accordion from "../components/guideAccodion";
 export default function Guide() {
   return (
     <>
-      <div className="" style={{ backgroundColor: "#f3f3fb", height: "100vh" }}>
+      <div className="" style={{ backgroundColor: "#f3f3fb", height:"105vh"}}>
         <div
           className=" py-6 text-center gap-10"
           style={{
@@ -27,7 +27,7 @@ export default function Guide() {
         </div>
 
         <div className="container px-20">
-          <div className="body mt-8">
+          <div className="body mt-6 pb-2">
             <Accordion />
           </div>
         </div>

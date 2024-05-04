@@ -1,13 +1,325 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SidebarAdmin from "../components/sidebarAdmin";
 import NavigationAdmin from "../components/navAdmin";
 import { Billings } from "../data/listOfBilling";
 import "../css/adminBilling.css";
-import { Button } from "@mui/material";
-export default function AdminPackageManagement() {
-  const [Billing, setBilling] = useState({});
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  IconButton,
+  TextField,
+} from "@mui/material";
+import InputAdornment from "@mui/material/InputAdornment";
+import RemoveIcon from "@mui/icons-material/Remove";
+import AddIcon from "@mui/icons-material/Add";
+import CloseIcon from "@mui/icons-material/Close";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import toast from "react-hot-toast";
 
-  console.log(Billing);
+export default function AdminPackageManagement() {
+  const [Package, setPackageData] = useState([]);
+
+  const [openAddPackage, setOpenAddPackage] = useState(false);
+  const [packageAdd, setPackageAdd] = useState({
+    package_id: "",
+    package_name: "",
+    description: "",
+    duration: "",
+    price: "",
+    slot_number: "",
+    slot_server: "",
+  });
+
+  const clickOpenAddPackage = () => {
+    setOpenAddPackage(true);
+  };
+  const clickCloseAddPackage = () => {
+    setOpenAddPackage(false);
+    setPackageAdd({
+      package_id: "",
+      package_name: "",
+      description: "",
+      duration: "",
+      price: "",
+      slot_number: "",
+      slot_server: "",
+    });
+  };
+
+  // GET PKG
+  const handleGetPackage = async () => {
+    const packageUrl = `http://127.0.0.1:5000/package/get`;
+    const token = localStorage.getItem("access_token");
+
+    try {
+      const response = await fetch(packageUrl, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": "true",
+        },
+      });
+      if (response.status === 200) {
+        const data = await response.json();
+        setPackageData(data);
+      } else {
+        console.error("Failed to fetch guide data");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  // GET ADD PKG
+  const handleAddPackage = async () => {
+    if (
+      packageAdd.package_name === "" ||
+      packageAdd.description === "" ||
+      packageAdd.duration === "" ||
+      packageAdd.price === "" ||
+      packageAdd.slot_number === "" ||
+      packageAdd.slot_server === ""
+    ) {
+      toast.error("Please enter all fields!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
+        },
+      });
+    } else {
+      try {
+        toast.loading("In processing...");
+        const customerUrl = `http://127.0.0.1:5000/package/add`;
+        const token = localStorage.getItem("access_token");
+        const response = await fetch(customerUrl, {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Credentials": "true",
+          },
+          body: JSON.stringify({
+            package_name: packageAdd.package_name,
+            description: packageAdd.description,
+            duration: packageAdd.duration,
+            price: packageAdd.price,
+            slot_number: packageAdd.slot_number,
+            slot_server: packageAdd.slot_server,
+          }),
+        });
+        if (response.status === 201) {
+          toast.dismiss();
+          toast.success("New package has created.", {
+            style: {
+              border: "1px solid #37E030",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "green",
+              fontWeight: "bolder",
+            },
+          });
+          handleGetPackage();
+          clickCloseAddPackage();
+        } else if (response.status === 500) {
+          toast.dismiss();
+
+          toast.error("Failed to add package!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 400) {
+          toast.dismiss();
+
+          toast.error("Missing name or description!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+      }
+    }
+  };
+
+  // DELETE PKG
+
+  const [openDelete, setOpenDelete] = useState(false);
+  const [packageId_del, setPackageId_del] = useState();
+
+  const clickOpenDelete = (package_id) => {
+    setOpenDelete(true);
+    setPackageId_del(package_id);
+  };
+  const clickCloseDelete = () => {
+    setOpenDelete(false);
+    setPackageId_del("");
+  };
+
+  const handleDeleteRole = async () => {
+    const customerUrl = `http://127.0.0.1:5000/package/delete/${packageId_del}`;
+    const token = localStorage.getItem("access_token");
+
+    try {
+      toast.loading("Deleting...");
+      const response = await fetch(customerUrl, {
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": "true",
+        },
+      });
+      if (response.status === 200) {
+        toast.dismiss();
+        toast.success("Deleted success.", {
+          style: {
+            border: "1px solid #37E030",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "green",
+            fontWeight: "bolder",
+          },
+        });
+        clickCloseDelete();
+        handleGetPackage();
+      } else if (response.status === 500) {
+        toast.dismiss();
+
+        toast.error("Failed to delete package!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 400) {
+        toast.dismiss();
+
+        toast.error("Error!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+
+  // EDIT GUIDE
+
+  const [currentPackage, setCurrentPackage] = useState("");
+  const [openEdit, setOpenEdit] = useState(false);
+  const [currentEditPackage, setCurrentEditPackage] = useState({
+    package_name: "",
+    description: "",
+    duration: "",
+    price: "",
+    slot_number: "",
+    slot_server: "",
+  });
+
+  const handleClickOpenEditPackage = (package_id) => {
+    setCurrentPackage(package_id);
+    setOpenEdit(true);
+  };
+  const handleCloseEditPackage = () => {
+    setCurrentEditPackage({ title: "", content: "" });
+    setOpenEdit(false);
+  };
+
+  const handleChangeEditGuide = (prop) => (event) => {
+    setCurrentEditPackage({
+      ...currentEditPackage,
+      [prop]: event.target.value,
+    });
+  };
+
+  const handleEditPackage = async () => {
+    if (currentPackage) {
+      const editUrl = `http://127.0.0.1:5000/package/update/${currentPackage}`;
+      const token = localStorage.getItem("access_token");
+
+      try {
+        const response = await fetch(editUrl, {
+          method: "PUT",
+          credentials: "include",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Credentials": "true",
+          },
+          body: JSON.stringify({
+            package_name: currentEditPackage.package_name,
+            description: currentEditPackage.description,
+            duration: currentEditPackage.duration,
+            price: currentEditPackage.price,
+            slot_number: currentEditPackage.slot_number,
+            slot_server: currentEditPackage.slot_server,
+          }),
+        });
+        if (response.status === 200) {
+          handleGetPackage();
+          setCurrentEditPackage({
+            package_name: "",
+            description: "",
+            duration: "",
+            price: "",
+            slot_number: "",
+            slot_server: "",
+          });
+          handleCloseEditPackage();
+        } else {
+          console.log("Update Fail");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+      }
+    } else {
+      console.log("No id catch");
+    }
+  };
+
+  useEffect(() => {
+    handleGetPackage();
+  }, []);
+
+  console.log(Package);
   return (
     <div className="">
       {/*-------------- Navigation + Backgroud---------------- */}
@@ -29,6 +341,8 @@ export default function AdminPackageManagement() {
           style={{
             display: "flex",
             flexDirection: "column",
+            height: "70vh",
+
           }}
         >
           <SidebarAdmin />
@@ -37,13 +351,14 @@ export default function AdminPackageManagement() {
           <Button
             variant="outlined"
             sx={{
-              width: "120px",
+              width: "150px",
               color: "white",
               bgcolor: "#3867A5",
               "&:hover": { bgcolor: "#2A4D7B" },
             }}
+            onClick={clickOpenAddPackage}
           >
-            Select
+            Add Package
           </Button>
 
           {/*-------------- Billing Table ---------------- */}
@@ -55,11 +370,15 @@ export default function AdminPackageManagement() {
             <table class="table-auto w-full ">
               <thead>
                 <tr>
-                  <th>DATE</th>
-                  <th>TYPE OF PACKAGE</th>
-                  <th>TRANSACTION FEE</th>
-                  <th>STATUS</th>
-                  <th>DETAIL</th>
+                  <th>ID</th>
+                  <th>NAME</th>
+                  <th>PRICE</th>
+                  <th>DESCRIPTION</th>
+                  <th>DURATION</th>
+                  <th>SLOT NUMBER</th>
+                  <th>SLOT SERVER</th>
+                  <th>Status</th>
+                  <th>ACTION</th>
                 </tr>
               </thead>
               <tbody>
@@ -73,89 +392,286 @@ export default function AdminPackageManagement() {
                     .
                   </td>
                 </tr>
-                {Billings.map((bill) => (
-                  <tr key={bill.id}>
-                    <td>{bill.date}</td>
-                    <td>{bill.type_of_package}</td>
-                    <td>{bill.transaction_fee}$</td>
-                    {bill.status == "Pending" ? (
-                      <td id="pending">{bill.status}</td>
-                    ) : (
-                      <td id="paid">{bill.status}</td>
-                    )}
+                {Package.map((pkg) => (
+                  <tr key={pkg.package_id}>
+                    <td>{pkg.package_id}</td>
+                    <td>{pkg.package_name}</td>
+                    <td>{pkg.price}$</td>
+                    <td>{pkg.description}</td>
+                    <td>{pkg.duration}</td>
+                    <td>{pkg.slot_number}</td>
+                    <td>{pkg.slot_server}</td>
                     <td>
-                      <a href="#popup1" id="openPopUp">
-                        {/* <button
-                      onClick={() => setBilling(bill)}
-                      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-                    >
-                      View
-                    </button> */}
-                        <Button
-                          onClick={() => setBilling(bill)}
-                          variant="contained"
-                          sx={{
-                            width: "100px",
-                            height: "25px",
-                            color: "white",
-                            borderRadius: "100px",
-                            bgcolor: "#5F94D9",
-                            "&:hover": { bgcolor: "#4D7AB5" },
-                            fontSize: "14px",
-                            fontWeight: "normal",
-                            textTransform: "none",
-                          }}
-                        >
-                          View
-                        </Button>
-                      </a>
+                      <td>
+                        <td>
+                          <div
+                            style={{
+                              backgroundColor: pkg.status
+                                ? "#6EC882"
+                                : "#8E8E8E",
+                              color: "white",
+                              textAlign: "center",
+                              borderRadius: "100px",
+                              padding: "5px 15px",
+                              fontSize: "14px",
+                              fontWeight: "normal",
+                              textTransform: "none",
+                            }}
+                          >
+                            {pkg.status ? "Active" : "Inactive"}
+                          </div>
+                        </td>
+                      </td>
+                    </td>
+
+                    <td style={{ padding: "6px 0px" }}>
+                      <IconButton
+                        aria-label="delete"
+                        onClick={() => clickOpenDelete(pkg?.package_id)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+
+                      <IconButton
+                        aria-label="edit"
+                        onClick={() =>
+                          handleClickOpenEditPackage(pkg?.package_id)
+                        }
+                      >
+                        <EditIcon />
+                      </IconButton>
                     </td>
                   </tr>
                 ))}
                 <tr></tr>
               </tbody>
             </table>
-            <div id="popup1" className="overlay">
-              <div className="popup">
-                <div className="popup_content">
-                  <h1>Billing Information</h1>
-                  <div className="billingInfo">
-                    <div className="leftInfo">
-                      <h2>Id:</h2>
-                      <h2>Date:</h2>
-                      <h2>Username:</h2>
-                      <h2>Package type:</h2>
-                      <h2>Transaction fee:</h2>
-                      <h2>Status</h2>
-                      <h2>Total</h2>
-                    </div>
-                    <div className="rightInfo">
-                      <h2>{Billing.id}</h2>
-                      <h2>{Billing.date}</h2>
-                      <h2>{Billing.username}</h2>
-                      <h2>{Billing.type_of_package}</h2>
-                      <h2>{Billing.transaction_fee}$</h2>
-                      <h2>{Billing.status}</h2>
-                      <h2>{Billing.total}$</h2>
-                    </div>
-                  </div>
-                  <div className="popup_btn">
-                    <a id="popup_btn" href="#" className="close">
-                      <div
-                        style={{
-                          fontSize: "16px",
-                          fontWeight: "Bold",
-                          letterSpacing: "0.09rem",
-                        }}
-                      >
-                        Close
-                      </div>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
+
+          {/*-------------- ADD NEW PACKAGE ---------------- */}
+          <Dialog open={openAddPackage} onClose={clickCloseAddPackage}>
+            <DialogTitle>Add new package</DialogTitle>
+            <DialogContent>
+              <DialogContentText className="pb-4">
+                Add new package into MHD system.
+              </DialogContentText>
+              <TextField
+                required
+                margin="dense"
+                id="package_name"
+                name="package_name"
+                label="Package name"
+                type="text"
+                fullWidth
+                variant="outlined"
+                value={packageAdd.package_name}
+                onChange={(e) =>
+                  setPackageAdd({ ...packageAdd, package_name: e.target.value })
+                }
+              />
+              <TextField
+                required
+                margin="dense"
+                id="price"
+                name="price"
+                label="Price"
+                type="number"
+                fullWidth
+                variant="outlined"
+                value={packageAdd.price}
+                onChange={(e) =>
+                  setPackageAdd({ ...packageAdd, price: e.target.value })
+                }
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">$</InputAdornment>
+                  ),
+                }}
+              />
+              <TextField
+                required
+                margin="dense"
+                id="duration"
+                name="duration"
+                label="Duration"
+                type="number"
+                fullWidth
+                variant="outlined"
+                value={packageAdd.duration}
+                onChange={(e) =>
+                  setPackageAdd({ ...packageAdd, duration: e.target.value })
+                }
+                inputProps={{
+                  min: 1,
+                  max: 4,
+                }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">Month</InputAdornment>
+                  ),
+                }}
+              />
+              <TextField
+                required
+                margin="dense"
+                id="slot_number"
+                name="slot_number"
+                label="Slot number"
+                type="number"
+                fullWidth
+                variant="outlined"
+                value={packageAdd.slot_number}
+                onChange={(e) =>
+                  setPackageAdd({ ...packageAdd, slot_number: e.target.value })
+                }
+              />
+              <TextField
+                required
+                margin="dense"
+                id="slot_server"
+                name="slot_server"
+                label="Slot server"
+                type="number"
+                fullWidth
+                variant="outlined"
+                value={packageAdd.slot_server}
+                onChange={(e) =>
+                  setPackageAdd({ ...packageAdd, slot_server: e.target.value })
+                }
+              />
+              <TextField
+                required
+                id="description"
+                name="description"
+                label="Description"
+                multiline
+                rows={4}
+                defaultValue="Default Value"
+                margin="dense"
+                type="text"
+                fullWidth
+                variant="outlined"
+                value={packageAdd.description}
+                onChange={(e) =>
+                  setPackageAdd({ ...packageAdd, description: e.target.value })
+                }
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={clickCloseAddPackage}>Cancel</Button>
+              <Button onClick={handleAddPackage}>Confirm</Button>
+            </DialogActions>
+          </Dialog>
+
+          {/*-------------- DELETE ALERT ---------------- */}
+          <Dialog
+            open={openDelete}
+            onClose={clickCloseDelete}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {"Do you want to remove this member?"}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                They will no longer have access to the server or configure its
+                features.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={clickCloseDelete}>Disagree</Button>
+              <Button onClick={handleDeleteRole}>Agree</Button>
+            </DialogActions>
+          </Dialog>
+
+          {/*-------------- EDIT ALERT ---------------- */}
+          <Dialog open={openEdit} onClose={handleCloseEditPackage}>
+            <DialogTitle>Update package</DialogTitle>
+            <DialogContent>
+              <DialogContentText className="pb-4">
+                Edit package's information.
+              </DialogContentText>
+              <TextField
+                required
+                margin="dense"
+                id="pkg"
+                name="pkg"
+                label="Package name"
+                type="text"
+                fullWidth
+                variant="outlined"
+                onChange={handleChangeEditGuide("package_name")}
+                value={currentEditPackage.package_name}
+              />
+
+              <TextField
+                required
+                id="outlined-multiline-static"
+                label="Description"
+                multiline
+                rows={4}
+                margin="dense"
+                name="pkg"
+                type="Description"
+                fullWidth
+                onChange={handleChangeEditGuide("description")}
+                value={currentEditPackage.description}
+              />
+              <TextField
+                required
+                margin="dense"
+                id="pkg"
+                name="pkg"
+                label="Duration"
+                type="text"
+                fullWidth
+                variant="outlined"
+                onChange={handleChangeEditGuide("duration")}
+                value={currentEditPackage.duration}
+              />
+              <TextField
+                required
+                margin="dense"
+                id="pkg"
+                name="pkg"
+                label="Price"
+                type="text"
+                fullWidth
+                variant="outlined"
+                onChange={handleChangeEditGuide("price")}
+                value={currentEditPackage.price}
+              />
+              <TextField
+                            required
+                            margin="dense"
+                            id="pkg"
+                            name="pkg"
+                            label="Slot number"
+                            type="text"
+                            fullWidth
+                            variant="outlined"
+                onChange={handleChangeEditGuide("slot_number")}
+                value={currentEditPackage.slot_number}
+              />
+              <TextField
+                            required
+                            margin="dense"
+                            id="pkg"
+                            name="pkg"
+                            label="Slot server"
+                            type="text"
+                            fullWidth
+                            variant="outlined"
+                onChange={handleChangeEditGuide("slot_server")}
+                value={currentEditPackage.slot_server}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseEditPackage}>Cancel</Button>
+              <Button onClick={handleEditPackage}>Confirm</Button>
+            </DialogActions>
+          </Dialog>
 
           {/*-------------- END OF Billing Table ---------------- */}
         </div>
