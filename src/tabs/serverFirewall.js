@@ -125,14 +125,9 @@ export default function ServerFirewall(serverId) {
     }
   };
 
-  const checkDisable = () => {
-    console.log(firewallLevel);
-  };
-
   // firewall table
   const [firewallData, setFirewallData] = useState();
 
-  console.log(firewallData);
   const handleGetFirewallAPI = async () => {
     setLoading(true);
     const editUrl = `http://127.0.0.1:5000/server/firewall_rules/${serverId.serverId}`;

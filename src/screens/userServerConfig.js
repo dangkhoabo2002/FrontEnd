@@ -39,7 +39,6 @@ export default function UserServerConfig() {
   const { organization_id } = useParams();
 
   const orgName = localStorage.getItem("org_name");
-  console.log("orgName", orgName);
 
   // Get Server Data - GENERAL
   const handleGetServerData = async () => {

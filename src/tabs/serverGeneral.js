@@ -82,8 +82,46 @@ export default function ServerGeneral(serverId) {
       if (response.status === 200) {
         const server = await response.json();
         setGeneralData1(server);
+      } else if (response.status === 400) {
+        toast.error("Server is not defined!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 403) {
+        toast.error("Permission denied!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 404) {
+        toast.error("Server not found!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       } else {
-        console.log("Update Fail");
+        toast.error("Something wrong, please try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
     } catch (error) {
       console.error("Error:", error);
@@ -107,8 +145,46 @@ export default function ServerGeneral(serverId) {
       if (response.status === 200) {
         const server = await response.json();
         setGeneralData2(server);
+      } else if (response.status === 400) {
+        toast.error("Server is not defined!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 403) {
+        toast.error("Permission denied!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 500) {
+        toast.error("No data for server!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       } else {
-        console.log("Update Fail");
+        toast.error("Something wrong, please try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
     } catch (error) {
       console.error("Error:", error);
@@ -259,7 +335,6 @@ export default function ServerGeneral(serverId) {
   // GET MEMBER IN SERVER
 
   const [memberList, setMemberList] = useState();
-  console.log("memberList", memberList);
   const handleGetMember = async () => {
     const url = `http://127.0.0.1:5000/server/get_server_members/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
@@ -666,8 +741,7 @@ export default function ServerGeneral(serverId) {
   };
 
   return (
-    <div 
-    >
+    <div>
       {/* Return Error */}
       <Toaster position="bottom-right" reverseOrder={false} />
       <div>

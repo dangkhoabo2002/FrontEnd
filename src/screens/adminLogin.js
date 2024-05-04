@@ -11,29 +11,26 @@ export default function AdminLogin() {
     manager_password: "",
   });
 
-
-
   const handleChange = (prop) => (event) => {
     setData({ ...data, [prop]: event.target.value });
   };
 
-  console.log("Logging in with:", data);
   const handleManagerLogin = async () => {
     const { manager_username, manager_password } = data;
-  
-// dont let usname pw null
+
+    // dont let usname pw null
     if (!manager_username || !manager_password) {
       alert("Please enter both username and password.");
       return;
     }
-  
+
     const loginUrl = "http://127.0.0.1:5000/manager/login";
-    
+
     try {
       const response = await fetch(loginUrl, {
         method: "POST",
         credentials: "include",
-  
+
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
@@ -57,7 +54,6 @@ export default function AdminLogin() {
       console.error("Error:", error);
     }
   };
-  
 
   return (
     <div

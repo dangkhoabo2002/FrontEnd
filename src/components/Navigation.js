@@ -5,7 +5,6 @@ import Logo from "../assets/logo.png";
 export default function Navigation() {
   const isLogin = localStorage.getItem("login_token");
 
-  console.log("login_token", isLogin);
   return (
     <div style={{ backgroundColor: "white" }}>
       <div className="flex flex-row justify-between items-center px-20 py-4">

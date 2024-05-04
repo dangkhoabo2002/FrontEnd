@@ -15,7 +15,6 @@ export default function SubscriptionPackages() {
   const [selectedPackage, setSelectedPackage] = useState(null);
   
   const [packageData, setPackageData] = useState([]);
-  console.log("packageData")
 
   const handlePackage = async () => {
     const packageUrl = "http://127.0.0.1:5000/package/get";

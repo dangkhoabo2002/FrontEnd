@@ -3,6 +3,7 @@ import SidebarAdmin from "../components/sidebarAdmin";
 import NavigationAdmin from "../components/navAdmin";
 import "../css/Admin.css";
 import Button from "@mui/material/Button";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function AdminAccountManagement() {
   const [customerList, setCustomerList] = useState();
@@ -44,8 +45,16 @@ export default function AdminAccountManagement() {
       if (response.status === 200) {
         const customerData = await response.json();
         setCustomerList(customerData);
-      } else {
-        console.log("Fail to get customer");
+      } else if (response.status === 403) {
+        toast.error("Permission denied!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
     } catch (error) {
       console.error("Error:", error);
@@ -74,20 +83,24 @@ export default function AdminAccountManagement() {
           height: "66vh",
         }}
       >
+        <Toaster position="bottom-right" reverseOrder={false} />
+
         <div
           style={{
             display: "flex",
-            flexDirection: "column", height: "70vh"
+            flexDirection: "column",
+            height: "70vh",
           }}
         >
           <SidebarAdmin />
         </div>
         <div className="px-12 py-6 bg-[#F3F8FF]">
-
           {/*-------------- Account Table ---------------- */}
 
-          <div className="bg-white mt-4 rounded-md px-8 pb-8 shadow-md"
-          style={{ border: "1px solid #89A6CC" }}>
+          <div
+            className="bg-white mt-4 rounded-md px-8 pb-8 shadow-md"
+            style={{ border: "1px solid #89A6CC" }}
+          >
             <table class="table-auto w-full ">
               <thead>
                 <tr>

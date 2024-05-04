@@ -7,9 +7,6 @@ import { Button } from "@mui/material";
 
 export default function AdminBillings() {
   const [Billing, setBilling] = useState({});
-
-  console.log(Billing);
-
   return (
     <div className="">
       {/*-------------- Navigation + Backgroud---------------- */}

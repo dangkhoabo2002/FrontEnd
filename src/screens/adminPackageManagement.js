@@ -122,7 +122,7 @@ export default function AdminPackageManagement() {
         });
         if (response.status === 201) {
           toast.dismiss();
-          toast.success("New package has created.", {
+          toast.success("New package create successfully.", {
             style: {
               border: "1px solid #37E030",
               maxWidth: "900px",
@@ -293,6 +293,15 @@ export default function AdminPackageManagement() {
           }),
         });
         if (response.status === 200) {
+          toast.success("Edit pakage sucessfully!", {
+            style: {
+              border: "1px solid #37E030",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "green",
+              fontWeight: "bolder",
+            },
+          });
           handleGetPackage();
           setCurrentEditPackage({
             package_name: "",
@@ -303,15 +312,61 @@ export default function AdminPackageManagement() {
             slot_server: "",
           });
           handleCloseEditPackage();
+        } else if (response.status === 400) {
+          toast.error("Package is not selected!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 403) {
+          toast.error("Permission denied!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 500) {
+          toast.error("Failed to update package!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
         } else {
-          console.log("Update Fail");
+          toast.error("Something wrong, please try again later!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
         }
       } catch (error) {
         console.error("Error:", error);
       } finally {
       }
     } else {
-      console.log("No id catch");
+      toast.error("Please select a package!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
+        },
+      });
     }
   };
 
@@ -319,7 +374,6 @@ export default function AdminPackageManagement() {
     handleGetPackage();
   }, []);
 
-  console.log(Package);
   return (
     <div className="">
       {/*-------------- Navigation + Backgroud---------------- */}
@@ -342,7 +396,6 @@ export default function AdminPackageManagement() {
             display: "flex",
             flexDirection: "column",
             height: "70vh",
-
           }}
         >
           <SidebarAdmin />
@@ -643,26 +696,26 @@ export default function AdminPackageManagement() {
                 value={currentEditPackage.price}
               />
               <TextField
-                            required
-                            margin="dense"
-                            id="pkg"
-                            name="pkg"
-                            label="Slot number"
-                            type="text"
-                            fullWidth
-                            variant="outlined"
+                required
+                margin="dense"
+                id="pkg"
+                name="pkg"
+                label="Slot number"
+                type="text"
+                fullWidth
+                variant="outlined"
                 onChange={handleChangeEditGuide("slot_number")}
                 value={currentEditPackage.slot_number}
               />
               <TextField
-                            required
-                            margin="dense"
-                            id="pkg"
-                            name="pkg"
-                            label="Slot server"
-                            type="text"
-                            fullWidth
-                            variant="outlined"
+                required
+                margin="dense"
+                id="pkg"
+                name="pkg"
+                label="Slot server"
+                type="text"
+                fullWidth
+                variant="outlined"
                 onChange={handleChangeEditGuide("slot_server")}
                 value={currentEditPackage.slot_server}
               />

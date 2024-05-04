@@ -25,6 +25,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Dialog from "@mui/material/Dialog";
 import CloseIcon from "@mui/icons-material/Close";
 import EditIcon from "@mui/icons-material/Edit";
+import toast, { Toaster } from "react-hot-toast";
+
 export default function AdminGuide() {
   const [guideData, setGuideData] = useState([]);
   const [open, setOpen] = useState(false);
@@ -75,18 +77,73 @@ export default function AdminGuide() {
           }),
         });
         if (response.status === 200) {
+          toast.success("Update guide successfully!", {
+            style: {
+              border: "1px solid #37E030",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "green",
+              fontWeight: "bolder",
+            },
+          });
           handleGetGuide();
           setCurrentEditGuide({ title: "", content: "" });
           handleCloseEditGuide();
+        } else if (response.status === 403) {
+          toast.error("Permission denied!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 400) {
+          toast.error("Guide is not selected!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 500) {
+          toast.error("Failed to update, please try again later!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
         } else {
-          console.log("Update Fail");
+          toast.error("Something wrong, please try again later!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
         }
       } catch (error) {
         console.error("Error:", error);
       } finally {
       }
     } else {
-      console.log("No id catch");
+      toast.error("Please select a guide!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
+        },
+      });
     }
   };
 
@@ -108,16 +165,73 @@ export default function AdminGuide() {
           },
         });
         if (response.status === 200) {
+          toast.success("Delete guide successfully.", {
+            style: {
+              border: "1px solid #37E030",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "green",
+              fontWeight: "bolder",
+            },
+          });
           handleGetGuide();
           setCurrentGuide("");
           handleCloseDelete();
+        } else if (response.status === 403) {
+          toast.error("Permission denied!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 400) {
+          toast.error("Guide is not selected!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 500) {
+          toast.error("Failed to update, please try again later!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
         } else {
-          console.log("Delete Fail");
+          toast.error("Something wrong, please try again later!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
         }
       } catch (error) {
         console.error("Error:", error);
       } finally {
       }
+    } else {
+      toast.error("Please select a guide!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
+        },
+      });
     }
   };
 
@@ -235,10 +349,12 @@ export default function AdminGuide() {
           height: "100%",
         }}
       >
+        <Toaster position="bottom-right" reverseOrder={false} />
         <div
           style={{
             display: "flex",
-            flexDirection: "column", height: "90vh",
+            flexDirection: "column",
+            height: "90vh",
           }}
         >
           <SidebarAdmin />
@@ -271,7 +387,7 @@ export default function AdminGuide() {
                 <th id="action">ACTIONS</th>
               </tr>
               {guideData.map((guide, index) => (
-                <tr key={guide.guide_id} >
+                <tr key={guide.guide_id}>
                   <td>{index + 1}</td>
                   <td>{guide.title}</td>
                   <td>{guide.content}</td>

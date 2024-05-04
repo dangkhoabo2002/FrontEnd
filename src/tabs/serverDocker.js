@@ -418,8 +418,6 @@ export default function ServerDocker(serverId) {
   };
 
   const handleContainerActionAPI = async (actionName) => {
-    console.log(selectContainer?.container_id);
-    console.log(actionName);
     if (
       selectContainer?.container_id === "" ||
       selectContainer?.container_id === undefined ||

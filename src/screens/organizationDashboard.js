@@ -153,8 +153,49 @@ export default function OrganizationDashboard() {
       if (response.status === 200) {
         const memberData = await response.json();
         setMemberList(memberData);
+      } else if (response.status === 400) {
+        toast.error(
+          "Organization is not defined, please go back and try again!",
+          {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          }
+        );
+      } else if (response.status === 403) {
+        toast.error("Permission denied!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 500) {
+        toast.error("Failed to get Users & Roles, please try again!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       } else {
-        console.log("Fail to get member");
+        toast.error("Something wrong, please try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
     } catch (error) {
       console.error("Error:", error);
@@ -898,7 +939,6 @@ export default function OrganizationDashboard() {
   //   }
   // };
 
-  console.log(organizations);
   return (
     <>
       <Toaster position="bottom-right" reverseOrder={false} />
@@ -1662,7 +1702,6 @@ export default function OrganizationDashboard() {
                                 md={8}
                                 sx={{ position: "relative" }}
                               >
-                                {" "}
                                 {/* Thêm CSS để chứa vị trí tương đối */}
                                 <TextField
                                   fullWidth

@@ -147,7 +147,6 @@ export default function ServerProxy(serverId) {
   const handleOpenDeleteProxy = (data) => {
     setcurrentDeleteProxy(data);
     setIsOpenDelete(true);
-    console.log(currentDeleteProxy);
   };
 
   const handleCloseDeleteProxy = () => {
@@ -339,8 +338,36 @@ export default function ServerProxy(serverId) {
       if (response.status === 200) {
         const proxyGet = await response.json();
         setProxyData(proxyGet);
+      } else if (response.status === 403) {
+        toast.error("Permission denied!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 500) {
+        toast.error("No data for server!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       } else {
-        console.log("Update Fail");
+        toast.error("Something wrong, please try again!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
     } catch (error) {
       console.error("Error:", error);
