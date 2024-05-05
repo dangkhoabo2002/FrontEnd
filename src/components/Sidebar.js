@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Logo from "../assets/logo.png";
 import "../css/Sidebar.css";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import BookIcon from "@mui/icons-material/Book";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import SubscribeBtn from "./subscribeBtn";
-import { useHistory } from "react-router-dom";
 
 export default function Sidebar() {
   const [selectedMenu, setSelectedMenu] = useState("organizations");
   const location = useLocation();
+
+  useEffect(() => {
+    handleGetSub();
+  }, []);
 
   useEffect(() => {
     const path = location.pathname;
@@ -39,19 +42,15 @@ export default function Sidebar() {
         },
       });
       if (response.status === 200) {
-        setIsSub(true);
-      } else {
         setIsSub(false);
+      } else {
+        setIsSub(true);
       }
     } catch (error) {
       console.error("Error:", error);
     } finally {
     }
   };
-
-  useEffect(() => {
-    handleGetSub();
-  }, []);
 
   return (
     <div
@@ -127,12 +126,11 @@ export default function Sidebar() {
             </section>
           </div>
         </Link>
-        { !isSub && (
-                  <div className="flex flex-row justify-center align-middle mt-40">
-                  <SubscribeBtn />
-                </div>
-        )
-}
+        {isSub && (
+          <div className="flex flex-row justify-center align-middle mt-40">
+            <SubscribeBtn />
+          </div>
+        )}
       </div>
     </div>
   );

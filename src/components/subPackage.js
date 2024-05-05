@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 
 export default function SubscriptionPackages() {
   const [selectedPackage, setSelectedPackage] = useState(null);
-  
+
   const [packageData, setPackageData] = useState([]);
 
   const handlePackage = async () => {
@@ -44,13 +44,12 @@ export default function SubscriptionPackages() {
   }, []);
 
   const handlePackageClick = (pkg) => {
-    if (selectedPackage && selectedPackage.id === pkg.id) {
-      setSelectedPackage(null); // Deselect the package if it's already selected
+    if (selectedPackage && selectedPackage.package_id === pkg.package_id) {
+      setSelectedPackage(null);
     } else {
-      setSelectedPackage(pkg); // Select the clicked package
+      setSelectedPackage(pkg);
     }
   };
-  
 
   return (
     <>
@@ -62,12 +61,13 @@ export default function SubscriptionPackages() {
         className="px-32 py-10"
       >
         {packageData.map((pkg) => (
-          <Grid item xs={12} sm={6} md={4} key={pkg.id}>
+          <Grid key={pkg.package_id} item xs={12} sm={6} md={4}>
             <Card
               style={{
                 borderRadius: "20px",
                 border: `2px solid ${
-                  selectedPackage && selectedPackage.id === pkg.id
+                  selectedPackage &&
+                  selectedPackage.package_id === pkg.package_id
                     ? "#3867A5"
                     : "#DFEDFF"
                 }`,
@@ -107,7 +107,7 @@ export default function SubscriptionPackages() {
                       </li>
                       <li>
                         <h1> {pkg.slot_server} servers</h1>
-                      </li>               
+                      </li>
                     </ul>
                   </span>
 
@@ -128,11 +128,13 @@ export default function SubscriptionPackages() {
                       variant="contained"
                       style={{
                         backgroundColor:
-                          selectedPackage && selectedPackage.id === pkg.id
+                          selectedPackage &&
+                          selectedPackage.package_id === pkg.package_id
                             ? "#3867A5"
                             : "white",
                         color:
-                          selectedPackage && selectedPackage.id === pkg.id
+                          selectedPackage &&
+                          selectedPackage.package_id === pkg.package_id
                             ? "white"
                             : "#3867A5",
                         margin: "auto",
