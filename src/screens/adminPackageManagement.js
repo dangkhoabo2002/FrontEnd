@@ -98,6 +98,66 @@ export default function AdminPackageManagement() {
         },
       });
     } else {
+      // Regular expression to validate positive integers
+      const positiveIntegerRegex = /^[1-9]\d*$/;
+      // Regular expression to validate price as positive decimal with two decimal places
+      const priceRegex = /^\d+(\.\d{1,2})?$/;
+  
+      // Check if slot number is a positive integer
+      if (!positiveIntegerRegex.test(packageAdd.slot_number)) {
+        toast.error("Slot number must be a positive integer!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+        return;
+      }
+  
+      // Check if slot server is a positive integer
+      if (!positiveIntegerRegex.test(packageAdd.slot_server)) {
+        toast.error("Slot server must be a positive integer!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+        return;
+      }
+  
+      // Check if duration is a positive integer
+      if (!positiveIntegerRegex.test(packageAdd.duration)) {
+        toast.error("Duration must be a positive integer!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+        return;
+      }
+  
+      // Check if price is a positive decimal with two decimal places
+      if (!priceRegex.test(packageAdd.price)) {
+        toast.error("Price must be a positive decimal with two decimal places!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+        return;
+      }
       try {
         toast.loading("Adding new package...");
         const customerUrl = `http://127.0.0.1:5000/package/add`;
@@ -563,7 +623,7 @@ export default function AdminPackageManagement() {
                 variant="outlined"
                 value={packageAdd.price}
                 onChange={(e) =>
-                  setPackageAdd({ ...packageAdd, price: e.target.value })
+                  setPackageAdd({ ...packageAdd, price: e.target.value.replace(/[^\d.]/g, '') }) 
                 }
                 InputProps={{
                   startAdornment: (

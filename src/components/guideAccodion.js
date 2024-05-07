@@ -37,9 +37,6 @@ export default function AccordionExpandIcon() {
     guide.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  useEffect(() => {
-    handleGuide().finally(() => setLoading(false));
-  }, []);
 
   const openPopup = (guide) => {
     setSelectedGuide(guide);
@@ -54,6 +51,27 @@ export default function AccordionExpandIcon() {
       closePopup();
     }
   };
+
+  const [technologyImages, setTechnologyImages] = useState([]);
+
+  useEffect(() => {
+    handleGuide().finally(() => setLoading(false));
+
+    const fixedTechnologyImages = [
+      "https://www.simplilearn.com/ice9/free_resources_article_thumb/Technology_Trends.jpg",
+      "https://imageio.forbes.com/specials-images/imageserve/61d52d4e3a76ed81ac034ea8/The-10-Tech-Trends-That-Will-Transform-Our-World/960x0.jpg?height=399&width=711&fit=bounds",
+      "https://www.globalfocusmagazine.com/wp-content/uploads/2020/02/Engaging_with_technology-scaled.jpg",
+      "https://www.crowe.com/-/media/crowe/llp/sc10-media/insights/articles/2023/content-2000x1125/contentmktmt2300002bfy23-markets-technology-awareness--whats-next-for-tech--thought-leadershipas3639.jpg?rev=025a044aa9394515a261e9c6242045cb",
+      "https://d19d5sz0wkl0lu.cloudfront.net/dims4/default/22cfd11/2147483647/resize/800x%3E/quality/90/?url=https%3A%2F%2Fatd-brightspot.s3.amazonaws.com%2F56%2F5e%2F0b3cdc9c4126a6da872014b96248%2Fadobestock-152613619.jpg",
+      "https://cdn.lawnet.vn/nhch-images/images/2023/LTP/thang1/business-information-technology.jpg",
+      "https://sandpipercomms.com/wp-content/uploads/2021/08/shutterstock_1932042689-scaled.jpg",
+      "https://d1y8sb8igg2f8e.cloudfront.net/images/7_things_you_should_read_about_technologys_rol.width-800.jpg",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTm0tHJ4BM9QG3tNfF5lIOxK3tlZO3xXRRm_A&usqp=CAU",
+      "https://res.edu.vn/wp-content/uploads/2021/12/ielts-writing-task-2-topic-technology.jpg",
+    ];
+    setTechnologyImages([...fixedTechnologyImages]);
+  }, []);
+
 
   return (
     <div>
@@ -96,34 +114,34 @@ export default function AccordionExpandIcon() {
         <Typography className="text-red-500">Error: {error.message}</Typography>
       )}
       {!loading && !error && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {filteredData.map((guide, index) => (
-            <div
-              key={index}
-              className="bg-white border border-gray-200 rounded-lg shadow hover:shadow-md cursor-pointer"
-              onClick={() => openPopup(guide)}
-            >
-              <img
-                loading="lazy"
-                className="rounded-t-lg object-cover w-full h-48 p-2 "
-                style={{ borderRadius: "10px" }}
-                src={issue}
-                alt="imgCard"
-              />
-              <div className="p-4">
-                <h5
-                  className="mb-2 text-xl-center font-bold text-gray-900 dark:text-white"
-                  style={{ textAlign: "center" }}
-                >
-                  {guide.title}
-                </h5>
-              </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {filteredData.map((guide, index) => (
+          <div
+            key={index}
+            className="bg-white border border-gray-200 rounded-lg shadow hover:shadow-md cursor-pointer"
+            onClick={() => openPopup(guide)}
+          >
+            <img
+              loading="lazy"
+              className="rounded-t-lg object-cover w-full h-48 p-2 "
+              style={{ borderRadius: "10px" }}
+              src={technologyImages[index % technologyImages.length]}
+              alt="imgCard"
+            />
+            <div className="p-4">
+              <h5
+                className="mb-2 text-xl-center font-bold text-gray-900 dark:text-white"
+                style={{ textAlign: "center" }}
+              >
+                {guide.title}
+              </h5>
             </div>
-          ))}
-        </div>
-      )}
+          </div>
+        ))}
+      </div>
+    )}
 
-      {selectedGuide && (
+{selectedGuide && (
         <div
           className="fixed top-0 left-0 z-50 w-full h-full bg-gray-700 bg-opacity-50 flex justify-center items-center"
           onClick={handlePopupClick}
@@ -132,7 +150,7 @@ export default function AccordionExpandIcon() {
             <div className="flex items-center">
               <img
                 loading="lazy"
-                className="rounded-lg object-cover	 w-full h-80   mr-10"
+                className="rounded-lg object-cover w-full h-80 mr-10"
                 src={issue}
                 alt="imgPopup"
               />

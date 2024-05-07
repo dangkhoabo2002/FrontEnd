@@ -4,17 +4,22 @@ import NavigationAdmin from "../components/navAdmin";
 import "../css/Admin.css";
 import Button from "@mui/material/Button";
 import toast, { Toaster } from "react-hot-toast";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+
 
 export default function AdminAccountManagement() {
   const [customerList, setCustomerList] = useState();
   const [selectedCustomers, setSelectedCustomers] = useState([]);
 
   const handleClickSelectUser = (customerId) => {
-    // Kiểm tra xem customerId đã tồn tại trong danh sách chưa
     const isAlreadySelected = selectedCustomers.includes(customerId);
-
-    // Nếu customerId đã được chọn, loại bỏ nó khỏi danh sách đã chọn
-    // Ngược lại, thêm nó vào danh sách đã chọn
     if (isAlreadySelected) {
       setSelectedCustomers(selectedCustomers.filter((id) => id !== customerId));
     } else {
@@ -22,9 +27,6 @@ export default function AdminAccountManagement() {
     }
   };
 
-  const handleClickOpenRemoveUser = () => {
-    setOpen(true);
-  };
   const [open, setOpen] = React.useState(false);
 
   const handleGetCustomer = async () => {
@@ -65,6 +67,36 @@ export default function AdminAccountManagement() {
   useEffect(() => {
     handleGetCustomer();
   }, []);
+
+  // CHANGE STATUS USER
+  const [openChangeStatus, setOpenChangeStatus] = useState(false);
+
+  const handleOpenChangeStatus = () => {
+    setOpenChangeStatus(true);
+  };
+
+  const handleChangeStatusClose = () => {
+    setOpenChangeStatus(false);
+  };
+  const handleChangeStatus = () => {
+    // API HERE
+    handleChangeStatusClose();
+  };
+
+  // DELETE USER ACCOUNT
+  const [openDelete, setOpenDelete] = useState(false);
+  const [currentUser, setCurrentUser] = useState("");
+
+  const handleClickOpenRemoveUser = (id) => {
+    setCurrentUser(id);
+    setOpenDelete(true);
+  };
+  const handleCloseDelete = () => {
+    setOpenDelete(false);
+  };
+  const handleDeleteUser = async () => {
+    handleCloseDelete();
+  }
 
   return (
     <div className="">
@@ -132,7 +164,7 @@ export default function AdminAccountManagement() {
                     <td>{customer.email}</td>
                     <td>
                       <Button
-                        onClick={() => handleClickOpenRemoveUser()}
+                        onClick={() => handleClickOpenRemoveUser(customer.id)}
                         variant="contained"
                         sx={{
                           width: "100px",
@@ -165,6 +197,7 @@ export default function AdminAccountManagement() {
                               fontWeight: "normal",
                               textTransform: "none",
                             }}
+                            onClick={handleOpenChangeStatus}
                           >
                             Active
                           </Button>
@@ -186,6 +219,7 @@ export default function AdminAccountManagement() {
                               fontWeight: "normal",
                               textTransform: "none",
                             }}
+                            onClick={handleOpenChangeStatus}
                           >
                             Inative
                           </Button>
@@ -195,6 +229,44 @@ export default function AdminAccountManagement() {
                   </tr>
                 ))}
               </tbody>
+              {/* DIALOG CONFIRM CHANGE STATUS */}
+              <Dialog open={openChangeStatus} onClose={handleChangeStatusClose}>
+                <DialogTitle>Confirmation</DialogTitle>
+                <DialogContent>
+                  <DialogContentText>
+                    Are you sure you want to change the status?
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleChangeStatusClose}>Cancel</Button>
+                  <Button
+                    onClick={handleChangeStatus}
+                    variant="contained"
+                    autoFocus
+                  >
+                    Confirm
+                  </Button>
+                </DialogActions>
+              </Dialog>
+
+              {/* DIALOG DELETE USER */}
+              <Dialog
+                open={openDelete}
+                onClose={handleCloseDelete}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+                <DialogTitle id="alert-dialog-title">
+                  {"Do you want to remove this guide ?"}
+                </DialogTitle>
+
+                <DialogActions>
+                  <Button onClick={handleCloseDelete}>No</Button>
+                  <Button onClick={handleDeleteUser}>
+                    <p className="text-red">Yes</p>
+                  </Button>
+                </DialogActions>
+              </Dialog>
             </table>
 
             {/*-------------- END OF Account Table ---------------- */}
