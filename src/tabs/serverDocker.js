@@ -900,7 +900,7 @@ export default function ServerDocker(serverId) {
 
         {/* Table of containers */}
         <div
-          style={{ height: 400, border: "1px solid #89A6CC" }}
+          style={{ height: 400, border: "1px solid #89A6CC" }}a
           className="bg-[white] rounded-md shadow-lg"
         >
           <DataGrid

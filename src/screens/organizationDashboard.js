@@ -592,7 +592,31 @@ export default function OrganizationDashboard() {
             description: data.description,
           }),
         });
-        if (response.status === 200) {
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const phoneRegex = /^\d{10}$/;
+
+        if (!emailRegex.test(data.contact_email)) {
+          toast.error("Invalid email format!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (!phoneRegex.test(data.contact_phone)) {
+          toast.error("Invalid phone number format!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 200) {
           handleGetOrgData();
           toast.success("Update organization successfully.", {
             style: {
