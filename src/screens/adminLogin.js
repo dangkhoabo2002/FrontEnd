@@ -3,6 +3,7 @@ import { TextField, Button } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useNavigate } from "react-router-dom";
 import bgLogin from "../images/loginBackgr.png";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function AdminLogin() {
   const navigate = useNavigate();
@@ -20,7 +21,15 @@ export default function AdminLogin() {
 
     // dont let usname pw null
     if (!manager_username || !manager_password) {
-      alert("Please enter both username and password.");
+      toast.error("Please enter your username & password!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
+        },
+      });
       return;
     }
 
@@ -46,9 +55,25 @@ export default function AdminLogin() {
         localStorage.setItem("access_token", data.access_token);
         navigate("/admin");
       } else if (response.status === 401) {
-        alert("Invalid Username & Password");
+        toast.error("Incorrect username or password!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       } else {
-        alert("Something wrong");
+        toast.error("Something wrong, please try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
     } catch (error) {
       console.error("Error:", error);
@@ -66,6 +91,8 @@ export default function AdminLogin() {
         justifyContent: "center",
       }}
     >
+      <Toaster position="bottom-right" reverseOrder={false} />
+
       <div
         style={{
           width: "70%",

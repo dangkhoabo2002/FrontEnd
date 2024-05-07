@@ -247,8 +247,49 @@ export default function OrganizationDashboard() {
       if (response.status === 200) {
         const orgData = await response.json();
         setOrganizations(orgData);
+      } else if (response.status === 400) {
+        toast.error(
+          "Organization is not defined, please go back and try again!",
+          {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          }
+        );
+      } else if (response.status === 403) {
+        toast.error("Permission denied!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 500) {
+        toast.error("Failed to get Users & Roles, please try again!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       } else {
-        alert("Get Fail");
+        toast.error("Something wrong, please try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
     } catch (error) {
       console.error("Error:", error);
@@ -562,7 +603,7 @@ export default function OrganizationDashboard() {
       data?.contact_phone === "" ||
       data?.contact_email === ""
     ) {
-      toast.error("The information can not be empty!", {
+      toast.error("Please fill necessary information to update!", {
         style: {
           border: "1px solid #F85F60",
           maxWidth: "900px",

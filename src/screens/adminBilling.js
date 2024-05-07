@@ -27,7 +27,8 @@ export default function AdminBillings() {
         <div
           style={{
             display: "flex",
-            flexDirection: "column", height: "70vh"
+            flexDirection: "column",
+            height: "70vh",
           }}
         >
           <SidebarAdmin />
@@ -47,7 +48,10 @@ export default function AdminBillings() {
 
           {/*-------------- Billing Table ---------------- */}
 
-          <div className="bg-white mt-4 rounded-md px-8 pb-8 shadow-md" style={{ border: "1px solid #89A6CC" }}>
+          <div
+            className="bg-white mt-4 rounded-md px-8 pb-8 shadow-md"
+            style={{ border: "1px solid #89A6CC" }}
+          >
             <table class="table-auto w-full ">
               <thead>
                 <tr>
@@ -115,22 +119,22 @@ export default function AdminBillings() {
               <div className="popup">
                 <div className="popup_content">
                   <h1>Billing Information</h1>
-                  <div className="billingInfo">
+                  <div className="flex flex-row justify-start py-10 gap-12">
                     <div className="leftInfo">
-                      <h2>Id:</h2>
-                      <h2>Date:</h2>
                       <h2>Username:</h2>
                       <h2>Package type:</h2>
                       <h2>Transaction fee:</h2>
+                      <h2>Id:</h2>
+                      <h2>Date:</h2>
                       <h2>Status</h2>
                       <h2>Total</h2>
                     </div>
                     <div className="rightInfo">
-                      <h2>{Billing.id}</h2>
-                      <h2>{Billing.date}</h2>
                       <h2>{Billing.username}</h2>
                       <h2>{Billing.type_of_package}</h2>
                       <h2>{Billing.transaction_fee}$</h2>
+                      <h2>{Billing.id}</h2>
+                      <h2>{Billing.date}</h2>
                       <h2>{Billing.status}</h2>
                       <h2>{Billing.total}$</h2>
                     </div>

@@ -79,7 +79,6 @@ export default function AdminRoleManagement() {
   };
 
   const handleAddRole = async () => {
-    toast.loading("In processing...");
     const customerUrl = `http://127.0.0.1:5000/role/add`;
     const token = localStorage.getItem("access_token");
 
@@ -95,6 +94,7 @@ export default function AdminRoleManagement() {
       });
     } else {
       try {
+        toast.loading("In processing...");
         const response = await fetch(customerUrl, {
           method: "POST",
           credentials: "include",
@@ -358,8 +358,8 @@ export default function AdminRoleManagement() {
         <div
           style={{
             display: "flex",
-            flexDirection: "column",            height: "70vh",
-
+            flexDirection: "column",
+            height: "70vh",
           }}
         >
           <SidebarAdmin />
@@ -532,7 +532,7 @@ export default function AdminRoleManagement() {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={clickCloseAddRole}>Cancel</Button>
+          <Button onClick={clickCloseEdit}>Cancel</Button>
           <Button onClick={handleEditRole}>Confirm</Button>
         </DialogActions>
       </Dialog>

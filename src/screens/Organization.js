@@ -42,7 +42,7 @@ export default function LandingPage() {
     }
   };
   const handleCloseModal = () => setOpenModal(false);
-    
+
   const handleClose = () => setAddOrg(false);
 
   const [orgList, setOrgList] = useState();
@@ -287,39 +287,6 @@ export default function LandingPage() {
   };
 
   // GET MEMBER IN ORG
-  const handleGetMemberInOrg = async () => {
-    const getMemberUrl =
-      "http://127.0.0.1:5000/org/get_server_in_organization/${organization_id}";
-    const token = localStorage.getItem("access_token");
-
-    try {
-      const response = await fetch(getMemberUrl, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Credentials": "true",
-        },
-        body: JSON.stringify({
-          name: data.name,
-          contact_phone: data.contact_phone,
-          contact_email: data.contact_email,
-          description: data.description,
-        }),
-      });
-      if (response.status === 200) {
-        alert("Add server success");
-        handleShowOrganization();
-      } else {
-        alert("Add server fail");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    } finally {
-    }
-  };
 
   return (
     <div className="" style={{ backgroundColor: "#f3f3fb", height: "100vh" }}>
@@ -370,44 +337,44 @@ export default function LandingPage() {
           </ColorButton>
 
           <Modal
-        open={openModal}
-        onClose={handleCloseModal}
-        aria-labelledby="modal-title"
-        aria-describedby="modal-description"
-      >
-        <Box
-          sx={{
-            justifyContent: "center",
-            textAlign: "center",
-            alignItems: "center",
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 400,
-            borderRadius: "15px",
-            bgcolor: "background.paper",
-            boxShadow: 24,
-            p: 4,
-          }}
-        >
-          <div className="flex flex-row justify-center mb-5">
-            <img loading="lazy" src={nonIcon} style={{ width: "50px" }} />
-          </div>
-          <Typography id="modal-title" variant="h6" component="h2">
-            Package is not activated yet!
-          </Typography>
-          <Typography id="modal-description" sx={{ mt: 2 }}>
-            Please purchase the package to activate the function and have the
-            best experience.
-          </Typography>
-          <Link to={"../subscribe"}>
-            <div className="mt-5">
-              <SubBtn sx={{}} />
-            </div>
-          </Link>
-        </Box>
-      </Modal>
+            open={openModal}
+            onClose={handleCloseModal}
+            aria-labelledby="modal-title"
+            aria-describedby="modal-description"
+          >
+            <Box
+              sx={{
+                justifyContent: "center",
+                textAlign: "center",
+                alignItems: "center",
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                width: 400,
+                borderRadius: "15px",
+                bgcolor: "background.paper",
+                boxShadow: 24,
+                p: 4,
+              }}
+            >
+              <div className="flex flex-row justify-center mb-5">
+                <img loading="lazy" src={nonIcon} style={{ width: "50px" }} />
+              </div>
+              <Typography id="modal-title" variant="h6" component="h2">
+                Package is not activated yet!
+              </Typography>
+              <Typography id="modal-description" sx={{ mt: 2 }}>
+                Please purchase the package to activate the function and have
+                the best experience.
+              </Typography>
+              <Link to={"../subscribe"}>
+                <div className="mt-5">
+                  <SubBtn sx={{}} />
+                </div>
+              </Link>
+            </Box>
+          </Modal>
 
           <Modal
             keepMounted
@@ -663,7 +630,6 @@ export default function LandingPage() {
           </Modal>
         </div>
       </div>
-
     </div>
   );
 }

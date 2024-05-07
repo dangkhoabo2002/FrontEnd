@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import SupervisorAccountOutlinedIcon from '@mui/icons-material/SupervisorAccountOutlined';
+import SupervisorAccountOutlinedIcon from "@mui/icons-material/SupervisorAccountOutlined";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import InventoryIcon from "@mui/icons-material/Inventory";
-import BookIcon from '@mui/icons-material/Book';
-import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined';
+import BookIcon from "@mui/icons-material/Book";
+import ManageAccountsOutlinedIcon from "@mui/icons-material/ManageAccountsOutlined";
 
 export default function SidebarAdmin() {
   const [selectedMenu, setSelectedMenu] = useState("account");
@@ -77,7 +77,7 @@ export default function SidebarAdmin() {
                   className="text-xl font-semibold"
                   style={{ fontSize: "18px" }}
                 >
-                  Billings
+                  Billing Management
                 </p>
               </section>
             </Link>

@@ -137,8 +137,37 @@ export default function UserProfile() {
       if (response.status === 200) {
         const userData = await response.json();
         setUserProfile(userData);
+      } else if (response.status === 403) {
+        const error = await response.json();
+        toast.error(`${error.message}!`, {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 401) {
+        toast.error("Please login first!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       } else {
-        alert("Get Fail");
+        toast.error("Something wrong, please try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
     } catch (error) {
       console.error("Error:", error);
@@ -172,7 +201,11 @@ export default function UserProfile() {
 
   // SEND OTP
   const handleSendOtp = async () => {
-    if (userProfile.email === "") {
+    if (
+      userProfile?.email === "" ||
+      userProfile?.email === null ||
+      userProfile?.email === undefined
+    ) {
       toast.error("Not found account's email!", {
         style: {
           border: "1px solid #F85F60",
@@ -312,7 +345,7 @@ export default function UserProfile() {
 
   // RESEND OTP
   const handleResendOtp = async () => {
-    if (userProfile.email) {
+    if (userProfile?.email) {
       toast.loading(" OTP is being sent to your email...");
       const changeUrl = "http://127.0.0.1:5000/auth/resend_otp";
       try {
@@ -365,7 +398,11 @@ export default function UserProfile() {
         console.error("Error:", error);
       } finally {
       }
-    } else if (userProfile.email === "") {
+    } else if (
+      userProfile?.email === "" ||
+      userProfile?.email === null ||
+      userProfile?.email === undefined
+    ) {
       toast.error("Email is not collected!", {
         style: {
           border: "1px solid #F85F60",

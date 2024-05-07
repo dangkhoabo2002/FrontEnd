@@ -40,6 +40,7 @@ export default function AlertDialogSlide() {
         },
       });
       if (response.status === 200) {
+        localStorage.removeItem("access_token");
         localStorage.removeItem("login_token");
         navigate("/");
       } else {

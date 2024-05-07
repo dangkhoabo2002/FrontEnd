@@ -55,8 +55,56 @@ export default function OrganizationCard({ id, name, description }) {
       if (response.status === 200) {
         const orgData = await response.json();
         setOrganizations(orgData);
+      } else if (response.status === 400) {
+        toast.error("Unindentified organization, please Login again!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 403) {
+        toast.error("Permission denied!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 404) {
+        toast.error("Organization not found!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 500) {
+        toast.error("Fail to get organization data!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       } else {
-        alert("Get Fail");
+        toast.error("Something wrong, please try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
     } catch (error) {
       console.error("Error:", error);
@@ -146,27 +194,27 @@ export default function OrganizationCard({ id, name, description }) {
       <Toaster position="bottom-right" reverseOrder={false} />
       {/* Online indicator */}
       {organizations && (
-  <div
-    style={{
-      position: "absolute",
-      top: "10px",
-      right: "10px",
-      width: "20px",
-      height: "20px",
-      borderRadius: "50%",
-      zIndex: 1,
-      overflow: "hidden",
-    }}
-  >
-    <i
-      className={
-        organizations[0].organization_status === "ACTIVE"
-          ? "status-icon positive"
-          : "status-icon2 negative"
-      }
-    ></i>
-  </div>
-)}
+        <div
+          style={{
+            position: "absolute",
+            top: "10px",
+            right: "10px",
+            width: "20px",
+            height: "20px",
+            borderRadius: "50%",
+            zIndex: 1,
+            overflow: "hidden",
+          }}
+        >
+          <i
+            className={
+              organizations[0].organization_status === "ACTIVE"
+                ? "status-icon positive"
+                : "status-icon2 negative"
+            }
+          ></i>
+        </div>
+      )}
 
       <Grid
         container

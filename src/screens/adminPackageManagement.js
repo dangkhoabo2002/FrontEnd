@@ -78,7 +78,7 @@ export default function AdminPackageManagement() {
     }
   };
 
-  // GET ADD PKG
+  // ADD PKG
   const handleAddPackage = async () => {
     if (
       packageAdd.package_name === "" ||
@@ -99,7 +99,7 @@ export default function AdminPackageManagement() {
       });
     } else {
       try {
-        toast.loading("In processing...");
+        toast.loading("Adding new package...");
         const customerUrl = `http://127.0.0.1:5000/package/add`;
         const token = localStorage.getItem("access_token");
         const response = await fetch(customerUrl, {
@@ -118,6 +118,7 @@ export default function AdminPackageManagement() {
             price: packageAdd.price,
             slot_number: packageAdd.slot_number,
             slot_server: packageAdd.slot_server,
+            status: true,
           }),
         });
         if (response.status === 201) {
@@ -149,6 +150,18 @@ export default function AdminPackageManagement() {
           toast.dismiss();
 
           toast.error("Missing name or description!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 401) {
+          toast.dismiss();
+
+          toast.error("401!", {
             style: {
               border: "1px solid #F85F60",
               maxWidth: "900px",
@@ -241,8 +254,9 @@ export default function AdminPackageManagement() {
 
   // EDIT GUIDE
 
-  const [currentPackage, setCurrentPackage] = useState("");
   const [openEdit, setOpenEdit] = useState(false);
+  const [packageId_edit, setPackageId_edit] = useState();
+
   const [currentEditPackage, setCurrentEditPackage] = useState({
     package_name: "",
     description: "",
@@ -253,15 +267,23 @@ export default function AdminPackageManagement() {
   });
 
   const handleClickOpenEditPackage = (package_id) => {
-    setCurrentPackage(package_id);
+    setPackageId_edit(package_id);
     setOpenEdit(true);
   };
   const handleCloseEditPackage = () => {
-    setCurrentEditPackage({ title: "", content: "" });
+    setCurrentEditPackage({
+      package_name: "",
+      description: "",
+      duration: "",
+      price: "",
+      slot_number: "",
+      slot_server: "",
+    });
+    setPackageId_edit("");
     setOpenEdit(false);
   };
 
-  const handleChangeEditGuide = (prop) => (event) => {
+  const handleChangeEditPackage = (prop) => (event) => {
     setCurrentEditPackage({
       ...currentEditPackage,
       [prop]: event.target.value,
@@ -269,8 +291,9 @@ export default function AdminPackageManagement() {
   };
 
   const handleEditPackage = async () => {
-    if (currentPackage) {
-      const editUrl = `http://127.0.0.1:5000/package/update/${currentPackage}`;
+    if (packageId_edit) {
+      toast.loading("In processing...");
+      const editUrl = `http://127.0.0.1:5000/package/update/${packageId_edit}`;
       const token = localStorage.getItem("access_token");
 
       try {
@@ -290,10 +313,12 @@ export default function AdminPackageManagement() {
             price: currentEditPackage.price,
             slot_number: currentEditPackage.slot_number,
             slot_server: currentEditPackage.slot_server,
+            status: true,
           }),
         });
         if (response.status === 200) {
-          toast.success("Edit pakage sucessfully!", {
+          toast.dismiss();
+          toast.success("Edit package sucessfully.", {
             style: {
               border: "1px solid #37E030",
               maxWidth: "900px",
@@ -310,10 +335,12 @@ export default function AdminPackageManagement() {
             price: "",
             slot_number: "",
             slot_server: "",
+            status: true,
           });
           handleCloseEditPackage();
         } else if (response.status === 400) {
-          toast.error("Package is not selected!", {
+          toast.dismiss();
+          toast.error("Missing some fields, please try again!", {
             style: {
               border: "1px solid #F85F60",
               maxWidth: "900px",
@@ -323,6 +350,8 @@ export default function AdminPackageManagement() {
             },
           });
         } else if (response.status === 403) {
+          toast.dismiss();
+
           toast.error("Permission denied!", {
             style: {
               border: "1px solid #F85F60",
@@ -333,6 +362,8 @@ export default function AdminPackageManagement() {
             },
           });
         } else if (response.status === 500) {
+          toast.dismiss();
+
           toast.error("Failed to update package!", {
             style: {
               border: "1px solid #F85F60",
@@ -343,6 +374,8 @@ export default function AdminPackageManagement() {
             },
           });
         } else {
+          toast.dismiss();
+
           toast.error("Something wrong, please try again later!", {
             style: {
               border: "1px solid #F85F60",
@@ -369,7 +402,6 @@ export default function AdminPackageManagement() {
       });
     }
   };
-
   useEffect(() => {
     handleGetPackage();
   }, []);
@@ -423,7 +455,6 @@ export default function AdminPackageManagement() {
             <table class="table-auto w-full ">
               <thead>
                 <tr>
-                  <th>ID</th>
                   <th>NAME</th>
                   <th>PRICE</th>
                   <th>DESCRIPTION</th>
@@ -447,7 +478,6 @@ export default function AdminPackageManagement() {
                 </tr>
                 {Package.map((pkg) => (
                   <tr key={pkg.package_id}>
-                    <td>{pkg.package_id}</td>
                     <td>{pkg.package_name}</td>
                     <td>{pkg.price}$</td>
                     <td>{pkg.description}</td>
@@ -654,7 +684,7 @@ export default function AdminPackageManagement() {
                 type="text"
                 fullWidth
                 variant="outlined"
-                onChange={handleChangeEditGuide("package_name")}
+                onChange={handleChangeEditPackage("package_name")}
                 value={currentEditPackage.package_name}
               />
 
@@ -668,7 +698,7 @@ export default function AdminPackageManagement() {
                 name="pkg"
                 type="Description"
                 fullWidth
-                onChange={handleChangeEditGuide("description")}
+                onChange={handleChangeEditPackage("description")}
                 value={currentEditPackage.description}
               />
               <TextField
@@ -680,7 +710,7 @@ export default function AdminPackageManagement() {
                 type="text"
                 fullWidth
                 variant="outlined"
-                onChange={handleChangeEditGuide("duration")}
+                onChange={handleChangeEditPackage("duration")}
                 value={currentEditPackage.duration}
               />
               <TextField
@@ -692,7 +722,7 @@ export default function AdminPackageManagement() {
                 type="text"
                 fullWidth
                 variant="outlined"
-                onChange={handleChangeEditGuide("price")}
+                onChange={handleChangeEditPackage("price")}
                 value={currentEditPackage.price}
               />
               <TextField
@@ -704,7 +734,7 @@ export default function AdminPackageManagement() {
                 type="text"
                 fullWidth
                 variant="outlined"
-                onChange={handleChangeEditGuide("slot_number")}
+                onChange={handleChangeEditPackage("slot_number")}
                 value={currentEditPackage.slot_number}
               />
               <TextField
@@ -716,7 +746,7 @@ export default function AdminPackageManagement() {
                 type="text"
                 fullWidth
                 variant="outlined"
-                onChange={handleChangeEditGuide("slot_server")}
+                onChange={handleChangeEditPackage("slot_server")}
                 value={currentEditPackage.slot_server}
               />
             </DialogContent>

@@ -290,34 +290,82 @@ export default function AdminGuide() {
   };
 
   const handleAddGuide = async () => {
-    const addUrl = "http://127.0.0.1:5000/guide/add";
-    const token = localStorage.getItem("access_token");
-
-    try {
-      const response = await fetch(addUrl, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Credentials": "true",
+    if (guideAdd.title === "" || guideAdd.content === "") {
+      toast.error("Please input both title & content!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
         },
-        body: JSON.stringify({
-          title: guideAdd.title,
-          content: guideAdd.content,
-        }),
       });
-      if (response.status === 201) {
-        handleGetGuide();
-        alert("Add guide success");
-        handleCloseAddGuide();
-      } else {
-        alert("Add guide fail");
+    } else {
+      const addUrl = "http://127.0.0.1:5000/guide/add";
+      const token = localStorage.getItem("access_token");
+
+      try {
+        const response = await fetch(addUrl, {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Credentials": "true",
+          },
+          body: JSON.stringify({
+            title: guideAdd.title,
+            content: guideAdd.content,
+          }),
+        });
+        if (response.status === 201) {
+          handleGetGuide();
+          toast.success("Add guide successfully.", {
+            style: {
+              border: "1px solid #37E030",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "green",
+              fontWeight: "bolder",
+            },
+          });
+          handleCloseAddGuide();
+        } else if (response.status === 403) {
+          toast.error("Permission denied!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 400) {
+          toast.error("Missing required field!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 500) {
+          toast.error("Fail to add guide!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
       }
-    } catch (error) {
-      console.error("Error:", error);
-    } finally {
     }
   };
 
