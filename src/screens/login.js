@@ -207,18 +207,14 @@ export default function Login() {
               </div>
             </div>
 
-            <Box
-              className="mt-3"
-              sx={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)" }}
-            >
-              <div className="mt-2 font-semibold" style={{ textAlign: "left" }}>
+
+              <div className="mt-2 font-semibold" style={{ color: "#3867A5" }}>
                 <Link to={`/login/forgotPassword`}>
-                  <p style={{ color: "#3867A5" }}>
-                    <button>Forgot password?</button>
-                  </p>
+                  {/* <p style={{ color: "#3867A5" }}> */}
+                    Forgot password?
+                  {/* </p> */}
                 </Link>
               </div>
-            </Box>
             <div className="loginBtn text-center mt-3">
               <Button
                 style={{
@@ -240,10 +236,8 @@ export default function Login() {
             >
               <p className="small fw-bold mt-2 pt-1 flex ">
                 Don't have an account?{" "}
-                <Link to={"/signUp"}>
-                  <p style={{ color: "#3867A5", marginLeft: "5px" }}>
-                    <button>Get started</button>
-                  </p>
+                <Link to={"/signUp"} style={{ color: "#3867A5", marginLeft: "5px" }}>
+                    Get started
                 </Link>
               </p>
             </div>
