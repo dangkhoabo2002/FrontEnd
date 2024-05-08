@@ -212,14 +212,8 @@ export default function LandingPage() {
 
   // Khoa code
   const handleChange = (prop) => (event) => {
-    // Kiểm tra xem giá trị nhập vào có phải là số không và không là số âm
-    if (/^\d+$/.test(event.target.value) && parseInt(event.target.value) >= 0) {
-      // Nếu điều kiện đúng, cập nhật giá trị cho trường số điện thoại
-      setData({ ...data, [prop]: event.target.value });
-    }
+    setData({ ...data, [prop]: event.target.value });
   };
-  
-  
 
   const OrgCard = {};
   const [data, setData] = useState({
@@ -424,8 +418,6 @@ export default function LandingPage() {
                 <Grid item xs={12} md={8}>
                   <FormControl fullWidth variant="outlined">
                     <OutlinedInput
-
-
                       inputProps={{
                         "aria-label": "Organization name",
                       }}
@@ -464,13 +456,17 @@ export default function LandingPage() {
                 <Grid item xs={12} md={8}>
                   <FormControl fullWidth variant="outlined">
                     <TextField
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                           <img src={VNFlag} alt="Vietnam Flag" style={{ width: '24px', height: 'auto' }} />
-                        </InputAdornment>
-                      ),
-                    }}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <img
+                              src={VNFlag}
+                              alt="Vietnam Flag"
+                              style={{ width: "24px", height: "auto" }}
+                            />
+                          </InputAdornment>
+                        ),
+                      }}
                       inputProps={{
                         // startAdornment: (
                         //   <InputAdornment position="start">$</InputAdornment>
