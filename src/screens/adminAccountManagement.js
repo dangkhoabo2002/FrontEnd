@@ -257,7 +257,7 @@ export default function AdminAccountManagement() {
                 aria-describedby="alert-dialog-description"
               >
                 <DialogTitle id="alert-dialog-title">
-                  {"Do you want to remove this guide ?"}
+                  {"Do you want to remove this account?"}
                 </DialogTitle>
 
                 <DialogActions>
