@@ -96,7 +96,6 @@ export default function Login() {
       }
     }
   };
-
   return (
     <>
       <Toaster position="bottom-right" reverseOrder={false} />
@@ -207,14 +206,13 @@ export default function Login() {
               </div>
             </div>
 
-
-              <div className="mt-2 font-semibold" style={{ color: "#3867A5" }}>
-                <Link to={`/login/forgotPassword`}>
-                  {/* <p style={{ color: "#3867A5" }}> */}
-                    Forgot password?
-                  {/* </p> */}
-                </Link>
-              </div>
+            <div className="mt-2 font-semibold" style={{ color: "#3867A5" }}>
+              <Link to={`/login/forgotPassword`}>
+                {/* <p style={{ color: "#3867A5" }}> */}
+                Forgot password?
+                {/* </p> */}
+              </Link>
+            </div>
             <div className="loginBtn text-center mt-3">
               <Button
                 style={{
@@ -236,8 +234,11 @@ export default function Login() {
             >
               <p className="small fw-bold mt-2 pt-1 flex ">
                 Don't have an account?{" "}
-                <Link to={"/signUp"} style={{ color: "#3867A5", marginLeft: "5px" }}>
-                    Get started
+                <Link
+                  to={"/signUp"}
+                  style={{ color: "#3867A5", marginLeft: "5px" }}
+                >
+                  Get started
                 </Link>
               </p>
             </div>

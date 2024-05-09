@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 
 // MUI
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -58,8 +59,46 @@ export default function UserServerConfig() {
       if (response.status === 200) {
         const server = await response.json();
         setServerData(server);
+      } else if (response.status === 400) {
+        toast.error("Missing server information!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 403) {
+        toast.error("Permission denied!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 404) {
+        toast.error("Server not found!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       } else {
-        alert("Update Fail");
+        toast.error("Something wrong, please try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
     } catch (error) {
       console.error("Error:", error);
@@ -90,8 +129,46 @@ export default function UserServerConfig() {
       if (response.status === 200) {
         const data = await response.json();
         setData(data);
+      } else if (response.status === 400) {
+        toast.error("Missing server information!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 403) {
+        toast.error("Permission denied!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 404) {
+        toast.error("Server not found!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       } else {
-        alert("Delete Fail");
+        toast.error("Something wrong, please try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
     } catch (error) {
       console.error("Error:", error);
@@ -104,8 +181,12 @@ export default function UserServerConfig() {
   }, []);
 
   return (
-    <div >
-      <div className="containerOrg" style={{ overflowX: "hidden", height: "100vh"  }} >
+    <div>
+      <Toaster position="bottom-right" reverseOrder={false} />
+      <div
+        className="containerOrg"
+        style={{ overflowX: "hidden", height: "100vh" }}
+      >
         <div className="sideMenu">
           <Sidebar />
         </div>
@@ -166,51 +247,31 @@ export default function UserServerConfig() {
 
             {serverData && (
               <div
-              className={`status-tag ${
-                serverData.status === "ACTIVE"
-                  ? "positive-medium active"
-                  : "inactive-medium"
-              }`}
-              style={{ display: "flex", alignItems: "center", }}
-            >
-              <span
-                className={`highlight ${
+                className={`status-tag ${
                   serverData.status === "ACTIVE"
                     ? "positive-medium active"
                     : "inactive-medium"
                 }`}
-                style={{
-                  "--iteration-count":
-                    serverData.status === "ACTIVE" ? "infinite" : "5",
-                  marginRight: "15px",
-                }}
-              ></span>
-              <p className="status-tag__txt" style={{ marginRight: "8px" }}>
-                {serverData.status === "ACTIVE" ? "Online" : "Offline"}
-              </p>
-            </div>
+                style={{ display: "flex", alignItems: "center" }}
+              >
+                <span
+                  className={`highlight ${
+                    serverData.status === "ACTIVE"
+                      ? "positive-medium active"
+                      : "inactive-medium"
+                  }`}
+                  style={{
+                    "--iteration-count":
+                      serverData.status === "ACTIVE" ? "infinite" : "5",
+                    marginRight: "15px",
+                  }}
+                ></span>
+                <p className="status-tag__txt" style={{ marginRight: "8px" }}>
+                  {serverData.status === "ACTIVE" ? "Online" : "Offline"}
+                </p>
+              </div>
             )}
           </div>
-
-          {/* Online status */}
-
-          {/* Online status */}
-          {/* <div
-  style={{
-    marginLeft: "583px",
-    textAlign: "center",
-    alignContent: "center",
-    width: "10%",
-    color: "white",
-    borderRadius: "100px",
-    backgroundColor: status === "ACTIVE" ? "#6EC882" : "#999999",
-    fontSize: "18px",
-    fontWeight: "bold",
-    textTransform: "none",
-  }}
->
-  {status === "ACTIVE" ? "Online" : "Offline"}
-</div> */}
 
           <div className="container px-16 py-3 mt-2">
             <div className=""></div>

@@ -3,9 +3,9 @@ import React, { useState, useEffect } from "react";
 import Libraries from "../data/listOfLibrary.json";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SaveIcon from "@mui/icons-material/Save";
-import Button from "@mui/material/Button";
 import LinearProgress from "@mui/material/LinearProgress";
 import Box from "@mui/material/Box";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function ServerLibrary(serverId) {
   const [loading, setLoading] = useState(false);
@@ -39,13 +39,56 @@ export default function ServerLibrary(serverId) {
         }),
       });
       if (response.status === 200) {
-        setLoading(false);
-        alert("Success to Install");
+        toast.success("Install successfully.", {
+          style: {
+            border: "1px solid #37E030",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "green",
+            fontWeight: "bolder",
+          },
+        });
         handleGetLib();
+      } else if (response.status === 400) {
+        toast.error("Missing server information!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 403) {
+        toast.error("Permission denied!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 500) {
+        toast.error("No data for server!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       } else {
-        setLoading(false);
-
-        alert("Add Fail");
+        toast.error("Something wrong, please try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
     } catch (error) {
       console.error("Error:", error);
@@ -71,10 +114,56 @@ export default function ServerLibrary(serverId) {
         }),
       });
       if (response.status === 200) {
-        alert("Success to Uninstall");
+        toast.success("Uninstall successfully.", {
+          style: {
+            border: "1px solid #37E030",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "green",
+            fontWeight: "bolder",
+          },
+        });
         handleGetLib();
+      } else if (response.status === 400) {
+        toast.error("Missing server information!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 403) {
+        toast.error("Permission denied!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 500) {
+        toast.error("No data for server!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       } else {
-        alert("Success to Uninstall");
+        toast.error("Something wrong, please try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
     } catch (error) {
       console.error("Error:", error);
@@ -105,9 +194,46 @@ export default function ServerLibrary(serverId) {
 
         setListLib(lib);
         // setLoading(true);
+      } else if (response.status === 400) {
+        toast.error("Missing server information!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 403) {
+        toast.error("Permission denied!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 500) {
+        toast.error("No data for server!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       } else {
-        alert("Add Fail");
-        // setLoading(false);
+        toast.error("Something wrong, please try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
     } catch (error) {
       console.error("Error:", error);
@@ -120,6 +246,8 @@ export default function ServerLibrary(serverId) {
   }, []);
   return (
     <>
+      <Toaster position="bottom-right" reverseOrder={false} />
+
       <div>
         <div className="flex flex-row justify-between items-center pr-6">
           <div className="info-title font-semibold mb-3">

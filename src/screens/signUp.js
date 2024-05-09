@@ -9,6 +9,7 @@ import {
   Box,
 } from "@mui/material";
 import "../css/signUp.css";
+import toast, { Toaster } from "react-hot-toast";
 
 import { Link, useNavigate } from "react-router-dom";
 
@@ -95,10 +96,39 @@ export default function SignUp() {
         }),
       });
       if (response.status === 201) {
-        navigate("/login");
+        toast.success("Successfully, welcome to MHD system.", {
+          style: {
+            border: "1px solid #37E030",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "green",
+            fontWeight: "bolder",
+          },
+        });
+        setTimeout(() => {
+          navigate("/login");
+        }, 1400);
       } else if (response.status === 400) {
-        const responseData = await response.json();
-        alert(responseData.message);
+        toast.dismiss();
+        toast.error("Email already in used, please choose another email!", {
+          style: {
+            border: "1px solid #F85F60",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+            maxWidth: "2000px",
+          },
+        });
+      } else {
+        toast.error("Something wrong, please try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
     } catch (error) {
       console.error("Error:", error);
@@ -107,6 +137,8 @@ export default function SignUp() {
 
   return (
     <>
+      <Toaster position="bottom-right" reverseOrder={false} />
+
       <div
         className="login-background"
         style={{ backgroundImage: `url(${bgLogin})` }}
@@ -229,7 +261,7 @@ export default function SignUp() {
                     }
                     label={
                       <>
-                        By signing up, I agree to Manimal{" "}
+                        By signing up, I agree to
                         <Link
                           to={`/term`}
                           style={{

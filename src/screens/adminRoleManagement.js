@@ -8,6 +8,7 @@ import toast, { Toaster } from "react-hot-toast";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -54,8 +55,15 @@ export default function AdminRoleManagement() {
     }
   };
 
+  const [token, setToken] = useState();
+  const checkToken = () => {
+    const isToken = localStorage.getItem("checkAdmin");
+    setToken(isToken);
+  };
+
   useEffect(() => {
     handleGetRole();
+    checkToken();
   }, []);
 
   // ADD ROLE
@@ -365,70 +373,80 @@ export default function AdminRoleManagement() {
           <SidebarAdmin />
         </div>
         <div className="px-12 py-6 bg-[#F3F8FF]">
-          <Button
-            variant="outlined"
-            sx={{
-              width: "120px",
-              color: "white",
-              bgcolor: "#3867A5",
-              "&:hover": { bgcolor: "#2A4D7B" },
-            }}
-            onClick={clickOpenAddRole}
-          >
-            Add Role
-          </Button>
+          {token !== null ? (
+            <>
+              <Button
+                variant="outlined"
+                sx={{
+                  width: "120px",
+                  color: "white",
+                  bgcolor: "#3867A5",
+                  "&:hover": { bgcolor: "#2A4D7B" },
+                }}
+                onClick={clickOpenAddRole}
+              >
+                Add Role
+              </Button>
 
-          {/*-------------- Billing Table ---------------- */}
+              {/*-------------- Billing Table ---------------- */}
 
-          <div
-            className="bg-white mt-4 rounded-md px-8 pb-8 shadow-md"
-            style={{ border: "1px solid #89A6CC" }}
-          >
-            <table class="table-auto w-full ">
-              <thead>
-                <tr>
-                  <th>ROLE NAME</th>
-                  <th>ROLE ID</th>
-                  <th>DESCRIPTION</th>
-                  <th>ACTION</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td
-                    style={{
-                      color: "transparent",
-                      padding: "0px",
-                    }}
-                  >
-                    .
-                  </td>
-                </tr>
-                {roleData?.map((role) => (
-                  <tr key={role.role_id}>
-                    <td>{role?.role_name}</td>
-                    <td>{role?.role_id}</td>
-                    <td>{role?.description}</td>
-                    <td>
-                      <IconButton
-                        aria-label="delete"
-                        onClick={() => clickOpenDelete(role?.role_id)}
+              <div
+                className="bg-white mt-4 rounded-md px-8 pb-8 shadow-md"
+                style={{ border: "1px solid #89A6CC" }}
+              >
+                <table class="table-auto w-full ">
+                  <thead>
+                    <tr>
+                      <th>ROLE NAME</th>
+                      <th>ROLE ID</th>
+                      <th>DESCRIPTION</th>
+                      <th>ACTION</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td
+                        style={{
+                          color: "transparent",
+                          padding: "0px",
+                        }}
                       >
-                        <DeleteIcon />
-                      </IconButton>
-                      <IconButton
-                        aria-label="edit"
-                        onClick={() => clickOpenEdit(role?.role_id)}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                    </td>
-                  </tr>
-                ))}
-                <tr></tr>
-              </tbody>
-            </table>
-          </div>
+                        .
+                      </td>
+                    </tr>
+                    {roleData?.map((role) => (
+                      <tr key={role.role_id}>
+                        <td>{role?.role_name}</td>
+                        <td>{role?.role_id}</td>
+                        <td>{role?.description}</td>
+                        <td>
+                          <IconButton
+                            aria-label="delete"
+                            onClick={() => clickOpenDelete(role?.role_id)}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                          <IconButton
+                            aria-label="edit"
+                            onClick={() => clickOpenEdit(role?.role_id)}
+                          >
+                            <EditIcon />
+                          </IconButton>
+                        </td>
+                      </tr>
+                    ))}
+                    <tr></tr>
+                  </tbody>
+                </table>
+              </div>
+            </>
+          ) : (
+            <div className="flex flex-row justify-center gap-4 text-red-600 font-bold">
+              <WarningAmberIcon />
+              <p>UKNOWN USER! PLEASE LOGIN FIRST </p>
+              <WarningAmberIcon />
+            </div>
+          )}
 
           {/*-------------- END OF Billing Table ---------------- */}
         </div>

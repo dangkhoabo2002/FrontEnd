@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import SidebarAdmin from "../components/sidebarAdmin";
 import NavigationAdmin from "../components/navAdmin";
-import { Billings } from "../data/listOfBilling";
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import "../css/adminBilling.css";
 import {
   Button,
@@ -102,7 +102,7 @@ export default function AdminPackageManagement() {
       const positiveIntegerRegex = /^[1-9]\d*$/;
       // Regular expression to validate price as positive decimal with two decimal places
       const priceRegex = /^\d+(\.\d{1,2})?$/;
-  
+
       // Check if slot number is a positive integer
       if (!positiveIntegerRegex.test(packageAdd.slot_number)) {
         toast.error("Slot number must be a positive integer!", {
@@ -116,7 +116,7 @@ export default function AdminPackageManagement() {
         });
         return;
       }
-  
+
       // Check if slot server is a positive integer
       if (!positiveIntegerRegex.test(packageAdd.slot_server)) {
         toast.error("Slot server must be a positive integer!", {
@@ -130,7 +130,7 @@ export default function AdminPackageManagement() {
         });
         return;
       }
-  
+
       // Check if duration is a positive integer
       if (!positiveIntegerRegex.test(packageAdd.duration)) {
         toast.error("Duration must be a positive integer!", {
@@ -144,18 +144,21 @@ export default function AdminPackageManagement() {
         });
         return;
       }
-  
+
       // Check if price is a positive decimal with two decimal places
       if (!priceRegex.test(packageAdd.price)) {
-        toast.error("Price must be a positive decimal with two decimal places!", {
-          style: {
-            border: "1px solid #F85F60",
-            maxWidth: "900px",
-            padding: "16px 24px",
-            color: "red",
-            fontWeight: "bolder",
-          },
-        });
+        toast.error(
+          "Price must be a positive decimal with two decimal places!",
+          {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          }
+        );
         return;
       }
       try {
@@ -462,8 +465,17 @@ export default function AdminPackageManagement() {
       });
     }
   };
+
+  const [token, setToken] = useState();
+
+  const checkToken = () => {
+    const isToken = localStorage.getItem("checkAdmin");
+    setToken(isToken);
+  };
+
   useEffect(() => {
     handleGetPackage();
+    checkToken();
   }, []);
 
   return (
@@ -492,104 +504,115 @@ export default function AdminPackageManagement() {
         >
           <SidebarAdmin />
         </div>
+
         <div className="px-12 py-6 bg-[#F3F8FF]">
-          <Button
-            variant="outlined"
-            sx={{
-              width: "150px",
-              color: "white",
-              bgcolor: "#3867A5",
-              "&:hover": { bgcolor: "#2A4D7B" },
-            }}
-            onClick={clickOpenAddPackage}
-          >
-            Add Package
-          </Button>
+          {token !== null ? (
+            <>
+              <Button
+                variant="outlined"
+                sx={{
+                  width: "150px",
+                  color: "white",
+                  bgcolor: "#3867A5",
+                  "&:hover": { bgcolor: "#2A4D7B" },
+                }}
+                onClick={clickOpenAddPackage}
+              >
+                Add Package
+              </Button>
 
-          {/*-------------- Billing Table ---------------- */}
+              {/*-------------- Billing Table ---------------- */}
 
-          <div
-            className="bg-white mt-4 rounded-md px-8 pb-8 shadow-md"
-            style={{ border: "1px solid #89A6CC" }}
-          >
-            <table class="table-auto w-full ">
-              <thead>
-                <tr>
-                  <th>NAME</th>
-                  <th>PRICE</th>
-                  <th>DESCRIPTION</th>
-                  <th>DURATION</th>
-                  <th>SLOT NUMBER</th>
-                  <th>SLOT SERVER</th>
-                  <th>Status</th>
-                  <th>ACTION</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td
-                    style={{
-                      color: "transparent",
-                      padding: "0px",
-                    }}
-                  >
-                    .
-                  </td>
-                </tr>
-                {Package.map((pkg) => (
-                  <tr key={pkg.package_id}>
-                    <td>{pkg.package_name}</td>
-                    <td>{pkg.price}$</td>
-                    <td>{pkg.description}</td>
-                    <td>{pkg.duration}</td>
-                    <td>{pkg.slot_number}</td>
-                    <td>{pkg.slot_server}</td>
-                    <td>
-                      <td>
-                        <td>
-                          <div
-                            style={{
-                              backgroundColor: pkg.status
-                                ? "#6EC882"
-                                : "#8E8E8E",
-                              color: "white",
-                              textAlign: "center",
-                              borderRadius: "100px",
-                              padding: "5px 15px",
-                              fontSize: "14px",
-                              fontWeight: "normal",
-                              textTransform: "none",
-                            }}
-                          >
-                            {pkg.status ? "Active" : "Inactive"}
-                          </div>
-                        </td>
+              <div
+                className="bg-white mt-4 rounded-md px-8 pb-8 shadow-md"
+                style={{ border: "1px solid #89A6CC" }}
+              >
+                <table class="table-auto w-full ">
+                  <thead>
+                    <tr>
+                      <th>NAME</th>
+                      <th>PRICE</th>
+                      <th>DESCRIPTION</th>
+                      <th>DURATION</th>
+                      <th>SLOT NUMBER</th>
+                      <th>SLOT SERVER</th>
+                      <th>Status</th>
+                      <th>ACTION</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td
+                        style={{
+                          color: "transparent",
+                          padding: "0px",
+                        }}
+                      >
+                        .
                       </td>
-                    </td>
+                    </tr>
+                    {Package.map((pkg) => (
+                      <tr key={pkg.package_id}>
+                        <td>{pkg.package_name}</td>
+                        <td>{pkg.price}$</td>
+                        <td>{pkg.description}</td>
+                        <td>{pkg.duration}</td>
+                        <td>{pkg.slot_number}</td>
+                        <td>{pkg.slot_server}</td>
+                        <td>
+                          <td>
+                            <td>
+                              <div
+                                style={{
+                                  backgroundColor: pkg.status
+                                    ? "#6EC882"
+                                    : "#8E8E8E",
+                                  color: "white",
+                                  textAlign: "center",
+                                  borderRadius: "100px",
+                                  padding: "5px 15px",
+                                  fontSize: "14px",
+                                  fontWeight: "normal",
+                                  textTransform: "none",
+                                }}
+                              >
+                                {pkg.status ? "Active" : "Inactive"}
+                              </div>
+                            </td>
+                          </td>
+                        </td>
 
-                    <td style={{ padding: "6px 0px" }}>
-                      <IconButton
-                        aria-label="delete"
-                        onClick={() => clickOpenDelete(pkg?.package_id)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
+                        <td style={{ padding: "6px 0px" }}>
+                          <IconButton
+                            aria-label="delete"
+                            onClick={() => clickOpenDelete(pkg?.package_id)}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
 
-                      <IconButton
-                        aria-label="edit"
-                        onClick={() =>
-                          handleClickOpenEditPackage(pkg?.package_id)
-                        }
-                      >
-                        <EditIcon />
-                      </IconButton>
-                    </td>
-                  </tr>
-                ))}
-                <tr></tr>
-              </tbody>
-            </table>
-          </div>
+                          <IconButton
+                            aria-label="edit"
+                            onClick={() =>
+                              handleClickOpenEditPackage(pkg?.package_id)
+                            }
+                          >
+                            <EditIcon />
+                          </IconButton>
+                        </td>
+                      </tr>
+                    ))}
+                    <tr></tr>
+                  </tbody>
+                </table>
+              </div>
+            </>
+          ) : (
+            <div className="flex flex-row justify-center gap-4 text-red-600 font-bold">
+              <WarningAmberIcon />
+              <p>UKNOWN USER! PLEASE LOGIN FIRST </p>
+              <WarningAmberIcon />
+            </div>
+          )}
 
           {/*-------------- ADD NEW PACKAGE ---------------- */}
           <Dialog open={openAddPackage} onClose={clickCloseAddPackage}>
@@ -623,7 +646,10 @@ export default function AdminPackageManagement() {
                 variant="outlined"
                 value={packageAdd.price}
                 onChange={(e) =>
-                  setPackageAdd({ ...packageAdd, price: e.target.value.replace(/[^\d.]/g, '') }) 
+                  setPackageAdd({
+                    ...packageAdd,
+                    price: e.target.value.replace(/[^\d.]/g, ""),
+                  })
                 }
                 InputProps={{
                   startAdornment: (

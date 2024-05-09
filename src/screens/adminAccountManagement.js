@@ -11,8 +11,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 
 export default function AdminAccountManagement() {
   const [customerList, setCustomerList] = useState();
@@ -64,8 +63,15 @@ export default function AdminAccountManagement() {
     }
   };
 
+  const [token, setToken] = useState();
+  const checkToken = () => {
+    const isToken = localStorage.getItem("checkAdmin");
+    setToken(isToken);
+  };
+
   useEffect(() => {
     handleGetCustomer();
+    checkToken();
   }, []);
 
   // CHANGE STATUS USER
@@ -96,7 +102,7 @@ export default function AdminAccountManagement() {
   };
   const handleDeleteUser = async () => {
     handleCloseDelete();
-  }
+  };
 
   return (
     <div className="">
@@ -128,149 +134,159 @@ export default function AdminAccountManagement() {
         </div>
         <div className="px-12 py-6 bg-[#F3F8FF]">
           {/*-------------- Account Table ---------------- */}
-
-          <div
-            className="bg-white mt-4 rounded-md px-8 pb-8 shadow-md"
-            style={{ border: "1px solid #89A6CC" }}
-          >
-            <table class="table-auto w-full ">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>USERNAME</th>
-                  <th>FULLNAME</th>
-                  <th>EMAIL</th>
-                  <th>ACTION</th>
-                  <th>STATUS</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td
-                    style={{
-                      color: "transparent",
-                      padding: "0px",
-                    }}
-                  >
-                    .
-                  </td>
-                </tr>
-
-                {customerList?.map((customer, index) => (
-                  <tr key={customer.id}>
-                    <td>{index + 1}</td>
-                    <td>{customer.username}</td>
-                    <td>{customer.full_name}</td>
-                    <td>{customer.email}</td>
-                    <td>
-                      <Button
-                        onClick={() => handleClickOpenRemoveUser(customer.id)}
-                        variant="contained"
-                        sx={{
-                          width: "100px",
-                          height: "25px",
-                          color: "white",
-                          borderRadius: "100px",
-                          bgcolor: "#F85F60",
-                          "&:hover": { bgcolor: "#D45758" },
-                          fontSize: "14px",
-                          fontWeight: "normal",
-                          textTransform: "none",
-                        }}
-                      >
-                        Delete
-                      </Button>
-                    </td>
-                    {customer.status == "ACTIVE" ? (
-                      <td>
-                        <div class="flex justify-center m-5">
-                          <Button
-                            variant="contained"
-                            sx={{
-                              width: "100px",
-                              height: "25px",
-                              color: "white",
-                              borderRadius: "100px",
-                              bgcolor: "#6EC882",
-                              "&:hover": { bgcolor: "#63B976" },
-                              fontSize: "14px",
-                              fontWeight: "normal",
-                              textTransform: "none",
-                            }}
-                            onClick={handleOpenChangeStatus}
-                          >
-                            Active
-                          </Button>
-                        </div>
-                      </td>
-                    ) : (
-                      <td>
-                        <div class="flex justify-center m-5">
-                          <Button
-                            variant="contained"
-                            sx={{
-                              width: "100px",
-                              height: "25px",
-                              color: "white",
-                              borderRadius: "100px",
-                              bgcolor: "#8E8E8E",
-                              "&:hover": { bgcolor: "#6C6C6C" },
-                              fontSize: "14px",
-                              fontWeight: "normal",
-                              textTransform: "none",
-                            }}
-                            onClick={handleOpenChangeStatus}
-                          >
-                            Inative
-                          </Button>
-                        </div>
-                      </td>
-                    )}
+          {token !== null ? (
+            <div
+              className="bg-white mt-4 rounded-md px-8 pb-8 shadow-md"
+              style={{ border: "1px solid #89A6CC" }}
+            >
+              <table class="table-auto w-full ">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>USERNAME</th>
+                    <th>FULLNAME</th>
+                    <th>EMAIL</th>
+                    <th>ACTION</th>
+                    <th>STATUS</th>
                   </tr>
-                ))}
-              </tbody>
-              {/* DIALOG CONFIRM CHANGE STATUS */}
-              <Dialog open={openChangeStatus} onClose={handleChangeStatusClose}>
-                <DialogTitle>Confirmation</DialogTitle>
-                <DialogContent>
-                  <DialogContentText>
-                    Are you sure you want to change the status?
-                  </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleChangeStatusClose}>Cancel</Button>
-                  <Button
-                    onClick={handleChangeStatus}
-                    variant="contained"
-                    autoFocus
-                  >
-                    Confirm
-                  </Button>
-                </DialogActions>
-              </Dialog>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td
+                      style={{
+                        color: "transparent",
+                        padding: "0px",
+                      }}
+                    >
+                      .
+                    </td>
+                  </tr>
 
-              {/* DIALOG DELETE USER */}
-              <Dialog
-                open={openDelete}
-                onClose={handleCloseDelete}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-              >
-                <DialogTitle id="alert-dialog-title">
-                  {"Do you want to remove this guide ?"}
-                </DialogTitle>
+                  {customerList?.map((customer, index) => (
+                    <tr key={customer.id}>
+                      <td>{index + 1}</td>
+                      <td>{customer.username}</td>
+                      <td>{customer.full_name}</td>
+                      <td>{customer.email}</td>
+                      <td>
+                        <Button
+                          onClick={() => handleClickOpenRemoveUser(customer.id)}
+                          variant="contained"
+                          sx={{
+                            width: "100px",
+                            height: "25px",
+                            color: "white",
+                            borderRadius: "100px",
+                            bgcolor: "#F85F60",
+                            "&:hover": { bgcolor: "#D45758" },
+                            fontSize: "14px",
+                            fontWeight: "normal",
+                            textTransform: "none",
+                          }}
+                        >
+                          Delete
+                        </Button>
+                      </td>
+                      {customer.status == "ACTIVE" ? (
+                        <td>
+                          <div class="flex justify-center m-5">
+                            <Button
+                              variant="contained"
+                              sx={{
+                                width: "100px",
+                                height: "25px",
+                                color: "white",
+                                borderRadius: "100px",
+                                bgcolor: "#6EC882",
+                                "&:hover": { bgcolor: "#63B976" },
+                                fontSize: "14px",
+                                fontWeight: "normal",
+                                textTransform: "none",
+                              }}
+                              onClick={handleOpenChangeStatus}
+                            >
+                              Active
+                            </Button>
+                          </div>
+                        </td>
+                      ) : (
+                        <td>
+                          <div class="flex justify-center m-5">
+                            <Button
+                              variant="contained"
+                              sx={{
+                                width: "100px",
+                                height: "25px",
+                                color: "white",
+                                borderRadius: "100px",
+                                bgcolor: "#8E8E8E",
+                                "&:hover": { bgcolor: "#6C6C6C" },
+                                fontSize: "14px",
+                                fontWeight: "normal",
+                                textTransform: "none",
+                              }}
+                              onClick={handleOpenChangeStatus}
+                            >
+                              Inative
+                            </Button>
+                          </div>
+                        </td>
+                      )}
+                    </tr>
+                  ))}
+                </tbody>
+                {/* DIALOG CONFIRM CHANGE STATUS */}
+                <Dialog
+                  open={openChangeStatus}
+                  onClose={handleChangeStatusClose}
+                >
+                  <DialogTitle>Confirmation</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText>
+                      Are you sure you want to change the status?
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleChangeStatusClose}>Cancel</Button>
+                    <Button
+                      onClick={handleChangeStatus}
+                      variant="contained"
+                      autoFocus
+                    >
+                      Confirm
+                    </Button>
+                  </DialogActions>
+                </Dialog>
 
-                <DialogActions>
-                  <Button onClick={handleCloseDelete}>No</Button>
-                  <Button onClick={handleDeleteUser}>
-                    <p className="text-red">Yes</p>
-                  </Button>
-                </DialogActions>
-              </Dialog>
-            </table>
+                {/* DIALOG DELETE USER */}
+                <Dialog
+                  open={openDelete}
+                  onClose={handleCloseDelete}
+                  aria-labelledby="alert-dialog-title"
+                  aria-describedby="alert-dialog-description"
+                >
+                  <DialogTitle id="alert-dialog-title">
+                    {"Do you want to remove this guide ?"}
+                  </DialogTitle>
 
-            {/*-------------- END OF Account Table ---------------- */}
-          </div>
+                  <DialogActions>
+                    <Button onClick={handleCloseDelete}>No</Button>
+                    <Button onClick={handleDeleteUser}>
+                      <p className="text-red">Yes</p>
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              </table>
+
+              {/*-------------- END OF Account Table ---------------- */}
+            </div>
+          ) : (
+            <div className="flex flex-row justify-center gap-4 text-red-600 font-bold">
+              <WarningAmberIcon />
+              <p>UKNOWN USER! PLEASE LOGIN FIRST </p>
+              <WarningAmberIcon />
+            </div>
+          )}
         </div>
       </div>
 

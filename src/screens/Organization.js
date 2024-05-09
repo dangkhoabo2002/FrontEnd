@@ -69,7 +69,6 @@ export default function LandingPage() {
     } finally {
     }
   };
-
   const [isSub, setIsSub] = useState();
 
   const handleGetSub = async () => {

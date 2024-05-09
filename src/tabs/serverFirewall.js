@@ -145,8 +145,36 @@ export default function ServerFirewall(serverId) {
       if (response.status === 200) {
         const firewallGet = await response.json();
         setFirewallData(firewallGet);
-      } else {
-        alert("Fail to get data!");
+      } else if (response.status === 400) {
+        toast.error("Missing server information!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 403) {
+        toast.error("Permission denied!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 500) {
+        toast.error("No data for server!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
     } catch (error) {
       console.error("Error:", error);

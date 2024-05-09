@@ -35,6 +35,7 @@ export default function App() {
       <Routes>
         {/* Dashboard Unlogin */}
         <Route path="/" element={<Homepage />}></Route>
+
         {/* <Route path="/aboutUs" element={<AboutUs />}></Route> */}
         <Route path="/guide" element={<Guide />}></Route>
         <Route path="/term" element={<TermOfService />}></Route>
@@ -83,6 +84,9 @@ export default function App() {
         <Route path="/serverEmpty" element={<ServerEmpty />}></Route>
 
         <Route path="/server" element={<ServerConfig />}></Route>
+
+        {/* ERROR */}
+        <Route path="*" element={<Error404 />} />
       </Routes>
     </div>
   );

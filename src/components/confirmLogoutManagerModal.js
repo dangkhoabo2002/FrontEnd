@@ -35,6 +35,7 @@ export default function AlertDialogSlide() {
         },
       });
       if (response.status === 200) {
+        localStorage.clear();
         navigate("/");
         toast.success("Logout success.", {
           style: {

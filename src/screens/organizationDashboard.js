@@ -67,7 +67,15 @@ export default function OrganizationDashboard() {
     if (numRoles < 7) {
       setNumRoles(numRoles + 1);
     } else {
-      alert("Maximum number of roles reached!");
+      toast.error("Maximum number of roles reached!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
+        },
+      });
     }
   };
   const handleCloseAddRole = () => {
@@ -331,6 +339,7 @@ export default function OrganizationDashboard() {
 
   const handleCloseAddMember = () => {
     setOpenAddMember(false);
+    setData({ new_user: "" });
   };
 
   // Toggle mở đóng Dialog add server
@@ -485,7 +494,7 @@ export default function OrganizationDashboard() {
 
   const handleAddNewUser = () => {
     if (data?.new_user === "") {
-      toast.error("Please enter your password!", {
+      toast.error("Please enter usename of participant!", {
         style: {
           border: "1px solid #F85F60",
           maxWidth: "900px",
@@ -528,6 +537,7 @@ export default function OrganizationDashboard() {
           },
         });
         handleCloseAddMember();
+        setData({ new_user: "" });
       } else if (response.status === 400) {
         toast.error("User is not exist!", {
           style: {
@@ -540,6 +550,16 @@ export default function OrganizationDashboard() {
         });
       } else if (response.status === 403) {
         toast.error("Permission denied!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 500) {
+        toast.error("This member is already in the organization!", {
           style: {
             border: "1px solid #F85F60",
             maxWidth: "900px",
@@ -598,12 +618,21 @@ export default function OrganizationDashboard() {
   // UPDATE org info
 
   const handleUpdate = async () => {
-    if (
-      data?.name === "" ||
-      data?.contact_phone === "" ||
-      data?.contact_email === ""
-    ) {
-      toast.error("Please fill necessary information to update!", {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^\d{10}$/;
+
+    if (data.contact_email && !emailRegex.test(data.contact_email)) {
+      toast.error("Invalid email!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
+        },
+      });
+    } else if (data.contact_phone && !phoneRegex.test(data.contact_phone)) {
+      toast.error("Invalid phone number!", {
         style: {
           border: "1px solid #F85F60",
           maxWidth: "900px",
@@ -616,6 +645,20 @@ export default function OrganizationDashboard() {
       const loginUrl = "http://127.0.0.1:5000/org/update_information";
       const token = localStorage.getItem("access_token");
 
+      const updatedName = data.name === "" ? organizations[0].name : data.name;
+      const updatedPhone =
+        data.contact_phone === ""
+          ? organizations[0].contact_phone
+          : data.contact_phone;
+      const updatedMail =
+        data.contact_email === ""
+          ? organizations[0].contact_email
+          : data.contact_email;
+      const updatedDes =
+        data.description === ""
+          ? organizations[0].description
+          : data.description;
+
       try {
         const response = await fetch(loginUrl, {
           method: "PUT",
@@ -627,47 +670,44 @@ export default function OrganizationDashboard() {
           },
           body: JSON.stringify({
             organization_id: organization_id,
-            name: data.name,
-            contact_phone: data.contact_phone,
-            contact_email: data.contact_email,
-            description: data.description,
+            name: updatedName,
+            contact_phone: updatedPhone,
+            contact_email: updatedMail,
+            description: updatedDes,
           }),
         });
-
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const phoneRegex = /^\d{10}$/;
-
-        if (!emailRegex.test(data.contact_email)) {
-          toast.error("Invalid email format!", {
-            style: {
-              border: "1px solid #F85F60",
-              maxWidth: "900px",
-              padding: "16px 24px",
-              color: "red",
-              fontWeight: "bolder",
-            },
-          });
-        } else if (!phoneRegex.test(data.contact_phone)) {
-          toast.error("Invalid phone number format!", {
-            style: {
-              border: "1px solid #F85F60",
-              maxWidth: "900px",
-              padding: "16px 24px",
-              color: "red",
-              fontWeight: "bolder",
-            },
-          });
-        } else if (response.status === 200) {
+        if (response.status === 200) {
+          if (
+            data.name === "" ||
+            data.contact_phone === "" ||
+            data.contact_email === "" ||
+            data.description === ""
+          ) {
+            toast.success(
+              "Update successfully, default information with blank field.",
+              {
+                style: {
+                  border: "1px solid #37E030",
+                  maxWidth: "900px",
+                  padding: "16px 24px",
+                  color: "green",
+                  fontWeight: "bolder",
+                },
+              }
+            );
+          } else {
+            toast.success("Update organization successfully.", {
+              style: {
+                border: "1px solid #37E030",
+                maxWidth: "900px",
+                padding: "16px 24px",
+                color: "green",
+                fontWeight: "bolder",
+              },
+            });
+          }
+          handleEditClick();
           handleGetOrgData();
-          toast.success("Update organization successfully.", {
-            style: {
-              border: "1px solid #37E030",
-              maxWidth: "900px",
-              padding: "16px 24px",
-              color: "green",
-              fontWeight: "bolder",
-            },
-          });
         } else if (response.status === 403) {
           toast.error("Permission denied!", {
             style: {
@@ -840,9 +880,47 @@ export default function OrganizationDashboard() {
       });
       if (response.status === 200) {
         handleGetMember();
-        alert("Remove Success");
+        toast.success("Remove successfully.", {
+          style: {
+            border: "1px solid #37E030",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "green",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 403) {
+        toast.error("Permission denied!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 500) {
+        const logErr = await response.json();
+
+        toast.error(`Fail to remove member ${logErr.message}!`, {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       } else {
-        alert("Remove Fail");
+        toast.error("Something wrong, please try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
     } catch (error) {
       console.error("Error:", error);
@@ -944,6 +1022,12 @@ export default function OrganizationDashboard() {
   const handleEditClick = () => {
     setIsDisabled(!isDisabled);
     setShowResetButton(isDisabled);
+    setData({
+      name: "",
+      contact_phone: "",
+      contact_email: "",
+      description: "",
+    });
   };
 
   // Dialog của Remove User
@@ -1265,19 +1349,7 @@ export default function OrganizationDashboard() {
                                 />
                               </FormControl>
                             </Grid>
-                            <Grid item xs={12} md={1}>
-                              {/* <Tooltip
-                                title="Please enter the correct Host name of the server, as incorrect input will result in connection failure."
-                                placement="right"
-                              >
-                                <HelpOutlineIcon
-                                  style={{
-                                    fontSize: "20px",
-                                    fontWeight: "400",
-                                  }}
-                                />
-                              </Tooltip> */}
-                            </Grid>
+                            <Grid item xs={12} md={1}></Grid>
                           </Grid>
 
                           <Grid
@@ -1866,7 +1938,7 @@ export default function OrganizationDashboard() {
                             disabled={isDisabled}
                             id="outlined-basic"
                             onChange={handleChangeInput("name")}
-                            defaultValue={data?.name}
+                            value={data?.name}
                             placeholder={organizations[0].name}
                             size="small"
                             sx={{ width: "auto", backgroundColor: "white" }}
@@ -1894,7 +1966,7 @@ export default function OrganizationDashboard() {
                               id="outlined-basic"
                               onChange={handleChangeInput("contact_email")}
                               placeholder={organizations[0].contact_email}
-                              defaultValue={data?.contact_email}
+                              value={data?.contact_email}
                               size="small"
                               sx={{ width: "400px", backgroundColor: "white" }}
                               InputProps={{
@@ -1918,7 +1990,7 @@ export default function OrganizationDashboard() {
                               id="outlined-basic"
                               onChange={handleChangeInput("contact_phone")}
                               placeholder={organizations[0].contact_phone}
-                              defaultValue={data?.contact_phone}
+                              value={data?.contact_phone}
                               size="small"
                               sx={{ width: "260px", backgroundColor: "white" }}
                               InputProps={{
@@ -1945,7 +2017,7 @@ export default function OrganizationDashboard() {
                             id="outlined-multiline-static"
                             onChange={handleChangeInput("description")}
                             placeholder={organizations[0].description}
-                            defaultValue={data?.description}
+                            value={data?.description}
                             size="medium"
                             sx={{
                               width: "100%",

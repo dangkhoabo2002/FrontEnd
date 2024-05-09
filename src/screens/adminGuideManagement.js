@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import SidebarAdmin from "../components/sidebarAdmin";
 import NavigationAdmin from "../components/navAdmin";
-import { Link } from "react-router-dom";
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 
 import {
   Grid,
@@ -271,8 +271,15 @@ export default function AdminGuide() {
     }
   };
 
+  const [token, setToken] = useState();
+  const checkToken = () => {
+    const isToken = localStorage.getItem("checkAdmin");
+    setToken(isToken);
+  };
+
   useEffect(() => {
     handleGetGuide();
+    checkToken();
   }, []);
 
   // ADD GUIDE
@@ -408,73 +415,86 @@ export default function AdminGuide() {
           <SidebarAdmin />
         </div>
         <div className="px-12 py-6 bg-[#F3F8FF]">
-          <div className="flex flex-row gap-10">
-            <Button
-              onClick={handleOpenAddGuide}
-              variant="outlined"
-              sx={{
-                width: "120px",
-                color: "white",
-                bgcolor: "#3867A5",
-                "&:hover": { bgcolor: "#2A4D7B" },
-              }}
-            >
-              Add Guide
-            </Button>
-          </div>
-
-          <div
-            className="bg-white mt-4 rounded-md px-8 pb-8 shadow-md"
-            style={{ border: "1px solid #89A6CC" }}
-          >
-            <table className="">
-              <tr>
-                <th id="id">#</th>
-                <th id="title">TITLE</th>
-                <th id="content">CONTENT</th>
-                <th id="action">ACTIONS</th>
-              </tr>
-              {guideData.map((guide, index) => (
-                <tr key={guide.guide_id}>
-                  <td>{index + 1}</td>
-                  <td>{guide.title}</td>
-                  <td>{guide.content}</td>
-                  <td style={{ padding: "6px 0px" }}>
-                    <IconButton
-                      aria-label="delete"
-                      onClick={() => handleClickOpenRemoveGuide(guide.guide_id)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-
-                    <IconButton
-                      aria-label="edit"
-                      onClick={() => handleClickOpenEditGuide(guide.guide_id)}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                  </td>
-                </tr>
-              ))}
-              <Dialog
-                open={openDelete}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
+          {token !== null ? (
+            <>
+              <div className="flex flex-row gap-10">
+                <Button
+                  onClick={handleOpenAddGuide}
+                  variant="outlined"
+                  sx={{
+                    width: "120px",
+                    color: "white",
+                    bgcolor: "#3867A5",
+                    "&:hover": { bgcolor: "#2A4D7B" },
+                  }}
+                >
+                  Add Guide
+                </Button>
+              </div>
+              <div
+                className="bg-white mt-4 rounded-md px-8 pb-8 shadow-md"
+                style={{ border: "1px solid #89A6CC" }}
               >
-                <DialogTitle id="alert-dialog-title">
-                  {"Do you want to remove this guide ?"}
-                </DialogTitle>
+                <table className="">
+                  <tr>
+                    <th id="id">#</th>
+                    <th id="title">TITLE</th>
+                    <th id="content">CONTENT</th>
+                    <th id="action">ACTIONS</th>
+                  </tr>
+                  {guideData.map((guide, index) => (
+                    <tr key={guide.guide_id}>
+                      <td>{index + 1}</td>
+                      <td>{guide.title}</td>
+                      <td>{guide.content}</td>
+                      <td style={{ padding: "6px 0px" }}>
+                        <IconButton
+                          aria-label="delete"
+                          onClick={() =>
+                            handleClickOpenRemoveGuide(guide.guide_id)
+                          }
+                        >
+                          <DeleteIcon />
+                        </IconButton>
 
-                <DialogActions>
-                  <Button onClick={handleCloseDelete}>No</Button>
-                  <Button onClick={handleDeleteGuide}>
-                    <p className="text-red">Yes</p>
-                  </Button>
-                </DialogActions>
-              </Dialog>
-            </table>
-          </div>
+                        <IconButton
+                          aria-label="edit"
+                          onClick={() =>
+                            handleClickOpenEditGuide(guide.guide_id)
+                          }
+                        >
+                          <EditIcon />
+                        </IconButton>
+                      </td>
+                    </tr>
+                  ))}
+                  <Dialog
+                    open={openDelete}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                  >
+                    <DialogTitle id="alert-dialog-title">
+                      {"Do you want to remove this guide ?"}
+                    </DialogTitle>
+
+                    <DialogActions>
+                      <Button onClick={handleCloseDelete}>No</Button>
+                      <Button onClick={handleDeleteGuide}>
+                        <p className="text-red">Yes</p>
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+                </table>
+              </div>
+            </>
+          ) : (
+            <div className="flex flex-row justify-center gap-4 text-red-600 font-bold">
+              <WarningAmberIcon />
+              <p>UKNOWN USER! PLEASE LOGIN FIRST </p>
+              <WarningAmberIcon />
+            </div>
+          )}
         </div>
       </div>
 
