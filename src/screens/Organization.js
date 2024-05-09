@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
 import nonIcon from "../assets/non-icon.png";
 import SubBtn from "../components/subscribeBtn";
+import InputAdornment from "@mui/material/InputAdornment";
+import VNFlag from "../images/Flag_of_Vietnam.svg.png";
 
 import {
   Grid,
@@ -19,6 +21,7 @@ import {
   IconButton,
   DialogActions,
   Tooltip,
+  TextField,
 } from "@mui/material";
 
 import toast, { Toaster } from "react-hot-toast";
@@ -28,6 +31,7 @@ import { styled } from "@mui/material/styles";
 import OrganizationCard from "../components/organizationCard";
 import "../css/Organization.css";
 import axios from "axios";
+import { TextFields } from "@mui/icons-material";
 
 export default function LandingPage() {
   const [addOrg, setAddOrg] = React.useState(false);
@@ -101,6 +105,7 @@ export default function LandingPage() {
   }, []);
 
   const [showConfirmation, setShowConfirmation] = React.useState(false);
+
   const handleDone = () => {
     if (
       data.name === "" ||
@@ -163,9 +168,8 @@ export default function LandingPage() {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailPattern.test(email);
   };
-
   const isValidPhoneNumber = (phoneNumber) => {
-    const phoneNumberPattern = /^\d+$/;
+    const phoneNumberPattern = /^(0|(\+84))[1-9]\d{8}$/;
     return phoneNumberPattern.test(phoneNumber);
   };
 
@@ -209,6 +213,7 @@ export default function LandingPage() {
   const handleChange = (prop) => (event) => {
     setData({ ...data, [prop]: event.target.value });
   };
+
   const OrgCard = {};
   const [data, setData] = useState({
     name: "",
@@ -449,8 +454,22 @@ export default function LandingPage() {
                 </Grid>
                 <Grid item xs={12} md={8}>
                   <FormControl fullWidth variant="outlined">
-                    <OutlinedInput
+                    <TextField
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <img
+                              src={VNFlag}
+                              alt="Vietnam Flag"
+                              style={{ width: "24px", height: "auto" }}
+                            />
+                          </InputAdornment>
+                        ),
+                      }}
                       inputProps={{
+                        // startAdornment: (
+                        //   <InputAdornment position="start">$</InputAdornment>
+                        // ),
                         "aria-label": "Phone number",
                       }}
                       onChange={handleChange("contact_phone")}

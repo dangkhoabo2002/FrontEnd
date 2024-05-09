@@ -460,8 +460,6 @@ export default function ServerProxy(serverId) {
                         >
                           <EditIcon />
                         </IconButton>
-                      </td>
-                      <td>
                         <IconButton
                           aria-label="delete"
                           onClick={() =>

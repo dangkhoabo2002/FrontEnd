@@ -281,7 +281,7 @@ export default function AdminAccountManagement() {
               {/*-------------- END OF Account Table ---------------- */}
             </div>
           ) : (
-            <div className="flex flex-row justify-center gap-4 text-red-600 font-bold">
+            <div className="flex flex-row justify-center py-40 text-red-600 font-bold gap-4">
               <WarningAmberIcon />
               <p>UKNOWN USER! PLEASE LOGIN FIRST </p>
               <WarningAmberIcon />

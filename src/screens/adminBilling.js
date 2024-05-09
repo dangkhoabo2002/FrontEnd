@@ -156,7 +156,7 @@ export default function AdminBillings() {
               </div>
             </div>
           ) : (
-            <div className="flex flex-row justify-center gap-4 text-red-600 font-bold">
+            <div className="flex flex-row justify-center py-40 gap-4 text-red-600 font-bold">
               <WarningAmberIcon />
               <p>UKNOWN USER! PLEASE LOGIN FIRST </p>
               <WarningAmberIcon />

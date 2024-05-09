@@ -14,9 +14,7 @@ import {
   TextField,
 } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
-import RemoveIcon from "@mui/icons-material/Remove";
-import AddIcon from "@mui/icons-material/Add";
-import CloseIcon from "@mui/icons-material/Close";
+
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import toast from "react-hot-toast";
@@ -71,7 +69,7 @@ export default function AdminPackageManagement() {
         const data = await response.json();
         setPackageData(data);
       } else {
-        console.error("Failed to fetch guide data");
+        console.error("Failed to fetch package data");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -98,14 +96,12 @@ export default function AdminPackageManagement() {
         },
       });
     } else {
-      // Regular expression to validate positive integers
       const positiveIntegerRegex = /^[1-9]\d*$/;
-      // Regular expression to validate price as positive decimal with two decimal places
       const priceRegex = /^\d+(\.\d{1,2})?$/;
 
       // Check if slot number is a positive integer
       if (!positiveIntegerRegex.test(packageAdd.slot_number)) {
-        toast.error("Slot number must be a positive integer!", {
+        toast.error("Slot number greater than 0 or at least 1.", {
           style: {
             border: "1px solid #F85F60",
             maxWidth: "900px",
@@ -119,7 +115,7 @@ export default function AdminPackageManagement() {
 
       // Check if slot server is a positive integer
       if (!positiveIntegerRegex.test(packageAdd.slot_server)) {
-        toast.error("Slot server must be a positive integer!", {
+        toast.error("Slot server greater than 0 or at least 1.", {
           style: {
             border: "1px solid #F85F60",
             maxWidth: "900px",
@@ -133,7 +129,7 @@ export default function AdminPackageManagement() {
 
       // Check if duration is a positive integer
       if (!positiveIntegerRegex.test(packageAdd.duration)) {
-        toast.error("Duration must be a positive integer!", {
+        toast.error("Duration greater than 0 or at least 1.", {
           style: {
             border: "1px solid #F85F60",
             maxWidth: "900px",
@@ -315,7 +311,7 @@ export default function AdminPackageManagement() {
     }
   };
 
-  // EDIT GUIDE
+  // EDIT package
 
   const [openEdit, setOpenEdit] = useState(false);
   const [packageId_edit, setPackageId_edit] = useState();
@@ -607,7 +603,7 @@ export default function AdminPackageManagement() {
               </div>
             </>
           ) : (
-            <div className="flex flex-row justify-center gap-4 text-red-600 font-bold">
+            <div className="flex flex-row justify-center py-40 gap-4 text-red-600 font-bold">
               <WarningAmberIcon />
               <p>UKNOWN USER! PLEASE LOGIN FIRST </p>
               <WarningAmberIcon />
