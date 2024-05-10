@@ -76,7 +76,7 @@ const ServerReport = () => {
               <th>Date</th>
               <th>Time</th>
               <th>Host</th>
-              <th>Logs</th>
+              <th>Log</th>
               <th>Type</th>
               <th>Detail</th>
             </tr>
@@ -131,7 +131,7 @@ const ServerReport = () => {
                 <Typography variant="body1" sx={{ marginBottom: 1 }}>Date: {selectedLog.date}</Typography>
                 <Typography variant="body1" sx={{ marginBottom: 1 }}>Time: {selectedLog.time}</Typography>
                 <Typography variant="body1" sx={{ marginBottom: 1 }}>Host: {selectedLog.host}</Typography>
-                <Typography variant="body1" sx={{ marginBottom: 1 }}>Logs: {selectedLog.log}</Typography>
+                <Typography variant="body1" sx={{ marginBottom: 1 }}>Log: {selectedLog.log}</Typography>
                 <Typography variant="body1" sx={{ marginBottom: 1 }}>Type: {selectedLog.type}</Typography>
               </Box>
             </Box>
