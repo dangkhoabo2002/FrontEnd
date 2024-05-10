@@ -24,6 +24,7 @@ export default function SignUp() {
   const [isChecked, setIsChecked] = useState(false);
   const [showTickMessage, setShowTickMessage] = useState(false);
   const [error, setError] = useState({
+    full_name: null,
     username: null,
     password: null,
     email: null,
@@ -50,8 +51,22 @@ export default function SignUp() {
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,30}$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    let newErrors = { username: null, password: null, email: null };
-
+    let newErrors = {full_name:null, username: null, password: null, email: null };
+    if (!data.full_name || !data.username || !data.password || !data.email || !data.confirm_password) {
+      toast.error("Please fill in all the fields.", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
+        },
+      });
+      return;
+    }
+if (!data.full_name) {
+  newErrors.full_name = "Full Name is required.";
+}
     if (!usernameRegex.test(data.username)) {
       newErrors.username =
         "Username must be 1-12 characters long and contain only letters, numbers, or underscores.";
@@ -186,14 +201,16 @@ export default function SignUp() {
             <div className="gridCust">
               <div className="flex flex-col">
                 <div className="textField mt-3">
-                  <TextField
-                    onChange={handleChange("full_name")}
-                    label="Full Name"
-                    fullWidth
-                    variant="outlined"
-                    className="mb-4"
-                    required
-                  />
+                <TextField
+  onChange={handleChange("full_name")}
+  label="Full Name"
+  fullWidth
+  variant="outlined"
+  className="mb-4"
+  required
+  error={!!error.full_name} 
+  helperText={error.full_name}
+/>
                 </div>
                 <div className="textField mt-3">
                   <TextField
