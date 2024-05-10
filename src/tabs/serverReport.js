@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Logs from "../data/listOfLog.json";
 import Button from "@mui/material/Button";
-
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
@@ -19,24 +18,31 @@ const style = {
   p: 4,
 };
 
+const modalContentStyle = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+};
+
 const ServerReport = () => {
   const [open, setOpen] = React.useState(false);
-  const [selectedLog, setSelectedLog] = useState("");
+  const [selectedLog, setSelectedLog] = useState({});
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const handleRowClick = (log) => {
-    setSelectedLog(log); // Update selectedLog state on row click
-    handleOpen(); // Open modal automatically on click
+    setSelectedLog(log);
+    handleOpen();
   };
+
   return (
     <>
       <div className="">
         <div className="flex flex-row justify-between">
           <div className="info-title font-semibold mb-3">
             <p>Access History</p>
-          </div>{" "}
+          </div>
           <Button
             startIcon={<DownloadIcon />}
             variant="contained"
@@ -69,9 +75,9 @@ const ServerReport = () => {
             <tr>
               <th>Date</th>
               <th>Time</th>
-              <th>Username</th>
-              <th>Action</th>
-              <th>Level</th>
+              <th>Host</th>
+              <th>Logs</th>
+              <th>Type</th>
               <th>Detail</th>
             </tr>
           </thead>
@@ -80,29 +86,29 @@ const ServerReport = () => {
               <tr key={row.date + row.time}>
                 <td>{row.date}</td>
                 <td>{row.time}</td>
-                <td>{row.username}</td>
-                <td>{row.action}</td>
+                <td>{row.host}</td>
+                <td>{row.log}</td>
                 <td
                   className="text-[#637381]"
                   style={{
                     backgroundColor:
-                      row.level === "Debug"
+                      row.type === "Debug"
                         ? "#DDDDDD"
-                        : row.level === "Info"
+                        : row.type === "Info"
                         ? "#B7FFB9"
-                        : row.level === "Warning"
+                        : row.type === "Warning"
                         ? "#FCFF53"
-                        : row.level === "Error"
+                        : row.type === "Error"
                         ? "#FFC266"
-                        : row.level === "Critical"
+                        : row.type === "Critical"
                         ? "#FF6868"
                         : "",
                   }}
                 >
-                  {row.level}
+                  {row.type}
                 </td>
                 <td>
-                  <Button onClick={handleRowClick}>More</Button>
+                  <Button onClick={() => handleRowClick(row)}>More</Button>
                 </td>
               </tr>
             ))}
@@ -117,32 +123,21 @@ const ServerReport = () => {
       >
         <Box sx={style}>
           {selectedLog && (
-            <>
-              <Typography id="modal-modal-title" variant="h6" component="h2">
-                Text in a modal
+            <Box sx={modalContentStyle}>
+              <Typography id="modal-modal-title" variant="h4" component="h2" sx={{ marginBottom: 2 }}>
+                Log Details
               </Typography>
-              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-              </Typography>
-              <Typography variant="body1">Date: {selectedLog.date}</Typography>
-              <Typography variant="body1">Time: {selectedLog.time}</Typography>
-            </>
+              <Box sx={{ width: "100%", textAlign: "left" }}>
+                <Typography variant="body1" sx={{ marginBottom: 1 }}>Date: {selectedLog.date}</Typography>
+                <Typography variant="body1" sx={{ marginBottom: 1 }}>Time: {selectedLog.time}</Typography>
+                <Typography variant="body1" sx={{ marginBottom: 1 }}>Host: {selectedLog.host}</Typography>
+                <Typography variant="body1" sx={{ marginBottom: 1 }}>Logs: {selectedLog.log}</Typography>
+                <Typography variant="body1" sx={{ marginBottom: 1 }}>Type: {selectedLog.type}</Typography>
+              </Box>
+            </Box>
           )}
         </Box>
       </Modal>
-      <div className="resultOutput mt-10">
-        <h1 className="text-2xl my-3">Output result</h1>
-        <textarea
-          className="w-full resize-none rounded-md p-4"
-          style={{
-            border: "1px solid #89A6CC",
-            maxHeight: "8em",
-            overflow: "auto",
-          }}
-        >
-          Build successfully
-        </textarea>
-      </div>
     </>
   );
 };
