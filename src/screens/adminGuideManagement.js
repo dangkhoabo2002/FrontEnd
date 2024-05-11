@@ -10,8 +10,11 @@ import {
   Box,
   Typography,
   TextField,
-  DialogTitle,
+  Dialog,
   DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   IconButton,
   FormControl,
   OutlinedInput,
@@ -22,7 +25,6 @@ import {
 // ICONS MUI
 
 import DeleteIcon from "@mui/icons-material/Delete";
-import Dialog from "@mui/material/Dialog";
 import CloseIcon from "@mui/icons-material/Close";
 import EditIcon from "@mui/icons-material/Edit";
 import toast, { Toaster } from "react-hot-toast";
@@ -446,7 +448,7 @@ export default function AdminGuide() {
                     <tr key={guide.guide_id}>
                       <td>{index + 1}</td>
                       <td>{guide.title}</td>
-                      <td>{guide.content}</td>
+                      <td>{guide.title.slice(0, 100)}...</td>
                       <td style={{ padding: "6px 0px" }}>
                         <IconButton
                           aria-label="delete"
@@ -498,7 +500,47 @@ export default function AdminGuide() {
         </div>
       </div>
 
-      <Modal
+      <Dialog open={open} onClose={handleCloseAddGuide}>
+      <DialogTitle>Add new guide</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+            Add new guide into MHD system.
+        </DialogContentText>
+        <TextField
+        fullWidth
+        variant="outlined"
+        value={guideAdd.title}
+        onChange={handleChange("title")}
+                required
+                margin="dense"
+                id="guide_title"
+                name="guide_title"
+                label="guide_title"
+                type="text"
+              />
+                   <TextField
+                required
+                margin="dense"
+                id="guide_content"
+                name="guide_content"
+                label="guide_content"
+                type="text"
+
+                fullWidth
+                multiline
+                rows={4}
+                variant="outlined"
+                value={guideAdd.content}
+                onChange={handleChange("content")}
+              />
+      </DialogContent>
+      <DialogActions>
+              <Button onClick={handleCloseAddGuide}>Cancel</Button>
+              <Button onClick={handleAddGuide}>Confirm</Button>
+            </DialogActions>
+      </Dialog>
+
+      {/* <Modal
         open={open}
         onClose={handleCloseAddGuide}
         aria-labelledby="keep-mounted-modal-title"
@@ -604,9 +646,50 @@ export default function AdminGuide() {
             </Button>
           </DialogActions>
         </Box>
-      </Modal>
+      </Modal> */}
 
-      <Modal
+      {/*-------------- EDIT ALERT ---------------- */}
+      <Dialog open={openEdit} onClose={handleCloseEditGuide}>
+            <DialogTitle>Update guide</DialogTitle>
+            <DialogContent>
+              <DialogContentText className="pb-4">
+                Edit guide's information.
+              </DialogContentText>
+              <TextField
+                required
+                margin="dense"
+                id="guide"
+                name="guide"
+                label="Guide name"
+                type="text"
+                fullWidth
+                variant="outlined"
+                onChange={handleChangeEditGuide("title")}
+                  value={currentEditGuide.title}
+              />
+
+              <TextField
+                required
+                id="outlined-multiline-static"
+                label="Description"
+                multiline
+                rows={4}
+                margin="dense"
+                name="pkg"
+                type="Description"
+                fullWidth
+                onChange={handleChangeEditGuide("content")}
+                value={currentEditGuide.content}
+              />
+              
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseEditGuide}>Cancel</Button>
+              <Button onClick={handleEditGuide}>Confirm</Button>
+            </DialogActions>
+          </Dialog>
+
+      {/* <Modal
         keepMounted
         open={openEdit}
         onClose={handleCloseEditGuide}
@@ -705,7 +788,7 @@ export default function AdminGuide() {
             </Button>
           </DialogActions>
         </Box>
-      </Modal>
+      </Modal> */}
     </div>
   );
 }

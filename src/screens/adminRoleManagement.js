@@ -511,8 +511,8 @@ export default function AdminRoleManagement() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={clickCloseDelete}>Disagree</Button>
-          <Button onClick={handleDeleteRole}>Agree</Button>
+          <Button onClick={clickCloseDelete}>No</Button>
+          <Button onClick={handleDeleteRole}>Yes</Button>
         </DialogActions>
       </Dialog>
 
