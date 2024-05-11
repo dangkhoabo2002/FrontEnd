@@ -42,11 +42,15 @@ export default function AdminGuide() {
     content: "",
   });
 
-  const [currentGuide, setCurrentGuide] = useState("");
+  const [currentGuide, setCurrentGuide] = useState();
+  const [oldTitle, setOldTitle] = useState();
+  const [oldContent, setOldContent] = useState();
 
   // EDIT GUIDE
-  const handleClickOpenEditGuide = (id) => {
+  const handleClickOpenEditGuide = (id, old_title, old_content) => {
     setCurrentGuide(id);
+    setOldTitle(old_title);
+    setOldContent(old_content);
     setOpenEdit(true);
   };
   const handleCloseEditGuide = () => {
@@ -63,6 +67,11 @@ export default function AdminGuide() {
       const editUrl = `http://127.0.0.1:5000/guide/update/${currentGuide}`;
       const token = localStorage.getItem("access_token");
 
+      const updateTitle =
+        currentEditGuide.title === "" ? oldTitle : currentEditGuide.title;
+      const updateContent =
+        currentEditGuide.content === "" ? oldContent : currentEditGuide.content;
+
       try {
         const response = await fetch(editUrl, {
           method: "PUT",
@@ -74,8 +83,8 @@ export default function AdminGuide() {
             "Access-Control-Allow-Credentials": "true",
           },
           body: JSON.stringify({
-            title: currentEditGuide.title,
-            content: currentEditGuide.content,
+            title: updateTitle,
+            content: updateContent,
           }),
         });
         if (response.status === 200) {
@@ -312,7 +321,6 @@ export default function AdminGuide() {
     } else {
       const addUrl = "http://127.0.0.1:5000/guide/add";
       const token = localStorage.getItem("access_token");
-
       try {
         const response = await fetch(addUrl, {
           method: "POST",
@@ -448,7 +456,7 @@ export default function AdminGuide() {
                     <tr key={guide.guide_id}>
                       <td>{index + 1}</td>
                       <td>{guide.title}</td>
-                      <td>{guide.title.slice(0, 100)}...</td>
+                      <td>{guide.content.slice(0, 100)}...</td>
                       <td style={{ padding: "6px 0px" }}>
                         <IconButton
                           aria-label="delete"
@@ -462,7 +470,11 @@ export default function AdminGuide() {
                         <IconButton
                           aria-label="edit"
                           onClick={() =>
-                            handleClickOpenEditGuide(guide.guide_id)
+                            handleClickOpenEditGuide(
+                              guide.guide_id,
+                              guide.title,
+                              guide.content
+                            )
                           }
                         >
                           <EditIcon />
@@ -501,193 +513,82 @@ export default function AdminGuide() {
       </div>
 
       <Dialog open={open} onClose={handleCloseAddGuide}>
-      <DialogTitle>Add new guide</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-            Add new guide into MHD system.
-        </DialogContentText>
-        <TextField
-        fullWidth
-        variant="outlined"
-        value={guideAdd.title}
-        onChange={handleChange("title")}
-                required
-                margin="dense"
-                id="guide_title"
-                name="guide_title"
-                label="guide_title"
-                type="text"
-              />
-                   <TextField
-                required
-                margin="dense"
-                id="guide_content"
-                name="guide_content"
-                label="guide_content"
-                type="text"
-
-                fullWidth
-                multiline
-                rows={4}
-                variant="outlined"
-                value={guideAdd.content}
-                onChange={handleChange("content")}
-              />
-      </DialogContent>
-      <DialogActions>
-              <Button onClick={handleCloseAddGuide}>Cancel</Button>
-              <Button onClick={handleAddGuide}>Confirm</Button>
-            </DialogActions>
+        <DialogTitle>Add new guide</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Add new guide into MHD system.</DialogContentText>
+          <TextField
+            fullWidth
+            variant="outlined"
+            value={guideAdd.title}
+            onChange={handleChange("title")}
+            required
+            margin="dense"
+            id="guide_title"
+            name="guide_title"
+            label="Title"
+            type="text"
+          />
+          <TextField
+            required
+            margin="dense"
+            id="guide_content"
+            name="guide_content"
+            label="Content"
+            type="text"
+            fullWidth
+            multiline
+            rows={4}
+            variant="outlined"
+            value={guideAdd.content}
+            onChange={handleChange("content")}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseAddGuide}>Cancel</Button>
+          <Button onClick={handleAddGuide}>Confirm</Button>
+        </DialogActions>
       </Dialog>
-
-      {/* <Modal
-        open={open}
-        onClose={handleCloseAddGuide}
-        aria-labelledby="keep-mounted-modal-title"
-        aria-describedby="keep-mounted-modal-description"
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 600,
-            bgcolor: "background.paper",
-            borderRadius: "20px",
-            boxShadow: 24,
-            p: 3,
-          }}
-        >
-          <div className="pb-2 text-center border-b-2 border-stone-500">
-            <div className="flex flex-row items-center justify-between">
-              <Typography
-                className="font-semibold"
-                style={{ fontSize: "28px", color: "#637381" }}
-              >
-                ADD GUIDE
-              </Typography>
-              <IconButton onClick={handleCloseAddGuide}>
-                <CloseIcon />
-              </IconButton>
-            </div>
-          </div>
-
-          <Grid container alignItems="center" spacing={2} mt={2}>
-            <Grid item xs={12} md={3}>
-              <Typography
-                className="mt-3"
-                style={{
-                  fontSize: "16px",
-                  fontWeight: "400",
-                }}
-              >
-                Title:
-              </Typography>
-            </Grid>
-            <Grid item xs={12} md={9}>
-              <TextField
-                fullWidth
-                variant="outlined"
-                value={guideAdd.title}
-                onChange={handleChange("title")}
-              />
-            </Grid>
-          </Grid>
-
-          <Grid container alignItems="center" spacing={2} mt={2}>
-            <Grid item xs={12} md={3}>
-              <Typography
-                className="mt-3"
-                style={{
-                  fontSize: "16px",
-                  fontWeight: "400",
-                }}
-              >
-                Content:
-              </Typography>
-            </Grid>
-            <Grid item xs={12} md={9}>
-              <TextField
-                fullWidth
-                multiline
-                rows={4}
-                variant="outlined"
-                value={guideAdd.content}
-                onChange={handleChange("content")}
-              />
-            </Grid>
-          </Grid>
-
-          <DialogActions className="mt-5">
-            <Button
-              variant="contained"
-              onClick={handleCloseAddGuide}
-              sx={{
-                width: "100px",
-                color: "white",
-                bgcolor: "#F85F60",
-                "&:hover": { bgcolor: "#D45758" },
-              }}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="contained"
-              onClick={handleAddGuide}
-              sx={{
-                width: "100px",
-                color: "white",
-                bgcolor: "#6EC882",
-                "&:hover": { bgcolor: "#63B976" },
-              }}
-            >
-              Add
-            </Button>
-          </DialogActions>
-        </Box>
-      </Modal> */}
 
       {/*-------------- EDIT ALERT ---------------- */}
       <Dialog open={openEdit} onClose={handleCloseEditGuide}>
-            <DialogTitle>Update guide</DialogTitle>
-            <DialogContent>
-              <DialogContentText className="pb-4">
-                Edit guide's information.
-              </DialogContentText>
-              <TextField
-                required
-                margin="dense"
-                id="guide"
-                name="guide"
-                label="Guide name"
-                type="text"
-                fullWidth
-                variant="outlined"
-                onChange={handleChangeEditGuide("title")}
-                  value={currentEditGuide.title}
-              />
+        <DialogTitle>Update guide</DialogTitle>
+        <DialogContent>
+          <DialogContentText className="pb-4">
+            Edit guide's information.
+          </DialogContentText>
+          <TextField
+            required
+            margin="dense"
+            id="guide"
+            name="guide"
+            label="Guide name"
+            type="text"
+            fullWidth
+            variant="outlined"
+            onChange={handleChangeEditGuide("title")}
+            value={currentEditGuide.title}
+          />
 
-              <TextField
-                required
-                id="outlined-multiline-static"
-                label="Description"
-                multiline
-                rows={4}
-                margin="dense"
-                name="pkg"
-                type="Description"
-                fullWidth
-                onChange={handleChangeEditGuide("content")}
-                value={currentEditGuide.content}
-              />
-              
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleCloseEditGuide}>Cancel</Button>
-              <Button onClick={handleEditGuide}>Confirm</Button>
-            </DialogActions>
-          </Dialog>
+          <TextField
+            required
+            id="outlined-multiline-static"
+            label="Description"
+            multiline
+            rows={4}
+            margin="dense"
+            name="pkg"
+            type="Description"
+            fullWidth
+            
+            onChange={handleChangeEditGuide("content")}
+            value={currentEditGuide.content}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseEditGuide}>Cancel</Button>
+          <Button onClick={handleEditGuide}>Confirm</Button>
+        </DialogActions>
+      </Dialog>
 
       {/* <Modal
         keepMounted
