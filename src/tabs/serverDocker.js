@@ -21,6 +21,8 @@ export default function ServerDocker(serverId) {
   const [loading, setLoading] = useState(false);
   const [loadingContainer, setLoadingContainer] = useState(false);
 
+  const [resultOutput, setResultOutput] = useState();
+
   // DOCKER PROJECT
   const [dockerProject, setDockerProject] = useState({
     docker_file: "",
@@ -584,6 +586,7 @@ export default function ServerDocker(serverId) {
           container_name: addContainer.container_name,
         }),
       });
+
       if (response.status === 200) {
         toast.dismiss();
         toast.success("Add Container Successfully.", {
@@ -831,15 +834,7 @@ export default function ServerDocker(serverId) {
           />
         </div>
       </div>
-      <div className="resultOutput">
-        <h1 className="text-2xl my-3">Output result</h1>
-        <textarea
-          class="w-full resize-none rounded-md p-4"
-          style={{ border: "1px solid #89A6CC" }}
-        >
-          Build successfully
-        </textarea>
-      </div>
+
       <div className="containersSection">
         <h1 className="text-2xl  my-3">All containers</h1>
         {loadingContainer && (
@@ -900,7 +895,8 @@ export default function ServerDocker(serverId) {
 
         {/* Table of containers */}
         <div
-          style={{ height: 400, border: "1px solid #89A6CC" }}a
+          style={{ height: 400, border: "1px solid #89A6CC" }}
+          a
           className="bg-[white] rounded-md shadow-lg"
         >
           <DataGrid
@@ -915,7 +911,15 @@ export default function ServerDocker(serverId) {
           />
         </div>
       </div>
-
+      <div className="resultOutput">
+        <h1 className="text-2xl my-3">Output result</h1>
+        <textarea
+          class="w-full resize-none rounded-md p-4"
+          style={{ border: "1px solid #89A6CC" }}
+        >
+          {resultOutput}
+        </textarea>
+      </div>
       {/* Modal Add Container */}
       <Modal
         open={openAddContainer}

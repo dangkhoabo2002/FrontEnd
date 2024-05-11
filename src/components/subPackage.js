@@ -16,7 +16,7 @@ export default function SubscriptionPackages() {
 
   const [packageData, setPackageData] = useState([]);
 
-  const handlePackage = async () => {
+  const handleGetPackage = async () => {
     const packageUrl = "http://127.0.0.1:5000/package/get";
 
     try {
@@ -40,7 +40,7 @@ export default function SubscriptionPackages() {
   };
 
   useEffect(() => {
-    handlePackage();
+    handleGetPackage();
   }, []);
 
   const handlePackageClick = (pkg) => {
@@ -48,6 +48,62 @@ export default function SubscriptionPackages() {
       setSelectedPackage(null);
     } else {
       setSelectedPackage(pkg);
+    }
+  };
+
+  // BUY PACKAGE
+
+  const handleSendPackage = async (amount) => {
+    const packageUrl = "http://127.0.0.1:5000/billing/add_billing";
+    const token = localStorage.getItem("access_token");
+
+    try {
+      const response = await fetch(packageUrl, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          amount: amount,
+        }),
+      });
+      if (response.status === 200) {
+        const data = await response.json();
+        handleRequestMomo(data);
+      } else {
+        console.error("Failed to fetch package data");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  const handleRequestMomo = async (requestObj) => {
+    console.log("reqData", requestObj.request_data);
+
+    const packageUrl = "https://test-payment.momo.vn/v2/gateway/api/create";
+
+    try {
+      const response = await fetch(packageUrl, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: requestObj.request_data,
+      });
+      if (response.status === 200) {
+        const data = await response.json();
+        console.log("ResMOMO", data);
+      } else {
+        console.error("Failed to fetch package data");
+      }
+    } catch (error) {
+      console.error("Error:", error);
     }
   };
 
@@ -123,27 +179,28 @@ export default function SubscriptionPackages() {
                   className="mb-3"
                   style={{ bottom: "20px", width: "100%", textAlign: "center" }}
                 >
-                  <Link to={"/user/subscribe/payment"}>
-                    <Button
-                      variant="contained"
-                      style={{
-                        backgroundColor:
-                          selectedPackage &&
-                          selectedPackage.package_id === pkg.package_id
-                            ? "#3867A5"
-                            : "white",
-                        color:
-                          selectedPackage &&
-                          selectedPackage.package_id === pkg.package_id
-                            ? "white"
-                            : "#3867A5",
-                        margin: "auto",
-                        width: "50%",
-                      }}
-                    >
-                      Buy Now
-                    </Button>
-                  </Link>
+                  {/* <Link to={"/user/subscribe/payment"}> */}
+                  <Button
+                    onClick={() => handleSendPackage(pkg.price)}
+                    variant="contained"
+                    style={{
+                      backgroundColor:
+                        selectedPackage &&
+                        selectedPackage.package_id === pkg.package_id
+                          ? "#3867A5"
+                          : "white",
+                      color:
+                        selectedPackage &&
+                        selectedPackage.package_id === pkg.package_id
+                          ? "white"
+                          : "#3867A5",
+                      margin: "auto",
+                      width: "50%",
+                    }}
+                  >
+                    Buy Now
+                  </Button>
+                  {/* </Link> */}
                 </div>
               </CardActionArea>
             </Card>

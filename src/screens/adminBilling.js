@@ -1,20 +1,164 @@
 import React, { useState, useEffect } from "react";
 import SidebarAdmin from "../components/sidebarAdmin";
 import NavigationAdmin from "../components/navAdmin";
-import { Billings } from "../data/listOfBilling";
 import "../css/adminBilling.css";
 import { Button } from "@mui/material";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function AdminBillings() {
-  const [Billing, setBilling] = useState({});
+  const [listBilling, setListBilling] = useState();
+  const [billingInfo, setBillingInfo] = useState();
+
+  const handleViewBilling = (id) => {
+    handleGetBilling(id);
+  };
+
+  const handleGetAllBilling = async () => {
+    toast.loading("Loading data...");
+    const editUrl = "http://127.0.0.1:5000/billing/get_all_billing";
+    const token = localStorage.getItem("access_token");
+
+    try {
+      const response = await fetch(editUrl, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": "true",
+        },
+      });
+      if (response.status === 200) {
+        const data = await response.json();
+        setListBilling(data);
+        toast.dismiss();
+      } else if (response.status === 403) {
+        toast.dismiss();
+
+        toast.error("Permission denied!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 400) {
+        toast.dismiss();
+
+        toast.error("Guide is not selected!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 500) {
+        toast.dismiss();
+
+        toast.error("Failed to update, please try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else {
+        toast.dismiss();
+
+        toast.error("Something wrong, please try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+
+  const handleGetBilling = async (idBill) => {
+    toast.loading("Loading data...");
+    const editUrl = `http://127.0.0.1:5000/billing/get_billing_by_id/${idBill}`;
+    const token = localStorage.getItem("access_token");
+
+    try {
+      const response = await fetch(editUrl, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": "true",
+        },
+      });
+      if (response.status === 200) {
+        const data = await response.json();
+        setBillingInfo(data);
+        toast.dismiss();
+      } else if (response.status === 403) {
+        toast.dismiss();
+
+        toast.error("Permission denied!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 404) {
+        toast.dismiss();
+
+        toast.error("Billing record not found!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else {
+        toast.error("Something wrong, please try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+
   const [token, setToken] = useState();
   const checkToken = () => {
     const isToken = localStorage.getItem("checkAdmin");
     setToken(isToken);
   };
+
   useEffect(() => {
     checkToken();
+    handleGetAllBilling();
   }, []);
 
   return (
@@ -34,6 +178,8 @@ export default function AdminBillings() {
           height: "66vh",
         }}
       >
+        <Toaster position="bottom-right" reverseOrder={false} />
+
         <div
           style={{
             display: "flex",
@@ -55,7 +201,6 @@ export default function AdminBillings() {
                 <thead>
                   <tr>
                     <th>DATE</th>
-                    <th>TYPE OF PACKAGE</th>
                     <th>TRANSACTION FEE</th>
                     <th>STATUS</th>
                     <th>DETAIL</th>
@@ -72,26 +217,15 @@ export default function AdminBillings() {
                       .
                     </td>
                   </tr>
-                  {Billings.map((bill) => (
-                    <tr key={bill.id}>
-                      <td>{bill.date}</td>
-                      <td>{bill.type_of_package}</td>
-                      <td>{bill.transaction_fee}$</td>
-                      {bill.status == "Pending" ? (
-                        <td id="pending">{bill.status}</td>
-                      ) : (
-                        <td id="paid">{bill.status}</td>
-                      )}
+                  {listBilling?.map((bill) => (
+                    <tr key={bill.billing_id}>
+                      <td>{bill.timestamp}</td>
+                      <td>{bill.amount}đ</td>
+                      <td>{bill.billing_status}</td>
                       <td>
                         <a href="#popup1" id="openPopUp">
-                          {/* <button
-                          onClick={() => setBilling(bill)}
-                          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-                        >
-                          View
-                        </button> */}
                           <Button
-                            onClick={() => setBilling(bill)}
+                            onClick={() => handleViewBilling(bill.billing_id)}
                             variant="contained"
                             sx={{
                               width: "100px",
@@ -120,22 +254,21 @@ export default function AdminBillings() {
                     <h1>Billing Information</h1>
                     <div className="flex flex-row justify-start py-10 gap-12">
                       <div className="leftInfo">
-                        <h2>Username:</h2>
-                        <h2>Package type:</h2>
                         <h2>Transaction fee:</h2>
-                        <h2>Id:</h2>
-                        <h2>Date:</h2>
+                        <h2>Billing Id:</h2>
                         <h2>Status</h2>
-                        <h2>Total</h2>
+                        <h2>Customer Id:</h2>
+                        <h2>Date:</h2>
+                        <h2>Subscrition Id:</h2>
                       </div>
                       <div className="rightInfo">
-                        <h2>{Billing.username}</h2>
-                        <h2>{Billing.type_of_package}</h2>
-                        <h2>{Billing.transaction_fee}$</h2>
-                        <h2>{Billing.id}</h2>
-                        <h2>{Billing.date}</h2>
-                        <h2>{Billing.status}</h2>
-                        <h2>{Billing.total}$</h2>
+                        <h2>{billingInfo?.amount}đ</h2>
+                        <h2>{billingInfo?.billing_id}</h2>
+                        <h2>{billingInfo?.billing_status}</h2>
+                        <h2>{billingInfo?.customer_id}</h2>
+                        <h2>{billingInfo?.date}</h2>
+                        <h2>{billingInfo?.timestamp}</h2>
+                        <h2>{billingInfo?.subscription_id}</h2>
                       </div>
                     </div>
                     <div className="popup_btn">

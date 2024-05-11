@@ -315,6 +315,7 @@ export default function AdminPackageManagement() {
 
   const [openEdit, setOpenEdit] = useState(false);
   const [packageId_edit, setPackageId_edit] = useState();
+  const [packageInfo, setPackageInfo] = useState();
 
   const [currentEditPackage, setCurrentEditPackage] = useState({
     package_name: "",
@@ -327,6 +328,7 @@ export default function AdminPackageManagement() {
 
   const handleClickOpenEditPackage = (package_id) => {
     setPackageId_edit(package_id);
+    handleGetPackageInfo(package_id);
     setOpenEdit(true);
   };
   const handleCloseEditPackage = () => {
@@ -355,6 +357,31 @@ export default function AdminPackageManagement() {
       const editUrl = `http://127.0.0.1:5000/package/update/${packageId_edit}`;
       const token = localStorage.getItem("access_token");
 
+      const updatedName =
+        currentEditPackage.package_name === ""
+          ? packageInfo.package_name
+          : currentEditPackage.package_name;
+      const updatedDescription =
+        currentEditPackage.description === ""
+          ? packageInfo.description
+          : currentEditPackage.description;
+      const updatedDuration =
+        currentEditPackage.duration === ""
+          ? packageInfo.duration
+          : currentEditPackage.duration;
+      const updatedPrice =
+        currentEditPackage.price === ""
+          ? packageInfo.price
+          : currentEditPackage.price;
+      const updatedSlotMember =
+        currentEditPackage.slot_number === ""
+          ? packageInfo.slot_number
+          : currentEditPackage.slot_number;
+      const updatedSlotServer =
+        currentEditPackage.slot_server === ""
+          ? packageInfo.slot_server
+          : currentEditPackage.slot_server;
+
       try {
         const response = await fetch(editUrl, {
           method: "PUT",
@@ -366,12 +393,12 @@ export default function AdminPackageManagement() {
             "Access-Control-Allow-Credentials": "true",
           },
           body: JSON.stringify({
-            package_name: currentEditPackage.package_name,
-            description: currentEditPackage.description,
-            duration: currentEditPackage.duration,
-            price: currentEditPackage.price,
-            slot_number: currentEditPackage.slot_number,
-            slot_server: currentEditPackage.slot_server,
+            package_name: updatedName,
+            description: updatedDescription,
+            duration: updatedDuration,
+            price: updatedPrice,
+            slot_number: updatedSlotMember,
+            slot_server: updatedSlotServer,
             status: true,
           }),
         });
@@ -462,6 +489,91 @@ export default function AdminPackageManagement() {
     }
   };
 
+  const handleGetPackageInfo = async (package_id) => {
+    if (package_id) {
+      toast.loading("In processing...");
+      const editUrl = `http://127.0.0.1:5000/package/get/${package_id}`;
+      const token = localStorage.getItem("access_token");
+
+      try {
+        const response = await fetch(editUrl, {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Credentials": "true",
+          },
+        });
+        if (response.status === 200) {
+          const data = await response.json();
+          setPackageInfo(data);
+          toast.dismiss();
+        } else if (response.status === 400) {
+          toast.dismiss();
+          toast.error("Missing some fields, please try again!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 403) {
+          toast.dismiss();
+
+          toast.error("Permission denied!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 500) {
+          toast.dismiss();
+
+          toast.error("Failed to update package!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else {
+          toast.dismiss();
+
+          toast.error("Something wrong, please try again later!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+      }
+    } else {
+      toast.error("Please select a package!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
+        },
+      });
+    }
+  };
   const [token, setToken] = useState();
 
   const checkToken = () => {
@@ -474,6 +586,7 @@ export default function AdminPackageManagement() {
     checkToken();
   }, []);
 
+  console.log(packageInfo);
   return (
     <div className="">
       {/*-------------- Navigation + Backgroud---------------- */}
@@ -550,7 +663,7 @@ export default function AdminPackageManagement() {
                     {Package.map((pkg) => (
                       <tr key={pkg.package_id}>
                         <td>{pkg.package_name}</td>
-                        <td>{pkg.price}$</td>
+                        <td>{pkg.price}đ</td>
                         <td>{pkg.description}</td>
                         <td>{pkg.duration}</td>
                         <td>{pkg.slot_number}</td>
@@ -766,6 +879,7 @@ export default function AdminPackageManagement() {
                 type="text"
                 fullWidth
                 variant="outlined"
+                placeholder={packageInfo?.package_name}
                 onChange={handleChangeEditPackage("package_name")}
                 value={currentEditPackage.package_name}
               />
@@ -780,6 +894,7 @@ export default function AdminPackageManagement() {
                 name="pkg"
                 type="Description"
                 fullWidth
+                placeholder={packageInfo?.description}
                 onChange={handleChangeEditPackage("description")}
                 value={currentEditPackage.description}
               />
@@ -792,6 +907,7 @@ export default function AdminPackageManagement() {
                 type="text"
                 fullWidth
                 variant="outlined"
+                placeholder={packageInfo?.duration}
                 onChange={handleChangeEditPackage("duration")}
                 value={currentEditPackage.duration}
               />
@@ -804,6 +920,7 @@ export default function AdminPackageManagement() {
                 type="text"
                 fullWidth
                 variant="outlined"
+                placeholder={packageInfo?.price}
                 onChange={handleChangeEditPackage("price")}
                 value={currentEditPackage.price}
               />
@@ -816,6 +933,7 @@ export default function AdminPackageManagement() {
                 type="text"
                 fullWidth
                 variant="outlined"
+                placeholder={packageInfo?.slot_number}
                 onChange={handleChangeEditPackage("slot_number")}
                 value={currentEditPackage.slot_number}
               />
@@ -828,6 +946,7 @@ export default function AdminPackageManagement() {
                 type="text"
                 fullWidth
                 variant="outlined"
+                placeholder={packageInfo?.slot_server}
                 onChange={handleChangeEditPackage("slot_server")}
                 value={currentEditPackage.slot_server}
               />

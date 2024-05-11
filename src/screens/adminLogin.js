@@ -52,6 +52,7 @@ export default function AdminLogin() {
       });
       if (response.status === 200) {
         const data = await response.json();
+        
         localStorage.setItem("access_token", data.access_token);
         localStorage.setItem("checkAdmin", true);
         navigate("/admin");
