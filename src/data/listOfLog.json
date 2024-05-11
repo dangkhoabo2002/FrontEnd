@@ -2,15 +2,15 @@
   {
     "date": "2024-02-24",
     "time": "00:00",
-    "username": "NganTB",
-    "action": "Change Server name",
-    "level": "Debug"
+    "host": "NganTB",
+    "log": "Change Server name",
+    "type": "Debug"
   },
   {
     "date": "2024-02-24",
     "time": "00:01",
-    "username": "NganTB",
-    "action": "Change Server name",
-    "level": "Info"
+    "host": "NganTB",
+    "log": "Change Server name",
+    "type": "Info"
   }
 ]

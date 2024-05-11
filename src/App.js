@@ -12,6 +12,7 @@ import Payment from "./screens/Payment";
 import Admin from "./screens/adminAccountManagement";
 import ServerConfig from "./screens/userServerConfig";
 import Guide from "./screens/userGuide";
+import MaintenancePage from "./screens/maintenancePage";
 
 import AdminBilling from "./screens/adminBilling";
 import AdminSetting from "./screens/adminSetting";
@@ -41,6 +42,7 @@ export default function App() {
         <Route path="/term" element={<TermOfService />}></Route>
         <Route path="/sub" element={<SubscribeModal />}></Route>
         <Route path="/error404" element={<Error404 />}></Route>
+        <Route path="/maintaining" element={<MaintenancePage />}></Route>
 
         {/* ADMIN ROUTE*/}
         <Route path="/adminLogin" element={<AdminLogin />}></Route>
