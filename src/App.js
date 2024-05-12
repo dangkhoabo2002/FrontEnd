@@ -59,7 +59,10 @@ export default function App() {
         {/* USER PROFILE*/}
         <Route path="/user" element={<UserProfile />}></Route>
         <Route path="/user/subscribe" element={<UserSubscribe />}></Route>
-        <Route path="/user/subscribe/payment" element={<UserPayment />}></Route>
+        <Route
+          path="/user/subscribe/payment/:billing_id"
+          element={<UserPayment />}
+        ></Route>
         <Route
           path="/login/forgotPassword"
           element={<ForgotPassword />}

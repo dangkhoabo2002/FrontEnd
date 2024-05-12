@@ -43,14 +43,11 @@ export default function AdminGuide() {
   });
 
   const [currentGuide, setCurrentGuide] = useState();
-  const [oldTitle, setOldTitle] = useState();
-  const [oldContent, setOldContent] = useState();
 
   // EDIT GUIDE
   const handleClickOpenEditGuide = (id, old_title, old_content) => {
     setCurrentGuide(id);
-    setOldTitle(old_title);
-    setOldContent(old_content);
+    setCurrentEditGuide({ title: old_title, content: old_content });
     setOpenEdit(true);
   };
   const handleCloseEditGuide = () => {
@@ -67,11 +64,6 @@ export default function AdminGuide() {
       const editUrl = `http://127.0.0.1:5000/guide/update/${currentGuide}`;
       const token = localStorage.getItem("access_token");
 
-      const updateTitle =
-        currentEditGuide.title === "" ? oldTitle : currentEditGuide.title;
-      const updateContent =
-        currentEditGuide.content === "" ? oldContent : currentEditGuide.content;
-
       try {
         const response = await fetch(editUrl, {
           method: "PUT",
@@ -83,8 +75,8 @@ export default function AdminGuide() {
             "Access-Control-Allow-Credentials": "true",
           },
           body: JSON.stringify({
-            title: updateTitle,
-            content: updateContent,
+            title: currentEditGuide.title,
+            content: currentEditGuide.content,
           }),
         });
         if (response.status === 200) {
@@ -519,7 +511,7 @@ export default function AdminGuide() {
           <TextField
             fullWidth
             variant="outlined"
-            value={guideAdd.title}
+            value={currentEditGuide.title}
             onChange={handleChange("title")}
             required
             margin="dense"
@@ -539,7 +531,7 @@ export default function AdminGuide() {
             multiline
             rows={4}
             variant="outlined"
-            value={guideAdd.content}
+            value={currentEditGuide.content}
             onChange={handleChange("content")}
           />
         </DialogContent>
@@ -565,7 +557,6 @@ export default function AdminGuide() {
             type="text"
             fullWidth
             variant="outlined"
-            
             onChange={handleChangeEditGuide("title")}
             value={currentEditGuide.title}
           />
@@ -580,7 +571,6 @@ export default function AdminGuide() {
             name="pkg"
             type="Description"
             fullWidth
-
             onChange={handleChangeEditGuide("content")}
             value={currentEditGuide.content}
           />

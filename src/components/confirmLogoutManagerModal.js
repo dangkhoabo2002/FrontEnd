@@ -47,7 +47,7 @@ export default function AlertDialogSlide() {
           },
         });
       } else {
-        toast.error("Can not Logout, please try again later!", {
+        toast.error("Can not logout, please try again later!", {
           style: {
             border: "1px solid #F85F60",
             maxWidth: "900px",

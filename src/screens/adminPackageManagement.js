@@ -80,7 +80,6 @@ export default function AdminPackageManagement() {
   const handleAddPackage = async () => {
     if (
       packageAdd.package_name === "" ||
-      packageAdd.description === "" ||
       packageAdd.duration === "" ||
       packageAdd.price === "" ||
       packageAdd.slot_number === "" ||
@@ -315,7 +314,6 @@ export default function AdminPackageManagement() {
 
   const [openEdit, setOpenEdit] = useState(false);
   const [packageId_edit, setPackageId_edit] = useState();
-  const [packageInfo, setPackageInfo] = useState();
 
   const [currentEditPackage, setCurrentEditPackage] = useState({
     package_name: "",
@@ -353,137 +351,123 @@ export default function AdminPackageManagement() {
 
   const handleEditPackage = async () => {
     if (packageId_edit) {
-      toast.loading("In processing...");
       const editUrl = `http://127.0.0.1:5000/package/update/${packageId_edit}`;
       const token = localStorage.getItem("access_token");
 
       if (
-        currentEditPackage.package_name === "" &&
-        currentEditPackage.description === "" &&
-        currentEditPackage.duration === "" &&
-        currentEditPackage.price === "" &&
-        currentEditPackage.slot_number === "" &&
+        currentEditPackage.package_name === "" ||
+        currentEditPackage.price === "" ||
+        currentEditPackage.description === "" ||
+        currentEditPackage.duration === "" ||
+        currentEditPackage.slot_number === "" ||
         currentEditPackage.slot_server === ""
       ) {
-      }
-      const updatedName =
-        currentEditPackage.package_name === ""
-          ? packageInfo.package_name
-          : currentEditPackage.package_name;
-      const updatedDescription =
-        currentEditPackage.description === ""
-          ? packageInfo.description
-          : currentEditPackage.description;
-      const updatedDuration =
-        currentEditPackage.duration === ""
-          ? packageInfo.duration
-          : currentEditPackage.duration;
-      const updatedPrice =
-        currentEditPackage.price === ""
-          ? packageInfo.price
-          : currentEditPackage.price;
-      const updatedSlotMember =
-        currentEditPackage.slot_number === ""
-          ? packageInfo.slot_number
-          : currentEditPackage.slot_number;
-      const updatedSlotServer =
-        currentEditPackage.slot_server === ""
-          ? packageInfo.slot_server
-          : currentEditPackage.slot_server;
-
-      try {
-        const response = await fetch(editUrl, {
-          method: "PUT",
-          credentials: "include",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Credentials": "true",
+        toast.error("You need to input all fields to continue!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
           },
-          body: JSON.stringify({
-            package_name: updatedName,
-            description: updatedDescription,
-            duration: updatedDuration,
-            price: updatedPrice,
-            slot_number: updatedSlotMember,
-            slot_server: updatedSlotServer,
-            status: true,
-          }),
         });
-        if (response.status === 200) {
-          toast.dismiss();
-          toast.success("Edit package sucessfully.", {
-            style: {
-              border: "1px solid #37E030",
-              maxWidth: "900px",
-              padding: "16px 24px",
-              color: "green",
-              fontWeight: "bolder",
-            },
-          });
-          handleGetPackage();
-          setCurrentEditPackage({
-            package_name: "",
-            description: "",
-            duration: "",
-            price: "",
-            slot_number: "",
-            slot_server: "",
-            status: true,
-          });
-          handleCloseEditPackage();
-        } else if (response.status === 400) {
-          toast.dismiss();
-          toast.error("Missing some fields, please try again!", {
-            style: {
-              border: "1px solid #F85F60",
-              maxWidth: "900px",
-              padding: "16px 24px",
-              color: "red",
-              fontWeight: "bolder",
-            },
-          });
-        } else if (response.status === 403) {
-          toast.dismiss();
+      } else {
+        try {
+          toast.loading("In processing...");
 
-          toast.error("Permission denied!", {
-            style: {
-              border: "1px solid #F85F60",
-              maxWidth: "900px",
-              padding: "16px 24px",
-              color: "red",
-              fontWeight: "bolder",
+          const response = await fetch(editUrl, {
+            method: "PUT",
+            credentials: "include",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Credentials": "true",
             },
+            body: JSON.stringify({
+              package_name: currentEditPackage.package_name,
+              description: currentEditPackage.description,
+              duration: currentEditPackage.duration,
+              price: currentEditPackage.price,
+              slot_number: currentEditPackage.slot_number,
+              slot_server: currentEditPackage.slot_server,
+              status: true,
+            }),
           });
-        } else if (response.status === 500) {
-          toast.dismiss();
+          if (response.status === 200) {
+            toast.dismiss();
+            toast.success("Edit package sucessfully.", {
+              style: {
+                border: "1px solid #37E030",
+                maxWidth: "900px",
+                padding: "16px 24px",
+                color: "green",
+                fontWeight: "bolder",
+              },
+            });
+            handleGetPackage();
+            setCurrentEditPackage({
+              package_name: "",
+              description: "",
+              duration: "",
+              price: "",
+              slot_number: "",
+              slot_server: "",
+              status: true,
+            });
+            handleCloseEditPackage();
+          } else if (response.status === 400) {
+            toast.dismiss();
+            toast.error("Missing some fields, please try again!", {
+              style: {
+                border: "1px solid #F85F60",
+                maxWidth: "900px",
+                padding: "16px 24px",
+                color: "red",
+                fontWeight: "bolder",
+              },
+            });
+          } else if (response.status === 403) {
+            toast.dismiss();
 
-          toast.error("Failed to update package!", {
-            style: {
-              border: "1px solid #F85F60",
-              maxWidth: "900px",
-              padding: "16px 24px",
-              color: "red",
-              fontWeight: "bolder",
-            },
-          });
-        } else {
-          toast.dismiss();
+            toast.error("Permission denied!", {
+              style: {
+                border: "1px solid #F85F60",
+                maxWidth: "900px",
+                padding: "16px 24px",
+                color: "red",
+                fontWeight: "bolder",
+              },
+            });
+          } else if (response.status === 500) {
+            toast.dismiss();
 
-          toast.error("Something wrong, please try again later!", {
-            style: {
-              border: "1px solid #F85F60",
-              maxWidth: "900px",
-              padding: "16px 24px",
-              color: "red",
-              fontWeight: "bolder",
-            },
-          });
+            toast.error("Failed to update package!", {
+              style: {
+                border: "1px solid #F85F60",
+                maxWidth: "900px",
+                padding: "16px 24px",
+                color: "red",
+                fontWeight: "bolder",
+              },
+            });
+          } else {
+            toast.dismiss();
+
+            toast.error("Something wrong, please try again later!", {
+              style: {
+                border: "1px solid #F85F60",
+                maxWidth: "900px",
+                padding: "16px 24px",
+                color: "red",
+                fontWeight: "bolder",
+              },
+            });
+          }
+        } catch (error) {
+          console.error("Error:", error);
+        } finally {
         }
-      } catch (error) {
-        console.error("Error:", error);
-      } finally {
       }
     } else {
       toast.error("Please select a package!", {
@@ -517,7 +501,14 @@ export default function AdminPackageManagement() {
         });
         if (response.status === 200) {
           const data = await response.json();
-          setPackageInfo(data);
+          setCurrentEditPackage({
+            package_name: data.package_name,
+            description: data.description,
+            duration: data.duration,
+            price: data.price,
+            slot_number: data.slot_number,
+            slot_server: data.slot_server,
+          });
           toast.dismiss();
         } else if (response.status === 400) {
           toast.dismiss();
@@ -595,7 +586,6 @@ export default function AdminPackageManagement() {
     checkToken();
   }, []);
 
-  console.log(packageInfo);
   return (
     <div className="">
       {/*-------------- Navigation + Backgroud---------------- */}
@@ -888,7 +878,6 @@ export default function AdminPackageManagement() {
                 type="text"
                 fullWidth
                 variant="outlined"
-                placeholder={packageInfo?.package_name}
                 onChange={handleChangeEditPackage("package_name")}
                 value={currentEditPackage.package_name}
               />
@@ -903,7 +892,6 @@ export default function AdminPackageManagement() {
                 name="pkg"
                 type="Description"
                 fullWidth
-                placeholder={packageInfo?.description}
                 onChange={handleChangeEditPackage("description")}
                 value={currentEditPackage.description}
               />
@@ -916,7 +904,6 @@ export default function AdminPackageManagement() {
                 type="text"
                 fullWidth
                 variant="outlined"
-                placeholder={packageInfo?.duration}
                 onChange={handleChangeEditPackage("duration")}
                 value={currentEditPackage.duration}
               />
@@ -929,7 +916,6 @@ export default function AdminPackageManagement() {
                 type="text"
                 fullWidth
                 variant="outlined"
-                placeholder={packageInfo?.price}
                 onChange={handleChangeEditPackage("price")}
                 value={currentEditPackage.price}
               />
@@ -942,7 +928,6 @@ export default function AdminPackageManagement() {
                 type="text"
                 fullWidth
                 variant="outlined"
-                placeholder={packageInfo?.slot_number}
                 onChange={handleChangeEditPackage("slot_number")}
                 value={currentEditPackage.slot_number}
               />
@@ -955,7 +940,6 @@ export default function AdminPackageManagement() {
                 type="text"
                 fullWidth
                 variant="outlined"
-                placeholder={packageInfo?.slot_server}
                 onChange={handleChangeEditPackage("slot_server")}
                 value={currentEditPackage.slot_server}
               />
