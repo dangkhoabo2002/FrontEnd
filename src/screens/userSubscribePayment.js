@@ -5,7 +5,7 @@ import QR from "../assets/QRcode.png";
 import Button from "@mui/material/Button";
 
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 
 export default function UserSubscribePayment() {
   const [isPaid, setIsPaid] = useState(true);
@@ -14,8 +14,10 @@ export default function UserSubscribePayment() {
     setIsPaid(!isPaid);
   };
 
-  const { resultCode, orderId, amount } = useParams();
-  console.log(resultCode);
+  const [searchParams] = useSearchParams();
+  const orderId = searchParams.get("orderId");
+
+  
   return (
     <div className="backgroundContainer">
       <div className="bodyContainer flex flex-col justify-center items-center py-12">

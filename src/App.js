@@ -33,6 +33,7 @@ import { useEffect } from "react";
 
 export default function App() {
   const loginToken = localStorage.getItem("checkUser");
+
   const checkLoggedIn = () => {
     if (!loginToken) {
       return <Navigate to="/login" />;
@@ -40,6 +41,7 @@ export default function App() {
   };
 
   const userRole = localStorage.getItem("checkAdmin");
+
   const checkAdminRole = () => {
     if (!userRole) {
       return <Navigate to="/error404" />;
@@ -100,7 +102,7 @@ export default function App() {
           element={checkLoggedIn() || <UserSubscribe />}
         ></Route>
         <Route
-          path="/user/subscribe/payment/:billing_id"
+          path="/user/subscribe/payment/:billing_id?"
           element={checkLoggedIn() || <UserPayment />}
         ></Route>
         <Route
