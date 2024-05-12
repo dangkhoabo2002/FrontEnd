@@ -15,11 +15,7 @@ export default function ResetPassword() {
     password: null,
   });
 
-  
-
   const handleConfirmClick = () => {
-
-
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,30}$/;
     let newErrors = { password: null };
@@ -45,20 +41,14 @@ export default function ResetPassword() {
         },
       });
     } else if (!passwordRegex.test(password)) {
+      newErrors.password =
+        "Password must contain at least one lowercase letter, one uppercase letter, one digit, one special character, and be 8-30 characters long.";
 
-        newErrors.password =
-          "Password must contain at least one lowercase letter, one uppercase letter, one digit, one special character, and be 8-30 characters long.";
-    
-      
-      if (
-        newErrors.password
-      ) {
+      if (newErrors.password) {
         setError(newErrors);
         return;
       }
-    
-    } 
-    else if (password === confirmPassword) {
+    } else if (password === confirmPassword) {
       handleChangePassword();
     } else {
       toast.error("The password does not match!", {
@@ -82,7 +72,8 @@ export default function ResetPassword() {
   };
 
   const handleChangePassword = async () => {
-    const url = "http://127.0.0.1:5000/auth/reset_password";
+    const url =
+      "https://master-help-desk-back-end.vercel.app/auth/reset_password";
     const otpToken = localStorage.getItem("otp_verified");
 
     try {

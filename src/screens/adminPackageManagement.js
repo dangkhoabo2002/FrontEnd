@@ -51,7 +51,7 @@ export default function AdminPackageManagement() {
 
   // GET PKG
   const handleGetPackage = async () => {
-    const packageUrl = `http://127.0.0.1:5000/package/get`;
+    const packageUrl = `https://master-help-desk-back-end.vercel.app/package/get`;
     const token = localStorage.getItem("access_token");
 
     try {
@@ -158,7 +158,7 @@ export default function AdminPackageManagement() {
       }
       try {
         toast.loading("Adding new package...");
-        const customerUrl = `http://127.0.0.1:5000/package/add`;
+        const customerUrl = `https://master-help-desk-back-end.vercel.app/package/add`;
         const token = localStorage.getItem("access_token");
         const response = await fetch(customerUrl, {
           method: "POST",
@@ -251,7 +251,7 @@ export default function AdminPackageManagement() {
   };
 
   const handleDeleteRole = async () => {
-    const customerUrl = `http://127.0.0.1:5000/package/delete/${packageId_del}`;
+    const customerUrl = `https://master-help-desk-back-end.vercel.app/package/delete/${packageId_del}`;
     const token = localStorage.getItem("access_token");
 
     try {
@@ -351,7 +351,7 @@ export default function AdminPackageManagement() {
 
   const handleEditPackage = async () => {
     if (packageId_edit) {
-      const editUrl = `http://127.0.0.1:5000/package/update/${packageId_edit}`;
+      const editUrl = `https://master-help-desk-back-end.vercel.app/package/update/${packageId_edit}`;
       const token = localStorage.getItem("access_token");
 
       if (
@@ -485,7 +485,7 @@ export default function AdminPackageManagement() {
   const handleGetPackageInfo = async (package_id) => {
     if (package_id) {
       toast.loading("In processing...");
-      const editUrl = `http://127.0.0.1:5000/package/get/${package_id}`;
+      const editUrl = `https://master-help-desk-back-end.vercel.app/package/get/${package_id}`;
       const token = localStorage.getItem("access_token");
 
       try {

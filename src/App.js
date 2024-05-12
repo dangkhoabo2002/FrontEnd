@@ -102,7 +102,7 @@ export default function App() {
           element={checkLoggedIn() || <UserSubscribe />}
         ></Route>
         <Route
-          path="/user/subscribe/payment/:billing_id?"
+          path="/user/subscribe/payment?"
           element={checkLoggedIn() || <UserPayment />}
         ></Route>
         <Route

@@ -47,7 +47,7 @@ export default function ServerDocker(serverId) {
       });
     } else {
       setLoading(true);
-      const url = `http://127.0.0.1:5000/server/docker_build/${serverId.serverId}`;
+      const url = `https://master-help-desk-back-end.vercel.app/server/docker_build/${serverId.serverId}`;
       const token = localStorage.getItem("access_token");
 
       try {
@@ -125,7 +125,7 @@ export default function ServerDocker(serverId) {
         },
       });
     } else {
-      const url = `http://127.0.0.1:5000/server/docker_build/${serverId.serverId}`;
+      const url = `https://master-help-desk-back-end.vercel.app/server/docker_build/${serverId.serverId}`;
       const token = localStorage.getItem("access_token");
 
       try {
@@ -204,7 +204,7 @@ export default function ServerDocker(serverId) {
       });
     } else {
       setLoading(true);
-      const url = `http://127.0.0.1:5000/server/docker_build/${serverId.serverId}`;
+      const url = `https://master-help-desk-back-end.vercel.app/server/docker_build/${serverId.serverId}`;
       const token = localStorage.getItem("access_token");
 
       try {
@@ -278,7 +278,7 @@ export default function ServerDocker(serverId) {
   const handleGetImagesAPI = async () => {
     setLoading(true);
 
-    const url = `http://127.0.0.1:5000/server/docker_list_images/${serverId.serverId}`;
+    const url = `https://master-help-desk-back-end.vercel.app/server/docker_list_images/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
 
     try {
@@ -330,7 +330,7 @@ export default function ServerDocker(serverId) {
 
   const handleGetContainersAPI = async () => {
     setLoadingContainer(true);
-    const url = `http://127.0.0.1:5000/server/docker_list_containers/${serverId.serverId}`;
+    const url = `https://master-help-desk-back-end.vercel.app/server/docker_list_containers/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
 
     try {
@@ -450,7 +450,7 @@ export default function ServerDocker(serverId) {
       });
     } else {
       toast.loading(`Your action is under process, please wait...`);
-      const url = `http://127.0.0.1:5000/server/docker_containers/${serverId.serverId}`;
+      const url = `https://master-help-desk-back-end.vercel.app/server/docker_containers/${serverId.serverId}`;
       const token = localStorage.getItem("access_token");
 
       try {
@@ -570,7 +570,7 @@ export default function ServerDocker(serverId) {
 
   const handleCreateContainerAPI = async () => {
     toast.loading("Adding new container, please wait...");
-    const url = `http://127.0.0.1:5000/server/docker_create_containers/${serverId.serverId}`;
+    const url = `https://master-help-desk-back-end.vercel.app/server/docker_create_containers/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(url, {

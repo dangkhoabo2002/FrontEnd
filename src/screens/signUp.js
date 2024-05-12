@@ -14,13 +14,12 @@ import toast, { Toaster } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function SignUp() {
-
   useEffect(() => {
     const loginToken = localStorage.getItem("access_token");
     if (loginToken) {
       navigate("/organizations");
     }
-  },);
+  });
 
   const navigate = useNavigate();
   const [data, setData] = useState({
@@ -59,8 +58,19 @@ export default function SignUp() {
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,30}$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    let newErrors = {full_name:null, username: null, password: null, email: null };
-    if (!data.full_name || !data.username || !data.password || !data.email || !data.confirm_password) {
+    let newErrors = {
+      full_name: null,
+      username: null,
+      password: null,
+      email: null,
+    };
+    if (
+      !data.full_name ||
+      !data.username ||
+      !data.password ||
+      !data.email ||
+      !data.confirm_password
+    ) {
       toast.error("Please fill in all the fields.", {
         style: {
           border: "1px solid #F85F60",
@@ -72,9 +82,9 @@ export default function SignUp() {
       });
       return;
     }
-if (!data.full_name) {
-  newErrors.full_name = "Full Name is required.";
-}
+    if (!data.full_name) {
+      newErrors.full_name = "Full Name is required.";
+    }
     if (!usernameRegex.test(data.username)) {
       newErrors.username =
         "Username must be 1-12 characters long and contain only letters, numbers, or underscores.";
@@ -103,7 +113,8 @@ if (!data.full_name) {
       setError(newErrors);
       return;
     }
-    const signupUrl = "http://127.0.0.1:5000/auth/signup";
+    const signupUrl =
+      "https://master-help-desk-back-end.vercel.app/auth/signup";
     try {
       const response = await fetch(signupUrl, {
         method: "POST",
@@ -209,16 +220,16 @@ if (!data.full_name) {
             <div className="gridCust">
               <div className="flex flex-col">
                 <div className="textField mt-3">
-                <TextField
-  onChange={handleChange("full_name")}
-  label="Full Name"
-  fullWidth
-  variant="outlined"
-  className="mb-4"
-  required
-  error={!!error.full_name} 
-  helperText={error.full_name}
-/>
+                  <TextField
+                    onChange={handleChange("full_name")}
+                    label="Full Name"
+                    fullWidth
+                    variant="outlined"
+                    className="mb-4"
+                    required
+                    error={!!error.full_name}
+                    helperText={error.full_name}
+                  />
                 </div>
                 <div className="textField mt-3">
                   <TextField

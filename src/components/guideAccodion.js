@@ -5,7 +5,7 @@ import issue from "../assets/issue.png";
 
 export default function AccordionExpandIcon() {
   const handleGuide = async () => {
-    const guideUrl = "http://127.0.0.1:5000/guide/get";
+    const guideUrl = "https://master-help-desk-back-end.vercel.app/guide/get";
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(guideUrl, {
@@ -36,7 +36,6 @@ export default function AccordionExpandIcon() {
   const filteredData = data.filter((guide) =>
     guide.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
 
   const openPopup = (guide) => {
     setSelectedGuide(guide);
@@ -71,7 +70,6 @@ export default function AccordionExpandIcon() {
     ];
     setTechnologyImages([...fixedTechnologyImages]);
   }, []);
-
 
   return (
     <div>
@@ -114,39 +112,42 @@ export default function AccordionExpandIcon() {
         <Typography className="text-red-500">Error: {error.message}</Typography>
       )}
       {!loading && !error && (
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {filteredData.map((guide, index) => (
-          <div
-            key={index}
-            className="bg-white border border-gray-200 rounded-lg shadow hover:shadow-md cursor-pointer"
-            onClick={() => openPopup(guide)}
-          >
-            <img
-              loading="lazy"
-              className="rounded-t-lg object-cover w-full h-48 p-2 "
-              style={{ borderRadius: "10px" }}
-              src={technologyImages[index % technologyImages.length]}
-              alt="imgCard"
-            />
-            <div className="p-4">
-              <h5
-                className="mb-2 text-xl-center font-bold text-gray-900 dark:text-white"
-                style={{ textAlign: "center" }}
-              >
-                {guide.title}
-              </h5>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {filteredData.map((guide, index) => (
+            <div
+              key={index}
+              className="bg-white border border-gray-200 rounded-lg shadow hover:shadow-md cursor-pointer"
+              onClick={() => openPopup(guide)}
+            >
+              <img
+                loading="lazy"
+                className="rounded-t-lg object-cover w-full h-48 p-2 "
+                style={{ borderRadius: "10px" }}
+                src={technologyImages[index % technologyImages.length]}
+                alt="imgCard"
+              />
+              <div className="p-4">
+                <h5
+                  className="mb-2 text-xl-center font-bold text-gray-900 dark:text-white"
+                  style={{ textAlign: "center" }}
+                >
+                  {guide.title}
+                </h5>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
-    )}
+          ))}
+        </div>
+      )}
 
-{selectedGuide && (
+      {selectedGuide && (
         <div
           className="fixed top-0 left-0 z-50 w-full h-full bg-gray-700 bg-opacity-50 flex justify-center items-center"
           onClick={handlePopupClick}
         >
-          <div className="bg-white rounded-lg shadow-md p-4" style={{ width: "1000px" }}>
+          <div
+            className="bg-white rounded-lg shadow-md p-4"
+            style={{ width: "1000px" }}
+          >
             <div className="flex items-center">
               <img
                 loading="lazy"
@@ -158,7 +159,10 @@ export default function AccordionExpandIcon() {
                 <h5 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
                   {selectedGuide.title}
                 </h5>
-                <pre className="text-gray-700 dark:text-gray-400" style={{ whiteSpace: "pre-wrap" }}>
+                <pre
+                  className="text-gray-700 dark:text-gray-400"
+                  style={{ whiteSpace: "pre-wrap" }}
+                >
                   {selectedGuide.content}
                 </pre>
               </div>
