@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TextField, Button } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +6,19 @@ import bgLogin from "../images/loginBackgr.png";
 import toast, { Toaster } from "react-hot-toast";
 
 export default function AdminLogin() {
+
+  useEffect(() => {
+    const loginToken = localStorage.getItem("checkAdmin");
+    if (loginToken) {
+      navigate("/admin");
+    }
+
+    const loginUserToken = localStorage.getItem("checkUser");
+    if (loginUserToken) {
+      navigate("/");
+    }
+  },);
+
   const navigate = useNavigate();
   const [data, setData] = useState({
     manager_username: "",

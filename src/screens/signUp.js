@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import bgLogin from "../images/loginBackgr.png";
 import Logo from "../images/MHDLogo.png";
 import {
@@ -14,6 +14,14 @@ import toast, { Toaster } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function SignUp() {
+
+  useEffect(() => {
+    const loginToken = localStorage.getItem("access_token");
+    if (loginToken) {
+      navigate("/organizations");
+    }
+  },);
+
   const navigate = useNavigate();
   const [data, setData] = useState({
     username: "",
