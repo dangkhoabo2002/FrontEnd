@@ -6,7 +6,6 @@ import bgLogin from "../images/loginBackgr.png";
 import toast, { Toaster } from "react-hot-toast";
 
 export default function AdminLogin() {
-
   useEffect(() => {
     const loginToken = localStorage.getItem("checkAdmin");
     if (loginToken) {
@@ -17,7 +16,7 @@ export default function AdminLogin() {
     if (loginUserToken) {
       navigate("/");
     }
-  },);
+  });
 
   const navigate = useNavigate();
   const [data, setData] = useState({
@@ -65,7 +64,7 @@ export default function AdminLogin() {
       });
       if (response.status === 200) {
         const data = await response.json();
-        
+
         localStorage.setItem("access_token", data.access_token);
         localStorage.setItem("checkAdmin", true);
         navigate("/admin");

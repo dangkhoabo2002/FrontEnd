@@ -8,7 +8,6 @@ import Slide from "@mui/material/Slide";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 
-
 export default function AlertDialogSlide() {
   const [open, setOpen] = React.useState(false);
 
@@ -26,9 +25,9 @@ export default function AlertDialogSlide() {
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(logoutUrl, {
-        Authorization: `Bearer ${token}`,
         method: "POST",
         headers: {
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
         },

@@ -1,25 +1,61 @@
 import React from "react";
 import "../css/userSubscribePayment.css";
 import Logo from "../assets/logo.png";
-import QR from "../assets/QRcode.png";
 import Button from "@mui/material/Button";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function UserSubscribePayment() {
   const [isPaid, setIsPaid] = useState(true);
-
-  const handleStatusPayment = () => {
-    setIsPaid(!isPaid);
-  };
+  const [billInfo, setBillInfo] = useState();
 
   const [searchParams] = useSearchParams();
   const orderId = searchParams.get("orderId");
 
-  
+  const handleAfterPayment = async () => {
+    const url = `https://master-help-desk-back-end.vercel.app/after_transaction/${orderId}`;
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+      console.log("hi", response.status);
+
+      if (response.status === 200) {
+        const data = await response.json();
+        console.log("dataREs", data);
+        setBillInfo(data);
+      } else {
+        toast.error("Can not logout, please try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      }
+    } catch (error) {
+    } finally {
+    }
+  };
+
+  useEffect(() => {
+    handleAfterPayment();
+  });
+
   return (
     <div className="backgroundContainer">
+      <Toaster position="bottom-right" reverseOrder={false} />
+
       <div className="bodyContainer flex flex-col justify-center items-center py-12">
         <div className="flex flex-row items-center gap-2 pb-2 ">
           <img loading="lazy" className="w-36" src={Logo} alt="Logo" />
