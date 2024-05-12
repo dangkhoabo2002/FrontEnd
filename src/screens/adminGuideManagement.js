@@ -61,7 +61,7 @@ export default function AdminGuide() {
 
   const handleEditGuide = async () => {
     if (currentGuide) {
-      const editUrl = `http://127.0.0.1:5000/guide/update/${currentGuide}`;
+      const editUrl = `https://master-help-desk-back-end.vercel.app/guide/update/${currentGuide}`;
       const token = localStorage.getItem("access_token");
 
       try {
@@ -153,7 +153,7 @@ export default function AdminGuide() {
   // DELETE GUIDE
   const handleDeleteGuide = async () => {
     if (currentGuide) {
-      const deleteUrl = `http://127.0.0.1:5000/guide/delete/${currentGuide}`;
+      const deleteUrl = `https://master-help-desk-back-end.vercel.app/guide/delete/${currentGuide}`;
       const token = localStorage.getItem("access_token");
 
       try {
@@ -249,7 +249,7 @@ export default function AdminGuide() {
 
   // GET GUIDE
   const handleGetGuide = async () => {
-    const guideUrl = `http://127.0.0.1:5000/guide/get`;
+    const guideUrl = `https://master-help-desk-back-end.vercel.app/guide/get`;
     const token = localStorage.getItem("access_token");
 
     try {
@@ -311,7 +311,7 @@ export default function AdminGuide() {
         },
       });
     } else {
-      const addUrl = "http://127.0.0.1:5000/guide/add";
+      const addUrl = "https://master-help-desk-back-end.vercel.app/guide/add";
       const token = localStorage.getItem("access_token");
       try {
         const response = await fetch(addUrl, {

@@ -110,7 +110,7 @@ export default function OrganizationDashboard() {
   // GET SERVERS IN ORG
 
   const handleGetServers = async () => {
-    const getsvUrl = `http://127.0.0.1:5000/server/get_server_in_organization/${organization_id}`;
+    const getsvUrl = `https://master-help-desk-back-end.vercel.app/server/get_server_in_organization/${organization_id}`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(getsvUrl, {
@@ -145,7 +145,7 @@ export default function OrganizationDashboard() {
 
   // GET MEMBER
   const handleGetMember = async () => {
-    const memberUrl = `http://127.0.0.1:5000/org/get_user_in_organization/${organization_id}`;
+    const memberUrl = `https://master-help-desk-back-end.vercel.app/org/get_user_in_organization/${organization_id}`;
     const token = localStorage.getItem("access_token");
 
     try {
@@ -213,7 +213,7 @@ export default function OrganizationDashboard() {
 
   const [numberMember, setNumberMember] = useState();
   const handleNumberMember = async () => {
-    const memberUrl = `http://127.0.0.1:5000/org/get_number_of_users/${organization_id}`;
+    const memberUrl = `https://master-help-desk-back-end.vercel.app/org/get_number_of_users/${organization_id}`;
     const token = localStorage.getItem("access_token");
 
     try {
@@ -240,7 +240,7 @@ export default function OrganizationDashboard() {
 
   // GET information của Org từ API
   const handleGetOrgData = async () => {
-    const loginUrl = `http://127.0.0.1:5000/org/get_organization_data/${organization_id}`;
+    const loginUrl = `https://master-help-desk-back-end.vercel.app/org/get_organization_data/${organization_id}`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(loginUrl, {
@@ -448,7 +448,7 @@ export default function OrganizationDashboard() {
           },
         });
       } else {
-        const addUrl = `http://127.0.0.1:5000/server/add`;
+        const addUrl = `https://master-help-desk-back-end.vercel.app/server/add`;
         const token = localStorage.getItem("access_token");
 
         try {
@@ -508,7 +508,8 @@ export default function OrganizationDashboard() {
     }
   };
   const handleAddMember = async () => {
-    const addmemberUrl = "http://127.0.0.1:5000/org/add_user";
+    const addmemberUrl =
+      "https://master-help-desk-back-end.vercel.app/org/add_user";
     const token = localStorage.getItem("access_token");
 
     try {
@@ -642,7 +643,8 @@ export default function OrganizationDashboard() {
         },
       });
     } else {
-      const loginUrl = "http://127.0.0.1:5000/org/update_information";
+      const loginUrl =
+        "https://master-help-desk-back-end.vercel.app/org/update_information";
       const token = localStorage.getItem("access_token");
 
       const updatedName = data.name === "" ? organizations[0].name : data.name;
@@ -755,7 +757,7 @@ export default function OrganizationDashboard() {
       newStatus = "ACTIVE";
     }
     const changeStatusUrl =
-      "http://127.0.0.1:5000/org/change_organization_status";
+      "https://master-help-desk-back-end.vercel.app/org/change_organization_status";
     const token = localStorage.getItem("access_token");
 
     try {
@@ -861,7 +863,8 @@ export default function OrganizationDashboard() {
   const [removeUser, setRemoveUser] = useState();
 
   const handleRemoveUserAPI = async () => {
-    const loginUrl = "http://127.0.0.1:5000/org/remove_user";
+    const loginUrl =
+      "https://master-help-desk-back-end.vercel.app/org/remove_user";
     const token = localStorage.getItem("access_token");
 
     try {
@@ -937,7 +940,7 @@ export default function OrganizationDashboard() {
 
   const [openDeleteOrg, setOpenDelete] = React.useState(false);
   const handleDeleteOrg = async () => {
-    const loginUrl = `http://127.0.0.1:5000/org/delete/${organization_id}`;
+    const loginUrl = `https://master-help-desk-back-end.vercel.app/org/delete/${organization_id}`;
     const token = localStorage.getItem("access_token");
 
     try {
@@ -1058,7 +1061,7 @@ export default function OrganizationDashboard() {
   };
 
   // const handleAddRoleAPI = async () => {
-  //   const loginUrl = `http://127.0.0.1:5000/org/delete/${organization_id}`;
+  //   const loginUrl = `https://master-help-desk-back-end.vercel.app/org/delete/${organization_id}`;
   //   const token = localStorage.getItem("access_token");
 
   //   try {
