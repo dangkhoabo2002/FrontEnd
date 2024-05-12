@@ -15,7 +15,8 @@ export default function UserSubscribePayment() {
   const orderId = searchParams.get("orderId");
 
   const handleAfterPayment = async () => {
-    const url = `https://master-help-desk-back-end.vercel.app/after_transaction/${orderId}`;
+    const url = `https://master-help-desk-back-end.vercel.app/billing/after_transaction/${orderId}`;
+    console.log(orderId);
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(url, {
@@ -26,7 +27,6 @@ export default function UserSubscribePayment() {
           "Access-Control-Allow-Origin": "*",
         },
       });
-      console.log("hi", response.status);
 
       if (response.status === 200) {
         const data = await response.json();
