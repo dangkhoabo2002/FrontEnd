@@ -565,6 +565,7 @@ export default function AdminGuide() {
             type="text"
             fullWidth
             variant="outlined"
+            
             onChange={handleChangeEditGuide("title")}
             value={currentEditGuide.title}
           />
@@ -579,7 +580,7 @@ export default function AdminGuide() {
             name="pkg"
             type="Description"
             fullWidth
-            
+
             onChange={handleChangeEditGuide("content")}
             value={currentEditGuide.content}
           />

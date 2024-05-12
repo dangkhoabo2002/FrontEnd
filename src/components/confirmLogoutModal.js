@@ -22,9 +22,6 @@ export default function AlertDialogSlide() {
   };
 
   const navigate = useNavigate();
-  const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-  });
 
   const handleLogout = async () => {
     const logoutUrl = "http://127.0.0.1:5000/auth/logout";
@@ -73,7 +70,6 @@ export default function AlertDialogSlide() {
       </Button>
       <Dialog
         open={open}
-        TransitionComponent={Transition}
         keepMounted
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"

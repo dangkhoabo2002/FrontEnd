@@ -357,6 +357,15 @@ export default function AdminPackageManagement() {
       const editUrl = `http://127.0.0.1:5000/package/update/${packageId_edit}`;
       const token = localStorage.getItem("access_token");
 
+      if (
+        currentEditPackage.package_name === "" &&
+        currentEditPackage.description === "" &&
+        currentEditPackage.duration === "" &&
+        currentEditPackage.price === "" &&
+        currentEditPackage.slot_number === "" &&
+        currentEditPackage.slot_server === ""
+      ) {
+      }
       const updatedName =
         currentEditPackage.package_name === ""
           ? packageInfo.package_name
