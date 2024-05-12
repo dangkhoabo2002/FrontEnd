@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import bgLogin from "../images/loginBackgr.png";
 import Logo from "../images/MHDLogo.png";
 import loginLeft from "../images/loginLeft.png";
+import nonIcon from "../assets/non-icon.png";
+
 import {
   Grid,
   Checkbox,
@@ -9,6 +11,10 @@ import {
   TextField,
   FormControlLabel,
   Box,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import "../css/login.css";
 import { Link } from "react-router-dom";
@@ -21,6 +27,24 @@ export default function Login() {
     username: "",
     password: "",
   });
+  const [loginType, setLoginType] = useState("");
+  const [openDialog, setOpenDialog] = useState(false);
+  const handleDialogClose = () => {
+    setOpenDialog(false);
+    navigate("/admin");
+  };
+
+  useEffect(() => {
+    const loginAdmin = localStorage.getItem("checkAdmin");
+    const loginUser = localStorage.getItem("checkUser");
+
+    if (loginAdmin) {
+      setLoginType("admin");
+      setOpenDialog(true);
+    } else if (loginUser) {
+      setLoginType("user");
+    }
+  }, []);
 
   const handleChange = (prop) => (event) => {
     setData({ ...data, [prop]: event.target.value });
@@ -66,8 +90,12 @@ export default function Login() {
           toast.dismiss();
           const data = await response.json();
           localStorage.setItem("access_token", data.access_token);
-          localStorage.setItem("login_token", true);
-          navigate(`/organizations`);
+          if (loginType === "admin") {
+            setOpenDialog(true);
+          } else {
+            localStorage.setItem("checkUser", true);
+            navigate(`/organizations`);
+          }
         } else if (response.status === 401) {
           toast.dismiss();
           toast.error("Invalid Username or Password!", {
@@ -244,6 +272,60 @@ export default function Login() {
             </div>
           </Grid>
         </Grid>
+        <Dialog
+          open={openDialog}
+          onClose={handleDialogClose}
+          sx={{
+            textAlign: "center",
+            borderRadius: "15px",
+            boxShadow: "0px 0px 20px rgba(0, 0, 0, 0.2)",
+            "& .dialog-content": {
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "15px",
+            },
+            "& .MuiDialogTitle-root": {
+              fontSize:"24px",
+              textAlign: "center",
+              borderRadius: "10px 10px 0 0",
+            },
+            "& .MuiDialogContent-root": {
+              padding: "0 15px 15px 15px",
+              color: "#333333",
+            },
+            "& .MuiDialogActions-root": {
+              justifyContent: "center",
+              padding: "10px 20px",
+              
+            },
+            "& .MuiButton-root": {
+              backgroundColor: "#3867A5",
+              color: "#FFFFFF",
+              borderRadius: "5px",width: "100px",
+              "&:hover": {
+                backgroundColor: "#304e7f",
+              },
+            },
+          }}
+        >
+          <div className="dialog-content">
+            <div className="flex flex-row justify-center">
+              <img loading="lazy" src={nonIcon} style={{ width: "60px" }} />
+            </div>
+            <DialogTitle>Retry again!</DialogTitle>
+            <DialogContent>
+              <p>
+                Currently, you are logged in as an admin role. Please log out to
+                continue.
+              </p>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleDialogClose}>Ok</Button>
+            </DialogActions>
+          </div>
+        </Dialog>
       </div>
     </>
   );
