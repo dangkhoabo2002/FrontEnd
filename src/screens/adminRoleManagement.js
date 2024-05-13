@@ -36,6 +36,7 @@ export default function AdminRoleManagement() {
         },
       });
       if (response.status === 200) {
+        toast.dismiss();
         const roleData = await response.json();
         setRoleData(roleData);
       } else {

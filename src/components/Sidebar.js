@@ -6,6 +6,7 @@ import ApartmentIcon from "@mui/icons-material/Apartment";
 import BookIcon from "@mui/icons-material/Book";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import SubscribeBtn from "./subscribeBtn";
+import toast from "react-hot-toast";
 
 export default function Sidebar() {
   const [selectedMenu, setSelectedMenu] = useState("organizations");
@@ -29,6 +30,8 @@ export default function Sidebar() {
   const [isSub, setIsSub] = useState();
 
   const handleGetSub = async () => {
+    toast.loading("In processing..");
+
     const editUrl = `https://master-help-desk-back-end.vercel.app/subscription/check_subscription_by_username`;
     const token = localStorage.getItem("access_token");
     try {
@@ -42,8 +45,10 @@ export default function Sidebar() {
         },
       });
       if (response.status === 200) {
+        toast.dismiss();
         setIsSub(false);
       } else {
+        toast.dismiss();
         setIsSub(true);
       }
     } catch (error) {

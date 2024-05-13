@@ -21,6 +21,7 @@ export default function AlertDialogSlide() {
 
   const navigate = useNavigate();
   const handleLogout = async () => {
+    toast.loading("In processing..");
     const logoutUrl =
       "https://master-help-desk-back-end.vercel.app/manager/logout";
     const token = localStorage.getItem("access_token");
@@ -34,6 +35,7 @@ export default function AlertDialogSlide() {
         },
       });
       if (response.status === 200) {
+        toast.dismiss();
         localStorage.clear();
         navigate("/");
         toast.success("Logout success.", {
@@ -46,6 +48,7 @@ export default function AlertDialogSlide() {
           },
         });
       } else {
+        toast.dismiss();
         toast.error("Can not logout, please try again later!", {
           style: {
             border: "1px solid #F85F60",

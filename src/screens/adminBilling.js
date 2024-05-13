@@ -135,6 +135,8 @@ export default function AdminBillings() {
           },
         });
       } else {
+        toast.dismiss();
+
         toast.error("Something wrong, please try again later!", {
           style: {
             border: "1px solid #F85F60",

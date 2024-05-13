@@ -29,6 +29,7 @@ export default function AdminAccountManagement() {
   const [open, setOpen] = React.useState(false);
 
   const handleGetCustomer = async () => {
+    toast.loading("In processing...");
     const customerUrl = `https://master-help-desk-back-end.vercel.app/auth/get_all_profile`;
     const token = localStorage.getItem("access_token");
 
@@ -44,9 +45,12 @@ export default function AdminAccountManagement() {
         },
       });
       if (response.status === 200) {
+        toast.dismiss();
+
         const customerData = await response.json();
         setCustomerList(customerData);
       } else if (response.status === 403) {
+        toast.dismiss();
         toast.error("Permission denied!", {
           style: {
             border: "1px solid #F85F60",

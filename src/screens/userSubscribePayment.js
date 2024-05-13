@@ -15,6 +15,7 @@ export default function UserSubscribePayment() {
   const orderId = searchParams.get("orderId");
 
   const handleAfterPayment = async () => {
+    toast.loading("In processing..");
     const url = `https://master-help-desk-back-end.vercel.app/after_transaction/${orderId}`;
     const token = localStorage.getItem("access_token");
     try {
@@ -29,10 +30,12 @@ export default function UserSubscribePayment() {
       console.log("hi", response.status);
 
       if (response.status === 200) {
+        toast.dismiss();
         const data = await response.json();
         console.log("dataREs", data);
         setBillInfo(data);
       } else {
+        toast.dismiss();
         toast.error("Can not logout, please try again later!", {
           style: {
             border: "1px solid #F85F60",
