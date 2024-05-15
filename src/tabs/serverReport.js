@@ -15,11 +15,7 @@ import UfwLog from "./serverReport/ufwLog";
 import { useParams } from "react-router-dom";
 import LinearProgress from "@mui/material/LinearProgress";
 
-import toast, { Toaster } from "react-hot-toast";
-
 const ServerReport = () => {
-  const [loading, setLoading] = useState(false);
-
   const [open, setOpen] = useState(false);
   const [selectedLog, setSelectedLog] = useState({});
 
@@ -39,8 +35,7 @@ const ServerReport = () => {
   const [sysLog, setSysLog] = useState();
 
   const handleGetSysLog = async () => {
-    toast.loading("In processing...");
-    const url = `http://127.0.0.1:5000/server/report_log_syslog/${param.server_id}`;
+    const url = `https://master-help-desk-back-end.vercel.app/server/report_log_syslog/${param.server_id}`;
     const token = localStorage.getItem("access_token");
 
     try {
@@ -56,7 +51,6 @@ const ServerReport = () => {
       if (response.status === 200) {
         const data = await response.json();
         setSysLog(data);
-
         localStorage.setItem("sysLog", response.status);
       } else if (response.status === 400) {
         localStorage.setItem("sysLog", response.status);
@@ -77,8 +71,7 @@ const ServerReport = () => {
   const [lastLog, setLastLog] = useState();
 
   const handleGetLastLog = async () => {
-    toast.loading("In processing...");
-    const url = `http://127.0.0.1:5000/server/report_log_last/${param.server_id}`;
+    const url = `https://master-help-desk-back-end.vercel.app/server/report_log_last/${param.server_id}`;
     const token = localStorage.getItem("access_token");
 
     try {
@@ -92,7 +85,6 @@ const ServerReport = () => {
         },
       });
       if (response.status === 200) {
-        toast.dismiss();
         const data = await response.json();
         setLastLog(data);
         localStorage.setItem("lastLog", response.status);
@@ -115,8 +107,7 @@ const ServerReport = () => {
   const [ufwLog, setUfwLog] = useState();
 
   const handleGetUfwLog = async () => {
-    toast.loading("In processing...");
-    const url = `http://127.0.0.1:5000/server/report_log_ufw/${param.server_id}`;
+    const url = `https://master-help-desk-back-end.vercel.app/server/report_log_ufw/${param.server_id}`;
     const token = localStorage.getItem("access_token");
 
     try {
@@ -130,7 +121,6 @@ const ServerReport = () => {
         },
       });
       if (response.status === 200) {
-        toast.dismiss();
         const data = await response.json();
         setUfwLog(data);
         localStorage.setItem("ufwLog", response.status);
@@ -149,54 +139,19 @@ const ServerReport = () => {
     }
   };
 
-  const handleStatus = () => {
-    const lastLog = localStorage.getItem("lastLog");
-    const sysLog = localStorage.getItem("sysLog");
-    const ufwLog = localStorage.getItem("ufwLog");
-
-    if (lastLog === 200 && sysLog === 200 && ufwLog === 200) {
-      toast.success("Server responded.", {
-        style: {
-          border: "1px solid #37E030",
-          maxWidth: "900px",
-          padding: "16px 24px",
-          color: "green",
-          fontWeight: "bolder",
-        },
-      });
-      setLoading(false);
-    } else {
-      toast.error("Something wrong, please try again later!", {
-        style: {
-          border: "1px solid #F85F60",
-          maxWidth: "900px",
-          padding: "16px 24px",
-          color: "red",
-          fontWeight: "bolder",
-        },
-      });
-      setLoading(false);
-    }
-  };
   useEffect(() => {
-    setLoading(true);
     handleGetSysLog();
     handleGetLastLog();
     handleGetUfwLog();
-    handleStatus();
   }, []);
   return (
     <>
       <div className="">
         <div className="flex flex-row justify-between">
-          <div className="info-title font-semibold mb-3">
+          <div className="info-title font-semibold mb-3 ">
             <p>Access History</p>
           </div>
-          {loading && (
-            <div className="pb-8 pt-4">
-              <LinearProgress />
-            </div>
-          )}
+
           <Button
             startIcon={<DownloadIcon />}
             variant="contained"

@@ -32,7 +32,7 @@ export default function Sidebar() {
   const handleGetSub = async () => {
     toast.loading("In processing..");
 
-    const editUrl = `http://127.0.0.1:5000/subscription/check_subscription_by_username`;
+    const editUrl = `https://master-help-desk-back-end.vercel.app/subscription/check_subscription_by_username`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(editUrl, {

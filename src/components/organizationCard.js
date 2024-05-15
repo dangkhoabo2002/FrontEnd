@@ -41,7 +41,7 @@ export default function OrganizationCard({ id, name, description }) {
   // GET information của Org từ API
   const handleGetOrgData = async () => {
     toast.loading("In processing..");
-    const loginUrl = `http://127.0.0.1:5000/org/get_organization_data/${id}`;
+    const loginUrl = `https://master-help-desk-back-end.vercel.app/org/get_organization_data/${id}`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(loginUrl, {
@@ -123,7 +123,7 @@ export default function OrganizationCard({ id, name, description }) {
   const handleGetNumberServer = async () => {
     toast.loading("In processing..");
 
-    const getUrl = `http://127.0.0.1:5000/server/get_number_server/${id}`;
+    const getUrl = `https://master-help-desk-back-end.vercel.app/server/get_number_server/${id}`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(getUrl, {
@@ -150,7 +150,7 @@ export default function OrganizationCard({ id, name, description }) {
   const handleGetNumberMember = async () => {
     toast.loading("In processing..");
 
-    const getUrl = `http://127.0.0.1:5000/org/get_number_of_users/${id}`;
+    const getUrl = `https://master-help-desk-back-end.vercel.app/org/get_number_of_users/${id}`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(getUrl, {

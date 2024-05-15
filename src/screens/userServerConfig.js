@@ -44,7 +44,7 @@ export default function UserServerConfig() {
   // Get Server Data - GENERAL
   const handleGetServerData = async () => {
     toast.loading("In processing..");
-    const getUrl = `http://127.0.0.1:5000/server/get_server_data/${server_id}`;
+    const getUrl = `https://master-help-desk-back-end.vercel.app/server/get_server_data/${server_id}`;
     const token = localStorage.getItem("access_token");
 
     try {
@@ -119,7 +119,7 @@ export default function UserServerConfig() {
   const [data, setData] = useState();
   const handleGetServer = async () => {
     toast.loading("In processing..");
-    const loginUrl = `http://127.0.0.1:5000/server/get_server_by_id/${server_id}`;
+    const loginUrl = `https://master-help-desk-back-end.vercel.app/server/get_server_by_id/${server_id}`;
     const token = localStorage.getItem("access_token");
 
     try {

@@ -30,7 +30,7 @@ export default function AdminAccountManagement() {
 
   const handleGetCustomer = async () => {
     toast.loading("In processing...");
-    const customerUrl = `http://127.0.0.1:5000/auth/get_all_profile`;
+    const customerUrl = `https://master-help-desk-back-end.vercel.app/auth/get_all_profile`;
     const token = localStorage.getItem("access_token");
 
     try {

@@ -29,9 +29,12 @@ export default function UfwLog(rawUfwLog) {
     );
   };
 
-  useEffect(() => {
-    handleSysLog();
-  }, []);
+  // useEffect(() => {
+  //   useInterval(() => {
+  //     handleSysLog();
+  //   }, 4000);
+  // }, []);
+
   return (
     <div>
       <div

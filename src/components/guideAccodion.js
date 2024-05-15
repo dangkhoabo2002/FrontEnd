@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 export default function AccordionExpandIcon() {
   const handleGuide = async () => {
     toast.loading("In processing..");
-    const guideUrl = "http://127.0.0.1:5000/guide/get";
+    const guideUrl = "https://master-help-desk-back-end.vercel.app/guide/get";
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(guideUrl, {
