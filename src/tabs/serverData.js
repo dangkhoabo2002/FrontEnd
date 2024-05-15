@@ -13,34 +13,30 @@ import DownloadIcon from "@mui/icons-material/Download";
 
 export default function ServerData() {
   const [selectedOptionFile, setSelectedOptionFile] = useState("default");
-  const [pathFile, setPathFile] = useState(
-    "C:\\Users\\Nguyen Dang Khoa\\Desktop\\FPT-Journey\\CN5\\FER201\\REACT_APP\\..."
-  );
 
   const [selectedOptionFolder, setSelectedOptionFolder] = useState("default");
-  const [pathFolder, setPathFolder] = useState(
-    "C:\\Users\\Nguyen Dang Khoa\\Desktop\\FPT-Journey\\CN5\\FER201\\REACT_APP\\..."
-  );
 
   const handleDefaultChangeFile = (event) => {
     setSelectedOptionFile(event.target.value);
-    // Reset path when changing options to default
     if (event.target.value === "default") {
       setPathFile("");
     }
   };
+  const [pathFile, setPathFile] = useState();
 
   const handlePathChangeFile = (event) => {
     setPathFile(event.target.value);
+    console.log(event.target.value);
   };
 
   const handleDefaultChangeFolder = (event) => {
     setSelectedOptionFolder(event.target.value);
-    // Reset path when changing options to default
     if (event.target.value === "default") {
       setPathFolder("");
     }
   };
+
+  const [pathFolder, setPathFolder] = useState();
 
   const handlePathChangeFolder = (event) => {
     setPathFolder(event.target.value);
@@ -61,6 +57,8 @@ export default function ServerData() {
       const file = await fileHandle[0].getFile();
       setPathFile(file.name);
       setPathFolder(file.name);
+      const formData = file.FormData();
+      console.log(formData);
     } catch (error) {
       console.error("Error accessing file:", error);
     }
@@ -68,84 +66,85 @@ export default function ServerData() {
 
   return (
     <div>
-        <div className="info-title font-semibold">
-          <p>Data</p>
-        </div>
-              {/* Browse File */}
+      <div className="info-title font-semibold">
+        <p>Data</p>
+      </div>
+      {/* Browse File */}
 
-        <div className="my-3">
-          <div className="info-title font-semibold">
-            <p style={{ fontSize: "18px" }}>Browse File</p>
-          </div>
-          <div className="">
-            <FormControl>
-              <RadioGroup
-                value={selectedOptionFile}
-                onChange={handleDefaultChangeFile}
-                row
-                aria-labelledby="demo-row-radio-buttons-group-label-file"
-                name="row-radio-buttons-group-file"
-              >
-                <FormControlLabel
-                  className="custom-radio"
-                  value="default"
-                  control={<CustomRadio />}
-                  label="Default"
-                />
-                <FormControlLabel
-                  className="custom-radio"
-                  value="path"
-                  control={<CustomRadio />}
-                  label="Path"
-                />
-              </RadioGroup>
-            </FormControl>
-            {selectedOptionFile === "path" && (
-              <div className="mb-2">
-                <TextField
-                  mt={1}
-                  id="outlined-basic-file"
-                  value={pathFile}
-                  onChange={handlePathChangeFile}
-                  size="small"
-                  sx={{ width: "800px", backgroundColor: "white" }}
-                  disabled={selectedOptionFile === "default"}
-                />
-                <Button
-                  startIcon={<UploadIcon />}
-                  variant="contained"
-                  onClick={handleBrowseClick}
-                  style={{ marginLeft: "10px" }}
-                  sx={{
-                    width: "120px",
-                    height: "auto",
-                    color: "white",
-                    bgcolor: "#3867A5",
-                    "&:hover": { bgcolor: "#264B7B" },
-                    fontSize: "14px",
-                    fontWeight: "normal",
-                    textTransform: "none",
-                  }}
-                >
-                  Browse
-                </Button>
-              </div>
-            )}
-            {selectedOptionFile === "default" && (
-              <div className="mb-2">
-                <TextField
-                  mt={1}
-                  id="outlined-basic-file"
-                  value={pathFile}
-                  onChange={handlePathChangeFile}
-                  size="small"
-                  sx={{ width: "800px", backgroundColor: "white" }}
-                  disabled={true}
-                />
-              </div>
-            )}
-          </div>
+      <div className="my-3">
+        <div className="info-title font-semibold">
+          <p style={{ fontSize: "18px" }}>Browse File</p>
         </div>
+        <div className="">
+          <FormControl>
+            <RadioGroup
+              value={selectedOptionFile}
+              onChange={handleDefaultChangeFile}
+              row
+              aria-labelledby="demo-row-radio-buttons-group-label-file"
+              name="row-radio-buttons-group-file"
+            >
+              <FormControlLabel
+                className="custom-radio"
+                value="default"
+                control={<CustomRadio />}
+                label="Default"
+              />
+              <FormControlLabel
+                className="custom-radio"
+                value="path"
+                control={<CustomRadio />}
+                label="Path"
+              />
+            </RadioGroup>
+          </FormControl>
+          {selectedOptionFile === "path" && (
+            <div className="mb-2">
+              <TextField
+                mt={1}
+                id="outlined-basic-file"
+                value={pathFile}
+                onChange={handlePathChangeFile}
+                size="small"
+                sx={{ width: "800px", backgroundColor: "white" }}
+                disabled={selectedOptionFile === "default"}
+              />
+
+              <Button
+                startIcon={<UploadIcon />}
+                variant="contained"
+                onClick={handleBrowseClick}
+                style={{ marginLeft: "10px" }}
+                sx={{
+                  width: "120px",
+                  height: "auto",
+                  color: "white",
+                  bgcolor: "#3867A5",
+                  "&:hover": { bgcolor: "#264B7B" },
+                  fontSize: "14px",
+                  fontWeight: "normal",
+                  textTransform: "none",
+                }}
+              >
+                Browse
+              </Button>
+            </div>
+          )}
+          {selectedOptionFile === "default" && (
+            <div className="mb-2">
+              <TextField
+                mt={1}
+                id="outlined-basic-file"
+                value={pathFile}
+                onChange={handlePathChangeFile}
+                size="small"
+                sx={{ width: "800px", backgroundColor: "white" }}
+                disabled={true}
+              />
+            </div>
+          )}
+        </div>
+      </div>
 
       {/* Browse Folder */}
       <div className="my-3">

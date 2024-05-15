@@ -1,41 +1,185 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Logs from "../data/listOfLog.json";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import DownloadIcon from "@mui/icons-material/Download";
+import Tab from "@mui/material/Tab";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel";
+import LastLog from "./serverReport/lastLog";
+import SystemLog from "./serverReport/sysLog";
+import UfwLog from "./serverReport/ufwLog";
+import { useParams } from "react-router-dom";
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
-
-const modalContentStyle = {
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-};
+import toast, { Toaster } from "react-hot-toast";
 
 const ServerReport = () => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const [selectedLog, setSelectedLog] = useState({});
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const handleRowClick = (log) => {
-    setSelectedLog(log);
-    handleOpen();
+  const [value, setValue] = useState("1");
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
   };
 
+  const param = useParams();
+
+  // SYSTEM LOG
+
+  const [sysLog, setSysLog] = useState();
+
+  const handleGetSysLog = async () => {
+    toast.loading("In processing...");
+    const url = `http://127.0.0.1:5000/server/report_log_syslog/${param.server_id}`;
+    const token = localStorage.getItem("access_token");
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+      if (response.status === 200) {
+        toast.dismiss();
+        const data = await response.json();
+        setSysLog(data);
+      } else if (response.status === 400) {
+        toast.dismiss();
+        toast.error("Missing server data!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 403) {
+        toast.dismiss();
+        toast.error("Permission denied!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 500) {
+        toast.dismiss();
+        toast.error("No data for server!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else {
+        toast.error("Fail to list system logging protocol!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+
+  // LAST LOG
+  const [lastLog, setLastLog] = useState();
+
+  const handleGetLastLog = async () => {
+    toast.loading("In processing...");
+    const url = `http://127.0.0.1:5000/server/report_log_syslog/${param.server_id}`;
+    const token = localStorage.getItem("access_token");
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+      if (response.status === 200) {
+        toast.dismiss();
+        const data = await response.json();
+        setLastLog(data);
+      } else if (response.status === 400) {
+        toast.dismiss();
+        toast.error("Missing server data!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 403) {
+        toast.dismiss();
+        toast.error("Permission denied!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 500) {
+        toast.dismiss();
+        toast.error("No data for server!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else {
+        toast.error("Fail to list system logging protocol!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+
+  useEffect(() => {
+    handleGetSysLog();
+    handleGetLastLog();
+  }, []);
   return (
     <>
       <div className="">
@@ -66,55 +210,74 @@ const ServerReport = () => {
           Review your server history within the last 3 days.
         </h1>
       </div>
-      <div
-        className="bg-[white] mt-4 rounded-md px-8 py-6  shadow-lg"
-        style={{ border: "1px solid #89A6CC" }}
-      >
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Time</th>
-              <th>Host</th>
-              <th>Log</th>
-              <th>Type</th>
-              <th>Detail</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Logs.map((row) => (
-              <tr key={row.date + row.time}>
-                <td>{row.date}</td>
-                <td>{row.time}</td>
-                <td>{row.host}</td>
-                <td>{row.log}</td>
-                <td
-                  className="text-[#637381]"
-                  style={{
-                    backgroundColor:
-                      row.type === "Debug"
-                        ? "#DDDDDD"
-                        : row.type === "Info"
-                        ? "#B7FFB9"
-                        : row.type === "Warning"
-                        ? "#FCFF53"
-                        : row.type === "Error"
-                        ? "#FFC266"
-                        : row.type === "Critical"
-                        ? "#FF6868"
-                        : "",
-                  }}
-                >
-                  {row.type}
-                </td>
-                <td>
-                  <Button onClick={() => handleRowClick(row)}>More</Button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <TabContext value={value}>
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+          <TabList onChange={handleChange} aria-label="lab API tabs example">
+            <Tab label="System Logging Protocol" value="1" />
+            <Tab label="Uncomplicated Firewall " value="2" />
+            <Tab label="Last Log" value="3" />
+          </TabList>
+        </Box>
+        <TabPanel value="1">
+          {/* <div
+            className="bg-[white] mt-4 rounded-md px-8 py-6  shadow-lg"
+            style={{ border: "1px solid #89A6CC" }}
+          >
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Host</th>
+                  <th>Log</th>
+                  <th>Type</th>
+                  <th>Detail</th>
+                </tr>
+              </thead>
+              <tbody>
+                {Logs.map((row) => (
+                  <tr key={row.date + row.time}>
+                    <td>{row.date}</td>
+                    <td>{row.time}</td>
+                    <td>{row.host}</td>
+                    <td>{row.log}</td>
+                    <td
+                      className="text-[#637381]"
+                      style={{
+                        backgroundColor:
+                          row.type === "Debug"
+                            ? "#DDDDDD"
+                            : row.type === "Info"
+                            ? "#B7FFB9"
+                            : row.type === "Warning"
+                            ? "#FCFF53"
+                            : row.type === "Error"
+                            ? "#FFC266"
+                            : row.type === "Critical"
+                            ? "#FF6868"
+                            : "",
+                      }}
+                    >
+                      {row.type}
+                    </td>
+                    <td>
+                      <Button onClick={() => handleRowClick(row)}>More</Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div> */}
+          <SystemLog sysLog={sysLog} />
+        </TabPanel>
+        <TabPanel value="2">
+          <LastLog lastLog={lastLog} />
+        </TabPanel>
+        <TabPanel value="3">
+          <UfwLog />
+        </TabPanel>
+      </TabContext>
+
       <Modal
         open={open}
         onClose={handleClose}
@@ -124,15 +287,30 @@ const ServerReport = () => {
         <Box sx={style}>
           {selectedLog && (
             <Box sx={modalContentStyle}>
-              <Typography id="modal-modal-title" variant="h4" component="h2" sx={{ marginBottom: 2 }}>
+              <Typography
+                id="modal-modal-title"
+                variant="h4"
+                component="h2"
+                sx={{ marginBottom: 2 }}
+              >
                 Log Details
               </Typography>
               <Box sx={{ width: "100%", textAlign: "left" }}>
-                <Typography variant="body1" sx={{ marginBottom: 1 }}>Date: {selectedLog.date}</Typography>
-                <Typography variant="body1" sx={{ marginBottom: 1 }}>Time: {selectedLog.time}</Typography>
-                <Typography variant="body1" sx={{ marginBottom: 1 }}>Host: {selectedLog.host}</Typography>
-                <Typography variant="body1" sx={{ marginBottom: 1 }}>Log: {selectedLog.log}</Typography>
-                <Typography variant="body1" sx={{ marginBottom: 1 }}>Type: {selectedLog.type}</Typography>
+                <Typography variant="body1" sx={{ marginBottom: 1 }}>
+                  Date: {selectedLog.date}
+                </Typography>
+                <Typography variant="body1" sx={{ marginBottom: 1 }}>
+                  Time: {selectedLog.time}
+                </Typography>
+                <Typography variant="body1" sx={{ marginBottom: 1 }}>
+                  Host: {selectedLog.host}
+                </Typography>
+                <Typography variant="body1" sx={{ marginBottom: 1 }}>
+                  Log: {selectedLog.log}
+                </Typography>
+                <Typography variant="body1" sx={{ marginBottom: 1 }}>
+                  Type: {selectedLog.type}
+                </Typography>
               </Box>
             </Box>
           )}
@@ -143,3 +321,21 @@ const ServerReport = () => {
 };
 
 export default ServerReport;
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
+
+const modalContentStyle = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+};

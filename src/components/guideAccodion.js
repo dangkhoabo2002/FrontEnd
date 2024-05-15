@@ -5,7 +5,7 @@ import issue from "../assets/issue.png";
 
 export default function AccordionExpandIcon() {
   const handleGuide = async () => {
-    const guideUrl = "https://master-help-desk-back-end.vercel.app/guide/get";
+    const guideUrl = "http://127.0.0.1:5000/guide/get";
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(guideUrl, {

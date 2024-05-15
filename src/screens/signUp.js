@@ -113,8 +113,7 @@ export default function SignUp() {
       setError(newErrors);
       return;
     }
-    const signupUrl =
-      "https://master-help-desk-back-end.vercel.app/auth/signup";
+    const signupUrl = "http://127.0.0.1:5000/auth/signup";
     try {
       const response = await fetch(signupUrl, {
         method: "POST",

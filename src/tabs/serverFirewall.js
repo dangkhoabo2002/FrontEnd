@@ -49,7 +49,7 @@ export default function ServerFirewall(serverId) {
       });
     } else {
       setLoading(true);
-      const url = `https://master-help-desk-back-end.vercel.app/server/firewall_action/${serverId.serverId}`;
+      const url = `http://127.0.0.1:5000/server/firewall_action/${serverId.serverId}`;
       const token = localStorage.getItem("access_token");
       try {
         const response = await fetch(url, {
@@ -130,7 +130,7 @@ export default function ServerFirewall(serverId) {
 
   const handleGetFirewallAPI = async () => {
     setLoading(true);
-    const editUrl = `https://master-help-desk-back-end.vercel.app/server/firewall_rules/${serverId.serverId}`;
+    const editUrl = `http://127.0.0.1:5000/server/firewall_rules/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(editUrl, {

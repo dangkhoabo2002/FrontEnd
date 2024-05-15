@@ -18,8 +18,7 @@ export default function SubscriptionPackages() {
   const [packageData, setPackageData] = useState([]);
 
   const handleGetPackage = async () => {
-    const packageUrl =
-      "https://master-help-desk-back-end.vercel.app/package/get";
+    const packageUrl = "http://127.0.0.1:5000/package/get";
 
     try {
       const response = await fetch(packageUrl, {
@@ -56,8 +55,7 @@ export default function SubscriptionPackages() {
   // BUY PACKAGE
 
   const handleSendPackage = async (amount) => {
-    const packageUrl =
-      "https://master-help-desk-back-end.vercel.app/billing/add_billing";
+    const packageUrl = "http://127.0.0.1:5000/billing/add_billing";
     const token = localStorage.getItem("access_token");
     setShowButton(false);
     setTimeout(() => {
