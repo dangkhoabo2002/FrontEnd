@@ -10,30 +10,12 @@ import {
 import { Pagination } from "@mui/material";
 
 export default function SysLog(rawSysLog) {
-  const [page, setPage] = useState(0); // Page number (starts from 0)
-  const rowsPerPage = 10; // Number of rows per page
-
-  const [selectContainer, setSelectContainer] = useState();
-
-  const columns = [
-    {
-      field: "time",
-      headerName: "Date",
-      width: 200,
-    },
-    { field: "log", headerName: "Log", width: 2000, flex: 1 },
-  ];
-
-  const handleRowClick = (row) => {
-    setSelectContainer(row.row);
-  };
-
-  const [containerList, setContainerList] = useState([]);
+  const [page, setPage] = useState(0);
+  const rowsPerPage = 10;
 
   // HANDLE RAW DATA
   const [sysLog, setSysLog] = useState([]);
   const dataNew = rawSysLog.sysLog?.lines;
-  console.log(dataNew);
   const handleSysLog = () => {
     setSysLog(
       dataNew?.map((line) => {
@@ -44,11 +26,11 @@ export default function SysLog(rawSysLog) {
       })
     );
   };
-  console.log(sysLog);
 
   useEffect(() => {
     handleSysLog();
   }, []);
+  
   return (
     <div>
       <div
@@ -88,45 +70,6 @@ export default function SysLog(rawSysLog) {
         )}
         {!sysLog?.length && <p>Loading logs...</p>}
       </div>
-
-      {/* <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          {selectedLog && (
-            <Box sx={modalContentStyle}>
-              <Typography
-                id="modal-modal-title"
-                variant="h4"
-                component="h2"
-                sx={{ marginBottom: 2 }}
-              >
-                Log Details
-              </Typography>
-              <Box sx={{ width: "100%", textAlign: "left" }}>
-                <Typography variant="body1" sx={{ marginBottom: 1 }}>
-                  Date: {selectedLog.date}
-                </Typography>
-                <Typography variant="body1" sx={{ marginBottom: 1 }}>
-                  Time: {selectedLog.time}
-                </Typography>
-                <Typography variant="body1" sx={{ marginBottom: 1 }}>
-                  Host: {selectedLog.host}
-                </Typography>
-                <Typography variant="body1" sx={{ marginBottom: 1 }}>
-                  Log: {selectedLog.log}
-                </Typography>
-                <Typography variant="body1" sx={{ marginBottom: 1 }}>
-                  Type: {selectedLog.type}
-                </Typography>
-              </Box>
-            </Box>
-          )}
-        </Box>
-      </Modal> */}
     </div>
   );
 }

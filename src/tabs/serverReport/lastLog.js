@@ -8,6 +8,13 @@ import {
   TableRow,
 } from "@mui/material";
 import { Pagination } from "@mui/material";
+import Button from "@mui/material/Button";
+import { styled } from "@mui/material/styles";
+import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
+import MuiAccordion from "@mui/material/Accordion";
+import MuiAccordionSummary from "@mui/material/AccordionSummary";
+import MuiAccordionDetails from "@mui/material/AccordionDetails";
+import Typography from "@mui/material/Typography";
 
 export default function LastLog(rawLastLog) {
   const [page, setPage] = useState(0); // Page number (starts from 0)
@@ -24,50 +31,66 @@ export default function LastLog(rawLastLog) {
 
   // HANDLE RAW DATA
   const [lastLog, setLastLog] = useState([]);
-  const dataNew = rawLastLog.sysLog?.lines;
+  const dataNew = rawLastLog.lastLog?.lines;
+  const [openModal, setOpenModal] = useState(false);
 
-  console.log(rawLastLog);
+  // const handleOpen = (value) => {
+  //   setValue(newValue);
+  // };
 
-  useEffect(() => {}, []);
+  const [expanded, setExpanded] = React.useState("panel1");
+
+  const handleChange = (panel) => (event, newExpanded) => {
+    setExpanded(newExpanded ? panel : false);
+  };
+
   return (
     <div>
-      {/* <div
+      <div
         style={{ height: "auto", border: "1px solid #89A6CC" }}
         a
         className="bg-[white] rounded-md shadow-lg"
       >
-        {sysLog?.length > 0 && (
+        {dataNew?.length > 0 && (
           <>
             <TableContainer>
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell>Time</TableCell>
-                    <TableCell>Log</TableCell>
+                    <TableCell>Conclusion</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {sysLog
+                  {dataNew
                     .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
-                    .map((row) => (
-                      <TableRow key={row.time}>
-                        <TableCell>{row.time}</TableCell>
-                        <TableCell>{row.log}</TableCell>
+                    ?.map((row) => (
+                      <TableRow key={row.id}>
+                        <TableCell>
+                          <Accordion>
+                            <AccordionSummary
+                              id="panel-header"
+                              aria-controls="panel-content"
+                            >
+                              Log
+                            </AccordionSummary>
+                            <AccordionDetails>{row}</AccordionDetails>
+                          </Accordion>
+                        </TableCell>
                       </TableRow>
                     ))}
                 </TableBody>
               </Table>
             </TableContainer>
             <Pagination
-              count={sysLog?.length} // Total number of rows
+              count={dataNew?.length} // Total number of rows
               page={page}
               onChange={(event, newPage) => setPage(newPage)}
               showFirstLast={true} // Display first and last page buttons
             />
           </>
         )}
-        {!sysLog?.length && <p>Loading logs...</p>}
-      </div> */}
+        {!dataNew?.length && <p>Loading logs...</p>}
+      </div>
 
       {/* <Modal
         open={open}
@@ -110,3 +133,39 @@ export default function LastLog(rawLastLog) {
     </div>
   );
 }
+
+const Accordion = styled((props) => (
+  <MuiAccordion disableGutters elevation={0} square {...props} />
+))(({ theme }) => ({
+  border: `1px solid ${theme.palette.divider}`,
+  "&:not(:last-child)": {
+    borderBottom: 0,
+  },
+  "&::before": {
+    display: "none",
+  },
+}));
+
+const AccordionSummary = styled((props) => (
+  <MuiAccordionSummary
+    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: "0.9rem" }} />}
+    {...props}
+  />
+))(({ theme }) => ({
+  backgroundColor:
+    theme.palette.mode === "dark"
+      ? "rgba(255, 255, 255, .05)"
+      : "rgba(0, 0, 0, .03)",
+  flexDirection: "row-reverse",
+  "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
+    transform: "rotate(90deg)",
+  },
+  "& .MuiAccordionSummary-content": {
+    marginLeft: theme.spacing(1),
+  },
+}));
+
+const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
+  padding: theme.spacing(2),
+  borderTop: "1px solid rgba(0, 0, 0, .125)",
+}));
