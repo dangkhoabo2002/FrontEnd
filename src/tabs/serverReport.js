@@ -13,10 +13,13 @@ import LastLog from "./serverReport/lastLog";
 import SystemLog from "./serverReport/sysLog";
 import UfwLog from "./serverReport/ufwLog";
 import { useParams } from "react-router-dom";
+import LinearProgress from "@mui/material/LinearProgress";
 
 import toast, { Toaster } from "react-hot-toast";
 
 const ServerReport = () => {
+  const [loading, setLoading] = useState(false);
+
   const [open, setOpen] = useState(false);
   const [selectedLog, setSelectedLog] = useState({});
 
@@ -51,52 +54,18 @@ const ServerReport = () => {
         },
       });
       if (response.status === 200) {
-        toast.dismiss();
         const data = await response.json();
         setSysLog(data);
+
+        localStorage.setItem("sysLog", response.status);
       } else if (response.status === 400) {
-        toast.dismiss();
-        toast.error("Missing server data!", {
-          style: {
-            border: "1px solid #F85F60",
-            maxWidth: "900px",
-            padding: "16px 24px",
-            color: "red",
-            fontWeight: "bolder",
-          },
-        });
+        localStorage.setItem("sysLog", response.status);
       } else if (response.status === 403) {
-        toast.dismiss();
-        toast.error("Permission denied!", {
-          style: {
-            border: "1px solid #F85F60",
-            maxWidth: "900px",
-            padding: "16px 24px",
-            color: "red",
-            fontWeight: "bolder",
-          },
-        });
+        localStorage.setItem("sysLog", response.status);
       } else if (response.status === 500) {
-        toast.dismiss();
-        toast.error("No data for server!", {
-          style: {
-            border: "1px solid #F85F60",
-            maxWidth: "900px",
-            padding: "16px 24px",
-            color: "red",
-            fontWeight: "bolder",
-          },
-        });
+        localStorage.setItem("sysLog", response.status);
       } else {
-        toast.error("Fail to list system logging protocol!", {
-          style: {
-            border: "1px solid #F85F60",
-            maxWidth: "900px",
-            padding: "16px 24px",
-            color: "red",
-            fontWeight: "bolder",
-          },
-        });
+        localStorage.setItem("sysLog", response.status);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -126,49 +95,15 @@ const ServerReport = () => {
         toast.dismiss();
         const data = await response.json();
         setLastLog(data);
+        localStorage.setItem("lastLog", response.status);
       } else if (response.status === 400) {
-        toast.dismiss();
-        toast.error("Missing server data!", {
-          style: {
-            border: "1px solid #F85F60",
-            maxWidth: "900px",
-            padding: "16px 24px",
-            color: "red",
-            fontWeight: "bolder",
-          },
-        });
+        localStorage.setItem("lastLog", response.status);
       } else if (response.status === 403) {
-        toast.dismiss();
-        toast.error("Permission denied!", {
-          style: {
-            border: "1px solid #F85F60",
-            maxWidth: "900px",
-            padding: "16px 24px",
-            color: "red",
-            fontWeight: "bolder",
-          },
-        });
+        localStorage.setItem("lastLog", response.status);
       } else if (response.status === 500) {
-        toast.dismiss();
-        toast.error("No data for server!", {
-          style: {
-            border: "1px solid #F85F60",
-            maxWidth: "900px",
-            padding: "16px 24px",
-            color: "red",
-            fontWeight: "bolder",
-          },
-        });
+        localStorage.setItem("lastLog", response.status);
       } else {
-        toast.error("Fail to list system logging protocol!", {
-          style: {
-            border: "1px solid #F85F60",
-            maxWidth: "900px",
-            padding: "16px 24px",
-            color: "red",
-            fontWeight: "bolder",
-          },
-        });
+        localStorage.setItem("lastLog", response.status);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -198,59 +133,57 @@ const ServerReport = () => {
         toast.dismiss();
         const data = await response.json();
         setUfwLog(data);
+        localStorage.setItem("ufwLog", response.status);
       } else if (response.status === 400) {
-        toast.dismiss();
-        toast.error("Missing server data!", {
-          style: {
-            border: "1px solid #F85F60",
-            maxWidth: "900px",
-            padding: "16px 24px",
-            color: "red",
-            fontWeight: "bolder",
-          },
-        });
+        localStorage.setItem("ufwLog", response.status);
       } else if (response.status === 403) {
-        toast.dismiss();
-        toast.error("Permission denied!", {
-          style: {
-            border: "1px solid #F85F60",
-            maxWidth: "900px",
-            padding: "16px 24px",
-            color: "red",
-            fontWeight: "bolder",
-          },
-        });
+        localStorage.setItem("ufwLog", response.status);
       } else if (response.status === 500) {
-        toast.dismiss();
-        toast.error("No data for server!", {
-          style: {
-            border: "1px solid #F85F60",
-            maxWidth: "900px",
-            padding: "16px 24px",
-            color: "red",
-            fontWeight: "bolder",
-          },
-        });
+        localStorage.setItem("ufwLog", response.status);
       } else {
-        toast.error("Fail to list system logging protocol!", {
-          style: {
-            border: "1px solid #F85F60",
-            maxWidth: "900px",
-            padding: "16px 24px",
-            color: "red",
-            fontWeight: "bolder",
-          },
-        });
+        localStorage.setItem("ufwLog", response.status);
       }
     } catch (error) {
       console.error("Error:", error);
     } finally {
     }
   };
+
+  const handleStatus = () => {
+    const lastLog = localStorage.getItem("lastLog");
+    const sysLog = localStorage.getItem("sysLog");
+    const ufwLog = localStorage.getItem("ufwLog");
+
+    if (lastLog === 200 && sysLog === 200 && ufwLog === 200) {
+      toast.success("Server responded.", {
+        style: {
+          border: "1px solid #37E030",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "green",
+          fontWeight: "bolder",
+        },
+      });
+      setLoading(false);
+    } else {
+      toast.error("Something wrong, please try again later!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
+        },
+      });
+      setLoading(false);
+    }
+  };
   useEffect(() => {
+    setLoading(true);
     handleGetSysLog();
     handleGetLastLog();
     handleGetUfwLog();
+    handleStatus();
   }, []);
   return (
     <>
@@ -259,6 +192,11 @@ const ServerReport = () => {
           <div className="info-title font-semibold mb-3">
             <p>Access History</p>
           </div>
+          {loading && (
+            <div className="pb-8 pt-4">
+              <LinearProgress />
+            </div>
+          )}
           <Button
             startIcon={<DownloadIcon />}
             variant="contained"
