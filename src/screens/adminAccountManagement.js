@@ -252,12 +252,8 @@ export default function AdminAccountManagement() {
                   </DialogContent>
                   <DialogActions>
                     <Button onClick={handleChangeStatusClose}>Cancel</Button>
-                    <Button
-                      onClick={handleChangeStatus}
-                      variant="contained"
-                      autoFocus
-                    >
-                      Confirm
+                    <Button onClick={handleChangeStatus}>
+                      <p className="text-red">Confirm</p>
                     </Button>
                   </DialogActions>
                 </Dialog>
@@ -270,7 +266,7 @@ export default function AdminAccountManagement() {
                   aria-describedby="alert-dialog-description"
                 >
                   <DialogTitle id="alert-dialog-title">
-                    {"Do you want to remove this guide ?"}
+                    {"Do you want to remove this member ?"}
                   </DialogTitle>
 
                   <DialogActions>

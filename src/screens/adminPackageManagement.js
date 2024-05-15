@@ -671,7 +671,7 @@ export default function AdminPackageManagement() {
                         <td>{pkg.package_name}</td>
                         <td>{pkg.price}đ</td>
                         <td>{pkg.description}</td>
-                        <td>{pkg.duration}</td>
+                        <td>{pkg.duration} days</td>
                         <td>{pkg.slot_number}</td>
                         <td>{pkg.slot_server}</td>
                         <td>
