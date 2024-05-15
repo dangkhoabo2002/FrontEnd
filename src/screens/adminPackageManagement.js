@@ -51,12 +51,8 @@ export default function AdminPackageManagement() {
 
   // GET PKG
   const handleGetPackage = async () => {
-<<<<<<< HEAD
-    const packageUrl = `http://127.0.0.1:5000/package/get`;
-=======
     toast.loading("In processing..");
-    const packageUrl = `https://master-help-desk-back-end.vercel.app/package/get`;
->>>>>>> e57aaca8bb744b3f86a7986d18ee7a095e48c417
+    const packageUrl = `http://127.0.0.1:5000/package/get`;
     const token = localStorage.getItem("access_token");
 
     try {

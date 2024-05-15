@@ -63,13 +63,8 @@ export default function UserProfile() {
         },
       });
     } else {
-<<<<<<< HEAD
-      const updUrl = "http://127.0.0.1:5000/auth/update_information";
-=======
       toast.loading("In processing..");
-      const updUrl =
-        "https://master-help-desk-back-end.vercel.app/auth/update_information";
->>>>>>> e57aaca8bb744b3f86a7986d18ee7a095e48c417
+      const updUrl = "http://127.0.0.1:5000/auth/update_information";
       const token = localStorage.getItem("access_token");
 
       try {
@@ -131,12 +126,8 @@ export default function UserProfile() {
   };
 
   const handleGetUserProfile = async () => {
-<<<<<<< HEAD
-    const getUrl = `http://127.0.0.1:5000/auth/get_profile`;
-=======
     toast.loading("In processing..");
-    const getUrl = `https://master-help-desk-back-end.vercel.app/auth/get_profile`;
->>>>>>> e57aaca8bb744b3f86a7986d18ee7a095e48c417
+    const getUrl = `http://127.0.0.1:5000/auth/get_profile`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(getUrl, {
@@ -306,12 +297,8 @@ export default function UserProfile() {
         },
       });
     } else {
-<<<<<<< HEAD
-      const checkOtpUrl = `http://127.0.0.1:5000/auth/verify_otp`;
-=======
       toast.loading("In processing..");
-      const checkOtpUrl = `https://master-help-desk-back-end.vercel.app/auth/verify_otp`;
->>>>>>> e57aaca8bb744b3f86a7986d18ee7a095e48c417
+      const checkOtpUrl = `http://127.0.0.1:5000/auth/verify_otp`;
       try {
         const response = await fetch(checkOtpUrl, {
           method: "POST",
@@ -478,13 +465,8 @@ export default function UserProfile() {
     } else if (password === confirmPassword) {
       const token = localStorage.getItem("access_token");
       const rsToken = localStorage.getItem("otp_verified_profile");
-<<<<<<< HEAD
-      const changeUrl = "http://127.0.0.1:5000/auth/change_password";
-=======
       toast.loading("In processing..");
-      const changeUrl =
-        "https://master-help-desk-back-end.vercel.app/auth/change_password";
->>>>>>> e57aaca8bb744b3f86a7986d18ee7a095e48c417
+      const changeUrl = "http://127.0.0.1:5000/auth/change_password";
       try {
         const response = await fetch(changeUrl, {
           method: "POST",

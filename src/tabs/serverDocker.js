@@ -47,8 +47,8 @@ export default function ServerDocker(serverId) {
       });
     } else {
       setLoading(true);
-      
-      const url = `https://master-help-desk-back-end.vercel.app/server/docker_build/${serverId.serverId}`;
+
+      const url = `http://127.0.0.1:5000/server/docker_build/${serverId.serverId}`;
       const token = localStorage.getItem("access_token");
 
       try {

@@ -72,13 +72,8 @@ export default function ResetPassword() {
   };
 
   const handleChangePassword = async () => {
-<<<<<<< HEAD
-    const url = "http://127.0.0.1:5000/auth/reset_password";
-=======
     toast.loading("In processing..");
-    const url =
-      "https://master-help-desk-back-end.vercel.app/auth/reset_password";
->>>>>>> e57aaca8bb744b3f86a7986d18ee7a095e48c417
+    const url = "http://127.0.0.1:5000/auth/reset_password";
     const otpToken = localStorage.getItem("otp_verified");
 
     try {
