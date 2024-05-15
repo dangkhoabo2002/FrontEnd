@@ -47,7 +47,8 @@ export default function ServerDocker(serverId) {
       });
     } else {
       setLoading(true);
-      const url = `http://127.0.0.1:5000/server/docker_build/${serverId.serverId}`;
+      
+      const url = `https://master-help-desk-back-end.vercel.app/server/docker_build/${serverId.serverId}`;
       const token = localStorage.getItem("access_token");
 
       try {
@@ -65,6 +66,7 @@ export default function ServerDocker(serverId) {
           }),
         });
         if (response.status === 200) {
+          toast.dismiss();
           toast.success("Build dockerfile successfully.", {
             style: {
               border: "1px solid #37E030",
@@ -75,6 +77,7 @@ export default function ServerDocker(serverId) {
             },
           });
         } else if (response.status === 403) {
+          toast.dismiss();
           toast.error("Permission denied!", {
             style: {
               border: "1px solid #F85F60",
@@ -85,6 +88,7 @@ export default function ServerDocker(serverId) {
             },
           });
         } else if (response.status === 500) {
+          toast.dismiss();
           toast.error("No data for server!", {
             style: {
               border: "1px solid #F85F60",
@@ -95,6 +99,7 @@ export default function ServerDocker(serverId) {
             },
           });
         } else {
+          toast.dismiss();
           toast.error("Something wrong, please try again later!", {
             style: {
               border: "1px solid #F85F60",

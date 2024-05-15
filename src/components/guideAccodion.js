@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 import issue from "../assets/issue.png";
+import toast from "react-hot-toast";
 
 export default function AccordionExpandIcon() {
   const handleGuide = async () => {
-    const guideUrl = "http://127.0.0.1:5000/guide/get";
+    toast.loading("In processing..");
+    const guideUrl = "https://master-help-desk-back-end.vercel.app/guide/get";
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(guideUrl, {
@@ -17,9 +19,11 @@ export default function AccordionExpandIcon() {
         },
       });
       if (response.status === 200) {
+        toast.dismiss();
         const data = await response.json();
         setData(data);
       } else {
+        toast.dismiss();
         throw new Error("Failed to fetch guide data");
       }
     } catch (error) {

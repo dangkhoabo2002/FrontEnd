@@ -51,7 +51,12 @@ export default function AdminPackageManagement() {
 
   // GET PKG
   const handleGetPackage = async () => {
+<<<<<<< HEAD
     const packageUrl = `http://127.0.0.1:5000/package/get`;
+=======
+    toast.loading("In processing..");
+    const packageUrl = `https://master-help-desk-back-end.vercel.app/package/get`;
+>>>>>>> e57aaca8bb744b3f86a7986d18ee7a095e48c417
     const token = localStorage.getItem("access_token");
 
     try {
@@ -66,9 +71,11 @@ export default function AdminPackageManagement() {
         },
       });
       if (response.status === 200) {
+        toast.dismiss();
         const data = await response.json();
         setPackageData(data);
       } else {
+        toast.dismiss();
         console.error("Failed to fetch package data");
       }
     } catch (error) {
@@ -100,6 +107,7 @@ export default function AdminPackageManagement() {
 
       // Check if slot number is a positive integer
       if (!positiveIntegerRegex.test(packageAdd.slot_number)) {
+        toast.dismiss();
         toast.error("Slot number greater than 0 or at least 1.", {
           style: {
             border: "1px solid #F85F60",
@@ -114,6 +122,7 @@ export default function AdminPackageManagement() {
 
       // Check if slot server is a positive integer
       if (!positiveIntegerRegex.test(packageAdd.slot_server)) {
+        toast.dismiss();
         toast.error("Slot server greater than 0 or at least 1.", {
           style: {
             border: "1px solid #F85F60",
@@ -128,6 +137,7 @@ export default function AdminPackageManagement() {
 
       // Check if duration is a positive integer
       if (!positiveIntegerRegex.test(packageAdd.duration)) {
+        toast.dismiss();
         toast.error("Duration greater than 0 or at least 1.", {
           style: {
             border: "1px solid #F85F60",
@@ -142,6 +152,7 @@ export default function AdminPackageManagement() {
 
       // Check if price is a positive decimal with two decimal places
       if (!priceRegex.test(packageAdd.price)) {
+        toast.dismiss();
         toast.error(
           "Price must be a positive decimal with two decimal places!",
           {

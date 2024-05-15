@@ -52,7 +52,8 @@ export default function LandingPage() {
   const [orgList, setOrgList] = useState();
 
   const handleShowOrganization = async () => {
-    const getUrl = "http://127.0.0.1:5000/org/get";
+    toast.loading("In processing..");
+    const getUrl = "https://master-help-desk-back-end.vercel.app/org/get";
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(getUrl, {
@@ -66,6 +67,7 @@ export default function LandingPage() {
         },
       });
       if (response.status === 200) {
+        toast.dismiss();
         const orgData = await response.json();
         setOrgList(orgData);
       }
@@ -76,7 +78,8 @@ export default function LandingPage() {
   const [isSub, setIsSub] = useState();
 
   const handleGetSub = async () => {
-    const editUrl = `http://127.0.0.1:5000/subscription/check_subscription_by_username`;
+    toast.loading("In processing..");
+    const editUrl = `https://master-help-desk-back-end.vercel.app/subscription/check_subscription_by_username`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(editUrl, {
@@ -89,6 +92,7 @@ export default function LandingPage() {
         },
       });
       if (response.status === 200) {
+        toast.dismiss();
         setIsSub(true);
       } else {
         setIsSub(false);
@@ -224,7 +228,8 @@ export default function LandingPage() {
   // const navigate = useNavigate();
 
   const handleAddOrg = async () => {
-    const addUrl = "http://127.0.0.1:5000/org/add";
+    toast.loading("In processing..");
+    const addUrl = "https://master-help-desk-back-end.vercel.app/org/add";
     const token = localStorage.getItem("access_token");
 
     try {
@@ -245,6 +250,7 @@ export default function LandingPage() {
         }),
       });
       if (response.status === 200) {
+        toast.dismiss();
         handleShowOrganization();
         setData({
           name: "",
@@ -254,6 +260,7 @@ export default function LandingPage() {
         });
         setShowConfirmation(false);
       } else if (response.status === 403) {
+        toast.dismiss();
         toast.error("Permission denied!", {
           style: {
             border: "1px solid #F85F60",
@@ -264,6 +271,7 @@ export default function LandingPage() {
           },
         });
       } else if (response.status === 500) {
+        toast.dismiss();
         toast.error("You have used up all the slots!", {
           style: {
             border: "1px solid #F85F60",
@@ -274,6 +282,7 @@ export default function LandingPage() {
           },
         });
       } else {
+        toast.dismiss();
         toast.error("Fail to add organization, please try again later!", {
           style: {
             border: "1px solid #F85F60",

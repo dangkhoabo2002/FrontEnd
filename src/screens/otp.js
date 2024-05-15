@@ -30,7 +30,9 @@ export default function OTP() {
         },
       });
     } else {
-      const otpUrl = "http://127.0.0.1:5000/auth/verify_otp";
+      toast.loading("In processing..");
+      const otpUrl =
+        "https://master-help-desk-back-end.vercel.app/auth/verify_otp";
       try {
         const response = await fetch(otpUrl, {
           method: "POST",
@@ -45,6 +47,7 @@ export default function OTP() {
           }),
         });
         if (response.status === 200) {
+          toast.dismiss();
           const data = await response.json();
           localStorage.setItem("otp_verified", data.otp_verified);
           toast.success("Verify successfull!", {
@@ -60,6 +63,7 @@ export default function OTP() {
             navigate("/resetPassword");
           }, 1400);
         } else if (response.status === 500) {
+          toast.dismiss();
           toast.error("Wrong OTP, please try again!", {
             style: {
               border: "1px solid #F85F60",
@@ -70,6 +74,7 @@ export default function OTP() {
             },
           });
         } else {
+          toast.dismiss();
           toast.error("Something wrong, please try again later!", {
             style: {
               border: "1px solid #F85F60",
@@ -88,7 +93,9 @@ export default function OTP() {
   };
 
   const handleResendOtp = async () => {
-    const otpUrl = "http://127.0.0.1:5000/auth/resend_otp";
+    toast.loading("In processing..");
+    const otpUrl =
+      "https://master-help-desk-back-end.vercel.app/auth/resend_otp";
 
     try {
       const response = await fetch(otpUrl, {
@@ -103,6 +110,7 @@ export default function OTP() {
         }),
       });
       if (response.status === 200) {
+        toast.dismiss();
         toast.success("Resend OTP success, please check out your Email!", {
           style: {
             border: "1px solid #37E030",
@@ -113,6 +121,7 @@ export default function OTP() {
           },
         });
       } else if (response.status === 500) {
+        toast.dismiss();
         toast.error("Failed to send OTP!", {
           style: {
             border: "1px solid #F85F60",
@@ -123,6 +132,7 @@ export default function OTP() {
           },
         });
       } else {
+        toast.dismiss();
         toast.error("Something went wrong!", {
           style: {
             border: "1px solid #F85F60",

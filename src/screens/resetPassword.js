@@ -72,7 +72,13 @@ export default function ResetPassword() {
   };
 
   const handleChangePassword = async () => {
+<<<<<<< HEAD
     const url = "http://127.0.0.1:5000/auth/reset_password";
+=======
+    toast.loading("In processing..");
+    const url =
+      "https://master-help-desk-back-end.vercel.app/auth/reset_password";
+>>>>>>> e57aaca8bb744b3f86a7986d18ee7a095e48c417
     const otpToken = localStorage.getItem("otp_verified");
 
     try {
@@ -90,6 +96,7 @@ export default function ResetPassword() {
         }),
       });
       if (response.status === 200) {
+        toast.dismiss();
         toast.success("Your password is updated successfully.", {
           style: {
             border: "1px solid #37E030",
@@ -104,6 +111,7 @@ export default function ResetPassword() {
           navigate(`/login`);
         }, 2000);
       } else if (response.status === 403) {
+        toast.dismiss();
         toast.error("Verify OTP first!", {
           style: {
             border: "1px solid #F85F60",
@@ -114,6 +122,7 @@ export default function ResetPassword() {
           },
         });
       } else {
+        toast.dismiss();
         toast.error("Something wrong, please try again later!", {
           style: {
             border: "1px solid #F85F60",

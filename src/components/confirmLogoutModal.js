@@ -24,7 +24,9 @@ export default function AlertDialogSlide() {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    const logoutUrl = "http://127.0.0.1:5000/auth/logout";
+    toast.loading("In processing..");
+    const logoutUrl =
+      "https://master-help-desk-back-end.vercel.app/auth/logout";
     const token = localStorage.getItem("access_token");
 
     try {
@@ -37,9 +39,11 @@ export default function AlertDialogSlide() {
         },
       });
       if (response.status === 200) {
+        toast.dismiss();
         localStorage.clear();
         navigate("/");
       } else {
+        toast.dismiss();
         toast.error("Logout fail, please try again later!", {
           style: {
             border: "1px solid #F85F60",
