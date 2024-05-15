@@ -63,8 +63,8 @@ export default function UserProfile() {
         },
       });
     } else {
-      const updUrl =
-        "https://master-help-desk-back-end.vercel.app/auth/update_information";
+      toast.loading("In processing..");
+      const updUrl = "http://127.0.0.1:5000/auth/update_information";
       const token = localStorage.getItem("access_token");
 
       try {
@@ -83,6 +83,7 @@ export default function UserProfile() {
           }),
         });
         if (response.status === 200) {
+          toast.dismiss();
           handleGetUserProfile();
           toast.success("Update successfully.", {
             style: {
@@ -94,6 +95,7 @@ export default function UserProfile() {
             },
           });
         } else if (response.status === 403) {
+          toast.dismiss();
           toast.error("Unauthorized, please login again!", {
             style: {
               border: "1px solid #F85F60",
@@ -104,6 +106,7 @@ export default function UserProfile() {
             },
           });
         } else {
+          toast.dismiss();
           toast.error("Fail to update, please try again later!", {
             style: {
               border: "1px solid #F85F60",
@@ -123,7 +126,8 @@ export default function UserProfile() {
   };
 
   const handleGetUserProfile = async () => {
-    const getUrl = `https://master-help-desk-back-end.vercel.app/auth/get_profile`;
+    toast.loading("In processing..");
+    const getUrl = `http://127.0.0.1:5000/auth/get_profile`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(getUrl, {
@@ -136,9 +140,11 @@ export default function UserProfile() {
         },
       });
       if (response.status === 200) {
+        toast.dismiss();
         const userData = await response.json();
         setUserProfile(userData);
       } else if (response.status === 403) {
+        toast.dismiss();
         const error = await response.json();
         toast.error(`${error.message}!`, {
           style: {
@@ -150,6 +156,7 @@ export default function UserProfile() {
           },
         });
       } else if (response.status === 401) {
+        toast.dismiss();
         toast.error("Please login first!", {
           style: {
             border: "1px solid #F85F60",
@@ -160,6 +167,7 @@ export default function UserProfile() {
           },
         });
       } else {
+        toast.dismiss();
         toast.error("Something wrong, please try again later!", {
           style: {
             border: "1px solid #F85F60",
@@ -218,8 +226,7 @@ export default function UserProfile() {
       });
     } else {
       toast.loading(" OTP is being sent to your email...");
-      const sendUrl =
-        "https://master-help-desk-back-end.vercel.app/auth/forgot_password";
+      const sendUrl = "http://127.0.0.1:5000/auth/forgot_password";
       try {
         const response = await fetch(sendUrl, {
           method: "POST",
@@ -290,7 +297,8 @@ export default function UserProfile() {
         },
       });
     } else {
-      const checkOtpUrl = `https://master-help-desk-back-end.vercel.app/auth/verify_otp`;
+      toast.loading("In processing..");
+      const checkOtpUrl = `http://127.0.0.1:5000/auth/verify_otp`;
       try {
         const response = await fetch(checkOtpUrl, {
           method: "POST",
@@ -305,6 +313,7 @@ export default function UserProfile() {
           }),
         });
         if (response.status === 200) {
+          toast.dismiss();
           const data = await response.json();
           localStorage.setItem("otp_verified_profile", data.otp_verified);
           toast.success("OTP Verified.", {
@@ -319,6 +328,7 @@ export default function UserProfile() {
           setShowOtpDialog(false);
           setShowPasswordDialog(true);
         } else if (response.status === 500) {
+          toast.dismiss();
           toast.error("OTP verification failed!", {
             style: {
               border: "1px solid #F85F60",
@@ -329,6 +339,7 @@ export default function UserProfile() {
             },
           });
         } else {
+          toast.dismiss();
           toast.error("Something wrong, please try again later!", {
             style: {
               border: "1px solid #F85F60",
@@ -349,8 +360,7 @@ export default function UserProfile() {
   const handleResendOtp = async () => {
     if (userProfile?.email) {
       toast.loading(" OTP is being sent to your email...");
-      const changeUrl =
-        "https://master-help-desk-back-end.vercel.app/auth/resend_otp";
+      const changeUrl = "http://127.0.0.1:5000/auth/resend_otp";
       try {
         const response = await fetch(changeUrl, {
           method: "POST",
@@ -455,8 +465,8 @@ export default function UserProfile() {
     } else if (password === confirmPassword) {
       const token = localStorage.getItem("access_token");
       const rsToken = localStorage.getItem("otp_verified_profile");
-      const changeUrl =
-        "https://master-help-desk-back-end.vercel.app/auth/change_password";
+      toast.loading("In processing..");
+      const changeUrl = "http://127.0.0.1:5000/auth/change_password";
       try {
         const response = await fetch(changeUrl, {
           method: "POST",
@@ -524,6 +534,7 @@ export default function UserProfile() {
       } finally {
       }
     } else {
+      toast.dismiss();
       toast.error("Confirm password does not match!", {
         style: {
           border: "1px solid #F85F60",

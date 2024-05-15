@@ -110,7 +110,8 @@ export default function OrganizationDashboard() {
   // GET SERVERS IN ORG
 
   const handleGetServers = async () => {
-    const getsvUrl = `https://master-help-desk-back-end.vercel.app/server/get_server_in_organization/${organization_id}`;
+    toast.loading("In processing..");
+    const getsvUrl = `http://127.0.0.1:5000/server/get_server_in_organization/${organization_id}`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(getsvUrl, {
@@ -124,9 +125,11 @@ export default function OrganizationDashboard() {
         },
       });
       if (response.status === 200) {
+        toast.dismiss();
         const servers = await response.json();
         setServerList(servers);
       } else if (response.status === 404) {
+        toast.dismiss();
         toast.error("Not found any server!", {
           style: {
             border: "1px solid #F85F60",
@@ -145,7 +148,8 @@ export default function OrganizationDashboard() {
 
   // GET MEMBER
   const handleGetMember = async () => {
-    const memberUrl = `https://master-help-desk-back-end.vercel.app/org/get_user_in_organization/${organization_id}`;
+    toast.loading("In processing..");
+    const memberUrl = `http://127.0.0.1:5000/org/get_user_in_organization/${organization_id}`;
     const token = localStorage.getItem("access_token");
 
     try {
@@ -159,9 +163,13 @@ export default function OrganizationDashboard() {
         },
       });
       if (response.status === 200) {
+        toast.dismiss();
+
         const memberData = await response.json();
         setMemberList(memberData);
       } else if (response.status === 400) {
+        toast.dismiss();
+
         toast.error(
           "Organization is not defined, please go back and try again!",
           {
@@ -175,6 +183,8 @@ export default function OrganizationDashboard() {
           }
         );
       } else if (response.status === 403) {
+        toast.dismiss();
+
         toast.error("Permission denied!", {
           style: {
             border: "1px solid #F85F60",
@@ -185,6 +195,8 @@ export default function OrganizationDashboard() {
           },
         });
       } else if (response.status === 500) {
+        toast.dismiss();
+
         toast.error("Failed to get Users & Roles, please try again!", {
           style: {
             border: "1px solid #F85F60",
@@ -195,6 +207,8 @@ export default function OrganizationDashboard() {
           },
         });
       } else {
+        toast.dismiss();
+
         toast.error("Something wrong, please try again later!", {
           style: {
             border: "1px solid #F85F60",
@@ -213,7 +227,8 @@ export default function OrganizationDashboard() {
 
   const [numberMember, setNumberMember] = useState();
   const handleNumberMember = async () => {
-    const memberUrl = `https://master-help-desk-back-end.vercel.app/org/get_number_of_users/${organization_id}`;
+    toast.loading("In processing..");
+    const memberUrl = `http://127.0.0.1:5000/org/get_number_of_users/${organization_id}`;
     const token = localStorage.getItem("access_token");
 
     try {
@@ -227,12 +242,18 @@ export default function OrganizationDashboard() {
         },
       });
       if (response.status === 200) {
+        toast.dismiss();
+
         const memberCount = await response.json();
         setNumberMember(memberCount);
       } else {
+        toast.dismiss();
+
         console.log("Fail to get member");
       }
     } catch (error) {
+      toast.dismiss();
+
       console.error("Error:", error);
     } finally {
     }
@@ -240,7 +261,8 @@ export default function OrganizationDashboard() {
 
   // GET information của Org từ API
   const handleGetOrgData = async () => {
-    const loginUrl = `https://master-help-desk-back-end.vercel.app/org/get_organization_data/${organization_id}`;
+    toast.loading("In processing..");
+    const loginUrl = `http://127.0.0.1:5000/org/get_organization_data/${organization_id}`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(loginUrl, {
@@ -253,9 +275,11 @@ export default function OrganizationDashboard() {
         },
       });
       if (response.status === 200) {
+        toast.dismiss();
         const orgData = await response.json();
         setOrganizations(orgData);
       } else if (response.status === 400) {
+        toast.dismiss();
         toast.error(
           "Organization is not defined, please go back and try again!",
           {
@@ -269,6 +293,7 @@ export default function OrganizationDashboard() {
           }
         );
       } else if (response.status === 403) {
+        toast.dismiss();
         toast.error("Permission denied!", {
           style: {
             border: "1px solid #F85F60",
@@ -279,6 +304,7 @@ export default function OrganizationDashboard() {
           },
         });
       } else if (response.status === 500) {
+        toast.dismiss();
         toast.error("Failed to get Users & Roles, please try again!", {
           style: {
             border: "1px solid #F85F60",
@@ -289,6 +315,7 @@ export default function OrganizationDashboard() {
           },
         });
       } else {
+        toast.dismiss();
         toast.error("Something wrong, please try again later!", {
           style: {
             border: "1px solid #F85F60",
@@ -448,7 +475,8 @@ export default function OrganizationDashboard() {
           },
         });
       } else {
-        const addUrl = `https://master-help-desk-back-end.vercel.app/server/add`;
+        toast.loading("In processing..");
+        const addUrl = `http://127.0.0.1:5000/server/add`;
         const token = localStorage.getItem("access_token");
 
         try {
@@ -472,9 +500,11 @@ export default function OrganizationDashboard() {
             }),
           });
           if (response.status === 201) {
+            toast.dismiss();
             handleGetServers();
             handleCloseAddServer();
           } else if (response.status === 500) {
+            toast.dismiss();
           }
         } catch (error) {
           console.error("Error:", error);
@@ -508,8 +538,8 @@ export default function OrganizationDashboard() {
     }
   };
   const handleAddMember = async () => {
-    const addmemberUrl =
-      "https://master-help-desk-back-end.vercel.app/org/add_user";
+    toast.loading("In processing..");
+    const addmemberUrl = "http://127.0.0.1:5000/org/add_user";
     const token = localStorage.getItem("access_token");
 
     try {
@@ -527,6 +557,7 @@ export default function OrganizationDashboard() {
         }),
       });
       if (response.status === 200) {
+        toast.dismiss();
         handleGetMember();
         toast.success("Add member success.", {
           style: {
@@ -540,6 +571,7 @@ export default function OrganizationDashboard() {
         handleCloseAddMember();
         setData({ new_user: "" });
       } else if (response.status === 400) {
+        toast.dismiss();
         toast.error("User is not exist!", {
           style: {
             border: "1px solid #F85F60",
@@ -550,6 +582,7 @@ export default function OrganizationDashboard() {
           },
         });
       } else if (response.status === 403) {
+        toast.dismiss();
         toast.error("Permission denied!", {
           style: {
             border: "1px solid #F85F60",
@@ -560,6 +593,7 @@ export default function OrganizationDashboard() {
           },
         });
       } else if (response.status === 500) {
+        toast.dismiss();
         toast.error("This member is already in the organization!", {
           style: {
             border: "1px solid #F85F60",
@@ -570,6 +604,7 @@ export default function OrganizationDashboard() {
           },
         });
       } else {
+        toast.dismiss();
         toast.error("Something wrong, please try again later!", {
           style: {
             border: "1px solid #F85F60",
@@ -643,8 +678,8 @@ export default function OrganizationDashboard() {
         },
       });
     } else {
-      const loginUrl =
-        "https://master-help-desk-back-end.vercel.app/org/update_information";
+      toast.loading("In processing..");
+      const loginUrl = "http://127.0.0.1:5000/org/update_information";
       const token = localStorage.getItem("access_token");
 
       const updatedName = data.name === "" ? organizations[0].name : data.name;
@@ -679,6 +714,7 @@ export default function OrganizationDashboard() {
           }),
         });
         if (response.status === 200) {
+          toast.dismiss();
           if (
             data.name === "" ||
             data.contact_phone === "" ||
@@ -698,6 +734,7 @@ export default function OrganizationDashboard() {
               }
             );
           } else {
+            toast.dismiss();
             toast.success("Update organization successfully.", {
               style: {
                 border: "1px solid #37E030",
@@ -711,6 +748,7 @@ export default function OrganizationDashboard() {
           handleEditClick();
           handleGetOrgData();
         } else if (response.status === 403) {
+          toast.dismiss();
           toast.error("Permission denied!", {
             style: {
               border: "1px solid #F85F60",
@@ -721,6 +759,7 @@ export default function OrganizationDashboard() {
             },
           });
         } else {
+          toast.dismiss();
           toast.error("Something wrong, please try again later.", {
             style: {
               border: "1px solid #F85F60",
@@ -756,8 +795,9 @@ export default function OrganizationDashboard() {
     } else {
       newStatus = "ACTIVE";
     }
+    toast.loading("In processing..");
     const changeStatusUrl =
-      "https://master-help-desk-back-end.vercel.app/org/change_organization_status";
+      "http://127.0.0.1:5000/org/change_organization_status";
     const token = localStorage.getItem("access_token");
 
     try {
@@ -775,6 +815,7 @@ export default function OrganizationDashboard() {
         }),
       });
       if (response.status === 200) {
+        toast.dismiss();
         setCurrentStatus(newStatus);
         handleGetOrgData();
         toast.success(`Organization now is ${newStatus}.`, {
@@ -787,6 +828,7 @@ export default function OrganizationDashboard() {
           },
         });
       } else {
+        toast.dismiss();
         toast.error("Fail to change status!", {
           style: {
             border: "1px solid #F85F60",
@@ -863,8 +905,8 @@ export default function OrganizationDashboard() {
   const [removeUser, setRemoveUser] = useState();
 
   const handleRemoveUserAPI = async () => {
-    const loginUrl =
-      "https://master-help-desk-back-end.vercel.app/org/remove_user";
+    toast.loading("In processing..");
+    const loginUrl = "http://127.0.0.1:5000/org/remove_user";
     const token = localStorage.getItem("access_token");
 
     try {
@@ -882,6 +924,7 @@ export default function OrganizationDashboard() {
         }),
       });
       if (response.status === 200) {
+        toast.dismiss();
         handleGetMember();
         toast.success("Remove successfully.", {
           style: {
@@ -893,6 +936,7 @@ export default function OrganizationDashboard() {
           },
         });
       } else if (response.status === 403) {
+        toast.dismiss();
         toast.error("Permission denied!", {
           style: {
             border: "1px solid #F85F60",
@@ -903,6 +947,7 @@ export default function OrganizationDashboard() {
           },
         });
       } else if (response.status === 500) {
+        toast.dismiss();
         const logErr = await response.json();
 
         toast.error(`Fail to remove member ${logErr.message}!`, {
@@ -915,6 +960,7 @@ export default function OrganizationDashboard() {
           },
         });
       } else {
+        toast.dismiss();
         toast.error("Something wrong, please try again later!", {
           style: {
             border: "1px solid #F85F60",
@@ -940,7 +986,8 @@ export default function OrganizationDashboard() {
 
   const [openDeleteOrg, setOpenDelete] = React.useState(false);
   const handleDeleteOrg = async () => {
-    const loginUrl = `https://master-help-desk-back-end.vercel.app/org/delete/${organization_id}`;
+    toast.loading("In processing..");
+    const loginUrl = `http://127.0.0.1:5000/org/delete/${organization_id}`;
     const token = localStorage.getItem("access_token");
 
     try {
@@ -955,6 +1002,7 @@ export default function OrganizationDashboard() {
         },
       });
       if (response.status === 200) {
+        toast.dismiss();
         toast.success("Organization deleted successfully.", {
           style: {
             border: "1px solid #F85F60",
@@ -968,6 +1016,7 @@ export default function OrganizationDashboard() {
           navigate("/organizations");
         }, 2000);
       } else if (response.status === 403) {
+        toast.dismiss();
         toast.error("Permission denied!", {
           style: {
             border: "1px solid #F85F60",
@@ -1061,7 +1110,7 @@ export default function OrganizationDashboard() {
   };
 
   // const handleAddRoleAPI = async () => {
-  //   const loginUrl = `https://master-help-desk-back-end.vercel.app/org/delete/${organization_id}`;
+  //   const loginUrl = `http://127.0.0.1:5000/org/delete/${organization_id}`;
   //   const token = localStorage.getItem("access_token");
 
   //   try {
@@ -1162,19 +1211,13 @@ export default function OrganizationDashboard() {
                       onChange={handleChange}
                       aria-label="lab API tabs example"
                       sx={{
-                        "& .MuiTabs-flexContainer": {
-                          // borderBottom: "1px solid #D9D9D9",
-                          // borderTop: "1px solid #D9D9D9",
-                        },
+                        "& .MuiTabs-flexContainer": {},
                         "& .MuiTab-root": {
                           minWidth: "auto",
                           textTransform: "capitalize",
                           width: "136px",
                           fontWeight: "bold",
                           color: "black",
-
-                          // borderLeft: "1px solid #D9D9D9",
-                          // borderRight: "1px solid #D9D9D9",
                           transition: "background-color 0.3s, color 0.3s",
                           "&.Mui-selected": {
                             color: "black",

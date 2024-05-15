@@ -113,8 +113,8 @@ export default function SignUp() {
       setError(newErrors);
       return;
     }
-    const signupUrl =
-      "https://master-help-desk-back-end.vercel.app/auth/signup";
+    toast.loading("In processing..");
+    const signupUrl = "http://127.0.0.1:5000/auth/signup";
     try {
       const response = await fetch(signupUrl, {
         method: "POST",
@@ -130,6 +130,7 @@ export default function SignUp() {
         }),
       });
       if (response.status === 201) {
+        toast.dismiss();
         toast.success("Successfully, welcome to MHD system.", {
           style: {
             border: "1px solid #37E030",
@@ -154,6 +155,7 @@ export default function SignUp() {
           },
         });
       } else {
+        toast.dismiss();
         toast.error("Something wrong, please try again later!", {
           style: {
             border: "1px solid #F85F60",

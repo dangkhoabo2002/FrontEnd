@@ -60,8 +60,9 @@ export default function AdminGuide() {
   };
 
   const handleEditGuide = async () => {
+    toast.loading("In processing..");
     if (currentGuide) {
-      const editUrl = `https://master-help-desk-back-end.vercel.app/guide/update/${currentGuide}`;
+      const editUrl = `http://127.0.0.1:5000/guide/update/${currentGuide}`;
       const token = localStorage.getItem("access_token");
 
       try {
@@ -80,6 +81,7 @@ export default function AdminGuide() {
           }),
         });
         if (response.status === 200) {
+          toast.dismiss();
           toast.success("Update guide successfully!", {
             style: {
               border: "1px solid #37E030",
@@ -93,6 +95,7 @@ export default function AdminGuide() {
           setCurrentEditGuide({ title: "", content: "" });
           handleCloseEditGuide();
         } else if (response.status === 403) {
+          toast.dismiss();
           toast.error("Permission denied!", {
             style: {
               border: "1px solid #F85F60",
@@ -103,6 +106,7 @@ export default function AdminGuide() {
             },
           });
         } else if (response.status === 400) {
+          toast.dismiss();
           toast.error("Guide is not selected!", {
             style: {
               border: "1px solid #F85F60",
@@ -113,6 +117,7 @@ export default function AdminGuide() {
             },
           });
         } else if (response.status === 500) {
+          toast.dismiss();
           toast.error("Failed to update, please try again later!", {
             style: {
               border: "1px solid #F85F60",
@@ -123,6 +128,7 @@ export default function AdminGuide() {
             },
           });
         } else {
+          toast.dismiss();
           toast.error("Something wrong, please try again later!", {
             style: {
               border: "1px solid #F85F60",
@@ -153,7 +159,7 @@ export default function AdminGuide() {
   // DELETE GUIDE
   const handleDeleteGuide = async () => {
     if (currentGuide) {
-      const deleteUrl = `https://master-help-desk-back-end.vercel.app/guide/delete/${currentGuide}`;
+      const deleteUrl = `http://127.0.0.1:5000/guide/delete/${currentGuide}`;
       const token = localStorage.getItem("access_token");
 
       try {
@@ -249,7 +255,7 @@ export default function AdminGuide() {
 
   // GET GUIDE
   const handleGetGuide = async () => {
-    const guideUrl = `https://master-help-desk-back-end.vercel.app/guide/get`;
+    const guideUrl = `http://127.0.0.1:5000/guide/get`;
     const token = localStorage.getItem("access_token");
 
     try {
@@ -311,7 +317,7 @@ export default function AdminGuide() {
         },
       });
     } else {
-      const addUrl = "https://master-help-desk-back-end.vercel.app/guide/add";
+      const addUrl = "http://127.0.0.1:5000/guide/add";
       const token = localStorage.getItem("access_token");
       try {
         const response = await fetch(addUrl, {

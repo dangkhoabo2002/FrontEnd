@@ -29,7 +29,8 @@ export default function AdminAccountManagement() {
   const [open, setOpen] = React.useState(false);
 
   const handleGetCustomer = async () => {
-    const customerUrl = `https://master-help-desk-back-end.vercel.app/auth/get_all_profile`;
+    toast.loading("In processing...");
+    const customerUrl = `http://127.0.0.1:5000/auth/get_all_profile`;
     const token = localStorage.getItem("access_token");
 
     try {
@@ -44,9 +45,12 @@ export default function AdminAccountManagement() {
         },
       });
       if (response.status === 200) {
+        toast.dismiss();
+
         const customerData = await response.json();
         setCustomerList(customerData);
       } else if (response.status === 403) {
+        toast.dismiss();
         toast.error("Permission denied!", {
           style: {
             border: "1px solid #F85F60",
@@ -248,12 +252,8 @@ export default function AdminAccountManagement() {
                   </DialogContent>
                   <DialogActions>
                     <Button onClick={handleChangeStatusClose}>Cancel</Button>
-                    <Button
-                      onClick={handleChangeStatus}
-                      variant="contained"
-                      autoFocus
-                    >
-                      Confirm
+                    <Button onClick={handleChangeStatus}>
+                      <p className="text-red">Confirm</p>
                     </Button>
                   </DialogActions>
                 </Dialog>
@@ -266,7 +266,7 @@ export default function AdminAccountManagement() {
                   aria-describedby="alert-dialog-description"
                 >
                   <DialogTitle id="alert-dialog-title">
-                    {"Do you want to remove this guide ?"}
+                    {"Do you want to remove this member ?"}
                   </DialogTitle>
 
                   <DialogActions>

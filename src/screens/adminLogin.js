@@ -29,10 +29,12 @@ export default function AdminLogin() {
   };
 
   const handleManagerLogin = async () => {
+    toast.loading("In processing..");
     const { manager_username, manager_password } = data;
 
     // dont let usname pw null
     if (!manager_username || !manager_password) {
+      toast.dismiss();
       toast.error("Please enter your username & password!", {
         style: {
           border: "1px solid #F85F60",
@@ -45,8 +47,7 @@ export default function AdminLogin() {
       return;
     }
 
-    const loginUrl =
-      "https://master-help-desk-back-end.vercel.app/manager/login";
+    const loginUrl = "http://127.0.0.1:5000/manager/login";
 
     try {
       const response = await fetch(loginUrl, {
@@ -64,12 +65,14 @@ export default function AdminLogin() {
         }),
       });
       if (response.status === 200) {
+        toast.dismiss();
         const data = await response.json();
 
         localStorage.setItem("access_token", data.access_token);
         localStorage.setItem("checkAdmin", true);
         navigate("/admin");
       } else if (response.status === 401) {
+        toast.dismiss();
         toast.error("Incorrect username or password!", {
           style: {
             border: "1px solid #F85F60",
@@ -80,6 +83,7 @@ export default function AdminLogin() {
           },
         });
       } else {
+        toast.dismiss();
         toast.error("Something wrong, please try again later!", {
           style: {
             border: "1px solid #F85F60",

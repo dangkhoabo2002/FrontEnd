@@ -1230,17 +1230,13 @@ export default function TermOfService() {
             Don't hesitate to contact us if you have any questions.
           </p>
           <ul>
-            <li>
-              Via Email:{" "}
-              <a
-                href="/cdn-cgi/l/email-protection"
-                class="__cf_email__"
-                data-cfemail="295f4c5b404f5044414d1918694e44484045074a4644"
-              >
-                [email&#160;protected]
-              </a>
-            </li>
-          </ul>
+    <li>
+        <p style={{ marginRight: '5px' }}>Via Email:
+        <a href="mailto:mhd_support@gmail.com" className="ml-1" style={{color:"#3867A5"}} >mhd_support@gmail.com</a></p>
+    </li>
+</ul>
+
+
           <script
             data-cfasync="false"
             src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"

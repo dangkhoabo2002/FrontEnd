@@ -62,17 +62,8 @@ export default function Login() {
         },
       });
     } else {
-      toast.loading("In processing...", {
-        style: {
-          border: "1px solid #F85F60",
-          maxWidth: "900px",
-          padding: "16px 24px",
-          color: "red",
-          fontWeight: "bolder",
-        },
-      });
-      const loginUrl =
-        "https://master-help-desk-back-end.vercel.app/auth/login";
+      toast.loading("In processing...");
+      const loginUrl = "http://127.0.0.1:5000/auth/login";
       try {
         const response = await fetch(loginUrl, {
           method: "POST",

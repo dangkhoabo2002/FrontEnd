@@ -51,7 +51,8 @@ export default function AdminPackageManagement() {
 
   // GET PKG
   const handleGetPackage = async () => {
-    const packageUrl = `https://master-help-desk-back-end.vercel.app/package/get`;
+    toast.loading("In processing..");
+    const packageUrl = `http://127.0.0.1:5000/package/get`;
     const token = localStorage.getItem("access_token");
 
     try {
@@ -66,9 +67,11 @@ export default function AdminPackageManagement() {
         },
       });
       if (response.status === 200) {
+        toast.dismiss();
         const data = await response.json();
         setPackageData(data);
       } else {
+        toast.dismiss();
         console.error("Failed to fetch package data");
       }
     } catch (error) {
@@ -100,6 +103,7 @@ export default function AdminPackageManagement() {
 
       // Check if slot number is a positive integer
       if (!positiveIntegerRegex.test(packageAdd.slot_number)) {
+        toast.dismiss();
         toast.error("Slot number greater than 0 or at least 1.", {
           style: {
             border: "1px solid #F85F60",
@@ -114,6 +118,7 @@ export default function AdminPackageManagement() {
 
       // Check if slot server is a positive integer
       if (!positiveIntegerRegex.test(packageAdd.slot_server)) {
+        toast.dismiss();
         toast.error("Slot server greater than 0 or at least 1.", {
           style: {
             border: "1px solid #F85F60",
@@ -128,6 +133,7 @@ export default function AdminPackageManagement() {
 
       // Check if duration is a positive integer
       if (!positiveIntegerRegex.test(packageAdd.duration)) {
+        toast.dismiss();
         toast.error("Duration greater than 0 or at least 1.", {
           style: {
             border: "1px solid #F85F60",
@@ -142,6 +148,7 @@ export default function AdminPackageManagement() {
 
       // Check if price is a positive decimal with two decimal places
       if (!priceRegex.test(packageAdd.price)) {
+        toast.dismiss();
         toast.error(
           "Price must be a positive decimal with two decimal places!",
           {
@@ -158,7 +165,7 @@ export default function AdminPackageManagement() {
       }
       try {
         toast.loading("Adding new package...");
-        const customerUrl = `https://master-help-desk-back-end.vercel.app/package/add`;
+        const customerUrl = `http://127.0.0.1:5000/package/add`;
         const token = localStorage.getItem("access_token");
         const response = await fetch(customerUrl, {
           method: "POST",
@@ -251,7 +258,7 @@ export default function AdminPackageManagement() {
   };
 
   const handleDeleteRole = async () => {
-    const customerUrl = `https://master-help-desk-back-end.vercel.app/package/delete/${packageId_del}`;
+    const customerUrl = `http://127.0.0.1:5000/package/delete/${packageId_del}`;
     const token = localStorage.getItem("access_token");
 
     try {
@@ -351,7 +358,7 @@ export default function AdminPackageManagement() {
 
   const handleEditPackage = async () => {
     if (packageId_edit) {
-      const editUrl = `https://master-help-desk-back-end.vercel.app/package/update/${packageId_edit}`;
+      const editUrl = `http://127.0.0.1:5000/package/update/${packageId_edit}`;
       const token = localStorage.getItem("access_token");
 
       if (
@@ -485,7 +492,7 @@ export default function AdminPackageManagement() {
   const handleGetPackageInfo = async (package_id) => {
     if (package_id) {
       toast.loading("In processing...");
-      const editUrl = `https://master-help-desk-back-end.vercel.app/package/get/${package_id}`;
+      const editUrl = `http://127.0.0.1:5000/package/get/${package_id}`;
       const token = localStorage.getItem("access_token");
 
       try {
@@ -664,7 +671,7 @@ export default function AdminPackageManagement() {
                         <td>{pkg.package_name}</td>
                         <td>{pkg.price}đ</td>
                         <td>{pkg.description}</td>
-                        <td>{pkg.duration}</td>
+                        <td>{pkg.duration} days</td>
                         <td>{pkg.slot_number}</td>
                         <td>{pkg.slot_server}</td>
                         <td>

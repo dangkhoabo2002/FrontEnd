@@ -10,14 +10,15 @@ import chip from "../assets/chip.png";
 
 import "../css/userSubscribe.css";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export default function UserSubscribe() {
   // package
   const [packageData, setPackageData] = useState([]);
 
   const handlePackage = async () => {
-    const packageUrl =
-      "https://master-help-desk-back-end.vercel.app/package/get";
+    toast.loading("In processing..");
+    const packageUrl = "http://127.0.0.1:5000/package/get";
 
     try {
       const response = await fetch(packageUrl, {
@@ -29,9 +30,12 @@ export default function UserSubscribe() {
         },
       });
       if (response.status === 200) {
+        toast.dismiss();
         const data = await response.json();
         setPackageData(data);
       } else {
+        toast.dismiss();
+
         console.error("Failed to fetch package data");
       }
     } catch (error) {
