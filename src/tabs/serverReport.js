@@ -109,7 +109,7 @@ const ServerReport = () => {
 
   const handleGetLastLog = async () => {
     toast.loading("In processing...");
-    const url = `http://127.0.0.1:5000/server/report_log_syslog/${param.server_id}`;
+    const url = `http://127.0.0.1:5000/server/report_log_last/${param.server_id}`;
     const token = localStorage.getItem("access_token");
 
     try {
@@ -176,9 +176,81 @@ const ServerReport = () => {
     }
   };
 
+  // UFW LOG
+  const [ufwLog, setUfwLog] = useState();
+
+  const handleGetUfwLog = async () => {
+    toast.loading("In processing...");
+    const url = `http://127.0.0.1:5000/server/report_log_ufw/${param.server_id}`;
+    const token = localStorage.getItem("access_token");
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+      if (response.status === 200) {
+        toast.dismiss();
+        const data = await response.json();
+        setUfwLog(data);
+      } else if (response.status === 400) {
+        toast.dismiss();
+        toast.error("Missing server data!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 403) {
+        toast.dismiss();
+        toast.error("Permission denied!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 500) {
+        toast.dismiss();
+        toast.error("No data for server!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else {
+        toast.error("Fail to list system logging protocol!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
   useEffect(() => {
     handleGetSysLog();
     handleGetLastLog();
+    handleGetUfwLog();
   }, []);
   return (
     <>
@@ -213,68 +285,19 @@ const ServerReport = () => {
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleChange} aria-label="lab API tabs example">
-            <Tab label="System Logging Protocol" value="1" />
-            <Tab label="Uncomplicated Firewall " value="2" />
-            <Tab label="Last Log" value="3" />
+            <Tab label="SysLog" value="1" />
+            <Tab label="Last Log" value="2" />
+            <Tab label="UFW Log " value="3" />
           </TabList>
         </Box>
         <TabPanel value="1">
-          {/* <div
-            className="bg-[white] mt-4 rounded-md px-8 py-6  shadow-lg"
-            style={{ border: "1px solid #89A6CC" }}
-          >
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Time</th>
-                  <th>Host</th>
-                  <th>Log</th>
-                  <th>Type</th>
-                  <th>Detail</th>
-                </tr>
-              </thead>
-              <tbody>
-                {Logs.map((row) => (
-                  <tr key={row.date + row.time}>
-                    <td>{row.date}</td>
-                    <td>{row.time}</td>
-                    <td>{row.host}</td>
-                    <td>{row.log}</td>
-                    <td
-                      className="text-[#637381]"
-                      style={{
-                        backgroundColor:
-                          row.type === "Debug"
-                            ? "#DDDDDD"
-                            : row.type === "Info"
-                            ? "#B7FFB9"
-                            : row.type === "Warning"
-                            ? "#FCFF53"
-                            : row.type === "Error"
-                            ? "#FFC266"
-                            : row.type === "Critical"
-                            ? "#FF6868"
-                            : "",
-                      }}
-                    >
-                      {row.type}
-                    </td>
-                    <td>
-                      <Button onClick={() => handleRowClick(row)}>More</Button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div> */}
           <SystemLog sysLog={sysLog} />
         </TabPanel>
         <TabPanel value="2">
           <LastLog lastLog={lastLog} />
         </TabPanel>
         <TabPanel value="3">
-          <UfwLog />
+          <UfwLog ufwLog={ufwLog} />
         </TabPanel>
       </TabContext>
 
