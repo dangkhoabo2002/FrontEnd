@@ -20,7 +20,8 @@ export default function SubscriptionPackages() {
   const handleGetPackage = async () => {
     toast.loading("In processing..");
 
-    const packageUrl = "http://127.0.0.1:5000/package/get";
+    const packageUrl =
+      "https://master-help-desk-back-end.vercel.app/package/get";
 
     try {
       const response = await fetch(packageUrl, {
@@ -61,7 +62,8 @@ export default function SubscriptionPackages() {
   const handleSendPackage = async (amount) => {
     toast.loading("In processing..");
 
-    const packageUrl = "http://127.0.0.1:5000/billing/add_billing";
+    const packageUrl =
+      "https://master-help-desk-back-end.vercel.app/billing/add_billing";
     const token = localStorage.getItem("access_token");
     setShowButton(false);
     setTimeout(() => {

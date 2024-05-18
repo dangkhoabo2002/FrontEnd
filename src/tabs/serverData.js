@@ -45,7 +45,7 @@ export default function ServerData() {
     const formData = new FormData();
     formData.append("avatar", file);
 
-    const UPLOAD_ENDPOINT = `http://127.0.0.1:5000/server/upload_file/${param.server_id}`;
+    const UPLOAD_ENDPOINT = `https://master-help-desk-back-end.vercel.app/server/upload_file/${param.server_id}`;
     console.log(formData);
 
     try {

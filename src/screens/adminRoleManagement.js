@@ -21,7 +21,7 @@ export default function AdminRoleManagement() {
   const [roleData, setRoleData] = useState();
 
   const handleGetRole = async () => {
-    const customerUrl = `http://127.0.0.1:5000/role/get`;
+    const customerUrl = `https://master-help-desk-back-end.vercel.app/role/get`;
     const token = localStorage.getItem("access_token");
 
     try {
@@ -88,7 +88,7 @@ export default function AdminRoleManagement() {
   };
 
   const handleAddRole = async () => {
-    const customerUrl = `http://127.0.0.1:5000/role/add`;
+    const customerUrl = `https://master-help-desk-back-end.vercel.app/role/add`;
     const token = localStorage.getItem("access_token");
 
     if (newRole.role_name === "" || newRole.description === "") {
@@ -178,7 +178,7 @@ export default function AdminRoleManagement() {
   };
 
   const handleDeleteRole = async () => {
-    const customerUrl = `http://127.0.0.1:5000/role/delete/${roleId_del}`;
+    const customerUrl = `https://master-help-desk-back-end.vercel.app/role/delete/${roleId_del}`;
     const token = localStorage.getItem("access_token");
 
     try {
@@ -284,7 +284,7 @@ export default function AdminRoleManagement() {
       });
     } else {
       toast.loading("Updating...");
-      const customerUrl = `http://127.0.0.1:5000/role/update/${selectedRole}`;
+      const customerUrl = `https://master-help-desk-back-end.vercel.app/role/update/${selectedRole}`;
       const token = localStorage.getItem("access_token");
 
       try {

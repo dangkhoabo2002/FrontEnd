@@ -18,7 +18,8 @@ export default function UserSubscribe() {
 
   const handlePackage = async () => {
     toast.loading("In processing..");
-    const packageUrl = "http://127.0.0.1:5000/package/get";
+    const packageUrl =
+      "https://master-help-desk-back-end.vercel.app/package/get";
 
     try {
       const response = await fetch(packageUrl, {
