@@ -252,9 +252,7 @@ export default function AdminAccountManagement() {
                   </DialogContent>
                   <DialogActions>
                     <Button onClick={handleChangeStatusClose}>Cancel</Button>
-                    <Button
-                      onClick={handleChangeStatus}
-                    >
+                    <Button onClick={handleChangeStatus}>
                       <p className="text-red">Confirm</p>
                     </Button>
                   </DialogActions>

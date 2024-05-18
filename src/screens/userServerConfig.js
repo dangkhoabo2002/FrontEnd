@@ -44,10 +44,14 @@ export default function UserServerConfig() {
   // Get Server Data - GENERAL
   const handleGetServerData = async () => {
 <<<<<<< HEAD
+<<<<<<< HEAD
     toast.loading("In processing..");
     const getUrl = `https://master-help-desk-back-end.vercel.app/server/get_server_data/${server_id}`;
 =======
     const getUrl = `http://127.0.0.1:5000/server/get_server_data/${server_id}`;
+>>>>>>> mergeBranch
+=======
+    const getUrl = `https://master-help-desk-back-end.vercel.app/server/get_server_data/${server_id}`;
 >>>>>>> mergeBranch
     const token = localStorage.getItem("access_token");
 
@@ -118,10 +122,14 @@ export default function UserServerConfig() {
   const [data, setData] = useState();
   const handleGetServer = async () => {
 <<<<<<< HEAD
+<<<<<<< HEAD
     toast.loading("In processing..");
     const loginUrl = `https://master-help-desk-back-end.vercel.app/server/get_server_by_id/${server_id}`;
 =======
     const loginUrl = `http://127.0.0.1:5000/server/get_server_by_id/${server_id}`;
+>>>>>>> mergeBranch
+=======
+    const loginUrl = `https://master-help-desk-back-end.vercel.app/server/get_server_by_id/${server_id}`;
 >>>>>>> mergeBranch
     const token = localStorage.getItem("access_token");
 

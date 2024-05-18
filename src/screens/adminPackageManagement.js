@@ -492,10 +492,14 @@ export default function AdminPackageManagement() {
   const handleGetPackageInfo = async (package_id) => {
     if (package_id) {
 <<<<<<< HEAD
+<<<<<<< HEAD
       toast.loading("In processing...");
       const editUrl = `https://master-help-desk-back-end.vercel.app/package/get/${package_id}`;
 =======
       const editUrl = `http://127.0.0.1:5000/package/get/${package_id}`;
+>>>>>>> mergeBranch
+=======
+      const editUrl = `https://master-help-desk-back-end.vercel.app/package/get/${package_id}`;
 >>>>>>> mergeBranch
       const token = localStorage.getItem("access_token");
 

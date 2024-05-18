@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 const UPLOAD_ENDPOINT =
-  "http://127.0.0.1:5000/server/upload_file/zIXigWAZyWKLJPzLp0jJtMYIVdpn3JY_RbGAFsLsEI";
+  "https://master-help-desk-back-end.vercel.app/server/upload_file/zIXigWAZyWKLJPzLp0jJtMYIVdpn3JY_RbGAFsLsEI";
 
 function VendorRegistration() {
   const [file, setFile] = useState(null);
@@ -56,7 +56,7 @@ export default VendorRegistration;
 // import axios from "axios";
 
 // const UPLOAD_ENDPOINT =
-//   "http://127.0.0.1:5000/server/upload_file/zIXigWAZyWKLJPzLp0jJtMYIVdpn3JY_RbGAFsLsEI";
+//   "https://master-help-desk-back-end.vercel.app/server/upload_file/zIXigWAZyWKLJPzLp0jJtMYIVdpn3JY_RbGAFsLsEI";
 
 // function VendorRegistration() {
 //   const [file, setFile] = useState(null);

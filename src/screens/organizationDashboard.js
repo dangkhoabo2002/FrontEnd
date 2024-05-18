@@ -149,10 +149,14 @@ export default function OrganizationDashboard() {
   // GET MEMBER
   const handleGetMember = async () => {
 <<<<<<< HEAD
+<<<<<<< HEAD
     toast.loading("In processing..");
     const memberUrl = `https://master-help-desk-back-end.vercel.app/org/get_user_in_organization/${organization_id}`;
 =======
     const memberUrl = `http://127.0.0.1:5000/org/get_user_in_organization/${organization_id}`;
+>>>>>>> mergeBranch
+=======
+    const memberUrl = `https://master-help-desk-back-end.vercel.app/org/get_user_in_organization/${organization_id}`;
 >>>>>>> mergeBranch
     const token = localStorage.getItem("access_token");
 
@@ -232,10 +236,14 @@ export default function OrganizationDashboard() {
   const [numberMember, setNumberMember] = useState();
   const handleNumberMember = async () => {
 <<<<<<< HEAD
+<<<<<<< HEAD
     toast.loading("In processing..");
     const memberUrl = `https://master-help-desk-back-end.vercel.app/org/get_number_of_users/${organization_id}`;
 =======
     const memberUrl = `http://127.0.0.1:5000/org/get_number_of_users/${organization_id}`;
+>>>>>>> mergeBranch
+=======
+    const memberUrl = `https://master-help-desk-back-end.vercel.app/org/get_number_of_users/${organization_id}`;
 >>>>>>> mergeBranch
     const token = localStorage.getItem("access_token");
 
@@ -270,10 +278,14 @@ export default function OrganizationDashboard() {
   // GET information của Org từ API
   const handleGetOrgData = async () => {
 <<<<<<< HEAD
+<<<<<<< HEAD
     toast.loading("In processing..");
     const loginUrl = `https://master-help-desk-back-end.vercel.app/org/get_organization_data/${organization_id}`;
 =======
     const loginUrl = `http://127.0.0.1:5000/org/get_organization_data/${organization_id}`;
+>>>>>>> mergeBranch
+=======
+    const loginUrl = `https://master-help-desk-back-end.vercel.app/org/get_organization_data/${organization_id}`;
 >>>>>>> mergeBranch
     const token = localStorage.getItem("access_token");
     try {

@@ -39,9 +39,13 @@ const ServerReport = () => {
 
   const handleGetSysLog = async () => {
 <<<<<<< HEAD
+<<<<<<< HEAD
     const url = `https://master-help-desk-back-end.vercel.app/server/report_log_syslog/${param.server_id}`;
 =======
     const url = `http://127.0.0.1:5000/server/report_log_syslog/${param.server_id}`;
+>>>>>>> mergeBranch
+=======
+    const url = `https://master-help-desk-back-end.vercel.app/server/report_log_syslog/${param.server_id}`;
 >>>>>>> mergeBranch
     const token = localStorage.getItem("access_token");
 
@@ -79,9 +83,13 @@ const ServerReport = () => {
 
   const handleGetLastLog = async () => {
 <<<<<<< HEAD
+<<<<<<< HEAD
     const url = `https://master-help-desk-back-end.vercel.app/server/report_log_last/${param.server_id}`;
 =======
     const url = `http://127.0.0.1:5000/server/report_log_last/${param.server_id}`;
+>>>>>>> mergeBranch
+=======
+    const url = `https://master-help-desk-back-end.vercel.app/server/report_log_last/${param.server_id}`;
 >>>>>>> mergeBranch
     const token = localStorage.getItem("access_token");
 
@@ -119,9 +127,13 @@ const ServerReport = () => {
 
   const handleGetUfwLog = async () => {
 <<<<<<< HEAD
+<<<<<<< HEAD
     const url = `https://master-help-desk-back-end.vercel.app/server/report_log_ufw/${param.server_id}`;
 =======
     const url = `http://127.0.0.1:5000/server/report_log_ufw/${param.server_id}`;
+>>>>>>> mergeBranch
+=======
+    const url = `https://master-help-desk-back-end.vercel.app/server/report_log_ufw/${param.server_id}`;
 >>>>>>> mergeBranch
     const token = localStorage.getItem("access_token");
 
