@@ -43,7 +43,6 @@ export default function UserServerConfig() {
 
   // Get Server Data - GENERAL
   const handleGetServerData = async () => {
-    toast.loading("In processing..");
     const getUrl = `http://127.0.0.1:5000/server/get_server_data/${server_id}`;
     const token = localStorage.getItem("access_token");
 
@@ -58,11 +57,9 @@ export default function UserServerConfig() {
         },
       });
       if (response.status === 200) {
-        toast.dismiss();
         const server = await response.json();
         setServerData(server);
       } else if (response.status === 400) {
-        toast.dismiss();
         toast.error("Missing server information!", {
           style: {
             border: "1px solid #F85F60",
@@ -73,7 +70,6 @@ export default function UserServerConfig() {
           },
         });
       } else if (response.status === 403) {
-        toast.dismiss();
         toast.error("Permission denied!", {
           style: {
             border: "1px solid #F85F60",
@@ -84,7 +80,6 @@ export default function UserServerConfig() {
           },
         });
       } else if (response.status === 404) {
-        toast.dismiss();
         toast.error("Server not found!", {
           style: {
             border: "1px solid #F85F60",
@@ -95,7 +90,6 @@ export default function UserServerConfig() {
           },
         });
       } else {
-        toast.dismiss();
         toast.error("Something wrong, please try again later!", {
           style: {
             border: "1px solid #F85F60",
@@ -118,7 +112,6 @@ export default function UserServerConfig() {
   // GET SERVER BY ID
   const [data, setData] = useState();
   const handleGetServer = async () => {
-    toast.loading("In processing..");
     const loginUrl = `http://127.0.0.1:5000/server/get_server_by_id/${server_id}`;
     const token = localStorage.getItem("access_token");
 
@@ -134,11 +127,9 @@ export default function UserServerConfig() {
         },
       });
       if (response.status === 200) {
-        toast.dismiss();
         const data = await response.json();
         setData(data);
       } else if (response.status === 400) {
-        toast.dismiss();
         toast.error("Missing server information!", {
           style: {
             border: "1px solid #F85F60",
@@ -149,7 +140,6 @@ export default function UserServerConfig() {
           },
         });
       } else if (response.status === 403) {
-        toast.dismiss();
         toast.error("Permission denied!", {
           style: {
             border: "1px solid #F85F60",
@@ -160,7 +150,6 @@ export default function UserServerConfig() {
           },
         });
       } else if (response.status === 404) {
-        toast.dismiss();
         toast.error("Server not found!", {
           style: {
             border: "1px solid #F85F60",
@@ -171,7 +160,6 @@ export default function UserServerConfig() {
           },
         });
       } else {
-        toast.dismiss();
         toast.error("Something wrong, please try again later!", {
           style: {
             border: "1px solid #F85F60",

@@ -197,6 +197,7 @@ export default function ServerGeneral(serverId) {
   const { organization_id } = useParams();
   const navigate = useNavigate();
   const handleDeleteServer = async () => {
+    toast.loading("Deleting...");
     const getUrl = `http://127.0.0.1:5000/server/delete/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
@@ -210,6 +211,7 @@ export default function ServerGeneral(serverId) {
         },
       });
       if (response.status === 200) {
+        toast.dismiss();
         toast.success("Server deleted successfully.", {
           style: {
             border: "1px solid #37E030",
@@ -224,6 +226,7 @@ export default function ServerGeneral(serverId) {
           navigate(`/organizations/dashboard/${organization_id}`);
         }, 2000);
       } else if (response.status === 403) {
+        toast.dismiss();
         toast.error("Permission denied!", {
           style: {
             border: "1px solid #F85F60",
@@ -234,6 +237,8 @@ export default function ServerGeneral(serverId) {
           },
         });
       } else if (response.status === 500) {
+        toast.dismiss();
+
         toast.error("Failed to delete server!", {
           style: {
             border: "1px solid #F85F60",
@@ -244,6 +249,7 @@ export default function ServerGeneral(serverId) {
           },
         });
       } else {
+        toast.dismiss();
         toast.error("Something wrong, please try again later!", {
           style: {
             border: "1px solid #F85F60",
@@ -419,6 +425,7 @@ export default function ServerGeneral(serverId) {
         }
       );
     } else {
+      toast.loading("Adding new member...");
       const url = `http://127.0.0.1:5000/server/add_member`;
       const token = localStorage.getItem("access_token");
       try {
@@ -436,6 +443,7 @@ export default function ServerGeneral(serverId) {
           }),
         });
         if (response.status === 200) {
+          toast.dismiss();
           toast.success("New member successfully joined.", {
             style: {
               border: "1px solid #37E030",
@@ -449,6 +457,8 @@ export default function ServerGeneral(serverId) {
           setMemberInput("");
           setAddMember(false);
         } else if (response.status === 400) {
+          toast.dismiss();
+
           toast.error("This user does not exist!", {
             style: {
               border: "1px solid #F85F60",
@@ -459,6 +469,8 @@ export default function ServerGeneral(serverId) {
             },
           });
         } else if (response.status === 403) {
+          toast.dismiss();
+
           toast.error("Permission denied!", {
             style: {
               border: "1px solid #F85F60",
@@ -469,6 +481,8 @@ export default function ServerGeneral(serverId) {
             },
           });
         } else if (response.status === 500) {
+          toast.dismiss();
+
           toast.error("This user is already a member of server!", {
             style: {
               border: "1px solid #F85F60",
@@ -479,6 +493,8 @@ export default function ServerGeneral(serverId) {
             },
           });
         } else {
+          toast.dismiss();
+
           toast.error("Something wrong, please try again later!", {
             style: {
               border: "1px solid #F85F60",
@@ -528,6 +544,7 @@ export default function ServerGeneral(serverId) {
         },
       });
     } else {
+      toast.loading("Removing member...");
       const url = `http://127.0.0.1:5000/server/remove_member`;
       const token = localStorage.getItem("access_token");
       try {
@@ -545,6 +562,8 @@ export default function ServerGeneral(serverId) {
           }),
         });
         if (response.status === 200) {
+          toast.dismiss();
+
           toast.success("Member removed sucessfully.", {
             style: {
               border: "1px solid #37E030",
@@ -557,6 +576,8 @@ export default function ServerGeneral(serverId) {
           handleGetMember();
           setRemoveMem("");
         } else if (response.status === 400) {
+          toast.dismiss();
+
           toast.error("This user does not exist!", {
             style: {
               border: "1px solid #F85F60",
@@ -567,6 +588,8 @@ export default function ServerGeneral(serverId) {
             },
           });
         } else if (response.status === 403) {
+          toast.dismiss();
+
           toast.error("Permission denied!", {
             style: {
               border: "1px solid #F85F60",
@@ -577,6 +600,8 @@ export default function ServerGeneral(serverId) {
             },
           });
         } else if (response.status === 500) {
+          toast.dismiss();
+
           toast.error("This user is already a member of server!", {
             style: {
               border: "1px solid #F85F60",
@@ -587,6 +612,8 @@ export default function ServerGeneral(serverId) {
             },
           });
         } else {
+          toast.dismiss();
+
           toast.error("Something wrong, please try again later!", {
             style: {
               border: "1px solid #F85F60",
@@ -653,6 +680,7 @@ export default function ServerGeneral(serverId) {
   };
 
   const handleUpdateRsaAPI = async () => {
+    toast.loading("Updating...");
     const getUrl = `http://127.0.0.1:5000/server/update_rsa_key/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
@@ -669,6 +697,8 @@ export default function ServerGeneral(serverId) {
         }),
       });
       if (response.status === 200) {
+        toast.dismiss();
+
         toast.success("Server's RSA Key is updated successfully.", {
           style: {
             border: "1px solid #37E030",
@@ -680,6 +710,8 @@ export default function ServerGeneral(serverId) {
         });
         handleCloseCheckPassRsa();
       } else if (response.status === 400) {
+        toast.dismiss();
+
         const error = await response.json();
         if (error.message === "Server is not indentified yet!") {
           toast.error("Permission denied!", {
@@ -703,6 +735,8 @@ export default function ServerGeneral(serverId) {
           });
         }
       } else if (response.status === 403) {
+        toast.dismiss();
+
         toast.error("Permission denied!", {
           style: {
             border: "1px solid #F85F60",
@@ -713,6 +747,8 @@ export default function ServerGeneral(serverId) {
           },
         });
       } else if (response.status === 500) {
+        toast.dismiss();
+
         toast.error("Failed to update RSA Key!", {
           style: {
             border: "1px solid #F85F60",
@@ -723,6 +759,8 @@ export default function ServerGeneral(serverId) {
           },
         });
       } else {
+        toast.dismiss();
+
         toast.error("Something wrong, please try again later!", {
           style: {
             border: "1px solid #F85F60",

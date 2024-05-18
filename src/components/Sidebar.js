@@ -6,7 +6,7 @@ import ApartmentIcon from "@mui/icons-material/Apartment";
 import BookIcon from "@mui/icons-material/Book";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import SubscribeBtn from "./subscribeBtn";
-import toast from "react-hot-toast";
+import Skeleton from "@mui/material/Skeleton";
 
 export default function Sidebar() {
   const [selectedMenu, setSelectedMenu] = useState("organizations");
@@ -30,8 +30,6 @@ export default function Sidebar() {
   const [isSub, setIsSub] = useState();
 
   const handleGetSub = async () => {
-    toast.loading("In processing..");
-
     const editUrl = `http://127.0.0.1:5000/subscription/check_subscription_by_username`;
     const token = localStorage.getItem("access_token");
     try {
@@ -45,10 +43,8 @@ export default function Sidebar() {
         },
       });
       if (response.status === 200) {
-        toast.dismiss();
         setIsSub(false);
       } else {
-        toast.dismiss();
         setIsSub(true);
       }
     } catch (error) {
@@ -131,10 +127,19 @@ export default function Sidebar() {
             </section>
           </div>
         </Link>
-        {isSub && (
+
+        {isSub === "" ? (
           <div className="flex flex-row justify-center align-middle mt-40">
-            <SubscribeBtn />
+            <Skeleton variant="rounded" width={210} height={60} />
           </div>
+        ) : (
+          <>
+            {isSub && (
+              <div className="flex flex-row justify-center align-middle mt-40">
+                <SubscribeBtn />
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

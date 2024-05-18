@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { Routes, Route, useParams } from "react-router-dom";
+
 import {
   FormControl,
   FormControlLabel,
@@ -12,9 +14,14 @@ import UploadIcon from "@mui/icons-material/Upload";
 import DownloadIcon from "@mui/icons-material/Download";
 
 export default function ServerData() {
+  const [selectedOptionFolder, setSelectedOptionFolder] = useState("default");
   const [selectedOptionFile, setSelectedOptionFile] = useState("default");
 
-  const [selectedOptionFolder, setSelectedOptionFolder] = useState("default");
+  const param = useParams();
+
+  // FILE
+
+  const [pathFile, setPathFile] = useState();
 
   const handleDefaultChangeFile = (event) => {
     setSelectedOptionFile(event.target.value);
@@ -22,13 +29,48 @@ export default function ServerData() {
       setPathFile("");
     }
   };
-  const [pathFile, setPathFile] = useState();
 
-  const handlePathChangeFile = (event) => {
-    setPathFile(event.target.value);
-    console.log(event.target.value);
+  const [file, setFile] = useState(null);
+  const [status, setStatus] = useState("");
+
+  const handleSubmit = async (event) => {
+    setStatus(""); // Reset status
+    event.preventDefault();
+
+    if (!file) {
+      setStatus("Please select a file to upload.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("avatar", file);
+
+    const UPLOAD_ENDPOINT = `http://127.0.0.1:5000/server/upload_file/${param.server_id}`;
+    console.log(formData);
+
+    try {
+      const response = await fetch(UPLOAD_ENDPOINT, {
+        method: "POST",
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      });
+
+      const data = await response.json(); // Parse response as JSON
+
+      if (response.status === 200) {
+        setStatus("Thank you! File uploaded successfully.");
+      } else {
+        setStatus(`Error uploading file: ${data.message || "Unknown error"}`); // Handle potential error message from server
+      }
+    } catch (error) {
+      setStatus(`Error: ${error.message}`); // Handle fetch errors
+    } finally {
+    }
   };
 
+  // FOLDER
   const handleDefaultChangeFolder = (event) => {
     setSelectedOptionFolder(event.target.value);
     if (event.target.value === "default") {
@@ -40,6 +82,7 @@ export default function ServerData() {
 
   const handlePathChangeFolder = (event) => {
     setPathFolder(event.target.value);
+    console.log(event.target.value);
   };
 
   const CustomRadio = withStyles({
@@ -50,19 +93,6 @@ export default function ServerData() {
     },
     checked: {},
   })((props) => <Radio color="default" {...props} />);
-
-  const handleBrowseClick = async () => {
-    try {
-      const fileHandle = await window.showOpenFilePicker();
-      const file = await fileHandle[0].getFile();
-      setPathFile(file.name);
-      setPathFolder(file.name);
-      const formData = file.FormData();
-      console.log(formData);
-    } catch (error) {
-      console.error("Error accessing file:", error);
-    }
-  };
 
   return (
     <div>
@@ -99,44 +129,66 @@ export default function ServerData() {
             </RadioGroup>
           </FormControl>
           {selectedOptionFile === "path" && (
-            <div className="mb-2">
-              <TextField
+            <form onSubmit={handleSubmit}>
+              <div className="mb-2">
+                {/* <TextField
                 mt={1}
                 id="outlined-basic-file"
-                value={pathFile}
-                onChange={handlePathChangeFile}
+                value={serverFilePath}
+                onChange={handleInputFilePath}
                 size="small"
                 sx={{ width: "800px", backgroundColor: "white" }}
                 disabled={selectedOptionFile === "default"}
-              />
+              /> */}
+                <input
+                  type="file"
+                  onChange={(e) => setFile(e.target.files[0])}
+                />
 
-              <Button
-                startIcon={<UploadIcon />}
-                variant="contained"
-                onClick={handleBrowseClick}
-                style={{ marginLeft: "10px" }}
-                sx={{
-                  width: "120px",
-                  height: "auto",
-                  color: "white",
-                  bgcolor: "#3867A5",
-                  "&:hover": { bgcolor: "#264B7B" },
-                  fontSize: "14px",
-                  fontWeight: "normal",
-                  textTransform: "none",
-                }}
-              >
-                Browse
-              </Button>
-            </div>
+                <Button
+                  startIcon={<UploadIcon />}
+                  variant="contained"
+                  style={{ marginLeft: "10px" }}
+                  sx={{
+                    width: "120px",
+                    height: "auto",
+                    color: "white",
+                    bgcolor: "#3867A5",
+                    "&:hover": { bgcolor: "#264B7B" },
+                    fontSize: "14px",
+                    fontWeight: "normal",
+                    textTransform: "none",
+                  }}
+                >
+                  Browse
+                </Button>
+                <Button
+                  startIcon={<UploadIcon />}
+                  variant="contained"
+                  type="submit"
+                  style={{ marginLeft: "10px" }}
+                  sx={{
+                    width: "120px",
+                    height: "auto",
+                    color: "white",
+                    bgcolor: "#3867A5",
+                    "&:hover": { bgcolor: "#264B7B" },
+                    fontSize: "14px",
+                    fontWeight: "normal",
+                    textTransform: "none",
+                  }}
+                >
+                  Submit
+                </Button>
+              </div>
+            </form>
           )}
           {selectedOptionFile === "default" && (
             <div className="mb-2">
               <TextField
                 mt={1}
                 id="outlined-basic-file"
-                value={pathFile}
-                onChange={handlePathChangeFile}
+                value="C/root/folder/..."
                 size="small"
                 sx={{ width: "800px", backgroundColor: "white" }}
                 disabled={true}
@@ -188,7 +240,6 @@ export default function ServerData() {
               <Button
                 startIcon={<UploadIcon />}
                 variant="contained"
-                onClick={handleBrowseClick}
                 style={{ marginLeft: "10px" }}
                 sx={{
                   width: "120px",
@@ -238,7 +289,6 @@ export default function ServerData() {
           <Button
             startIcon={<DownloadIcon />}
             variant="contained"
-            onClick={handleBrowseClick}
             style={{ marginLeft: "10px" }}
             sx={{
               width: "120px",
@@ -271,7 +321,6 @@ export default function ServerData() {
           <Button
             startIcon={<DownloadIcon />}
             variant="contained"
-            onClick={handleBrowseClick}
             style={{ marginLeft: "10px" }}
             sx={{
               width: "120px",

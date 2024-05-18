@@ -20,6 +20,7 @@ import AdminGuide from "./screens/adminGuideManagement";
 import AdminPackage from "./screens/adminPackageManagement";
 import AdminRole from "./screens/adminRoleManagement";
 
+import Test from "./screens/test";
 import UserProfile from "./screens/userProfile";
 import UserSubscribe from "./screens/userSubscribe";
 import UserPayment from "./screens/userSubscribePayment";
@@ -57,6 +58,7 @@ export default function App() {
       <Routes>
         {/* Dashboard Unlogin */}
         <Route path="/" element={<Homepage />}></Route>
+        <Route path="/test" element={<Test />}></Route>
 
         {/* <Route path="/aboutUs" element={<AboutUs />}></Route> */}
         <Route path="/guide" element={checkLoggedIn() || <Guide />}></Route>

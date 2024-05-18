@@ -90,7 +90,6 @@ export default function AdminBillings() {
   };
 
   const handleGetBilling = async (idBill) => {
-    toast.loading("Loading data...");
     const editUrl = `http://127.0.0.1:5000/billing/get_billing_by_id/${idBill}`;
     const token = localStorage.getItem("access_token");
 

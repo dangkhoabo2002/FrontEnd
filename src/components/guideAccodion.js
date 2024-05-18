@@ -6,7 +6,6 @@ import toast from "react-hot-toast";
 
 export default function AccordionExpandIcon() {
   const handleGuide = async () => {
-    toast.loading("In processing..");
     const guideUrl = "http://127.0.0.1:5000/guide/get";
     const token = localStorage.getItem("access_token");
     try {
@@ -19,12 +18,18 @@ export default function AccordionExpandIcon() {
         },
       });
       if (response.status === 200) {
-        toast.dismiss();
         const data = await response.json();
         setData(data);
-      } else {
-        toast.dismiss();
-        throw new Error("Failed to fetch guide data");
+      } else if (response.status === 404) {
+        toast.error("Guide not found!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
     } catch (error) {
       setError(error.message);

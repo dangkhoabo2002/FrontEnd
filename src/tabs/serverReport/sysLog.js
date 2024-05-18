@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 import {
   Table,
   TableBody,
@@ -8,6 +9,7 @@ import {
   TableRow,
 } from "@mui/material";
 import { Pagination } from "@mui/material";
+import LinearProgress from "@mui/material/LinearProgress";
 
 export default function SysLog(rawSysLog) {
   const [page, setPage] = useState(0);
@@ -15,22 +17,21 @@ export default function SysLog(rawSysLog) {
 
   // HANDLE RAW DATA
   const [sysLog, setSysLog] = useState([]);
-  const dataNew = rawSysLog.sysLog?.lines;
-  const handleSysLog = () => {
-    setSysLog(
-      dataNew?.map((line) => {
-        const parts = line.split(" ");
-        const time = parts[0] + " " + parts[1];
-        const log = parts.slice(3).join(" ");
-        return { time, log };
-      })
-    );
-  };
 
   useEffect(() => {
-    handleSysLog();
-  }, []);
-  
+    if (rawSysLog?.sysLog?.lines) {
+      const dataNew = rawSysLog.sysLog.lines;
+      setSysLog(
+        dataNew.map((line) => {
+          const parts = line.split(" ");
+          const time = parts[0] + " " + parts[1] + " - " + parts[2];
+          const log = parts.slice(3).join(" ");
+          return { time, log };
+        })
+      );
+    }
+  }, [rawSysLog]);
+
   return (
     <div>
       <div
@@ -68,7 +69,7 @@ export default function SysLog(rawSysLog) {
             />
           </>
         )}
-        {!sysLog?.length && <p>Loading logs...</p>}
+        {!sysLog?.length && <LinearProgress />}
       </div>
     </div>
   );

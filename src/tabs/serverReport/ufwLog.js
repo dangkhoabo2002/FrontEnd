@@ -8,6 +8,7 @@ import {
   TableRow,
 } from "@mui/material";
 import { Pagination } from "@mui/material";
+import LinearProgress from "@mui/material/LinearProgress";
 
 export default function UfwLog(rawUfwLog) {
   const [page, setPage] = useState(0); // Page number (starts from 0)
@@ -30,8 +31,10 @@ export default function UfwLog(rawUfwLog) {
   };
 
   useEffect(() => {
-    handleSysLog();
-  }, []);
+    if (rawUfwLog) {
+      handleSysLog();
+    }
+  }, [dataNew]);
   return (
     <div>
       <div
@@ -73,7 +76,7 @@ export default function UfwLog(rawUfwLog) {
             />
           </>
         )}
-        {!ufwLog?.length && <p>Loading logs...</p>}
+        {!ufwLog?.length && <LinearProgress />}
       </div>
     </div>
   );
