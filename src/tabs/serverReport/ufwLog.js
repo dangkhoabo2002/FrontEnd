@@ -30,20 +30,11 @@ export default function UfwLog(rawUfwLog) {
     );
   };
 
-<<<<<<< HEAD
-  // useEffect(() => {
-  //   useInterval(() => {
-  //     handleSysLog();
-  //   }, 4000);
-  // }, []);
-
-=======
   useEffect(() => {
     if (rawUfwLog) {
       handleSysLog();
     }
   }, [dataNew]);
->>>>>>> mergeBranch
   return (
     <div>
       <div

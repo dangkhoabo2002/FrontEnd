@@ -197,16 +197,10 @@ export default function ServerGeneral(serverId) {
   const { organization_id } = useParams();
   const navigate = useNavigate();
   const handleDeleteServer = async () => {
-<<<<<<< HEAD
-    const getUrl = `https://master-help-desk-back-end.vercel.app/server/delete/${serverId.serverId}`;
-=======
+
     toast.loading("Deleting...");
-<<<<<<< HEAD
-    const getUrl = `http://127.0.0.1:5000/server/delete/${serverId.serverId}`;
->>>>>>> mergeBranch
-=======
+
     const getUrl = `https://master-help-desk-back-end.vercel.app/server/delete/${serverId.serverId}`;
->>>>>>> mergeBranch
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(getUrl, {
@@ -433,16 +427,9 @@ export default function ServerGeneral(serverId) {
         }
       );
     } else {
-<<<<<<< HEAD
       const url = `https://master-help-desk-back-end.vercel.app/server/add_member`;
-=======
       toast.loading("Adding new member...");
-<<<<<<< HEAD
-      const url = `http://127.0.0.1:5000/server/add_member`;
->>>>>>> mergeBranch
-=======
-      const url = `https://master-help-desk-back-end.vercel.app/server/add_member`;
->>>>>>> mergeBranch
+
       const token = localStorage.getItem("access_token");
       try {
         const response = await fetch(url, {
@@ -560,16 +547,9 @@ export default function ServerGeneral(serverId) {
         },
       });
     } else {
-<<<<<<< HEAD
       const url = `https://master-help-desk-back-end.vercel.app/server/remove_member`;
-=======
       toast.loading("Removing member...");
-<<<<<<< HEAD
-      const url = `http://127.0.0.1:5000/server/remove_member`;
->>>>>>> mergeBranch
-=======
-      const url = `https://master-help-desk-back-end.vercel.app/server/remove_member`;
->>>>>>> mergeBranch
+
       const token = localStorage.getItem("access_token");
       try {
         const response = await fetch(url, {
@@ -704,16 +684,9 @@ export default function ServerGeneral(serverId) {
   };
 
   const handleUpdateRsaAPI = async () => {
-<<<<<<< HEAD
     const getUrl = `https://master-help-desk-back-end.vercel.app/server/update_rsa_key/${serverId.serverId}`;
-=======
     toast.loading("Updating...");
-<<<<<<< HEAD
-    const getUrl = `http://127.0.0.1:5000/server/update_rsa_key/${serverId.serverId}`;
->>>>>>> mergeBranch
-=======
-    const getUrl = `https://master-help-desk-back-end.vercel.app/server/update_rsa_key/${serverId.serverId}`;
->>>>>>> mergeBranch
+
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(getUrl, {

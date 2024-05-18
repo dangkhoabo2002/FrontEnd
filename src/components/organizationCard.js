@@ -40,16 +40,8 @@ export default function OrganizationCard({ id, name, description }) {
 
   // GET information của Org từ API
   const handleGetOrgData = async () => {
-<<<<<<< HEAD
-<<<<<<< HEAD
     toast.loading("In processing..");
     const loginUrl = `https://master-help-desk-back-end.vercel.app/org/get_organization_data/${id}`;
-=======
-    const loginUrl = `http://127.0.0.1:5000/org/get_organization_data/${id}`;
->>>>>>> mergeBranch
-=======
-    const loginUrl = `https://master-help-desk-back-end.vercel.app/org/get_organization_data/${id}`;
->>>>>>> mergeBranch
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(loginUrl, {
@@ -124,17 +116,8 @@ export default function OrganizationCard({ id, name, description }) {
 
   // GET NUMBER OF SERVER IN ORG
   const handleGetNumberServer = async () => {
-<<<<<<< HEAD
-<<<<<<< HEAD
     toast.loading("In processing..");
-
     const getUrl = `https://master-help-desk-back-end.vercel.app/server/get_number_server/${id}`;
-=======
-    const getUrl = `http://127.0.0.1:5000/server/get_number_server/${id}`;
->>>>>>> mergeBranch
-=======
-    const getUrl = `https://master-help-desk-back-end.vercel.app/server/get_number_server/${id}`;
->>>>>>> mergeBranch
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(getUrl, {
@@ -158,17 +141,10 @@ export default function OrganizationCard({ id, name, description }) {
 
   // GET NUMBER OF MEMBER IN ORG
   const handleGetNumberMember = async () => {
-<<<<<<< HEAD
-<<<<<<< HEAD
     toast.loading("In processing..");
 
     const getUrl = `https://master-help-desk-back-end.vercel.app/org/get_number_of_users/${id}`;
-=======
-    const getUrl = `http://127.0.0.1:5000/org/get_number_of_users/${id}`;
->>>>>>> mergeBranch
-=======
-    const getUrl = `https://master-help-desk-back-end.vercel.app/org/get_number_of_users/${id}`;
->>>>>>> mergeBranch
+
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(getUrl, {
