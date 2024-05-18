@@ -119,7 +119,7 @@ export default function LandingPage() {
       if (data.name === "") {
         toast.error("Please fill necessary information!", {
           style: {
-            border: "1px solid #F85F60",
+            border: "1px solid #FF5733",
             maxWidth: "900px",
             padding: "16px 24px",
             color: "red",
@@ -131,7 +131,7 @@ export default function LandingPage() {
           "Organization name must be between 3 and 50 characters long!",
           {
             style: {
-              border: "1px solid #F85F60",
+              border: "1px solid #FF5733",
               maxWidth: "900px",
               padding: "16px 24px",
               color: "red",
@@ -142,7 +142,7 @@ export default function LandingPage() {
       } else if (!isValidPhoneNumber(data.contact_phone)) {
         toast.error("Please enter a valid phone number!", {
           style: {
-            border: "1px solid #F85F60",
+            border: "1px solid #FF5733",
             maxWidth: "900px",
             padding: "16px 24px",
             color: "red",
@@ -152,7 +152,7 @@ export default function LandingPage() {
       } else if (!isValidEmail(data.contact_email)) {
         toast.error("Please enter a valid email address!", {
           style: {
-            border: "1px solid #F85F60",
+            border: "1px solid #FF5733",
             maxWidth: "900px",
             padding: "16px 24px",
             color: "red",

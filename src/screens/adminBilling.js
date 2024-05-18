@@ -49,7 +49,7 @@ export default function AdminBillings() {
       } else if (response.status === 400) {
         toast.dismiss();
 
-        toast.error("Guide is not selected!", {
+        toast.error("Billing is not selected!", {
           style: {
             border: "1px solid #F85F60",
             maxWidth: "900px",
@@ -61,7 +61,7 @@ export default function AdminBillings() {
       } else if (response.status === 500) {
         toast.dismiss();
 
-        toast.error("Failed to update, please try again later!", {
+        toast.error("Failed to get billings, please try again later!", {
           style: {
             border: "1px solid #F85F60",
             maxWidth: "900px",

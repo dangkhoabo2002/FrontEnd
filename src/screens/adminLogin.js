@@ -37,7 +37,7 @@ export default function AdminLogin() {
       toast.dismiss();
       toast.error("Please enter your username & password!", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",

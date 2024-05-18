@@ -69,7 +69,7 @@ export default function OrganizationDashboard() {
     } else {
       toast.error("Maximum number of roles reached!", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",
@@ -446,7 +446,7 @@ export default function OrganizationDashboard() {
     ) {
       toast.error("Please fill all necessary fields!", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",
@@ -457,7 +457,7 @@ export default function OrganizationDashboard() {
       if (addSeverData.password === "" && addSeverData.rsa_key === "") {
         toast.error("Please enter server password or private key!", {
           style: {
-            border: "1px solid #F85F60",
+            border: "1px solid #FF5733",
             maxWidth: "900px",
             padding: "16px 24px",
             color: "red",
@@ -467,7 +467,7 @@ export default function OrganizationDashboard() {
       } else if (addSeverData.server_name.length > 50) {
         toast.error("Server name must be maximum 50 characters long!", {
           style: {
-            border: "1px solid #F85F60",
+            border: "1px solid #FF5733",
             maxWidth: "900px",
             padding: "16px 24px",
             color: "red",
@@ -526,7 +526,7 @@ export default function OrganizationDashboard() {
     if (data?.new_user === "") {
       toast.error("Please enter usename of participant!", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",
@@ -660,7 +660,7 @@ export default function OrganizationDashboard() {
     if (data.contact_email && !emailRegex.test(data.contact_email)) {
       toast.error("Invalid email!", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",
@@ -670,7 +670,7 @@ export default function OrganizationDashboard() {
     } else if (data.contact_phone && !phoneRegex.test(data.contact_phone)) {
       toast.error("Invalid phone number!", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",
@@ -1057,7 +1057,7 @@ export default function OrganizationDashboard() {
     } else if (checkPass === "") {
       toast.error("Incorrect password!", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",
