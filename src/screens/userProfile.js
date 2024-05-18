@@ -55,7 +55,7 @@ export default function UserProfile() {
     if (fullNameData.full_name === "") {
       toast.error("Fullname can not be empty!", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",
@@ -218,7 +218,7 @@ export default function UserProfile() {
     ) {
       toast.error("Not found account's email!", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",
@@ -291,7 +291,7 @@ export default function UserProfile() {
     if (otp === "") {
       toast.error("Please input the OTP!", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",
@@ -440,7 +440,7 @@ export default function UserProfile() {
     if (!password) {
       toast.error("Please enter your new password!", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",
@@ -450,7 +450,7 @@ export default function UserProfile() {
     } else if (!confirmPassword) {
       toast.error("Confirm password can not be empty", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",
@@ -712,7 +712,7 @@ export default function UserProfile() {
                   variant="contained"
                   sx={{ mt: 2, mr: 2 }}
                   style={{
-                    backgroundColor: "#F85F60",
+                    backgroundColor: "#FF5733",
                     width: "100px",
                     height: "40px",
                   }}
@@ -728,7 +728,7 @@ export default function UserProfile() {
           <Button
             onClick={handleCloseOtpDialog}
             style={{
-              color: "#F85F60",
+              color: "#FF5733",
               width: "100px",
               height: "40px",
             }}
@@ -793,7 +793,7 @@ export default function UserProfile() {
           <Button
             onClick={handleCloseChangePassword}
             style={{
-              color: "#F85F60",
+              color: "#FF5733",
               width: "100px",
               height: "40px",
             }}

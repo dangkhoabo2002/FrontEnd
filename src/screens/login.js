@@ -54,7 +54,7 @@ export default function Login() {
     if (data.username === "" || data.password === "") {
       toast.error("Please input your Username & Password!", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",

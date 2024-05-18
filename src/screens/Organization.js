@@ -52,8 +52,12 @@ export default function LandingPage() {
   const [orgList, setOrgList] = useState();
 
   const handleShowOrganization = async () => {
+<<<<<<< HEAD
     toast.loading("In processing..");
     const getUrl = "https://master-help-desk-back-end.vercel.app/org/get";
+=======
+    const getUrl = "http://127.0.0.1:5000/org/get";
+>>>>>>> mergeBranch
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(getUrl, {
@@ -70,6 +74,36 @@ export default function LandingPage() {
         toast.dismiss();
         const orgData = await response.json();
         setOrgList(orgData);
+      } else if (response.status === 403) {
+        toast.error("Permission denied!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 404) {
+        toast.error("Your organization's list is empty!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else {
+        toast.error("Something wrong, please try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
       }
     } catch {
     } finally {
@@ -78,8 +112,12 @@ export default function LandingPage() {
   const [isSub, setIsSub] = useState();
 
   const handleGetSub = async () => {
+<<<<<<< HEAD
     toast.loading("In processing..");
     const editUrl = `https://master-help-desk-back-end.vercel.app/subscription/check_subscription_by_username`;
+=======
+    const editUrl = `http://127.0.0.1:5000/subscription/check_subscription_by_username`;
+>>>>>>> mergeBranch
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(editUrl, {
@@ -92,7 +130,6 @@ export default function LandingPage() {
         },
       });
       if (response.status === 200) {
-        toast.dismiss();
         setIsSub(true);
       } else {
         setIsSub(false);
@@ -119,7 +156,7 @@ export default function LandingPage() {
       if (data.name === "") {
         toast.error("Please fill necessary information!", {
           style: {
-            border: "1px solid #F85F60",
+            border: "1px solid #FF5733",
             maxWidth: "900px",
             padding: "16px 24px",
             color: "red",
@@ -131,7 +168,7 @@ export default function LandingPage() {
           "Organization name must be between 3 and 50 characters long!",
           {
             style: {
-              border: "1px solid #F85F60",
+              border: "1px solid #FF5733",
               maxWidth: "900px",
               padding: "16px 24px",
               color: "red",
@@ -142,7 +179,7 @@ export default function LandingPage() {
       } else if (!isValidPhoneNumber(data.contact_phone)) {
         toast.error("Please enter a valid phone number!", {
           style: {
-            border: "1px solid #F85F60",
+            border: "1px solid #FF5733",
             maxWidth: "900px",
             padding: "16px 24px",
             color: "red",
@@ -152,7 +189,7 @@ export default function LandingPage() {
       } else if (!isValidEmail(data.contact_email)) {
         toast.error("Please enter a valid email address!", {
           style: {
-            border: "1px solid #F85F60",
+            border: "1px solid #FF5733",
             maxWidth: "900px",
             padding: "16px 24px",
             color: "red",

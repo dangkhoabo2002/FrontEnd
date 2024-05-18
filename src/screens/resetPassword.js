@@ -23,7 +23,7 @@ export default function ResetPassword() {
     if (!password) {
       toast.error("Please enter your new password!", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",
@@ -33,7 +33,7 @@ export default function ResetPassword() {
     } else if (!confirmPassword) {
       toast.error("Confirm password can not be empty", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",
@@ -53,7 +53,7 @@ export default function ResetPassword() {
     } else {
       toast.error("The password does not match!", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",

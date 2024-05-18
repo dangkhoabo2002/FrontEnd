@@ -207,7 +207,7 @@ export default function AdminGuide() {
             },
           });
         } else if (response.status === 500) {
-          toast.error("Failed to update, please try again later!", {
+          toast.error("Failed to add guide, please try again later!", {
             style: {
               border: "1px solid #F85F60",
               maxWidth: "900px",

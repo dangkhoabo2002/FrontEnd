@@ -38,7 +38,7 @@ export default function ServerDocker(serverId) {
     if (dockerProject.docker_file === "" || dockerProject.image_tag === "") {
       toast.error("Please fill all necessary fields to build!", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",
@@ -67,6 +67,7 @@ export default function ServerDocker(serverId) {
         });
         if (response.status === 200) {
           toast.dismiss();
+
           toast.success("Build dockerfile successfully.", {
             style: {
               border: "1px solid #37E030",
@@ -122,7 +123,7 @@ export default function ServerDocker(serverId) {
     if (dockerProject.compose_yaml === "") {
       toast.error("Please enter url of docker-compose.yml !", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",
@@ -200,7 +201,7 @@ export default function ServerDocker(serverId) {
     if (dockerProject.compose_yaml === "") {
       toast.error("Please enter url of docker-compose.yml !", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",
@@ -422,6 +423,7 @@ export default function ServerDocker(serverId) {
 
   const handleRowClickImage = (row) => {
     setSelectImage(row.row);
+    console.log(row);
   };
 
   const handleContainerActionAPI = async (actionName) => {
@@ -432,7 +434,7 @@ export default function ServerDocker(serverId) {
     ) {
       toast.error("Please choose your container first!", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",
@@ -446,7 +448,7 @@ export default function ServerDocker(serverId) {
     ) {
       toast.error("Missing action!", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",
@@ -538,7 +540,7 @@ export default function ServerDocker(serverId) {
     if (addContainer.image === "") {
       toast.error("Image's field can not be empty!", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",
@@ -548,7 +550,7 @@ export default function ServerDocker(serverId) {
     } else if (addContainer.container_name === "") {
       toast.error("Container name can not be empty!", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",
@@ -654,17 +656,6 @@ export default function ServerDocker(serverId) {
   }, []);
 
   // CSS POP UP
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 600,
-    bgcolor: "background.paper",
-    borderRadius: "20px",
-    boxShadow: 24,
-    p: 3,
-  };
 
   return (
     <div className="flex flex-col gap-12">
@@ -789,39 +780,52 @@ export default function ServerDocker(serverId) {
             <LinearProgress />
           </div>
         )}
-        <div className="flex flex-row gap-4 pb-4">
-          <Button
-            variant="contained"
-            onClick={handleOpenCreateContainer}
-            sx={{
-              width: "120px",
-              height: "auto",
-              color: "white",
-              bgcolor: "#3867A5",
-              "&:hover": { bgcolor: "#264B7B" },
-              fontSize: "14px",
-              fontWeight: "normal",
-              textTransform: "none",
-            }}
-          >
-            Create
-          </Button>
-          <Button
-            variant="contained"
-            onClick={handleGetImagesAPI}
-            sx={{
-              width: "120px",
-              height: "auto",
-              color: "white",
-              bgcolor: "#3867A5",
-              "&:hover": { bgcolor: "#264B7B" },
-              fontSize: "14px",
-              fontWeight: "normal",
-              textTransform: "none",
-            }}
-          >
-            Refresh
-          </Button>
+        <div className="flex flex-row pb-4 justify-between">
+          <div className="flex flex-row gap-4">
+            <Button
+              variant="contained"
+              onClick={handleOpenCreateContainer}
+              sx={{
+                width: "120px",
+                height: "auto",
+                color: "white",
+                bgcolor: "#3867A5",
+                "&:hover": { bgcolor: "#264B7B" },
+                fontSize: "14px",
+                fontWeight: "normal",
+                textTransform: "none",
+              }}
+            >
+              Create
+            </Button>
+            <Button
+              variant="contained"
+              onClick={handleGetImagesAPI}
+              sx={{
+                width: "120px",
+                height: "auto",
+                color: "white",
+                bgcolor: "#3867A5",
+                "&:hover": { bgcolor: "#264B7B" },
+                fontSize: "14px",
+                fontWeight: "normal",
+                textTransform: "none",
+              }}
+            >
+              Images
+            </Button>
+          </div>
+
+          <div className="flex flex-row pb-4 items-center">
+            {selectImage && (
+              <>
+                <p className="text-center px-2">Selected Images:</p>
+                <p className="font-bold text-center px-2">
+                  {selectImage?.repository}
+                </p>
+              </>
+            )}
+          </div>
         </div>
         <div
           style={{ height: 400, border: "1px solid #89A6CC" }}
@@ -986,10 +990,7 @@ export default function ServerDocker(serverId) {
             </Grid>
             <Grid item xs={12} md={9}>
               <FormControl fullWidth variant="outlined">
-                <OutlinedInput
-                  value={addContainer.image}
-                  onChange={handleChangeInputAddContainer("image")}
-                />
+                <OutlinedInput value={selectImage} />
               </FormControl>
             </Grid>
           </Grid>
@@ -1037,3 +1038,15 @@ export default function ServerDocker(serverId) {
     </div>
   );
 }
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 600,
+  bgcolor: "background.paper",
+  borderRadius: "20px",
+  boxShadow: 24,
+  p: 3,
+};

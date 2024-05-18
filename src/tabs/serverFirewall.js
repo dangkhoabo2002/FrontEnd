@@ -40,7 +40,7 @@ export default function ServerFirewall(serverId) {
     if (firewallLevel === "") {
       toast.error("Choose security level before update!", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",

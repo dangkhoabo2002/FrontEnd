@@ -94,7 +94,7 @@ export default function AdminRoleManagement() {
     if (newRole.role_name === "" || newRole.description === "") {
       toast.error("Please enter all fields!", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",
@@ -265,7 +265,7 @@ export default function AdminRoleManagement() {
     if (editRole.role_name === "" || editRole.role_name === "") {
       toast.error("Please enter all fields!", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",
@@ -275,7 +275,7 @@ export default function AdminRoleManagement() {
     } else if (selectedRole === "") {
       toast.error("Role is not selected!", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",
@@ -317,7 +317,7 @@ export default function AdminRoleManagement() {
           clickCloseEdit();
         } else if (response.status === 500) {
           toast.dismiss();
-          toast.error("Failed to add role!", {
+          toast.error("Failed to update role!", {
             style: {
               border: "1px solid #F85F60",
               maxWidth: "900px",

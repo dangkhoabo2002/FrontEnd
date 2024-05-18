@@ -40,8 +40,12 @@ export default function OrganizationCard({ id, name, description }) {
 
   // GET information của Org từ API
   const handleGetOrgData = async () => {
+<<<<<<< HEAD
     toast.loading("In processing..");
     const loginUrl = `https://master-help-desk-back-end.vercel.app/org/get_organization_data/${id}`;
+=======
+    const loginUrl = `http://127.0.0.1:5000/org/get_organization_data/${id}`;
+>>>>>>> mergeBranch
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(loginUrl, {
@@ -58,7 +62,6 @@ export default function OrganizationCard({ id, name, description }) {
         const orgData = await response.json();
         setOrganizations(orgData);
       } else if (response.status === 400) {
-        toast.dismiss();
         toast.error("Unindentified organization, please Login again!", {
           style: {
             border: "1px solid #F85F60",
@@ -69,7 +72,6 @@ export default function OrganizationCard({ id, name, description }) {
           },
         });
       } else if (response.status === 403) {
-        toast.dismiss();
         toast.error("Permission denied!", {
           style: {
             border: "1px solid #F85F60",
@@ -80,7 +82,6 @@ export default function OrganizationCard({ id, name, description }) {
           },
         });
       } else if (response.status === 404) {
-        toast.dismiss();
         toast.error("Organization not found!", {
           style: {
             border: "1px solid #F85F60",
@@ -91,7 +92,6 @@ export default function OrganizationCard({ id, name, description }) {
           },
         });
       } else if (response.status === 500) {
-        toast.dismiss();
         toast.error("Fail to get organization data!", {
           style: {
             border: "1px solid #F85F60",
@@ -102,7 +102,6 @@ export default function OrganizationCard({ id, name, description }) {
           },
         });
       } else {
-        toast.dismiss();
         toast.error("Something wrong, please try again later!", {
           style: {
             border: "1px solid #F85F60",
@@ -121,9 +120,13 @@ export default function OrganizationCard({ id, name, description }) {
 
   // GET NUMBER OF SERVER IN ORG
   const handleGetNumberServer = async () => {
+<<<<<<< HEAD
     toast.loading("In processing..");
 
     const getUrl = `https://master-help-desk-back-end.vercel.app/server/get_number_server/${id}`;
+=======
+    const getUrl = `http://127.0.0.1:5000/server/get_number_server/${id}`;
+>>>>>>> mergeBranch
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(getUrl, {
@@ -137,7 +140,6 @@ export default function OrganizationCard({ id, name, description }) {
         },
       });
       if (response.status === 200) {
-        toast.dismiss();
         const numServer = await response.json();
         setServerCount(numServer);
       }
@@ -148,9 +150,13 @@ export default function OrganizationCard({ id, name, description }) {
 
   // GET NUMBER OF MEMBER IN ORG
   const handleGetNumberMember = async () => {
+<<<<<<< HEAD
     toast.loading("In processing..");
 
     const getUrl = `https://master-help-desk-back-end.vercel.app/org/get_number_of_users/${id}`;
+=======
+    const getUrl = `http://127.0.0.1:5000/org/get_number_of_users/${id}`;
+>>>>>>> mergeBranch
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(getUrl, {
@@ -164,11 +170,9 @@ export default function OrganizationCard({ id, name, description }) {
         },
       });
       if (response.status === 200) {
-        toast.dismiss();
         const numMember = await response.json();
         setMemberCount(numMember);
       } else if (response.status === 403) {
-        toast.dismiss();
         toast.error("Permission denied!", {
           style: {
             border: "1px solid #F85F60",

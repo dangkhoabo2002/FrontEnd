@@ -88,9 +88,9 @@ export default function AdminPackageManagement() {
       packageAdd.slot_number === "" ||
       packageAdd.slot_server === ""
     ) {
-      toast.error("Please enter all fields!", {
+      toast.error(" ", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",
@@ -106,7 +106,7 @@ export default function AdminPackageManagement() {
         toast.dismiss();
         toast.error("Slot number greater than 0 or at least 1.", {
           style: {
-            border: "1px solid #F85F60",
+            border: "1px solid #FF5733",
             maxWidth: "900px",
             padding: "16px 24px",
             color: "red",
@@ -121,7 +121,7 @@ export default function AdminPackageManagement() {
         toast.dismiss();
         toast.error("Slot server greater than 0 or at least 1.", {
           style: {
-            border: "1px solid #F85F60",
+            border: "1px solid #FF5733",
             maxWidth: "900px",
             padding: "16px 24px",
             color: "red",
@@ -136,7 +136,7 @@ export default function AdminPackageManagement() {
         toast.dismiss();
         toast.error("Duration greater than 0 or at least 1.", {
           style: {
-            border: "1px solid #F85F60",
+            border: "1px solid #FF5733",
             maxWidth: "900px",
             padding: "16px 24px",
             color: "red",
@@ -153,7 +153,7 @@ export default function AdminPackageManagement() {
           "Price must be a positive decimal with two decimal places!",
           {
             style: {
-              border: "1px solid #F85F60",
+              border: "1px solid #FF5733",
               maxWidth: "900px",
               padding: "16px 24px",
               color: "red",
@@ -214,7 +214,7 @@ export default function AdminPackageManagement() {
         } else if (response.status === 400) {
           toast.dismiss();
 
-          toast.error("Missing name or description!", {
+          toast.error("Informations Missing", {
             style: {
               border: "1px solid #F85F60",
               maxWidth: "900px",
@@ -371,7 +371,7 @@ export default function AdminPackageManagement() {
       ) {
         toast.error("You need to input all fields to continue!", {
           style: {
-            border: "1px solid #F85F60",
+            border: "1px solid #FF5733",
             maxWidth: "900px",
             padding: "16px 24px",
             color: "red",
@@ -491,8 +491,12 @@ export default function AdminPackageManagement() {
 
   const handleGetPackageInfo = async (package_id) => {
     if (package_id) {
+<<<<<<< HEAD
       toast.loading("In processing...");
       const editUrl = `https://master-help-desk-back-end.vercel.app/package/get/${package_id}`;
+=======
+      const editUrl = `http://127.0.0.1:5000/package/get/${package_id}`;
+>>>>>>> mergeBranch
       const token = localStorage.getItem("access_token");
 
       try {
@@ -543,7 +547,7 @@ export default function AdminPackageManagement() {
         } else if (response.status === 500) {
           toast.dismiss();
 
-          toast.error("Failed to update package!", {
+          toast.error("Failed to get package!", {
             style: {
               border: "1px solid #F85F60",
               maxWidth: "900px",

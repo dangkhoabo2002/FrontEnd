@@ -8,26 +8,16 @@ import {
   TableRow,
 } from "@mui/material";
 import { Pagination } from "@mui/material";
-import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import MuiAccordion from "@mui/material/Accordion";
 import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
-import Typography from "@mui/material/Typography";
+import LinearProgress from "@mui/material/LinearProgress";
 
 export default function LastLog(rawLastLog) {
   const [page, setPage] = useState(0); // Page number (starts from 0)
   const rowsPerPage = 10; // Number of rows per page
-
-  const columns = [
-    {
-      field: "time",
-      headerName: "Date",
-      width: 200,
-    },
-    { field: "log", headerName: "Log", width: 2000, flex: 1 },
-  ];
 
   // HANDLE RAW DATA
   const [lastLog, setLastLog] = useState([]);
@@ -44,6 +34,15 @@ export default function LastLog(rawLastLog) {
     setExpanded(newExpanded ? panel : false);
   };
 
+  useEffect(() => {
+    if (dataNew) {
+      setLastLog(
+        dataNew.map((line) => {
+          return { log: line };
+        })
+      );
+    }
+  }, [dataNew]);
   return (
     <div>
       <div
@@ -89,7 +88,7 @@ export default function LastLog(rawLastLog) {
             />
           </>
         )}
-        {!dataNew?.length && <p>Loading logs...</p>}
+        {!dataNew?.length && <LinearProgress />}
       </div>
 
       {/* <Modal

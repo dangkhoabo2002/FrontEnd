@@ -50,7 +50,7 @@ export default function AdminBillings() {
       } else if (response.status === 400) {
         toast.dismiss();
 
-        toast.error("Guide is not selected!", {
+        toast.error("Billing is not selected!", {
           style: {
             border: "1px solid #F85F60",
             maxWidth: "900px",
@@ -62,7 +62,7 @@ export default function AdminBillings() {
       } else if (response.status === 500) {
         toast.dismiss();
 
-        toast.error("Failed to update, please try again later!", {
+        toast.error("Failed to get billings, please try again later!", {
           style: {
             border: "1px solid #F85F60",
             maxWidth: "900px",
@@ -91,8 +91,12 @@ export default function AdminBillings() {
   };
 
   const handleGetBilling = async (idBill) => {
+<<<<<<< HEAD
     toast.loading("Loading data...");
     const editUrl = `https://master-help-desk-back-end.vercel.app/billing/get_billing_by_id/${idBill}`;
+=======
+    const editUrl = `http://127.0.0.1:5000/billing/get_billing_by_id/${idBill}`;
+>>>>>>> mergeBranch
     const token = localStorage.getItem("access_token");
 
     try {

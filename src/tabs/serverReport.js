@@ -13,7 +13,10 @@ import LastLog from "./serverReport/lastLog";
 import SystemLog from "./serverReport/sysLog";
 import UfwLog from "./serverReport/ufwLog";
 import { useParams } from "react-router-dom";
+<<<<<<< HEAD
 import LinearProgress from "@mui/material/LinearProgress";
+=======
+>>>>>>> mergeBranch
 
 const ServerReport = () => {
   const [open, setOpen] = useState(false);
@@ -35,7 +38,11 @@ const ServerReport = () => {
   const [sysLog, setSysLog] = useState();
 
   const handleGetSysLog = async () => {
+<<<<<<< HEAD
     const url = `https://master-help-desk-back-end.vercel.app/server/report_log_syslog/${param.server_id}`;
+=======
+    const url = `http://127.0.0.1:5000/server/report_log_syslog/${param.server_id}`;
+>>>>>>> mergeBranch
     const token = localStorage.getItem("access_token");
 
     try {
@@ -71,7 +78,11 @@ const ServerReport = () => {
   const [lastLog, setLastLog] = useState();
 
   const handleGetLastLog = async () => {
+<<<<<<< HEAD
     const url = `https://master-help-desk-back-end.vercel.app/server/report_log_last/${param.server_id}`;
+=======
+    const url = `http://127.0.0.1:5000/server/report_log_last/${param.server_id}`;
+>>>>>>> mergeBranch
     const token = localStorage.getItem("access_token");
 
     try {
@@ -107,7 +118,11 @@ const ServerReport = () => {
   const [ufwLog, setUfwLog] = useState();
 
   const handleGetUfwLog = async () => {
+<<<<<<< HEAD
     const url = `https://master-help-desk-back-end.vercel.app/server/report_log_ufw/${param.server_id}`;
+=======
+    const url = `http://127.0.0.1:5000/server/report_log_ufw/${param.server_id}`;
+>>>>>>> mergeBranch
     const token = localStorage.getItem("access_token");
 
     try {

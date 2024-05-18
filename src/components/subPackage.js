@@ -70,7 +70,6 @@ export default function SubscriptionPackages() {
       setShowButton(true);
     }, 8000);
 
-    toast.loading("In processing...");
     try {
       const response = await fetch(packageUrl, {
         method: "POST",
