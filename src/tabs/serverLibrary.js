@@ -52,7 +52,7 @@ export default function ServerLibrary(serverId) {
       } else if (response.status === 400) {
         toast.error("Missing server information!", {
           style: {
-            border: "1px solid #F85F60",
+            border: "1px solid #FF5733",
             maxWidth: "900px",
             padding: "16px 24px",
             color: "red",
@@ -62,7 +62,7 @@ export default function ServerLibrary(serverId) {
       } else if (response.status === 403) {
         toast.error("Permission denied!", {
           style: {
-            border: "1px solid #F85F60",
+            border: "1px solid #FF5733",
             maxWidth: "900px",
             padding: "16px 24px",
             color: "red",
@@ -72,7 +72,7 @@ export default function ServerLibrary(serverId) {
       } else if (response.status === 500) {
         toast.error("No data for server!", {
           style: {
-            border: "1px solid #F85F60",
+            border: "1px solid #FF5733",
             maxWidth: "900px",
             padding: "16px 24px",
             color: "red",
@@ -82,7 +82,7 @@ export default function ServerLibrary(serverId) {
       } else {
         toast.error("Something wrong, please try again later!", {
           style: {
-            border: "1px solid #F85F60",
+            border: "1px solid #FF5733",
             maxWidth: "900px",
             padding: "16px 24px",
             color: "red",

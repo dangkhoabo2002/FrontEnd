@@ -416,7 +416,7 @@ export default function ServerGeneral(serverId) {
         "Please enter the username of the member you want to add first!",
         {
           style: {
-            border: "1px solid #F85F60",
+            border: "1px solid #FF5733",
             maxWidth: "900px",
             padding: "16px 24px",
             color: "red",
@@ -536,7 +536,7 @@ export default function ServerGeneral(serverId) {
     if (removeMem === "") {
       toast.error("Please choose the member to delete!", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",
@@ -616,7 +616,7 @@ export default function ServerGeneral(serverId) {
 
           toast.error("Something wrong, please try again later!", {
             style: {
-              border: "1px solid #F85F60",
+              border: "1px solid #FF5733",
               maxWidth: "900px",
               padding: "16px 24px",
               color: "red",

@@ -38,7 +38,7 @@ export default function ServerDocker(serverId) {
     if (dockerProject.docker_file === "" || dockerProject.image_tag === "") {
       toast.error("Please fill all necessary fields to build!", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",
@@ -123,7 +123,7 @@ export default function ServerDocker(serverId) {
     if (dockerProject.compose_yaml === "") {
       toast.error("Please enter url of docker-compose.yml !", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",
@@ -201,7 +201,7 @@ export default function ServerDocker(serverId) {
     if (dockerProject.compose_yaml === "") {
       toast.error("Please enter url of docker-compose.yml !", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",
@@ -434,7 +434,7 @@ export default function ServerDocker(serverId) {
     ) {
       toast.error("Please choose your container first!", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",
@@ -448,7 +448,7 @@ export default function ServerDocker(serverId) {
     ) {
       toast.error("Missing action!", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",
@@ -540,7 +540,7 @@ export default function ServerDocker(serverId) {
     if (addContainer.image === "") {
       toast.error("Image's field can not be empty!", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",
@@ -550,7 +550,7 @@ export default function ServerDocker(serverId) {
     } else if (addContainer.container_name === "") {
       toast.error("Container name can not be empty!", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",

@@ -52,7 +52,7 @@ export default function ServerProxy(serverId) {
     if (addProxyData.detail === "" || addProxyData.protocol === "") {
       toast.error("Please enter proxy information first!", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",
@@ -218,7 +218,7 @@ export default function ServerProxy(serverId) {
     if (editProxyData.new_port === "" || editProxyData.new_domain === "") {
       toast.error("The field can not be empty!", {
         style: {
-          border: "1px solid #F85F60",
+          border: "1px solid #FF5733",
           maxWidth: "900px",
           padding: "16px 24px",
           color: "red",
