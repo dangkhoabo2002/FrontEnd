@@ -144,7 +144,7 @@ const ServerReport = () => {
           Review your server history within the last 3 days.
         </h1></div>
 
-          <div className="flex align-items-center">
+          <div className="flex" style={{alignItems:"center"}}>
             <Button
               startIcon={<DownloadIcon />}
               variant="contained"
