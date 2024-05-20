@@ -136,11 +136,15 @@ const ServerReport = () => {
     <>
       <div className="">
         <div className="flex flex-row justify-between">
+          <div className="flex flex-col">
           <div className="info-title font-semibold mb-3 ">
             <p>Access History</p>
           </div>
+          <h1 className="mb-3">
+          Review your server history within the last 3 days.
+        </h1></div>
 
-          <div>
+          <div className="flex align-items-center">
             <Button
               startIcon={<DownloadIcon />}
               variant="contained"
@@ -198,9 +202,7 @@ const ServerReport = () => {
             </Menu>
           </div>
         </div>
-        <h1 className="mb-3">
-          Review your server history within the last 3 days.
-        </h1>
+
       </div>
       <TabContext value={value}>
         <Box>
