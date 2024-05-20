@@ -46,9 +46,9 @@ export default function LastLog(rawLastLog) {
   return (
     <div>
       <div
-        style={{ height: "auto", border: "1px solid #89A6CC" }}
+        style={{ height: "auto", borderRadius: "0 0 4px 4px",}}
         a
-        className="bg-[white] rounded-md shadow-lg"
+        className="bg-[white] shadow-lg"
       >
         {dataNew?.length > 0 && (
           <>

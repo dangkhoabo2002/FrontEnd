@@ -42,7 +42,7 @@ export default function AdminRoleManagement() {
       } else {
         toast.error("Something wrong, please try again later!", {
           style: {
-            border: "1px solid #F85F60",
+            border: "1px solid #F85F60",  
             maxWidth: "900px",
             padding: "16px 24px",
             color: "red",
