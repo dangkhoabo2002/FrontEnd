@@ -25,12 +25,12 @@ export default function navAdmin() {
           </div>
         </div>
       </nav>
-      <img
+      {/* <img
         loading="lazy"
         style={{ width: "100%", height: "180px", objectFit: "cover" }}
         src={BackgroundAdmin}
         alt="Background"
-      />
+      /> */}
     </div>
   );
 }

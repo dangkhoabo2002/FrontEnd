@@ -1,30 +1,45 @@
 import React, { useState, useEffect } from "react";
 import SidebarAdmin from "../components/sidebarAdmin";
 import NavigationAdmin from "../components/navAdmin";
-import "../css/adminBilling.css";
-import { Button } from "@mui/material";
-import toast, { Toaster } from "react-hot-toast";
-
-import IconButton from "@mui/material/IconButton";
+import "../css/adminRole.css";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  IconButton,
+  TextField,
+} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
-
-import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
+import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 export default function AdminRoleManagement() {
-  const [roleData, setRoleData] = useState();
+  const [roleData, setRoleData] = useState([]);
+  const [token, setToken] = useState();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const loginToken = localStorage.getItem("checkUser");
+    if (loginToken) {
+      navigate("/error404");
+    }
+    handleGetRole();
+    checkToken();
+  }, []);
+
+  const checkToken = () => {
+    const isToken = localStorage.getItem("checkAdmin");
+    setToken(isToken);
+  };
 
   const handleGetRole = async () => {
     const customerUrl = `http://127.0.0.1:5000/role/get`;
     const token = localStorage.getItem("access_token");
-
     try {
       const response = await fetch(customerUrl, {
         method: "GET",
@@ -32,8 +47,6 @@ export default function AdminRoleManagement() {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Credentials": "true",
         },
       });
       if (response.status === 200) {
@@ -43,7 +56,7 @@ export default function AdminRoleManagement() {
       } else {
         toast.error("Something wrong, please try again later!", {
           style: {
-            border: "1px solid #F85F60",  
+            border: "1px solid #F85F60",
             maxWidth: "900px",
             padding: "16px 24px",
             color: "red",
@@ -53,32 +66,9 @@ export default function AdminRoleManagement() {
       }
     } catch (error) {
       console.error("Error:", error);
-    } finally {
     }
   };
 
-  const [token, setToken] = useState();
-  const checkToken = () => {
-    const isToken = localStorage.getItem("checkAdmin");
-    setToken(isToken);
-  };
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const loginToken = localStorage.getItem("checkUser");
-
-    const checkLoggedIn = () => {
-      if (loginToken) {
-        navigate("/error404");
-      }
-    };
-    checkLoggedIn();
-    handleGetRole();
-    checkToken();
-  }, []);
-
-  // ADD ROLE
   const [openAddRole, setOpenAddRole] = useState(false);
   const [newRole, setNewRole] = useState({
     role_id: "",
@@ -93,6 +83,7 @@ export default function AdminRoleManagement() {
   const clickOpenAddRole = () => {
     setOpenAddRole(true);
   };
+
   const clickCloseAddRole = () => {
     setOpenAddRole(false);
     setNewRole({ role_id: "", role_name: "", description: "" });
@@ -121,8 +112,6 @@ export default function AdminRoleManagement() {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Credentials": "true",
           },
           body: JSON.stringify({
             role_name: newRole.role_name,
@@ -131,7 +120,7 @@ export default function AdminRoleManagement() {
         });
         if (response.status === 201) {
           toast.dismiss();
-          toast.success("New role has created.", {
+          toast.success("New role has been created.", {
             style: {
               border: "1px solid #37E030",
               maxWidth: "900px",
@@ -144,7 +133,6 @@ export default function AdminRoleManagement() {
           clickCloseAddRole();
         } else if (response.status === 500) {
           toast.dismiss();
-
           toast.error("Failed to add role!", {
             style: {
               border: "1px solid #F85F60",
@@ -156,7 +144,6 @@ export default function AdminRoleManagement() {
           });
         } else if (response.status === 400) {
           toast.dismiss();
-
           toast.error("Missing name or description!", {
             style: {
               border: "1px solid #F85F60",
@@ -169,12 +156,9 @@ export default function AdminRoleManagement() {
         }
       } catch (error) {
         console.error("Error:", error);
-      } finally {
       }
     }
   };
-
-  // DELETE ROLE
 
   const [openDelete, setOpenDelete] = useState(false);
   const [roleId_del, setRoleId_del] = useState();
@@ -183,6 +167,7 @@ export default function AdminRoleManagement() {
     setOpenDelete(true);
     setRoleId_del(roleId);
   };
+
   const clickCloseDelete = () => {
     setOpenDelete(false);
     setRoleId_del("");
@@ -191,7 +176,6 @@ export default function AdminRoleManagement() {
   const handleDeleteRole = async () => {
     const customerUrl = `http://127.0.0.1:5000/role/delete/${roleId_del}`;
     const token = localStorage.getItem("access_token");
-
     try {
       toast.loading("Deleting...");
       const response = await fetch(customerUrl, {
@@ -200,13 +184,11 @@ export default function AdminRoleManagement() {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Credentials": "true",
         },
       });
       if (response.status === 200) {
         toast.dismiss();
-        toast.success("Deleted success.", {
+        toast.success("Deleted successfully.", {
           style: {
             border: "1px solid #37E030",
             maxWidth: "900px",
@@ -219,7 +201,6 @@ export default function AdminRoleManagement() {
         handleGetRole();
       } else if (response.status === 500) {
         toast.dismiss();
-
         toast.error("Failed to delete role!", {
           style: {
             border: "1px solid #F85F60",
@@ -231,8 +212,7 @@ export default function AdminRoleManagement() {
         });
       } else if (response.status === 400) {
         toast.dismiss();
-
-        toast.error("Missing choosen role!", {
+        toast.error("Missing chosen role!", {
           style: {
             border: "1px solid #F85F60",
             maxWidth: "900px",
@@ -244,15 +224,11 @@ export default function AdminRoleManagement() {
       }
     } catch (error) {
       console.error("Error:", error);
-    } finally {
     }
   };
 
-  // EDIT ROLE
-
   const [openEdit, setOpenEdit] = useState(false);
   const [selectedRole, setSelectedRole] = useState();
-
   const [editRole, setEditRole] = useState({
     role_name: "",
     description: "",
@@ -266,6 +242,7 @@ export default function AdminRoleManagement() {
     setOpenEdit(true);
     setSelectedRole(roleId);
   };
+
   const clickCloseEdit = () => {
     setOpenEdit(false);
     setEditRole({ role_name: "", description: "" });
@@ -273,7 +250,7 @@ export default function AdminRoleManagement() {
   };
 
   const handleEditRole = async () => {
-    if (editRole.role_name === "" || editRole.role_name === "") {
+    if (editRole.role_name === "" || editRole.description === "") {
       toast.error("Please enter all fields!", {
         style: {
           border: "1px solid #FF5733",
@@ -283,7 +260,7 @@ export default function AdminRoleManagement() {
           fontWeight: "bolder",
         },
       });
-    } else if (selectedRole === "") {
+    } else if (!selectedRole) {
       toast.error("Role is not selected!", {
         style: {
           border: "1px solid #FF5733",
@@ -297,7 +274,6 @@ export default function AdminRoleManagement() {
       toast.loading("Updating...");
       const customerUrl = `http://127.0.0.1:5000/role/update/${selectedRole}`;
       const token = localStorage.getItem("access_token");
-
       try {
         const response = await fetch(customerUrl, {
           method: "PUT",
@@ -305,8 +281,6 @@ export default function AdminRoleManagement() {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Credentials": "true",
           },
           body: JSON.stringify({
             role_name: editRole.role_name,
@@ -315,7 +289,7 @@ export default function AdminRoleManagement() {
         });
         if (response.status === 200) {
           toast.dismiss();
-          toast.success("New role has changed.", {
+          toast.success("Role has been updated.", {
             style: {
               border: "1px solid #37E030",
               maxWidth: "900px",
@@ -351,42 +325,22 @@ export default function AdminRoleManagement() {
         }
       } catch (error) {
         console.error("Error:", error);
-      } finally {
       }
     }
   };
 
   return (
-    <div className="">
+    <div className="admin-layout">
       <Toaster position="bottom-right" reverseOrder={false} />
-
-      {/*-------------- Navigation + Backgroud---------------- */}
-
-      <NavigationAdmin />
-
-      {/*-------------- END OF Navigation + Backgroud---------------- */}
-
-      {/*-------------- LayoutBody ---------------- */}
-
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "0fr 3fr",
-          height: "66vh",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            height: "70vh",
-          }}
-        >
-          <SidebarAdmin />
+      <SidebarAdmin />
+      <div className="content">
+        {" "}
+        <div className="info-title font-semibold py-3">
+          <p>Role Management</p>
         </div>
-        <div className="px-12 py-6 bg-[#F3F8FF]">
-          {token !== null ? (
-            <>
+        {token ? (
+          <>
+            <div className="button-container">
               <Button
                 variant="outlined"
                 sx={{
@@ -399,74 +353,55 @@ export default function AdminRoleManagement() {
               >
                 Add Role
               </Button>
-
-              {/*-------------- Billing Table ---------------- */}
-
-              <div
-                className="bg-white mt-4 rounded-md px-8 pb-8 shadow-md"
-                style={{ border: "1px solid #89A6CC" }}
-              >
-                <table class="table-auto w-full ">
-                  <thead>
-                    <tr>
-                      <th>ROLE NAME</th>
-                      <th>ROLE ID</th>
-                      <th>DESCRIPTION</th>
-                      <th>ACTION</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td
-                        style={{
-                          color: "transparent",
-                          padding: "0px",
-                        }}
-                      >
-                        .
+            </div>
+            <div className="content-container">
+              <table className="table-auto w-full">
+                <thead>
+                  <tr>
+                    <th>ROLE NAME</th>
+                    <th>ROLE ID</th>
+                    <th>DESCRIPTION</th>
+                    <th>ACTION</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style={{ color: "transparent", padding: "0px" }}>.</td>
+                  </tr>
+                  {roleData?.map((role) => (
+                    <tr key={role.role_id}>
+                      <td>{role.role_name}</td>
+                      <td>{role.role_id}</td>
+                      <td>{role.description}</td>
+                      <td>
+                        <IconButton
+                          aria-label="delete"
+                          onClick={() => clickOpenDelete(role.role_id)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                        <IconButton
+                          aria-label="edit"
+                          onClick={() => clickOpenEdit(role.role_id)}
+                        >
+                          <EditIcon />
+                        </IconButton>
                       </td>
                     </tr>
-                    {roleData?.map((role) => (
-                      <tr key={role.role_id}>
-                        <td>{role?.role_name}</td>
-                        <td>{role?.role_id}</td>
-                        <td>{role?.description}</td>
-                        <td>
-                          <IconButton
-                            aria-label="delete"
-                            onClick={() => clickOpenDelete(role?.role_id)}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                          <IconButton
-                            aria-label="edit"
-                            onClick={() => clickOpenEdit(role?.role_id)}
-                          >
-                            <EditIcon />
-                          </IconButton>
-                        </td>
-                      </tr>
-                    ))}
-                    <tr></tr>
-                  </tbody>
-                </table>
-              </div>
-            </>
-          ) : (
-            <div className="flex flex-row justify-center py-40 gap-4 text-red-600 font-bold">
-              <WarningAmberIcon />
-              <p>UKNOWN USER! PLEASE LOGIN FIRST </p>
-              <WarningAmberIcon />
+                  ))}
+                </tbody>
+              </table>
             </div>
-          )}
-
-          {/*-------------- END OF Billing Table ---------------- */}
-        </div>
+          </>
+        ) : (
+          <div className="flex flex-row justify-center py-40 gap-4 text-red-600 font-bold">
+            <WarningAmberIcon />
+            <p>UNKNOWN USER! PLEASE LOGIN FIRST</p>
+            <WarningAmberIcon />
+          </div>
+        )}
       </div>
 
-      {/*-------------- END OF LayoutBody ---------------- */}
-
-      {/*-------------- ADD NEW ROLE ---------------- */}
       <Dialog open={openAddRole} onClose={clickCloseAddRole}>
         <DialogTitle>Add new role</DialogTitle>
         <DialogContent>
@@ -491,7 +426,6 @@ export default function AdminRoleManagement() {
             label="Description"
             multiline
             rows={4}
-            defaultValue="Default Value"
             margin="dense"
             name="role"
             type="text"
@@ -506,7 +440,6 @@ export default function AdminRoleManagement() {
         </DialogActions>
       </Dialog>
 
-      {/*-------------- DELETE ALERT ---------------- */}
       <Dialog
         open={openDelete}
         onClose={clickCloseDelete}
@@ -514,7 +447,7 @@ export default function AdminRoleManagement() {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Do you want to remove this member?"}
+          {"Do you want to remove this role?"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
@@ -528,7 +461,6 @@ export default function AdminRoleManagement() {
         </DialogActions>
       </Dialog>
 
-      {/*-------------- EDIT ALERT ---------------- */}
       <Dialog open={openEdit} onClose={clickCloseEdit}>
         <DialogTitle>Update role</DialogTitle>
         <DialogContent>

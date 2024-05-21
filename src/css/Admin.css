@@ -1,35 +1,82 @@
 * {
-    margin: 0;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 html,
 body {
-    height: 100%;
+  height: 100%;
 }
 
-table {
-    border-collapse: collapse;
-    width: 100%;
-    padding: 0px 24px;
+.admin-layout {
+  display: flex;
+  height: 100vh;
 }
 
-td {
-    text-align: center;
-    padding: 6px 16px;
-
+.content {
+  margin-left: 300px;
+  padding: 50px;
+  width: calc(100% - 300px);
+  overflow-y: auto;
+  background-color: #f0ecec;
 }
 
-th {
-    padding: 14px 16px;
-    border-bottom: 1px solid black;
+.content-container {
+  background-color: white;
+  margin-top: 16px;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #89A6CC;
+}
+.button-container {
+    background-color: white;
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: flex-start;
+    border: 1px solid #89A6CC;
 
+  }
+  
+.table-auto {
+  width: 100%;
+  border-collapse: collapse;
 }
 
-.thLeft,
-.tdLeft {
-    text-align: left;
+.table-auto th,
+.table-auto td {
+  padding: 8px 16px;
+  text-align: center;
 }
 
+.table-auto th {
+}
 
+.flex {
+  display: flex;
+}
 
-/* STATUS USER */
+.justify-center {
+  justify-content: center;
+}
+
+.text-red-600 {
+  color: #dc2626;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+.gap-4 {
+  gap: 16px;
+}
+
+.py-40 {
+  padding-top: 10rem;
+  padding-bottom: 10rem;
+}
