@@ -42,6 +42,18 @@ import toast, { Toaster } from "react-hot-toast";
           },
         });
 
+------ WARNING -----
+
+  toast.error("Please input your data!", {
+          style: {
+            border: "1px solid #FF5733",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "#FF5733",
+            fontWeight: "bolder",
+          },
+        });
+
 
 ----- Handle Change 1 ------
 

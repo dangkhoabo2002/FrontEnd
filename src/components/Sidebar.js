@@ -7,7 +7,7 @@ import BookIcon from "@mui/icons-material/Book";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import SubscribeBtn from "./subscribeBtn";
 import Skeleton from "@mui/material/Skeleton";
-                         
+
 export default function Sidebar() {
   const [selectedMenu, setSelectedMenu] = useState("organizations");
   const location = useLocation();
@@ -30,7 +30,7 @@ export default function Sidebar() {
   const [isSub, setIsSub] = useState();
 
   const handleGetSub = async () => {
-    const editUrl = `https://master-help-desk-back-end.vercel.app/subscription/check_subscription_by_username`;
+    const editUrl = `http://127.0.0.1:5000/subscription/check_subscription_by_username`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(editUrl, {

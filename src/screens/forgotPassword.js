@@ -30,8 +30,7 @@ export default function ForgotPassword() {
       });
     } else {
       toast.loading("OTP is sending, please wait...");
-      const loginUrl =
-        "https://master-help-desk-back-end.vercel.app/auth/forgot_password";
+      const loginUrl = "http://127.0.0.1:5000/auth/forgot_password";
       try {
         const response = await fetch(loginUrl, {
           method: "POST",

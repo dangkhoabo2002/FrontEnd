@@ -35,7 +35,7 @@ const ServerReport = () => {
   const [sysLog, setSysLog] = useState();
 
   const handleGetSysLog = async () => {
-    const url = `https://master-help-desk-back-end.vercel.app/server/report_log_syslog/${param.server_id}`;
+    const url = `http://127.0.0.1:5000/server/report_log_syslog/${param.server_id}`;
 
     const token = localStorage.getItem("access_token");
 
@@ -72,7 +72,7 @@ const ServerReport = () => {
   const [lastLog, setLastLog] = useState();
 
   const handleGetLastLog = async () => {
-    const url = `https://master-help-desk-back-end.vercel.app/server/report_log_last/${param.server_id}`;
+    const url = `http://127.0.0.1:5000/server/report_log_last/${param.server_id}`;
 
     const token = localStorage.getItem("access_token");
 
@@ -109,7 +109,7 @@ const ServerReport = () => {
   const [ufwLog, setUfwLog] = useState();
 
   const handleGetUfwLog = async () => {
-    const url = `https://master-help-desk-back-end.vercel.app/server/report_log_ufw/${param.server_id}`;
+    const url = `http://127.0.0.1:5000/server/report_log_ufw/${param.server_id}`;
 
     const token = localStorage.getItem("access_token");
 

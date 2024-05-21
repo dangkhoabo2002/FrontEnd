@@ -16,12 +16,14 @@ import toast, { Toaster } from "react-hot-toast";
 export default function ServerExecution(serverId) {
   const [path, setPath] = useState();
   const [loading, setLoading] = useState();
+  const [lines, setLines] = useState([]);
+  const [stderr, setStderr] = useState([]);
 
   const handleChangeNewRsa = (event) => {
     setPath(event.target.value);
   };
 
-  const handleExecuteCode = async (libName) => {
+  const handleExecuteCode = async () => {
     if (path === "") {
       toast.error("Please fill the path first!", {
         style: {
@@ -34,7 +36,7 @@ export default function ServerExecution(serverId) {
       });
     } else {
       setLoading(true);
-      const editUrl = `https://master-help-desk-back-end.vercel.app/server/execute_code/${serverId.serverId}`;
+      const editUrl = `http://127.0.0.1:5000/server/execute_code/${serverId.serverId}`;
       const token = localStorage.getItem("access_token");
       try {
         const response = await fetch(editUrl, {
@@ -46,9 +48,14 @@ export default function ServerExecution(serverId) {
             "Access-Control-Allow-Origin": "*",
           },
           body: JSON.stringify({
-            library: libName,
+            execute_file: path,
           }),
         });
+        const data = await response.json();
+        setLines(data.lines);
+        setStderr(data.stderr);
+        console.log(data.lines);
+        console.log(data.stderr);
         if (response.status === 200) {
           toast.success("Run file successfully.", {
             style: {
@@ -178,16 +185,19 @@ export default function ServerExecution(serverId) {
 
       <div className="resultOutput mt-10">
         <h1 className="text-2xl my-3">Output result</h1>
-        <textarea
-          className="w-full resize-none rounded-md p-4"
-          style={{
-            border: "1px solid #89A6CC",
-            maxHeight: "8em",
-            overflow: "auto",
-          }}
-        >
-          Build successfully
-        </textarea>
+
+        <ol className="border-2">
+          {lines?.map((line, index) => (
+            <p key={index}>{line}</p>
+          ))}
+        </ol>
+
+        <h1 className="text-2xl my-3">Error</h1>
+        <ol>
+          {stderr?.map((stderr, index) => (
+            <p key={index}>{stderr}</p>
+          ))}
+        </ol>
       </div>
     </div>
   );

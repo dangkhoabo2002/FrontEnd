@@ -53,7 +53,7 @@ export default function LandingPage() {
 
   const handleShowOrganization = async () => {
     toast.loading("In processing..");
-    const getUrl = "https://master-help-desk-back-end.vercel.app/org/get";
+    const getUrl = "http://127.0.0.1:5000/org/get";
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(getUrl, {
@@ -109,7 +109,7 @@ export default function LandingPage() {
 
   const handleGetSub = async () => {
     toast.loading("In processing..");
-    const editUrl = `https://master-help-desk-back-end.vercel.app/subscription/check_subscription_by_username`;
+    const editUrl = `http://127.0.0.1:5000/subscription/check_subscription_by_username`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(editUrl, {
@@ -258,7 +258,7 @@ export default function LandingPage() {
 
   const handleAddOrg = async () => {
     toast.loading("In processing..");
-    const addUrl = "https://master-help-desk-back-end.vercel.app/org/add";
+    const addUrl = "http://127.0.0.1:5000/org/add";
     const token = localStorage.getItem("access_token");
 
     try {

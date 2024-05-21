@@ -47,8 +47,7 @@ export default function AdminLogin() {
       return;
     }
 
-    const loginUrl =
-      "https://master-help-desk-back-end.vercel.app/manager/login";
+    const loginUrl = "http://127.0.0.1:5000/manager/login";
 
     try {
       const response = await fetch(loginUrl, {

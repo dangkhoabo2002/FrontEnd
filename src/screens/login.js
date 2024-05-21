@@ -63,8 +63,7 @@ export default function Login() {
       });
     } else {
       toast.loading("In processing...");
-      const loginUrl =
-        "https://master-help-desk-back-end.vercel.app/auth/login";
+      const loginUrl = "http://127.0.0.1:5000/auth/login";
       try {
         const response = await fetch(loginUrl, {
           method: "POST",

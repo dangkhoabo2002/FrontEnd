@@ -25,8 +25,7 @@ export default function AlertDialogSlide() {
 
   const handleLogout = async () => {
     toast.loading("In processing..");
-    const logoutUrl =
-      "https://master-help-desk-back-end.vercel.app/auth/logout";
+    const logoutUrl = "http://127.0.0.1:5000/auth/logout";
     const token = localStorage.getItem("access_token");
 
     try {

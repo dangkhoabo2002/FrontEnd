@@ -67,7 +67,7 @@ export default function ServerGeneral(serverId) {
   // GET SERVER DATA
 
   const handleGetServerData1 = async () => {
-    const getUrl = `https://master-help-desk-back-end.vercel.app/server/get_server_data/${serverId.serverId}`;
+    const getUrl = `http://127.0.0.1:5000/server/get_server_data/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(getUrl, {
@@ -130,7 +130,7 @@ export default function ServerGeneral(serverId) {
   };
 
   const handleGetServerData2 = async () => {
-    const getUrl = `https://master-help-desk-back-end.vercel.app/server/get_server_info/${serverId.serverId}`;
+    const getUrl = `http://127.0.0.1:5000/server/get_server_info/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(getUrl, {
@@ -197,10 +197,9 @@ export default function ServerGeneral(serverId) {
   const { organization_id } = useParams();
   const navigate = useNavigate();
   const handleDeleteServer = async () => {
-
     toast.loading("Deleting...");
 
-    const getUrl = `https://master-help-desk-back-end.vercel.app/server/delete/${serverId.serverId}`;
+    const getUrl = `http://127.0.0.1:5000/server/delete/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(getUrl, {
@@ -313,7 +312,7 @@ export default function ServerGeneral(serverId) {
   };
 
   // const handleTurnStatus = async () => {
-  //   const url = `https://master-help-desk-back-end.vercel.app/server/get_server_data/${serverId.serverId}`;
+  //   const url = `http://127.0.0.1:5000/server/get_server_data/${serverId.serverId}`;
   //   const token = localStorage.getItem("access_token");
   //   try {
   //     const response = await fetch(url, {
@@ -344,7 +343,7 @@ export default function ServerGeneral(serverId) {
 
   const [memberList, setMemberList] = useState();
   const handleGetMember = async () => {
-    const url = `https://master-help-desk-back-end.vercel.app/server/get_server_members/${serverId.serverId}`;
+    const url = `http://127.0.0.1:5000/server/get_server_members/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(url, {
@@ -427,7 +426,7 @@ export default function ServerGeneral(serverId) {
         }
       );
     } else {
-      const url = `https://master-help-desk-back-end.vercel.app/server/add_member`;
+      const url = `http://127.0.0.1:5000/server/add_member`;
       toast.loading("Adding new member...");
 
       const token = localStorage.getItem("access_token");
@@ -547,7 +546,7 @@ export default function ServerGeneral(serverId) {
         },
       });
     } else {
-      const url = `https://master-help-desk-back-end.vercel.app/server/remove_member`;
+      const url = `http://127.0.0.1:5000/server/remove_member`;
       toast.loading("Removing member...");
 
       const token = localStorage.getItem("access_token");
@@ -684,7 +683,7 @@ export default function ServerGeneral(serverId) {
   };
 
   const handleUpdateRsaAPI = async () => {
-    const getUrl = `https://master-help-desk-back-end.vercel.app/server/update_rsa_key/${serverId.serverId}`;
+    const getUrl = `http://127.0.0.1:5000/server/update_rsa_key/${serverId.serverId}`;
     toast.loading("Updating...");
 
     const token = localStorage.getItem("access_token");
@@ -828,7 +827,7 @@ export default function ServerGeneral(serverId) {
                 </div>
                 <div className="flex d-flex my-2">
                   <p className="blue-text font-semibold mr-2">
-                    Server Directory:
+                    Script Directory:
                   </p>
                   <p className="link-text">{generalData2?.script_directory} </p>
                 </div>

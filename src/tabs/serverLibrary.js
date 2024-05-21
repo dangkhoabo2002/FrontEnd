@@ -23,7 +23,7 @@ export default function ServerLibrary(serverId) {
 
   const handleInstallLibraryAPI = async (libName) => {
     setLoading(true);
-    const editUrl = `https://master-help-desk-back-end.vercel.app/server/install_lib/${serverId.serverId}`;
+    const editUrl = `http://127.0.0.1:5000/server/install_lib/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(editUrl, {
@@ -98,7 +98,7 @@ export default function ServerLibrary(serverId) {
   };
 
   const handleUninstallLibraryAPI = async (libName) => {
-    const editUrl = `https://master-help-desk-back-end.vercel.app/server/uninstall_lib/${serverId.serverId}`;
+    const editUrl = `http://127.0.0.1:5000/server/uninstall_lib/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(editUrl, {
@@ -177,7 +177,7 @@ export default function ServerLibrary(serverId) {
   const [listLib, setListLib] = useState();
 
   const handleGetLib = async () => {
-    const getUrl = `https://master-help-desk-back-end.vercel.app/server/lib_status/${serverId.serverId}`;
+    const getUrl = `http://127.0.0.1:5000/server/lib_status/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(getUrl, {

@@ -1,97 +1,60 @@
-import React, { useState } from "react";
+import React from "react";
 
-const UPLOAD_ENDPOINT =
-  "https://master-help-desk-back-end.vercel.app/server/upload_file/zIXigWAZyWKLJPzLp0jJtMYIVdpn3JY_RbGAFsLsEI";
-
-function VendorRegistration() {
-  const [file, setFile] = useState(null);
-  const [status, setStatus] = useState("");
-
-  const handleSubmit = async (event) => {
-    setStatus(""); // Reset status
-    event.preventDefault();
-
-    if (!file) {
-      setStatus("Please select a file to upload.");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("avatar", file);
+function DownloadButton() {
+  const handleDownload = async () => {
+    const file_path = "/usr/bin/file_storage/test";
+    const encodedFilePath = btoa(file_path);
+    const token = localStorage.getItem("access_token");
 
     try {
-      const response = await fetch(UPLOAD_ENDPOINT, {
-        method: "POST",
-        body: formData,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        },
-      });
-
-      const data = await response.json(); // Parse response as JSON
-
-      if (response.status === 200) {
-        setStatus("Thank you! File uploaded successfully.");
-      } else {
-        setStatus(`Error uploading file: ${data.message || "Unknown error"}`); // Handle potential error message from server
+      // Fetch the file from the backend
+      const response = await fetch(
+        `http://localhost:5000/server/download_folder/zIXigWAZyWKLJPzLp0jJtMYIVdpn3JY_RbGAFsLsEI?folder=${encodedFilePath}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Access-Control-Expose-Headers": "Content-Disposition",
+          },
+        }
+      );
+      // Check if the request was successful
+      if (!response.ok) {
+        throw new Error(`HTTP error status: ${response.status}`);
       }
+
+      // Extract the filename from the Content-Disposition header
+      const contentDisposition = response.headers.get("Content-Disposition");
+      console.log(contentDisposition);
+      let fileName = "default_filename.txt"; // Default filename in case Content-Disposition is not available
+
+      if (contentDisposition) {
+        // Parse the Content-Disposition header to get the filename
+        const matches = contentDisposition.match(/filename="(.+)"/i);
+        if (matches && matches[1]) {
+          fileName = decodeURIComponent(matches[1]);
+        }
+      }
+
+      // Create a blob from the response data
+      const blob = await response.blob();
+
+      // Generate a URL for the blob
+      const url = window.URL.createObjectURL(blob);
+
+      // Create a link element and simulate a click to start the download
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", fileName); // Dynamically set the filename
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     } catch (error) {
-      setStatus(`Error: ${error.message}`); // Handle fetch errors
+      console.error(error);
     }
   };
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <h1>React File Upload</h1>
-      <input type="file" onChange={(e) => setFile(e.target.files[0])} />
-      <button type="submit">Upload File</button>
-      {status ? <h1>{status}</h1> : null}
-    </form>
-  );
+  return <button onClick={handleDownload}>Download File</button>;
 }
 
-export default VendorRegistration;
-
-// import React, { useState } from "react";
-// import axios from "axios";
-
-// const UPLOAD_ENDPOINT =
-//   "https://master-help-desk-back-end.vercel.app/server/upload_file/zIXigWAZyWKLJPzLp0jJtMYIVdpn3JY_RbGAFsLsEI";
-
-// function VendorRegistration() {
-//   const [file, setFile] = useState(null);
-//   const [status, setStatus] = useState("");
-
-//   const handleSubmit = async (event) => {
-//     setStatus(""); // Reset status
-//     event.preventDefault();
-//     console.log(file);
-
-//     const formData = new FormData();
-//     formData.append("avatar", file);
-//     console.log(formData);
-//     for (var p of formData.entries()) {
-//       console.log("formData", p[0] + " - " + p[1]);
-//     }
-//     const token = localStorage.getItem("access_token");
-//     const resp = await axios.post(UPLOAD_ENDPOINT, formData, {
-//       headers: {
-//         "content-type": "multipart/form-data",
-//         Authorization: `Bearer ${token}`,
-//       },
-//     });
-//     setStatus(resp.status === 200 ? "Thank you!" : "Error.");
-//   };
-
-//   return (
-//     <form onSubmit={handleSubmit}>
-//       <h1>React File Upload</h1>
-//       <input type="file" onChange={(e) => setFile(e.target.files[0])} />
-
-//       <button type="submit">Upload File</button>
-//       {status ? <h1>{status}</h1> : null}
-//     </form>
-//   );
-// }
-
-// export default VendorRegistration;
+export default DownloadButton;

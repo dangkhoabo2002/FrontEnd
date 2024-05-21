@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 export default async function handleCheckPass(pass_input) {
   if (pass_input) {
     const passCheck = pass_input;
-    const url = "https://master-help-desk-back-end.vercel.app/auth/check_pass";
+    const url = "http://127.0.0.1:5000/auth/check_pass";
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(url, {
