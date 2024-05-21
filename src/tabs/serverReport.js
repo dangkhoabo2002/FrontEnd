@@ -14,13 +14,19 @@ import SystemLog from "./serverReport/sysLog";
 import UfwLog from "./serverReport/ufwLog";
 import { useParams } from "react-router-dom";
 import LinearProgress from "@mui/material/LinearProgress";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 
 const ServerReport = () => {
   const [open, setOpen] = useState(false);
   const [selectedLog, setSelectedLog] = useState({});
+  const [anchorEl, setAnchorEl] = useState(null);
+  const menuOpen = Boolean(anchorEl);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const handleMenuClick = (event) => setAnchorEl(event.currentTarget);
+  const handleMenuClose = () => setAnchorEl(null);
 
   const [value, setValue] = useState("1");
 
@@ -31,7 +37,6 @@ const ServerReport = () => {
   const param = useParams();
 
   // SYSTEM LOG
-
   const [sysLog, setSysLog] = useState();
 
   const handleGetSysLog = async () => {
@@ -53,18 +58,11 @@ const ServerReport = () => {
         const data = await response.json();
         setSysLog(data);
         localStorage.setItem("sysLog", response.status);
-      } else if (response.status === 400) {
-        localStorage.setItem("sysLog", response.status);
-      } else if (response.status === 403) {
-        localStorage.setItem("sysLog", response.status);
-      } else if (response.status === 500) {
-        localStorage.setItem("sysLog", response.status);
       } else {
         localStorage.setItem("sysLog", response.status);
       }
     } catch (error) {
       console.error("Error:", error);
-    } finally {
     }
   };
 
@@ -90,18 +88,11 @@ const ServerReport = () => {
         const data = await response.json();
         setLastLog(data);
         localStorage.setItem("lastLog", response.status);
-      } else if (response.status === 400) {
-        localStorage.setItem("lastLog", response.status);
-      } else if (response.status === 403) {
-        localStorage.setItem("lastLog", response.status);
-      } else if (response.status === 500) {
-        localStorage.setItem("lastLog", response.status);
       } else {
         localStorage.setItem("lastLog", response.status);
       }
     } catch (error) {
       console.error("Error:", error);
-    } finally {
     }
   };
 
@@ -127,18 +118,11 @@ const ServerReport = () => {
         const data = await response.json();
         setUfwLog(data);
         localStorage.setItem("ufwLog", response.status);
-      } else if (response.status === 400) {
-        localStorage.setItem("ufwLog", response.status);
-      } else if (response.status === 403) {
-        localStorage.setItem("ufwLog", response.status);
-      } else if (response.status === 500) {
-        localStorage.setItem("ufwLog", response.status);
       } else {
         localStorage.setItem("ufwLog", response.status);
       }
     } catch (error) {
       console.error("Error:", error);
-    } finally {
     }
   };
 
@@ -147,54 +131,137 @@ const ServerReport = () => {
     handleGetLastLog();
     handleGetUfwLog();
   }, []);
+
   return (
     <>
       <div className="">
         <div className="flex flex-row justify-between">
+          <div className="flex flex-col">
           <div className="info-title font-semibold mb-3 ">
             <p>Access History</p>
           </div>
-
-          <Button
-            startIcon={<DownloadIcon />}
-            variant="contained"
-            // onClick={}
-            style={{ marginLeft: "10px" }}
-            sx={{
-              width: "120px",
-              height: "30px",
-              color: "white",
-              bgcolor: "#3867A5",
-              "&:hover": { bgcolor: "#264B7B" },
-              fontSize: "14px",
-              fontWeight: "normal",
-              textTransform: "none",
-            }}
-          >
-            Raw log
-          </Button>
-        </div>
-        <h1 className="mb-3">
+          <h1 className="mb-3">
           Review your server history within the last 3 days.
-        </h1>
+        </h1></div>
+
+          <div className="flex" style={{alignItems:"center"}}>
+            <Button
+              startIcon={<DownloadIcon />}
+              variant="contained"
+              onClick={handleMenuClick}
+              style={{ marginLeft: "10px" }}
+              sx={{
+                width: "120px",
+                height: "30px",
+                color: "white",
+                bgcolor: "#3867A5",
+                "&:hover": { bgcolor: "#264B7B" },
+                fontSize: "14px",
+                fontWeight: "normal",
+                textTransform: "none",
+              }}
+            >
+              Raw log
+            </Button>
+            <Menu anchorEl={anchorEl} open={menuOpen} onClose={handleMenuClose}>
+              <MenuItem
+                sx={{
+                  width: "120px",
+                }}
+                onClick={() => {
+                  handleMenuClose();
+                  console.log("SysLog selected");
+                }}
+              >
+                SysLog
+              </MenuItem>
+              <MenuItem
+                sx={{
+                  width: "120px",
+                }}
+                onClick={() => {
+                  handleMenuClose();
+                  console.log("Last Log selected");
+                }}
+              >
+                {" "}
+                Last Log
+              </MenuItem>
+              <MenuItem
+                sx={{
+                  width: "120px",
+                }}
+                onClick={() => {
+                  handleMenuClose();
+                  console.log("UFW Log selected");
+                }}
+              >
+                {" "}
+                UFW Log
+              </MenuItem>
+            </Menu>
+          </div>
+        </div>
+
       </div>
       <TabContext value={value}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <TabList onChange={handleChange} aria-label="lab API tabs example">
-            <Tab label="SysLog" value="1" />
-            <Tab label="Last Log" value="2" />
-            <Tab label="UFW Log " value="3" />
-          </TabList>
+        <Box>
+          <Box
+            sx={{
+              display: "flex",
+              borderBottom: "1px solid #ccc",
+              overflow: "hidden",
+            }}
+          >
+            <TabList
+              onChange={handleChange}
+              aria-label="lab API tabs example"
+              sx={{
+                border: "1px solid #ccc",
+                borderBottom: "none",
+                borderRadius: "4px 4px 0 0",
+                ".MuiTabs-indicator": {
+                  display: "none",
+                },
+                ".MuiTab-root": {
+                  paddingRight: "30px",
+                  paddingLeft: "30px",
+                  zIndex: 1,
+                  textTransform: "none",
+                },
+                ".Mui-selected": {
+                  backgroundColor: "white",
+                  boxShadow: "inset 0 -1px 0 white",
+                  fontWeight: "bold",
+                  transition: "background-color 0.3s ease",
+                },
+              }}
+            >
+              <Tab label="SysLog" value="1" disableRipple />
+              <Tab label="Last Log" value="2" disableRipple />
+              <Tab label="UFW Log" value="3" disableRipple />
+            </TabList>
+          </Box>
+          <Box
+            sx={{
+              border: "1px solid #ccc",
+              borderRadius: "0 0 4px 4px",
+              marginTop: "-1px",
+              position: "relative",
+              top: "-1px",
+            }}
+          >
+            <TabPanel sx={{ p: 0 }} value="1">
+              <SystemLog sysLog={sysLog} />
+            </TabPanel>
+            <TabPanel sx={{ p: 0 }} value="2">
+              <LastLog lastLog={lastLog} />
+            </TabPanel>
+            <TabPanel sx={{ p: 0 }} value="3">
+              <UfwLog ufwLog={ufwLog} />
+            </TabPanel>
+          </Box>
         </Box>
-        <TabPanel value="1">
-          <SystemLog sysLog={sysLog} />
-        </TabPanel>
-        <TabPanel value="2">
-          <LastLog lastLog={lastLog} />
-        </TabPanel>
-        <TabPanel value="3">
-          <UfwLog ufwLog={ufwLog} />
-        </TabPanel>
       </TabContext>
 
       <Modal
