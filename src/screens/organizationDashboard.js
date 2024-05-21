@@ -5,12 +5,15 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
+import { useTheme } from "@mui/material/styles";
 
 // COMPONENTS
 
 import ButtonAddServer from "./buttonAddServer";
-import Footer from "../components/userFooter";
 import Sidebar from "../components/Sidebar";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import Chip from "@mui/material/Chip";
 
 // ICONS MUI
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
@@ -58,10 +61,53 @@ import {
   MenuItem,
 } from "@mui/material";
 
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+const names = [
+  "proxy",
+  "firewall",
+  "docker",
+  "data",
+  "library",
+  "report",
+  "execution",
+];
+
+function getStyles(name, personName, theme) {
+  return {
+    fontWeight:
+      personName.indexOf(name) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
+  };
+}
+
 export default function OrganizationDashboard() {
+  const theme = useTheme();
+  const [personName, setPersonName] = React.useState([]);
+
+  console.log(personName);
+  const handleChangeGrantRole = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setPersonName(
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value
+    );
+  };
+
   // ADD ROLE DATA
   const [openAddRole, setOpenAddRole] = useState(false);
-  const [addRoleData, setAddRoleData] = useState();
   const [numRoles, setNumRoles] = useState(1);
   const handleAddRole = () => {
     if (numRoles < 7) {
@@ -78,13 +124,13 @@ export default function OrganizationDashboard() {
       });
     }
   };
+
   const handleCloseAddRole = () => {
     setOpenAddRole(false);
     // Reset số lượng dòng khi đóng modal
     setNumRoles(1);
   };
   const navigate = useNavigate();
-
   const { organization_id } = useParams();
 
   // DATA API
@@ -393,43 +439,6 @@ export default function OrganizationDashboard() {
     });
   };
 
-  const role = [
-    {
-      value: "1",
-      label: "Proxy Manager",
-      addData: "proxy",
-    },
-    {
-      value: "2",
-      label: "Firewall Manager",
-      addData: "firewall",
-    },
-    {
-      value: "3",
-      label: "Docker Manager",
-      addData: "docker",
-    },
-    {
-      value: "4",
-      label: "Library Manager",
-      addData: "library",
-    },
-    {
-      value: "5",
-      label: "Data Manager",
-      addData: "data",
-    },
-    {
-      value: "6",
-      label: "Report Manager",
-      addData: "report",
-    },
-    {
-      value: "7",
-      label: "Execution Manager",
-      addData: "execution",
-    },
-  ];
   // --------- FUNCTION ---------
 
   // ADD server
@@ -895,6 +904,7 @@ export default function OrganizationDashboard() {
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: 600,
+    height: 500,
     bgcolor: "background.paper",
     borderRadius: "20px",
     boxShadow: 24,
@@ -1558,19 +1568,7 @@ export default function OrganizationDashboard() {
                                 />
                               </FormControl>
                             </Grid>
-                            <Grid item xs={12} md={1}>
-                              {/* <Tooltip
-                                title="Please enter the correct Host name of the server, as incorrect input will result in connection failure."
-                                placement="right"
-                              >
-                                <HelpOutlineIcon
-                                  style={{
-                                    fontSize: "20px",
-                                    fontWeight: "400",
-                                  }}
-                                />
-                              </Tooltip> */}
-                            </Grid>
+                            <Grid item xs={12} md={1}></Grid>
                           </Grid>
 
                           <Grid
@@ -1686,12 +1684,6 @@ export default function OrganizationDashboard() {
                         <h1 className="text-[#637381] text-2xl font pr-16 mb-3">
                           Member
                         </h1>
-                        {/* <h1 className="text-[#637381] text-2xl font mb-3">
-                          {numberMember?.number_users}
-                          {numberMember?.number_users === 1
-                            ? " user"
-                            : " users"}
-                        </h1> */}
                       </div>
                       <div className="flex flex-row gap-">
                         <Button
@@ -1868,64 +1860,49 @@ export default function OrganizationDashboard() {
                             </IconButton>
                           </div>
                         </div>
-                        <Grid container alignItems="center" spacing={2} mt={0}>
-                          {[...Array(numRoles)].map((_, index) => (
-                            <React.Fragment key={index}>
-                              <Grid item xs={12} md={2}>
-                                <Typography
-                                  className="mt-3"
-                                  style={{
-                                    fontSize: "16px",
-                                    fontWeight: "400",
-                                  }}
-                                >
-                                  Role:
-                                </Typography>
-                              </Grid>
-                              <Grid
-                                item
-                                xs={12}
-                                md={8}
-                                sx={{ position: "relative" }}
+                        <div className="flex flex-col justify-start">
+                          <>
+                            <FormControl sx={{ m: 1, width: "auto" }}>
+                              <Select
+                                labelId="demo-multiple-chip-label"
+                                id="demo-multiple-chip"
+                                multiple
+                                value={personName}
+                                onChange={handleChangeGrantRole}
+                                input={
+                                  <OutlinedInput id="select-multiple-chip" />
+                                }
+                                renderValue={(selected) => (
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      flexWrap: "wrap",
+                                      gap: 0.5,
+                                    }}
+                                  >
+                                    {selected.map((value) => (
+                                      <Chip key={value} label={value} />
+                                    ))}
+                                  </Box>
+                                )}
+                                MenuProps={MenuProps}
                               >
-                                {/* Thêm CSS để chứa vị trí tương đối */}
-                                <TextField
-                                  fullWidth
-                                  id={`outlined-select-currency-${index}`}
-                                  select
-                                  label=""
-                                  defaultValue="1"
-                                >
-                                  {role.map((option) => (
-                                    <MenuItem
-                                      onChange={() =>
-                                        setAddRoleData(option.addData)
-                                      }
-                                      key={option.value}
-                                      value={option.value}
-                                    >
-                                      {option.label}
-                                    </MenuItem>
-                                  ))}
-                                </TextField>
-                              </Grid>
-                              <Grid item xs={12} md={2}>
-                                <IconButton
-                                  size="small"
-                                  sx={{
-                                    fontSize: "16px",
-                                    fontWeight: "400",
-                                  }}
-                                  onClick={() => {
-                                    console.log("Clearing input");
-                                  }}
-                                >
-                                  <ClearIcon />
-                                </IconButton>
-                              </Grid>
-                            </React.Fragment>
-                          ))}
-                          <Grid item xs={12} md={12}>
+                                {names.map((name) => (
+                                  <MenuItem
+                                    key={name}
+                                    value={name}
+                                    style={getStyles(name, personName, theme)}
+                                    className="capitalize"
+                                  >
+                                    {name} configuration
+                                  </MenuItem>
+                                ))}
+                              </Select>
+                            </FormControl>
+                          </>
+                        </div>
+                        <div className="flex flex-row justify-between">
+                          <>
                             <Button
                               startIcon={<AddIcon />}
                               variant="contained"
@@ -1939,34 +1916,34 @@ export default function OrganizationDashboard() {
                                 fontWeight: "normal",
                                 textTransform: "none",
                               }}
-                              onClick={handleAddRole}
+                              onClick={() => setPersonName([])}
                             >
-                              Add more role
+                              Clear all
                             </Button>
-                          </Grid>
-                        </Grid>
-                        <DialogActions>
-                          <Button onClick={handleCloseAddRole}>
-                            <Typography
-                              variant="button"
-                              style={{ color: "red" }}
+                          </>
+                          <>
+                            <Button onClick={handleCloseAddRole}>
+                              <Typography
+                                variant="button"
+                                style={{ color: "red" }}
+                              >
+                                Cancel
+                              </Typography>
+                            </Button>
+                            <Button
+                              variant="contained"
+                              onClick={handleAddRole}
+                              sx={{
+                                width: "100px",
+                                color: "white",
+                                bgcolor: "#3867A5",
+                                "&:hover": { bgcolor: "#2A4D7B" },
+                              }}
                             >
-                              Cancel
-                            </Typography>
-                          </Button>
-                          <Button
-                            variant="contained"
-                            onClick={handleAddRole}
-                            sx={{
-                              width: "100px",
-                              color: "white",
-                              bgcolor: "#3867A5",
-                              "&:hover": { bgcolor: "#2A4D7B" },
-                            }}
-                          >
-                            Done
-                          </Button>
-                        </DialogActions>
+                              Done
+                            </Button>
+                          </>
+                        </div>
                       </Box>
                     </Modal>
                   </TabPanel>

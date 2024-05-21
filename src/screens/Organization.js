@@ -26,33 +26,36 @@ import {
 
 import toast, { Toaster } from "react-hot-toast";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-
 import { styled } from "@mui/material/styles";
 import OrganizationCard from "../components/organizationCard";
 import "../css/Organization.css";
 import axios from "axios";
-import { TextFields } from "@mui/icons-material";
 
 export default function LandingPage() {
   const [addOrg, setAddOrg] = React.useState(false);
 
   const [openModal, setOpenModal] = useState(false);
+  const [openModalSlot, setOpenModalSlot] = useState(false);
 
   const handleAdd = () => {
-    if (isSub) {
-      setAddOrg(!addOrg);
+    if (orgSlot === 0) {
+      setOpenModalSlot(true);
     } else {
-      setOpenModal(true);
+      if (isSub) {
+        setAddOrg(!addOrg);
+      } else {
+        setOpenModal(true);
+      }
     }
   };
   const handleCloseModal = () => setOpenModal(false);
+  const handleCloseModalSlot = () => setOpenModalSlot(false);
 
   const handleClose = () => setAddOrg(false);
 
   const [orgList, setOrgList] = useState();
 
   const handleShowOrganization = async () => {
-    toast.loading("In processing..");
     const getUrl = "http://127.0.0.1:5000/org/get";
     const token = localStorage.getItem("access_token");
     try {
@@ -108,7 +111,6 @@ export default function LandingPage() {
   const [isSub, setIsSub] = useState();
 
   const handleGetSub = async () => {
-    toast.loading("In processing..");
     const editUrl = `http://127.0.0.1:5000/subscription/check_subscription_by_username`;
     const token = localStorage.getItem("access_token");
     try {
@@ -132,9 +134,38 @@ export default function LandingPage() {
     }
   };
 
+  const [orgSlot, setOrgSlot] = useState();
+  const handleGetRemainSlot = async () => {
+    const editUrl = `http://127.0.0.1:5000/org/get_remain_slot`;
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await fetch(editUrl, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+
+      const data = await response.json();
+      if (response.status === 200) {
+        const slot = data.remain_slot;
+        setOrgSlot(slot);
+      } else {
+        setIsSub(false);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
+
   useEffect(() => {
     handleGetSub();
     handleShowOrganization();
+    handleGetRemainSlot();
   }, []);
 
   const [showConfirmation, setShowConfirmation] = React.useState(false);
@@ -417,7 +448,46 @@ export default function LandingPage() {
               </Link>
             </Box>
           </Modal>
-
+          {/* modal 0 slot remain */}
+          <Modal
+            open={openModalSlot}
+            onClose={handleCloseModalSlot}
+            aria-labelledby="modal-title"
+            aria-describedby="modal-description"
+          >
+            <Box
+              sx={{
+                justifyContent: "center",
+                textAlign: "center",
+                alignItems: "center",
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                width: 400,
+                borderRadius: "15px",
+                bgcolor: "background.paper",
+                boxShadow: 24,
+                p: 4,
+              }}
+            >
+              <div className="flex flex-row justify-center mb-5">
+                <img loading="lazy" src={nonIcon} style={{ width: "50px" }} />
+              </div>
+              <Typography id="modal-title" variant="h6" component="h2">
+                Can not create more organization!
+              </Typography>
+              <Typography id="modal-description" sx={{ mt: 2 }}>
+                Your remain organization slot is {orgSlot}, please upgrade the
+                package or delete existing organization to continue.
+              </Typography>
+              <Link to={"../subscribe"}>
+                <div className="mt-5">
+                  <SubBtn sx={{}} />
+                </div>
+              </Link>
+            </Box>
+          </Modal>
           <Modal
             keepMounted
             open={addOrg}
