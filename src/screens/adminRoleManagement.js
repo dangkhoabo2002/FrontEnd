@@ -16,6 +16,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import { useNavigate } from "react-router-dom";
 
 export default function AdminRoleManagement() {
   const [roleData, setRoleData] = useState();
@@ -62,7 +63,17 @@ export default function AdminRoleManagement() {
     setToken(isToken);
   };
 
+  const navigate = useNavigate();
+
   useEffect(() => {
+    const loginToken = localStorage.getItem("checkUser");
+
+    const checkLoggedIn = () => {
+      if (loginToken) {
+        navigate("/error404");
+      }
+    };
+    checkLoggedIn();
     handleGetRole();
     checkToken();
   }, []);

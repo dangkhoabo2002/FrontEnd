@@ -43,6 +43,7 @@ export default function Login() {
       setOpenDialog(true);
     } else if (loginUser) {
       setLoginType("user");
+      navigate(`/organizations`);
     }
   }, []);
 

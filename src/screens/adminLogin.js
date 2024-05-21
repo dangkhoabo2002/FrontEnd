@@ -9,6 +9,7 @@ export default function AdminLogin() {
   useEffect(() => {
     const loginToken = localStorage.getItem("checkAdmin");
     if (loginToken) {
+      
       navigate("/admin");
     }
 

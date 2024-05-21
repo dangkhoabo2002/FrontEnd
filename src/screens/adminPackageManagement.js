@@ -18,6 +18,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export default function AdminPackageManagement() {
   const [Package, setPackageData] = useState([]);
@@ -588,8 +589,17 @@ export default function AdminPackageManagement() {
     const isToken = localStorage.getItem("checkAdmin");
     setToken(isToken);
   };
+  const navigate = useNavigate();
 
   useEffect(() => {
+    const loginToken = localStorage.getItem("checkUser");
+
+    const checkLoggedIn = () => {
+      if (loginToken) {
+        navigate("/error404");
+      }
+    };
+    checkLoggedIn();
     handleGetPackage();
     checkToken();
   }, []);

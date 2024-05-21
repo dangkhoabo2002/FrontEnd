@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Logo from "../assets/logo.png";
 
 export default function Navigation() {
-  const isLogin = localStorage.getItem("access_token");
+  const isLogin = localStorage.getItem("checkUser");
 
   return (
     <div style={{ backgroundColor: "white" }}>

@@ -28,6 +28,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from "@mui/icons-material/Close";
 import EditIcon from "@mui/icons-material/Edit";
 import toast, { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export default function AdminGuide() {
   const [guideData, setGuideData] = useState([]);
@@ -286,7 +287,17 @@ export default function AdminGuide() {
     setToken(isToken);
   };
 
+  const navigate = useNavigate();
+
   useEffect(() => {
+    const loginToken = localStorage.getItem("checkUser");
+
+    const checkLoggedIn = () => {
+      if (loginToken) {
+        navigate("/error404");
+      }
+    };
+    checkLoggedIn();
     handleGetGuide();
     checkToken();
   }, []);

@@ -12,6 +12,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export default function AdminAccountManagement() {
   const [customerList, setCustomerList] = useState();
@@ -68,15 +69,27 @@ export default function AdminAccountManagement() {
   };
 
   const [token, setToken] = useState();
+
   const checkToken = () => {
     const isToken = localStorage.getItem("checkAdmin");
     setToken(isToken);
   };
 
+
+  const navigate = useNavigate();
+
   useEffect(() => {
+    const loginToken = localStorage.getItem("checkUser");
+
+    const checkLoggedIn = () => {
+      if (loginToken) {
+        navigate("/error404");
+      }
+    };
+
+    checkLoggedIn();
     handleGetCustomer();
-    checkToken();
-  }, []);
+  }, [navigate]);
 
   // CHANGE STATUS USER
   const [openChangeStatus, setOpenChangeStatus] = useState(false);
