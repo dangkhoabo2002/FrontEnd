@@ -1,6 +1,314 @@
+// import React, { useEffect, useState } from "react";
+// import SidebarAdmin from "../components/sidebarAdmin";
+// import NavigationAdmin from "../components/navAdmin";
+// import "../css/Admin.css";
+// import Button from "@mui/material/Button";
+// import toast, { Toaster } from "react-hot-toast";
+// import {
+//   Dialog,
+//   DialogActions,
+//   DialogContent,
+//   DialogContentText,
+//   DialogTitle,
+// } from "@mui/material";
+// import WarningAmberIcon from "@mui/icons-material/WarningAmber";
+// import { Navigate, useNavigate } from "react-router-dom";
+
+// export default function AdminAccountManagement() {
+//   const [customerList, setCustomerList] = useState();
+//   const [selectedCustomers, setSelectedCustomers] = useState([]);
+
+//   const handleClickSelectUser = (customerId) => {
+//     const isAlreadySelected = selectedCustomers.includes(customerId);
+//     if (isAlreadySelected) {
+//       setSelectedCustomers(selectedCustomers.filter((id) => id !== customerId));
+//     } else {
+//       setSelectedCustomers([...selectedCustomers, customerId]);
+//     }
+//   };
+
+//   const [open, setOpen] = React.useState(false);
+
+//   const handleGetCustomer = async () => {
+//     toast.loading("In processing...");
+//     const customerUrl = `http://127.0.0.1:5000/auth/get_all_profile`;
+//     const token = localStorage.getItem("access_token");
+
+//     try {
+//       const response = await fetch(customerUrl, {
+//         method: "GET",
+//         credentials: "include",
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//           "Content-Type": "application/json",
+//           "Access-Control-Allow-Origin": "*",
+//           "Access-Control-Allow-Credentials": "true",
+//         },
+//       });
+//       if (response.status === 200) {
+//         toast.dismiss();
+
+//         const customerData = await response.json();
+//         setCustomerList(customerData);
+//       } else if (response.status === 403) {
+//         toast.dismiss();
+//         toast.error("Permission denied!", {
+//           style: {
+//             border: "1px solid #F85F60",
+//             maxWidth: "900px",
+//             padding: "16px 24px",
+//             color: "red",
+//             fontWeight: "bolder",
+//           },
+//         });
+//       }
+//     } catch (error) {
+//       console.error("Error:", error);
+//     } finally {
+//     }
+//   };
+
+//   const [token, setToken] = useState();
+
+//   const checkToken = () => {
+//     const isToken = localStorage.getItem("checkAdmin");
+//     setToken(isToken);
+//   };
+
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     const loginToken = localStorage.getItem("checkUser");
+
+//     const checkLoggedIn = () => {
+//       if (loginToken) {
+//         navigate("/error404");
+//       }
+//     };
+
+//     checkLoggedIn();
+//     handleGetCustomer();
+//   }, [navigate]);
+
+//   // CHANGE STATUS USER
+//   const [openChangeStatus, setOpenChangeStatus] = useState(false);
+
+//   const handleOpenChangeStatus = () => {
+//     setOpenChangeStatus(true);
+//   };
+
+//   const handleChangeStatusClose = () => {
+//     setOpenChangeStatus(false);
+//   };
+//   const handleChangeStatus = () => {
+//     // API HERE
+//     handleChangeStatusClose();
+//   };
+
+//   // DELETE USER ACCOUNT
+//   const [openDelete, setOpenDelete] = useState(false);
+//   const [currentUser, setCurrentUser] = useState("");
+
+//   const handleClickOpenRemoveUser = (id) => {
+//     setCurrentUser(id);
+//     setOpenDelete(true);
+//   };
+//   const handleCloseDelete = () => {
+//     setOpenDelete(false);
+//   };
+//   const handleDeleteUser = async () => {
+//     handleCloseDelete();
+//   };
+
+//   return (
+//     <div className="">
+//       {/*-------------- Navigation + Backgroud---------------- */}
+
+//       {/* <NavigationAdmin /> */}
+
+//       {/*-------------- END OF Navigation + Backgroud---------------- */}
+
+//       {/*-------------- LayoutBody ---------------- */}
+
+//       <div
+//         style={{
+//           display: "grid",
+//           gridTemplateColumns: "0fr 3fr",
+//           height: "66vh",
+//         }}
+//       >
+//         <Toaster position="bottom-right" reverseOrder={false} />
+
+//         <div
+//           style={{
+//             display: "flex",
+//             flexDirection: "column",
+//             height: "70vh",
+//           }}
+//         >
+//           <SidebarAdmin />
+//         </div>
+//         <div className="px-12 py-6 bg-[#F3F8FF]">
+//           {/*-------------- Account Table ---------------- */}
+//           {token !== null ? (
+//             <div
+//               className="bg-white mt-4 rounded-md px-8 pb-8 shadow-md"
+//               style={{ border: "1px solid #89A6CC" }}
+//             >
+//               <table class="table-auto w-full ">
+//                 <thead>
+//                   <tr>
+//                     <th>ID</th>
+//                     <th>USERNAME</th>
+//                     <th>FULLNAME</th>
+//                     <th>EMAIL</th>
+//                     <th>ACTION</th>
+//                     <th>STATUS</th>
+//                   </tr>
+//                 </thead>
+//                 <tbody>
+//                   <tr>
+//                     <td
+//                       style={{
+//                         color: "transparent",
+//                         padding: "0px",
+//                       }}
+//                     >
+//                       .
+//                     </td>
+//                   </tr>
+
+//                   {customerList?.map((customer, index) => (
+//                     <tr key={customer.id}>
+//                       <td>{index + 1}</td>
+//                       <td>{customer.username}</td>
+//                       <td>{customer.full_name}</td>
+//                       <td>{customer.email}</td>
+//                       <td>
+//                         <Button
+//                           onClick={() => handleClickOpenRemoveUser(customer.id)}
+//                           variant="contained"
+//                           sx={{
+//                             width: "100px",
+//                             height: "25px",
+//                             color: "white",
+//                             borderRadius: "100px",
+//                             bgcolor: "#F85F60",
+//                             "&:hover": { bgcolor: "#D45758" },
+//                             fontSize: "14px",
+//                             fontWeight: "normal",
+//                             textTransform: "none",
+//                           }}
+//                         >
+//                           Delete
+//                         </Button>
+//                       </td>
+//                       {customer.status == "ACTIVE" ? (
+//                         <td>
+//                           <div class="flex justify-center m-5">
+//                             <Button
+//                               variant="contained"
+//                               sx={{
+//                                 width: "100px",
+//                                 height: "25px",
+//                                 color: "white",
+//                                 borderRadius: "100px",
+//                                 bgcolor: "#6EC882",
+//                                 "&:hover": { bgcolor: "#63B976" },
+//                                 fontSize: "14px",
+//                                 fontWeight: "normal",
+//                                 textTransform: "none",
+//                               }}
+//                               onClick={handleOpenChangeStatus}
+//                             >
+//                               Active
+//                             </Button>
+//                           </div>
+//                         </td>
+//                       ) : (
+//                         <td>
+//                           <div class="flex justify-center m-5">
+//                             <Button
+//                               variant="contained"
+//                               sx={{
+//                                 width: "100px",
+//                                 height: "25px",
+//                                 color: "white",
+//                                 borderRadius: "100px",
+//                                 bgcolor: "#8E8E8E",
+//                                 "&:hover": { bgcolor: "#6C6C6C" },
+//                                 fontSize: "14px",
+//                                 fontWeight: "normal",
+//                                 textTransform: "none",
+//                               }}
+//                               onClick={handleOpenChangeStatus}
+//                             >
+//                               Inative
+//                             </Button>
+//                           </div>
+//                         </td>
+//                       )}
+//                     </tr>
+//                   ))}
+//                 </tbody>
+//                 {/* DIALOG CONFIRM CHANGE STATUS */}
+//                 <Dialog
+//                   open={openChangeStatus}
+//                   onClose={handleChangeStatusClose}
+//                 >
+//                   <DialogTitle>Confirmation</DialogTitle>
+//                   <DialogContent>
+//                     <DialogContentText>
+//                       Are you sure you want to change the status?
+//                     </DialogContentText>
+//                   </DialogContent>
+//                   <DialogActions>
+//                     <Button onClick={handleChangeStatusClose}>Cancel</Button>
+//                     <Button onClick={handleChangeStatus}>
+//                       <p className="text-red">Confirm</p>
+//                     </Button>
+//                   </DialogActions>
+//                 </Dialog>
+
+//                 {/* DIALOG DELETE USER */}
+//                 <Dialog
+//                   open={openDelete}
+//                   onClose={handleCloseDelete}
+//                   aria-labelledby="alert-dialog-title"
+//                   aria-describedby="alert-dialog-description"
+//                 >
+//                   <DialogTitle id="alert-dialog-title">
+//                     {"Do you want to remove this guide ?"}
+//                   </DialogTitle>
+
+//                   <DialogActions>
+//                     <Button onClick={handleCloseDelete}>No</Button>
+//                     <Button onClick={handleDeleteUser}>
+//                       <p className="text-red">Yes</p>
+//                     </Button>
+//                   </DialogActions>
+//                 </Dialog>
+//               </table>
+
+//               {/*-------------- END OF Account Table ---------------- */}
+//             </div>
+//           ) : (
+//             <div className="flex flex-row justify-center py-40 text-red-600 font-bold gap-4">
+//               <WarningAmberIcon />
+//               <p>UKNOWN USER! PLEASE LOGIN FIRST </p>
+//               <WarningAmberIcon />
+//             </div>
+//           )}
+//         </div>
+//       </div>
+
+//       {/*-------------- END OF LayoutBody ---------------- */}
+//     </div>
+//   );
+// }
+
 import React, { useEffect, useState } from "react";
 import SidebarAdmin from "../components/sidebarAdmin";
-import NavigationAdmin from "../components/navAdmin";
 import "../css/Admin.css";
 import Button from "@mui/material/Button";
 import toast, { Toaster } from "react-hot-toast";
@@ -10,8 +318,10 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  TextField,
 } from "@mui/material";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export default function AdminAccountManagement() {
   const [customerList, setCustomerList] = useState();
@@ -46,9 +356,9 @@ export default function AdminAccountManagement() {
       });
       if (response.status === 200) {
         toast.dismiss();
-
         const customerData = await response.json();
         setCustomerList(customerData);
+        setFilteredCustomerList(customerData);
       } else if (response.status === 403) {
         toast.dismiss();
         toast.error("Permission denied!", {
@@ -63,20 +373,30 @@ export default function AdminAccountManagement() {
       }
     } catch (error) {
       console.error("Error:", error);
-    } finally {
     }
   };
 
   const [token, setToken] = useState();
+
   const checkToken = () => {
     const isToken = localStorage.getItem("checkAdmin");
     setToken(isToken);
   };
 
+  const navigate = useNavigate();
+
   useEffect(() => {
+    const loginToken = localStorage.getItem("checkUser");
+
+    const checkLoggedIn = () => {
+      if (loginToken) {
+        navigate("/error404");
+      }
+    };
+
+    checkLoggedIn();
     handleGetCustomer();
-    checkToken();
-  }, []);
+  }, [navigate]);
 
   // CHANGE STATUS USER
   const [openChangeStatus, setOpenChangeStatus] = useState(false);
@@ -108,65 +428,81 @@ export default function AdminAccountManagement() {
     handleCloseDelete();
   };
 
+  // searchbar
+  const [filteredCustomerList, setFilteredCustomerList] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearchChange = (event) => {
+    const query = event.target.value.toLowerCase();
+    setSearchQuery(query);
+    setFilteredCustomerList(
+      customerList.filter((customer) =>
+        customer.username.toLowerCase().includes(query)
+      )
+    );
+  };
+
   return (
-    <div className="">
-      {/*-------------- Navigation + Backgroud---------------- */}
-
-      <NavigationAdmin />
-
-      {/*-------------- END OF Navigation + Backgroud---------------- */}
-
-      {/*-------------- LayoutBody ---------------- */}
-
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "0fr 3fr",
-          height: "66vh",
-        }}
-      >
-        <Toaster position="bottom-right" reverseOrder={false} />
-
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            height: "70vh",
-          }}
-        >
-          <SidebarAdmin />
+    <div className="admin-layout">
+      <Toaster position="bottom-right" reverseOrder={false} />
+      <SidebarAdmin />
+      <div className="content">
+        <div className="info-title font-semibold pb-5">
+          <p style={{fontSize:"36px"}}>Account Management</p>
         </div>
-        <div className="px-12 py-6 bg-[#F3F8FF]">
-          {/*-------------- Account Table ---------------- */}
-          {token !== null ? (
-            <div
-              className="bg-white mt-4 rounded-md px-8 pb-8 shadow-md"
-              style={{ border: "1px solid #89A6CC" }}
-            >
-              <table class="table-auto w-full ">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>USERNAME</th>
-                    <th>FULLNAME</th>
-                    <th>EMAIL</th>
-                    <th>ACTION</th>
-                    <th>STATUS</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td
-                      style={{
-                        color: "transparent",
-                        padding: "0px",
-                      }}
-                    >
-                      .
-                    </td>
-                  </tr>
 
-                  {customerList?.map((customer, index) => (
+        <div className="button-container">
+            <div className="flex justify-start">
+              <label htmlFor="simple-search" className="sr-only">
+                Search
+              </label>
+              <div className="relative w-full">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <svg
+                    className="w-4 h-4 text-gray-400"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                    />
+                  </svg>
+                </div>
+                <input
+                  type="text"
+                  id="simple-search"
+                  style={{width:"200%"}}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Search by username..."
+                  onChange={handleSearchChange}
+                />
+              </div>
+            </div>
+            </div>
+
+        {token !== null ? (
+          <div className="content-container">
+            
+            <table className="table-auto w-full">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>USERNAME</th>
+                  <th>FULLNAME</th>
+                  <th>EMAIL</th>
+                  <th>ACTION</th>
+                  <th>STATUS</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredCustomerList.length > 0 ? (
+                  filteredCustomerList.map((customer, index) => (
                     <tr key={customer.id}>
                       <td>{index + 1}</td>
                       <td>{customer.username}</td>
@@ -191,9 +527,9 @@ export default function AdminAccountManagement() {
                           Delete
                         </Button>
                       </td>
-                      {customer.status == "ACTIVE" ? (
+                      {customer.status === "ACTIVE" ? (
                         <td>
-                          <div class="flex justify-center m-5">
+                          <div className="flex justify-center m-5">
                             <Button
                               variant="contained"
                               sx={{
@@ -215,7 +551,7 @@ export default function AdminAccountManagement() {
                         </td>
                       ) : (
                         <td>
-                          <div class="flex justify-center m-5">
+                          <div className="flex justify-center m-5">
                             <Button
                               variant="contained"
                               sx={{
@@ -231,66 +567,66 @@ export default function AdminAccountManagement() {
                               }}
                               onClick={handleOpenChangeStatus}
                             >
-                              Inative
+                              Inactive
                             </Button>
                           </div>
                         </td>
                       )}
                     </tr>
-                  ))}
-                </tbody>
-                {/* DIALOG CONFIRM CHANGE STATUS */}
-                <Dialog
-                  open={openChangeStatus}
-                  onClose={handleChangeStatusClose}
-                >
-                  <DialogTitle>Confirmation</DialogTitle>
-                  <DialogContent>
-                    <DialogContentText>
-                      Are you sure you want to change the status?
-                    </DialogContentText>
-                  </DialogContent>
-                  <DialogActions>
-                    <Button onClick={handleChangeStatusClose}>Cancel</Button>
-                    <Button onClick={handleChangeStatus}>
-                      <p className="text-red">Confirm</p>
-                    </Button>
-                  </DialogActions>
-                </Dialog>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="6" className="text-center py-4">
+                      No customers found.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
 
-                {/* DIALOG DELETE USER */}
-                <Dialog
-                  open={openDelete}
-                  onClose={handleCloseDelete}
-                  aria-labelledby="alert-dialog-title"
-                  aria-describedby="alert-dialog-description"
-                >
-                  <DialogTitle id="alert-dialog-title">
-                    {"Do you want to remove this guide ?"}
-                  </DialogTitle>
+            {/* DIALOG CONFIRM CHANGE STATUS */}
+            <Dialog open={openChangeStatus} onClose={handleChangeStatusClose}>
+              <DialogTitle>Confirmation</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  Are you sure you want to change the status?
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleChangeStatusClose}>Cancel</Button>
+                <Button onClick={handleChangeStatus}>
+                  <p className="text-red">Confirm</p>
+                </Button>
+              </DialogActions>
+            </Dialog>
 
-                  <DialogActions>
-                    <Button onClick={handleCloseDelete}>No</Button>
-                    <Button onClick={handleDeleteUser}>
-                      <p className="text-red">Yes</p>
-                    </Button>
-                  </DialogActions>
-                </Dialog>
-              </table>
+            {/* DIALOG DELETE USER */}
+            <Dialog
+              open={openDelete}
+              onClose={handleCloseDelete}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">
+                {"Do you want to remove this guide?"}
+              </DialogTitle>
 
-              {/*-------------- END OF Account Table ---------------- */}
-            </div>
-          ) : (
-            <div className="flex flex-row justify-center py-40 text-red-600 font-bold gap-4">
-              <WarningAmberIcon />
-              <p>UKNOWN USER! PLEASE LOGIN FIRST </p>
-              <WarningAmberIcon />
-            </div>
-          )}
-        </div>
+              <DialogActions>
+                <Button onClick={handleCloseDelete}>No</Button>
+                <Button onClick={handleDeleteUser}>
+                  <p className="text-red">Yes</p>
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </div>
+        ) : (
+          <div className="flex flex-row justify-center py-40 text-red-600 font-bold gap-4">
+            <WarningAmberIcon />
+            <p>UNKNOWN USER! PLEASE LOGIN FIRST </p>
+            <WarningAmberIcon />
+          </div>
+        )}
       </div>
-
-      {/*-------------- END OF LayoutBody ---------------- */}
     </div>
   );
 }

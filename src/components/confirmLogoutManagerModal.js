@@ -19,6 +19,8 @@ export default function AlertDialogSlide() {
     setOpen(false);
   };
 
+  
+
   const navigate = useNavigate();
   const handleLogout = async () => {
     toast.loading("In processing..");

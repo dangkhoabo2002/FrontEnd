@@ -2,54 +2,42 @@ import React, { useState, useEffect } from "react";
 import SidebarAdmin from "../components/sidebarAdmin";
 import NavigationAdmin from "../components/navAdmin";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
-
 import {
-  Grid,
   Button,
-  Modal,
-  Box,
-  Typography,
-  TextField,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
   IconButton,
-  FormControl,
-  OutlinedInput,
-  FormControlLabel,
-  Checkbox,
+  TextField,
 } from "@mui/material";
 
 // ICONS MUI
-
 import DeleteIcon from "@mui/icons-material/Delete";
-import CloseIcon from "@mui/icons-material/Close";
 import EditIcon from "@mui/icons-material/Edit";
 import toast, { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import "../css/adminGuide.css";
 
 export default function AdminGuide() {
   const [guideData, setGuideData] = useState([]);
   const [open, setOpen] = useState(false);
   const [guideAdd, setGuideAdd] = useState({ title: "", content: "" });
-
   const [openDelete, setOpenDelete] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
-
   const [currentEditGuide, setCurrentEditGuide] = useState({
     title: "",
     content: "",
   });
-
   const [currentGuide, setCurrentGuide] = useState();
 
-  // EDIT GUIDE
   const handleClickOpenEditGuide = (id, old_title, old_content) => {
     setCurrentGuide(id);
     setCurrentEditGuide({ title: old_title, content: old_content });
     setOpenEdit(true);
   };
+
   const handleCloseEditGuide = () => {
     setCurrentEditGuide({ title: "", content: "" });
     setOpenEdit(false);
@@ -58,6 +46,9 @@ export default function AdminGuide() {
   const handleChangeEditGuide = (prop) => (event) => {
     setCurrentEditGuide({ ...currentEditGuide, [prop]: event.target.value });
   };
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredGuideData, setFilteredGuideData] = useState([]);
 
   const handleEditGuide = async () => {
     toast.loading("In processing..");
@@ -141,7 +132,6 @@ export default function AdminGuide() {
         }
       } catch (error) {
         console.error("Error:", error);
-      } finally {
       }
     } else {
       toast.error("Please select a guide!", {
@@ -156,7 +146,6 @@ export default function AdminGuide() {
     }
   };
 
-  // DELETE GUIDE
   const handleDeleteGuide = async () => {
     if (currentGuide) {
       const deleteUrl = `http://127.0.0.1:5000/guide/delete/${currentGuide}`;
@@ -229,7 +218,6 @@ export default function AdminGuide() {
         }
       } catch (error) {
         console.error("Error:", error);
-      } finally {
       }
     } else {
       toast.error("Please select a guide!", {
@@ -253,7 +241,6 @@ export default function AdminGuide() {
     setOpenDelete(false);
   };
 
-  // GET GUIDE
   const handleGetGuide = async () => {
     const guideUrl = `http://127.0.0.1:5000/guide/get`;
     const token = localStorage.getItem("access_token");
@@ -272,6 +259,7 @@ export default function AdminGuide() {
       if (response.status === 200) {
         const data = await response.json();
         setGuideData(data);
+        setFilteredGuideData(data);
       } else {
         console.error("Failed to fetch guide data");
       }
@@ -286,12 +274,19 @@ export default function AdminGuide() {
     setToken(isToken);
   };
 
+  const navigate = useNavigate();
+
   useEffect(() => {
+    const loginToken = localStorage.getItem("checkUser");
+
+    const checkLoggedIn = () => {
+      if (loginToken) {
+        navigate("/error404");
+      }
+    };
     handleGetGuide();
     checkToken();
   }, []);
-
-  // ADD GUIDE
 
   const handleOpenAddGuide = () => {
     setOpen(true);
@@ -336,6 +331,7 @@ export default function AdminGuide() {
         });
         if (response.status === 201) {
           handleGetGuide();
+          
           toast.success("Add guide successfully.", {
             style: {
               border: "1px solid #37E030",
@@ -379,82 +375,102 @@ export default function AdminGuide() {
         }
       } catch (error) {
         console.error("Error:", error);
-      } finally {
       }
     }
   };
-
-  // EDIT GUIDE
 
   const handleChange = (prop) => (event) => {
     setGuideAdd({ ...guideAdd, [prop]: event.target.value });
   };
 
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 600,
-    bgcolor: "background.paper",
-    borderRadius: "20px",
-    boxShadow: 24,
-    p: 3,
+  // search bar
+  const handleSearchChange = (event) => {
+    const query = event.target.value.toLowerCase();
+    setSearchQuery(query);
+    setFilteredGuideData(
+      guideData.filter((guide) =>
+        guide.title.toLowerCase().includes(query)
+      )
+    );
   };
 
   return (
-    <div className="">
-      <NavigationAdmin />
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "0fr 3fr",
-          height: "100%",
-        }}
-      >
-        <Toaster position="bottom-right" reverseOrder={false} />
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            height: "90vh",
-          }}
-        >
-          <SidebarAdmin />
+    <div className="admin-layout">
+      {/* <NavigationAdmin /> */}
+      <SidebarAdmin />
+      <div className="content">
+        <Toaster position="bottom-right" reverseOrder={false} />{" "}
+        <div className="info-title font-semibold pb-5">
+          <p style={{ fontSize: "36px" }}>Guide Management</p>
         </div>
-        <div className="px-12 py-6 bg-[#F3F8FF]">
-          {token !== null ? (
-            <>
-              <div className="flex flex-row gap-10">
-                <Button
-                  onClick={handleOpenAddGuide}
-                  variant="outlined"
-                  sx={{
-                    width: "120px",
-                    color: "white",
-                    bgcolor: "#3867A5",
-                    "&:hover": { bgcolor: "#2A4D7B" },
-                  }}
-                >
-                  Add Guide
-                </Button>
+        
+        {token !== null ? (
+          <>
+            <div className="button-container">
+            <div className="flex justify-start">
+              <label htmlFor="simple-search" className="sr-only">
+                Search
+              </label>
+              <div className="relative w-full">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <svg
+                    className="w-4 h-4 text-gray-400"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                    />
+                  </svg>
+                </div>
+                <input
+                  type="text"
+                  id="simple-search"
+                  style={{width:"200%"}}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Search by title..."
+                  onChange={handleSearchChange}
+                />
               </div>
-              <div
-                className="bg-white mt-4 rounded-md px-8 pb-8 shadow-md"
-                style={{ border: "1px solid #89A6CC" }}
+            </div>
+
+              <Button
+              className="flex justify-end max-w-sm"
+                onClick={handleOpenAddGuide}
+                variant="outlined"
+                sx={{
+                  width: "120px",
+                  color: "white",
+                  bgcolor: "#3867A5",
+                  "&:hover": { bgcolor: "#2A4D7B" },
+                }}
               >
-                <table className="">
+                Add Guide
+              </Button>
+            </div>
+            
+            <div className="content-container">
+              <table id="guide-table" className="table-auto w-full">
+                <thead>
                   <tr>
                     <th id="id">#</th>
                     <th id="title">TITLE</th>
                     <th id="content">CONTENT</th>
                     <th id="action">ACTIONS</th>
                   </tr>
-                  {guideData.map((guide, index) => (
+                </thead>
+                <tbody>
+                  {filteredGuideData.map((guide, index) => (
                     <tr key={guide.guide_id}>
                       <td>{index + 1}</td>
                       <td>{guide.title}</td>
-                      <td>{guide.content.slice(0, 100)}...</td>
+                      <td>{guide.content.slice(0, 50)}...</td>
                       <td style={{ padding: "6px 0px" }}>
                         <IconButton
                           aria-label="delete"
@@ -464,7 +480,6 @@ export default function AdminGuide() {
                         >
                           <DeleteIcon />
                         </IconButton>
-
                         <IconButton
                           aria-label="edit"
                           onClick={() =>
@@ -480,34 +495,33 @@ export default function AdminGuide() {
                       </td>
                     </tr>
                   ))}
-                  <Dialog
-                    open={openDelete}
-                    onClose={handleClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                  >
-                    <DialogTitle id="alert-dialog-title">
-                      {"Do you want to remove this guide ?"}
-                    </DialogTitle>
-
-                    <DialogActions>
-                      <Button onClick={handleCloseDelete}>No</Button>
-                      <Button onClick={handleDeleteGuide}>
-                        <p className="text-red">Yes</p>
-                      </Button>
-                    </DialogActions>
-                  </Dialog>
-                </table>
-              </div>
-            </>
-          ) : (
-            <div className="flex flex-row justify-center py-40 gap-4 text-red-600 font-bold">
-              <WarningAmberIcon />
-              <p>UKNOWN USER! PLEASE LOGIN FIRST </p>
-              <WarningAmberIcon />
+                </tbody>
+              </table>
+              <Dialog
+                open={openDelete}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+                <DialogTitle id="alert-dialog-title">
+                  {"Do you want to remove this guide ?"}
+                </DialogTitle>
+                <DialogActions>
+                  <Button onClick={handleCloseDelete}>No</Button>
+                  <Button onClick={handleDeleteGuide}>
+                    <p className="text-red">Yes</p>
+                  </Button>
+                </DialogActions>
+              </Dialog>
             </div>
-          )}
-        </div>
+          </>
+        ) : (
+          <div className="flex flex-row justify-center py-40 gap-4 text-red-600 font-bold">
+            <WarningAmberIcon />
+            <p>UNKNOWN USER! PLEASE LOGIN FIRST </p>
+            <WarningAmberIcon />
+          </div>
+        )}
       </div>
 
       <Dialog open={open} onClose={handleCloseAddGuide}>
@@ -517,7 +531,7 @@ export default function AdminGuide() {
           <TextField
             fullWidth
             variant="outlined"
-            value={currentEditGuide.title}
+            value={guideAdd.title}
             onChange={handleChange("title")}
             required
             margin="dense"
@@ -537,7 +551,7 @@ export default function AdminGuide() {
             multiline
             rows={4}
             variant="outlined"
-            value={currentEditGuide.content}
+            value={guideAdd.content}
             onChange={handleChange("content")}
           />
         </DialogContent>
@@ -566,7 +580,6 @@ export default function AdminGuide() {
             onChange={handleChangeEditGuide("title")}
             value={currentEditGuide.title}
           />
-
           <TextField
             required
             id="outlined-multiline-static"
@@ -586,107 +599,6 @@ export default function AdminGuide() {
           <Button onClick={handleEditGuide}>Confirm</Button>
         </DialogActions>
       </Dialog>
-
-      {/* <Modal
-        keepMounted
-        open={openEdit}
-        onClose={handleCloseEditGuide}
-        aria-labelledby="keep-mounted-modal-title"
-        aria-describedby="keep-mounted-modal-description"
-      >
-        <Box sx={style}>
-          <div className="pb-2 text-center border-b-2 border-stone-500">
-            <div className="flex flex-row items-center justify-between">
-              <p
-                className="font-semibold"
-                style={{ fontSize: "28px", color: "#637381" }}
-              >
-                EDIT GUIDE
-              </p>
-              <IconButton onClick={handleCloseEditGuide}>
-                <CloseIcon />
-              </IconButton>
-            </div>
-          </div>
-
-          <Grid container alignItems="center" spacing={2} mt={0}>
-            <Grid item xs={12} md={3}>
-              <Typography
-                className="mt-3"
-                style={{
-                  fontSize: "16px",
-                  fontWeight: "400",
-                }}
-              >
-                Title:
-              </Typography>
-            </Grid>
-            <Grid item xs={12} md={9}>
-              <FormControl fullWidth variant="outlined">
-                <OutlinedInput
-                  inputProps={{
-                    "aria-label": "Title",
-                  }}
-                  onChange={handleChangeEditGuide("title")}
-                  value={currentEditGuide.title}
-                />
-              </FormControl>
-            </Grid>
-          </Grid>
-
-          <Grid container alignItems="center" spacing={2} mt={0}>
-            <Grid item xs={12} md={3}>
-              <Typography
-                className="mt-3"
-                style={{
-                  fontSize: "16px",
-                  fontWeight: "400",
-                }}
-              >
-                Content:
-              </Typography>
-            </Grid>
-            <Grid item xs={12} md={9}>
-              <FormControl fullWidth variant="outlined">
-                <OutlinedInput
-                  inputProps={{
-                    "aria-label": "Host",
-                  }}
-                  onChange={handleChangeEditGuide("content")}
-                  value={currentEditGuide.content}
-                />
-              </FormControl>
-            </Grid>
-          </Grid>
-
-          <DialogActions className="mt-5">
-            <Button
-              variant="contained"
-              onClick={handleCloseEditGuide}
-              sx={{
-                width: "100px",
-                color: "white",
-                bgcolor: "#F85F60",
-                "&:hover": { bgcolor: "#D45758" },
-              }}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="contained"
-              onClick={handleEditGuide}
-              sx={{
-                width: "100px",
-                color: "white",
-                bgcolor: "#6EC882",
-                "&:hover": { bgcolor: "#63B976" },
-              }}
-            >
-              Add
-            </Button>
-          </DialogActions>
-        </Box>
-      </Modal> */}
     </div>
   );
 }

@@ -69,26 +69,26 @@ export default function App() {
 
         {/* ADMIN ROUTE*/}
         <Route path="/adminLogin" element={<AdminLogin />}></Route>
-        <Route path="/admin" element={checkAdminRole() || <Admin />}></Route>
+        <Route path="/admin" element={<Admin />}></Route>
         <Route
           path="/admin/billing"
-          element={checkAdminRole() || <AdminBilling />}
+          element={<AdminBilling />}
         ></Route>
         <Route
           path="/admin/setting"
-          element={checkAdminRole() || <AdminSetting />}
+          element={<AdminSetting />}
         ></Route>
         <Route
           path="/admin/guide"
-          element={checkAdminRole() || <AdminGuide />}
+          element={<AdminGuide />}
         ></Route>
         <Route
           path="/admin/package"
-          element={checkAdminRole() || <AdminPackage />}
+          element={<AdminPackage />}
         ></Route>
         <Route
           path="/admin/role"
-          element={checkAdminRole() || <AdminRole />}
+          element={ <AdminRole />}
         ></Route>
 
         {/* USER ROUTE*/}

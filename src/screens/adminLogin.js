@@ -6,6 +6,8 @@ import bgLogin from "../images/loginBackgr.png";
 import toast, { Toaster } from "react-hot-toast";
 
 export default function AdminLogin() {
+  const navigate = useNavigate();
+
   useEffect(() => {
     const loginToken = localStorage.getItem("checkAdmin");
     if (loginToken) {
@@ -16,9 +18,8 @@ export default function AdminLogin() {
     if (loginUserToken) {
       navigate("/");
     }
-  });
+  }, [navigate]);
 
-  const navigate = useNavigate();
   const [data, setData] = useState({
     manager_username: "",
     manager_password: "",
@@ -28,11 +29,11 @@ export default function AdminLogin() {
     setData({ ...data, [prop]: event.target.value });
   };
 
-  const handleManagerLogin = async () => {
+  const handleManagerLogin = async (event) => {
+    event.preventDefault();
     toast.loading("In processing..");
     const { manager_username, manager_password } = data;
 
-    // dont let usname pw null
     if (!manager_username || !manager_password) {
       toast.dismiss();
       toast.error("Please enter your username & password!", {
@@ -53,7 +54,6 @@ export default function AdminLogin() {
       const response = await fetch(loginUrl, {
         method: "POST",
         credentials: "include",
-
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
@@ -67,7 +67,6 @@ export default function AdminLogin() {
       if (response.status === 200) {
         toast.dismiss();
         const data = await response.json();
-
         localStorage.setItem("access_token", data.access_token);
         localStorage.setItem("checkAdmin", true);
         navigate("/admin");
@@ -111,7 +110,6 @@ export default function AdminLogin() {
       }}
     >
       <Toaster position="bottom-right" reverseOrder={false} />
-
       <div
         style={{
           width: "70%",
@@ -128,7 +126,7 @@ export default function AdminLogin() {
             Admin Sign in
           </h1>
         </div>
-        <div>
+        <form onSubmit={handleManagerLogin}>
           <TextField
             label="Username"
             fullWidth
@@ -146,9 +144,7 @@ export default function AdminLogin() {
             value={data.manager_password}
             onChange={handleChange("manager_password")}
           />
-
           <Button
-            onClick={handleManagerLogin}
             type="submit"
             fullWidth
             variant="contained"
@@ -157,7 +153,7 @@ export default function AdminLogin() {
           >
             Sign in
           </Button>
-        </div>
+        </form>
       </div>
     </div>
   );

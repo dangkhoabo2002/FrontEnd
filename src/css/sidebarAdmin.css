@@ -1,0 +1,103 @@
+.sidebar-container2 {
+    width: 300px;
+    height: 100vh;
+    background-color: #fff;
+    align-items: center;
+    border-right: 1px solid #E5E8EB;
+    position: fixed;
+  }
+  
+  .logo-container {
+    display: flex;
+    align-items: center;
+    padding: 24px;
+  }
+  
+  .logo-amazing {
+    width: 90px;
+    height: auto;
+    margin-right: 10px;
+  }
+  
+  .logo-text {
+    font-family: Poppins;
+    font-size: 24px;
+    font-weight: bold;
+    color: #3867A5;
+  }
+  
+  
+  .user-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 15px;
+    position: absolute;
+    bottom: 0;
+    width: 226px;
+  }
+  
+  .user-container .user-image {
+    display: block;
+    border-radius: 50%;
+    width: 55px;
+    height: 55px;
+  }
+  
+  .user-container .user-info .user-name {
+    font-family: Poppins;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 27px;
+    letter-spacing: 0.126em;
+    text-align: left;
+    color: #000;
+  }
+  
+  .user-container .user-info .user-role {
+    font-family: Poppins;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 21px;
+    letter-spacing: 0.098em;
+    text-align: left;
+    color: #AAABAF;
+  }
+  
+  .sidebar-container2 .font-black {
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .sidebar-container2 .hoverSection {
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .sidebar-container2 .hoverSection.selectedMenu {
+    background-color: #DFEDFF;
+    font-weight: bold;
+  }
+  
+  .sidebar-container2 .hoverSection:hover {
+    background-color: #DFEDFF;
+  }
+  
+  .sidebar-container2 .hoverSection a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #637381;
+  }
+  
+  .sidebar-container2 .hoverSection a p {
+    font-size: 18px;
+    font-weight: 500;
+    margin-left: 16px;
+  }
+  
+  .sidebar-container2 .hoverSection a svg {
+    font-size: 28px;
+    color: #637381;
+  }
+  

@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import SidebarAdmin from "../components/sidebarAdmin";
 import NavigationAdmin from "../components/navAdmin";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
-import "../css/adminBilling.css";
 import {
   Button,
   Dialog,
@@ -12,16 +11,16 @@ import {
   DialogTitle,
   IconButton,
   TextField,
+  InputAdornment,
 } from "@mui/material";
-import InputAdornment from "@mui/material/InputAdornment";
-
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import "../css/adminPackage.css";
 
 export default function AdminPackageManagement() {
   const [Package, setPackageData] = useState([]);
-
   const [openAddPackage, setOpenAddPackage] = useState(false);
   const [packageAdd, setPackageAdd] = useState({
     package_id: "",
@@ -36,6 +35,7 @@ export default function AdminPackageManagement() {
   const clickOpenAddPackage = () => {
     setOpenAddPackage(true);
   };
+
   const clickCloseAddPackage = () => {
     setOpenAddPackage(false);
     setPackageAdd({
@@ -49,7 +49,6 @@ export default function AdminPackageManagement() {
     });
   };
 
-  // GET PKG
   const handleGetPackage = async () => {
     toast.loading("In processing..");
     const packageUrl = `http://127.0.0.1:5000/package/get`;
@@ -70,6 +69,7 @@ export default function AdminPackageManagement() {
         toast.dismiss();
         const data = await response.json();
         setPackageData(data);
+        setFilteredPackageData(data);
       } else {
         toast.dismiss();
         console.error("Failed to fetch package data");
@@ -79,7 +79,6 @@ export default function AdminPackageManagement() {
     }
   };
 
-  // ADD PKG
   const handleAddPackage = async () => {
     if (
       packageAdd.package_name === "" ||
@@ -101,7 +100,6 @@ export default function AdminPackageManagement() {
       const positiveIntegerRegex = /^[1-9]\d*$/;
       const priceRegex = /^\d+(\.\d{1,2})?$/;
 
-      // Check if slot number is a positive integer
       if (!positiveIntegerRegex.test(packageAdd.slot_number)) {
         toast.dismiss();
         toast.error("Slot number greater than 0 or at least 1.", {
@@ -116,7 +114,6 @@ export default function AdminPackageManagement() {
         return;
       }
 
-      // Check if slot server is a positive integer
       if (!positiveIntegerRegex.test(packageAdd.slot_server)) {
         toast.dismiss();
         toast.error("Slot server greater than 0 or at least 1.", {
@@ -131,7 +128,6 @@ export default function AdminPackageManagement() {
         return;
       }
 
-      // Check if duration is a positive integer
       if (!positiveIntegerRegex.test(packageAdd.duration)) {
         toast.dismiss();
         toast.error("Duration greater than 0 or at least 1.", {
@@ -146,7 +142,6 @@ export default function AdminPackageManagement() {
         return;
       }
 
-      // Check if price is a positive decimal with two decimal places
       if (!priceRegex.test(packageAdd.price)) {
         toast.dismiss();
         toast.error(
@@ -188,7 +183,7 @@ export default function AdminPackageManagement() {
         });
         if (response.status === 201) {
           toast.dismiss();
-          toast.success("New package create successfully.", {
+          toast.success("New package created successfully.", {
             style: {
               border: "1px solid #37E030",
               maxWidth: "900px",
@@ -201,7 +196,6 @@ export default function AdminPackageManagement() {
           clickCloseAddPackage();
         } else if (response.status === 500) {
           toast.dismiss();
-
           toast.error("Failed to add package!", {
             style: {
               border: "1px solid #F85F60",
@@ -213,7 +207,6 @@ export default function AdminPackageManagement() {
           });
         } else if (response.status === 400) {
           toast.dismiss();
-
           toast.error("Informations Missing", {
             style: {
               border: "1px solid #F85F60",
@@ -225,7 +218,6 @@ export default function AdminPackageManagement() {
           });
         } else if (response.status === 401) {
           toast.dismiss();
-
           toast.error("401!", {
             style: {
               border: "1px solid #F85F60",
@@ -238,12 +230,9 @@ export default function AdminPackageManagement() {
         }
       } catch (error) {
         console.error("Error:", error);
-      } finally {
       }
     }
   };
-
-  // DELETE PKG
 
   const [openDelete, setOpenDelete] = useState(false);
   const [packageId_del, setPackageId_del] = useState();
@@ -252,6 +241,7 @@ export default function AdminPackageManagement() {
     setOpenDelete(true);
     setPackageId_del(package_id);
   };
+
   const clickCloseDelete = () => {
     setOpenDelete(false);
     setPackageId_del("");
@@ -288,7 +278,6 @@ export default function AdminPackageManagement() {
         handleGetPackage();
       } else if (response.status === 500) {
         toast.dismiss();
-
         toast.error("Failed to delete package!", {
           style: {
             border: "1px solid #F85F60",
@@ -300,7 +289,6 @@ export default function AdminPackageManagement() {
         });
       } else if (response.status === 400) {
         toast.dismiss();
-
         toast.error("Error!", {
           style: {
             border: "1px solid #F85F60",
@@ -313,11 +301,8 @@ export default function AdminPackageManagement() {
       }
     } catch (error) {
       console.error("Error:", error);
-    } finally {
     }
   };
-
-  // EDIT package
 
   const [openEdit, setOpenEdit] = useState(false);
   const [packageId_edit, setPackageId_edit] = useState();
@@ -336,6 +321,7 @@ export default function AdminPackageManagement() {
     handleGetPackageInfo(package_id);
     setOpenEdit(true);
   };
+
   const handleCloseEditPackage = () => {
     setCurrentEditPackage({
       package_name: "",
@@ -403,7 +389,7 @@ export default function AdminPackageManagement() {
           });
           if (response.status === 200) {
             toast.dismiss();
-            toast.success("Edit package sucessfully.", {
+            toast.success("Edit package successfully.", {
               style: {
                 border: "1px solid #37E030",
                 maxWidth: "900px",
@@ -473,7 +459,6 @@ export default function AdminPackageManagement() {
           }
         } catch (error) {
           console.error("Error:", error);
-        } finally {
         }
       }
     } else {
@@ -568,7 +553,6 @@ export default function AdminPackageManagement() {
         }
       } catch (error) {
         console.error("Error:", error);
-      } finally {
       }
     } else {
       toast.error("Please select a package!", {
@@ -582,6 +566,7 @@ export default function AdminPackageManagement() {
       });
     }
   };
+
   const [token, setToken] = useState();
 
   const checkToken = () => {
@@ -589,380 +574,384 @@ export default function AdminPackageManagement() {
     setToken(isToken);
   };
 
+  const navigate = useNavigate();
+
   useEffect(() => {
+    const loginToken = localStorage.getItem("checkUser");
+
+    const checkLoggedIn = () => {
+      if (loginToken) {
+        navigate("/error404");
+      }
+    };
+    checkLoggedIn();
     handleGetPackage();
     checkToken();
   }, []);
 
+  // searchbar
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredPackageData, setFilteredPackageData] = useState([]);
+
+  const handleSearchChange = (event) => {
+    const query = event.target.value.toLowerCase();
+    setSearchQuery(query);
+    setFilteredPackageData(
+      Package.filter((pkg) =>
+        pkg.package_name.toLowerCase().includes(query)
+      )
+    );
+  };
+
   return (
-    <div className="">
-      {/*-------------- Navigation + Backgroud---------------- */}
-
-      <NavigationAdmin />
-
-      {/*-------------- END OF Navigation + Backgroud---------------- */}
-
-      {/*-------------- LayoutBody ---------------- */}
-
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "0fr 3fr",
-          height: "66vh",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            height: "70vh",
-          }}
-        >
-          <SidebarAdmin />
+    <div className="admin-layout">
+      {/* <NavigationAdmin /> */}
+      <SidebarAdmin />
+      <div className="content">
+        <Toaster position="bottom-right" reverseOrder={false} />{" "}
+        <div className="info-title font-semibold pb-5">
+          <p style={{fontSize:"36px"}}>Package Management</p>
         </div>
+        {token !== null ? (
+          <>
+            <div className="button-container">
+            <div className="flex justify-start">
+              <label htmlFor="simple-search" className="sr-only">
+                Search
+              </label>
+              <div className="relative w-full">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <svg
+                    className="w-4 h-4 text-gray-400"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                    />
+                  </svg>
+                </div>
+                <input
+                  type="text"
+                  id="simple-search"
+                  style={{width:"200%"}}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Search by name..."
+                  onChange={handleSearchChange}
+                />
+              </div>
+            </div>
 
-        <div className="px-12 py-6 bg-[#F3F8FF]">
-          {token !== null ? (
-            <>
               <Button
+              className="flex justify-end max-w-sm"
+                onClick={clickOpenAddPackage}
                 variant="outlined"
                 sx={{
-                  width: "150px",
+                  width: "130px",
                   color: "white",
                   bgcolor: "#3867A5",
                   "&:hover": { bgcolor: "#2A4D7B" },
                 }}
-                onClick={clickOpenAddPackage}
               >
                 Add Package
               </Button>
+            </div>
+            <div className="content-container">
+              <table id="package-table" className="table-auto w-full">
+                <thead>
+                  <tr>
+                    <th>NAME</th>
+                    <th>PRICE</th>
+                    <th>DESCRIPTION</th>
+                    <th>DURATION</th>
+                    <th>SLOT NUMBER</th>
+                    <th>SLOT SERVER</th>
+                    <th>Status</th>
+                    <th>ACTION</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredPackageData.map((pkg) => (
+                    <tr key={pkg.package_id}>
+                      <td>{pkg.package_name}</td>
+                      <td>{pkg.price}đ</td>
+                      <td>{pkg.description}</td>
+                      <td>{pkg.duration} days</td>
+                      <td>{pkg.slot_number}</td>
+                      <td>{pkg.slot_server}</td>
+                      <td>
+                        <div
+                          style={{
+                            backgroundColor: pkg.status ? "#6EC882" : "#8E8E8E",
+                            color: "white",
+                            textAlign: "center",
+                            borderRadius: "100px",
+                            padding: "5px 15px",
+                            fontSize: "14px",
+                            fontWeight: "normal",
+                            textTransform: "none",
+                          }}
+                        >
+                          {pkg.status ? "Active" : "Inactive"}
+                        </div>
+                      </td>
+                      <td style={{ padding: "6px 0px" }}>
+                        <IconButton
+                          aria-label="delete"
+                          onClick={() => clickOpenDelete(pkg.package_id)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
 
-              {/*-------------- Billing Table ---------------- */}
-
-              <div
-                className="bg-white mt-4 rounded-md px-8 pb-8 shadow-md"
-                style={{ border: "1px solid #89A6CC" }}
-              >
-                <table class="table-auto w-full ">
-                  <thead>
-                    <tr>
-                      <th>NAME</th>
-                      <th>PRICE</th>
-                      <th>DESCRIPTION</th>
-                      <th>DURATION</th>
-                      <th>SLOT NUMBER</th>
-                      <th>SLOT SERVER</th>
-                      <th>Status</th>
-                      <th>ACTION</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td
-                        style={{
-                          color: "transparent",
-                          padding: "0px",
-                        }}
-                      >
-                        .
+                        <IconButton
+                          aria-label="edit"
+                          onClick={() =>
+                            handleClickOpenEditPackage(pkg.package_id)
+                          }
+                        >
+                          <EditIcon />
+                        </IconButton>
                       </td>
                     </tr>
-                    {Package.map((pkg) => (
-                      <tr key={pkg.package_id}>
-                        <td>{pkg.package_name}</td>
-                        <td>{pkg.price}đ</td>
-                        <td>{pkg.description}</td>
-                        <td>{pkg.duration} days</td>
-                        <td>{pkg.slot_number}</td>
-                        <td>{pkg.slot_server}</td>
-                        <td>
-                          <td>
-                            <td>
-                              <div
-                                style={{
-                                  backgroundColor: pkg.status
-                                    ? "#6EC882"
-                                    : "#8E8E8E",
-                                  color: "white",
-                                  textAlign: "center",
-                                  borderRadius: "100px",
-                                  padding: "5px 15px",
-                                  fontSize: "14px",
-                                  fontWeight: "normal",
-                                  textTransform: "none",
-                                }}
-                              >
-                                {pkg.status ? "Active" : "Inactive"}
-                              </div>
-                            </td>
-                          </td>
-                        </td>
-
-                        <td style={{ padding: "6px 0px" }}>
-                          <IconButton
-                            aria-label="delete"
-                            onClick={() => clickOpenDelete(pkg?.package_id)}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-
-                          <IconButton
-                            aria-label="edit"
-                            onClick={() =>
-                              handleClickOpenEditPackage(pkg?.package_id)
-                            }
-                          >
-                            <EditIcon />
-                          </IconButton>
-                        </td>
-                      </tr>
-                    ))}
-                    <tr></tr>
-                  </tbody>
-                </table>
-              </div>
-            </>
-          ) : (
-            <div className="flex flex-row justify-center py-40 gap-4 text-red-600 font-bold">
-              <WarningAmberIcon />
-              <p>UKNOWN USER! PLEASE LOGIN FIRST </p>
-              <WarningAmberIcon />
+                  ))}
+                </tbody>
+              </table>
+              <Dialog
+                open={openDelete}
+                onClose={clickCloseDelete}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+                <DialogTitle id="alert-dialog-title">
+                  {"Do you want to remove this package?"}
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                    This package will no longer be available.
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={clickCloseDelete}>No</Button>
+                  <Button onClick={handleDeleteRole}>Yes</Button>
+                </DialogActions>
+              </Dialog>
             </div>
-          )}
-
-          {/*-------------- ADD NEW PACKAGE ---------------- */}
-          <Dialog open={openAddPackage} onClose={clickCloseAddPackage}>
-            <DialogTitle>Add new package</DialogTitle>
-            <DialogContent>
-              <DialogContentText className="pb-4">
-                Add new package into MHD system.
-              </DialogContentText>
-              <TextField
-                required
-                margin="dense"
-                id="package_name"
-                name="package_name"
-                label="Package name"
-                type="text"
-                fullWidth
-                variant="outlined"
-                value={packageAdd.package_name}
-                onChange={(e) =>
-                  setPackageAdd({ ...packageAdd, package_name: e.target.value })
-                }
-              />
-              <TextField
-                required
-                margin="dense"
-                id="price"
-                name="price"
-                label="Price"
-                type="number"
-                fullWidth
-                variant="outlined"
-                value={packageAdd.price}
-                onChange={(e) =>
-                  setPackageAdd({
-                    ...packageAdd,
-                    price: e.target.value.replace(/[^\d.]/g, ""),
-                  })
-                }
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">$</InputAdornment>
-                  ),
-                }}
-              />
-              <TextField
-                required
-                margin="dense"
-                id="duration"
-                name="duration"
-                label="Duration"
-                type="number"
-                fullWidth
-                variant="outlined"
-                value={packageAdd.duration}
-                onChange={(e) =>
-                  setPackageAdd({ ...packageAdd, duration: e.target.value })
-                }
-                inputProps={{
-                  min: 1,
-                  max: 4,
-                }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">Month</InputAdornment>
-                  ),
-                }}
-              />
-              <TextField
-                required
-                margin="dense"
-                id="slot_number"
-                name="slot_number"
-                label="Slot number"
-                type="number"
-                fullWidth
-                variant="outlined"
-                value={packageAdd.slot_number}
-                onChange={(e) =>
-                  setPackageAdd({ ...packageAdd, slot_number: e.target.value })
-                }
-              />
-              <TextField
-                required
-                margin="dense"
-                id="slot_server"
-                name="slot_server"
-                label="Slot server"
-                type="number"
-                fullWidth
-                variant="outlined"
-                value={packageAdd.slot_server}
-                onChange={(e) =>
-                  setPackageAdd({ ...packageAdd, slot_server: e.target.value })
-                }
-              />
-              <TextField
-                required
-                id="description"
-                name="description"
-                label="Description"
-                multiline
-                rows={4}
-                defaultValue="Default Value"
-                margin="dense"
-                type="text"
-                fullWidth
-                variant="outlined"
-                value={packageAdd.description}
-                onChange={(e) =>
-                  setPackageAdd({ ...packageAdd, description: e.target.value })
-                }
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={clickCloseAddPackage}>Cancel</Button>
-              <Button onClick={handleAddPackage}>Confirm</Button>
-            </DialogActions>
-          </Dialog>
-
-          {/*-------------- DELETE ALERT ---------------- */}
-          <Dialog
-            open={openDelete}
-            onClose={clickCloseDelete}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogTitle id="alert-dialog-title">
-              {"Do you want to remove this member?"}
-            </DialogTitle>
-            <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                They will no longer have access to the server or configure its
-                features.
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={clickCloseDelete}>No</Button>
-              <Button onClick={handleDeleteRole}>Yes</Button>
-            </DialogActions>
-          </Dialog>
-
-          {/*-------------- EDIT ALERT ---------------- */}
-          <Dialog open={openEdit} onClose={handleCloseEditPackage}>
-            <DialogTitle>Update package</DialogTitle>
-            <DialogContent>
-              <DialogContentText className="pb-4">
-                Edit package's information.
-              </DialogContentText>
-              <TextField
-                required
-                margin="dense"
-                id="pkg"
-                name="pkg"
-                label="Package name"
-                type="text"
-                fullWidth
-                variant="outlined"
-                onChange={handleChangeEditPackage("package_name")}
-                value={currentEditPackage.package_name}
-              />
-
-              <TextField
-                required
-                id="outlined-multiline-static"
-                label="Description"
-                multiline
-                rows={4}
-                margin="dense"
-                name="pkg"
-                type="Description"
-                fullWidth
-                onChange={handleChangeEditPackage("description")}
-                value={currentEditPackage.description}
-              />
-              <TextField
-                required
-                margin="dense"
-                id="pkg"
-                name="pkg"
-                label="Duration"
-                type="text"
-                fullWidth
-                variant="outlined"
-                onChange={handleChangeEditPackage("duration")}
-                value={currentEditPackage.duration}
-              />
-              <TextField
-                required
-                margin="dense"
-                id="pkg"
-                name="pkg"
-                label="Price"
-                type="text"
-                fullWidth
-                variant="outlined"
-                onChange={handleChangeEditPackage("price")}
-                value={currentEditPackage.price}
-              />
-              <TextField
-                required
-                margin="dense"
-                id="pkg"
-                name="pkg"
-                label="Slot number"
-                type="text"
-                fullWidth
-                variant="outlined"
-                onChange={handleChangeEditPackage("slot_number")}
-                value={currentEditPackage.slot_number}
-              />
-              <TextField
-                required
-                margin="dense"
-                id="pkg"
-                name="pkg"
-                label="Slot server"
-                type="text"
-                fullWidth
-                variant="outlined"
-                onChange={handleChangeEditPackage("slot_server")}
-                value={currentEditPackage.slot_server}
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleCloseEditPackage}>Cancel</Button>
-              <Button onClick={handleEditPackage}>Confirm</Button>
-            </DialogActions>
-          </Dialog>
-
-          {/*-------------- END OF Billing Table ---------------- */}
-        </div>
+          </>
+        ) : (
+          <div className="flex flex-row justify-center py-40 gap-4 text-red-600 font-bold">
+            <WarningAmberIcon />
+            <p>UNKNOWN USER! PLEASE LOGIN FIRST </p>
+            <WarningAmberIcon />
+          </div>
+        )}
+        <Dialog open={openAddPackage} onClose={clickCloseAddPackage}>
+          <DialogTitle>Add new package</DialogTitle>
+          <DialogContent>
+            <DialogContentText className="pb-4">
+              Add new package into MHD system.
+            </DialogContentText>
+            <TextField
+              required
+              margin="dense"
+              id="package_name"
+              name="package_name"
+              label="Package name"
+              type="text"
+              fullWidth
+              variant="outlined"
+              value={packageAdd.package_name}
+              onChange={(e) =>
+                setPackageAdd({ ...packageAdd, package_name: e.target.value })
+              }
+            />
+            <TextField
+              required
+              margin="dense"
+              id="price"
+              name="price"
+              label="Price"
+              type="number"
+              fullWidth
+              variant="outlined"
+              value={packageAdd.price}
+              onChange={(e) =>
+                setPackageAdd({
+                  ...packageAdd,
+                  price: e.target.value.replace(/[^\d.]/g, ""),
+                })
+              }
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">$</InputAdornment>
+                ),
+              }}
+            />
+            <TextField
+              required
+              margin="dense"
+              id="duration"
+              name="duration"
+              label="Duration"
+              type="number"
+              fullWidth
+              variant="outlined"
+              value={packageAdd.duration}
+              onChange={(e) =>
+                setPackageAdd({ ...packageAdd, duration: e.target.value })
+              }
+              inputProps={{
+                min: 1,
+                max: 4,
+              }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">Month</InputAdornment>
+                ),
+              }}
+            />
+            <TextField
+              required
+              margin="dense"
+              id="slot_number"
+              name="slot_number"
+              label="Slot number"
+              type="number"
+              fullWidth
+              variant="outlined"
+              value={packageAdd.slot_number}
+              onChange={(e) =>
+                setPackageAdd({ ...packageAdd, slot_number: e.target.value })
+              }
+            />
+            <TextField
+              required
+              margin="dense"
+              id="slot_server"
+              name="slot_server"
+              label="Slot server"
+              type="number"
+              fullWidth
+              variant="outlined"
+              value={packageAdd.slot_server}
+              onChange={(e) =>
+                setPackageAdd({ ...packageAdd, slot_server: e.target.value })
+              }
+            />
+            <TextField
+              required
+              id="description"
+              name="description"
+              label="Description"
+              multiline
+              rows={4}
+              defaultValue="Default Value"
+              margin="dense"
+              type="text"
+              fullWidth
+              variant="outlined"
+              value={packageAdd.description}
+              onChange={(e) =>
+                setPackageAdd({ ...packageAdd, description: e.target.value })
+              }
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={clickCloseAddPackage}>Cancel</Button>
+            <Button onClick={handleAddPackage}>Confirm</Button>
+          </DialogActions>
+        </Dialog>
+        <Dialog open={openEdit} onClose={handleCloseEditPackage}>
+          <DialogTitle>Update package</DialogTitle>
+          <DialogContent>
+            <DialogContentText className="pb-4">
+              Edit package's information.
+            </DialogContentText>
+            <TextField
+              required
+              margin="dense"
+              id="pkg"
+              name="pkg"
+              label="Package name"
+              type="text"
+              fullWidth
+              variant="outlined"
+              onChange={handleChangeEditPackage("package_name")}
+              value={currentEditPackage.package_name}
+            />
+            <TextField
+              required
+              id="outlined-multiline-static"
+              label="Description"
+              multiline
+              rows={4}
+              margin="dense"
+              name="pkg"
+              type="Description"
+              fullWidth
+              onChange={handleChangeEditPackage("description")}
+              value={currentEditPackage.description}
+            />
+            <TextField
+              required
+              margin="dense"
+              id="pkg"
+              name="pkg"
+              label="Duration"
+              type="text"
+              fullWidth
+              variant="outlined"
+              onChange={handleChangeEditPackage("duration")}
+              value={currentEditPackage.duration}
+            />
+            <TextField
+              required
+              margin="dense"
+              id="pkg"
+              name="pkg"
+              label="Price"
+              type="text"
+              fullWidth
+              variant="outlined"
+              onChange={handleChangeEditPackage("price")}
+              value={currentEditPackage.price}
+            />
+            <TextField
+              required
+              margin="dense"
+              id="pkg"
+              name="pkg"
+              label="Slot number"
+              type="text"
+              fullWidth
+              variant="outlined"
+              onChange={handleChangeEditPackage("slot_number")}
+              value={currentEditPackage.slot_number}
+            />
+            <TextField
+              required
+              margin="dense"
+              id="pkg"
+              name="pkg"
+              label="Slot server"
+              type="text"
+              fullWidth
+              variant="outlined"
+              onChange={handleChangeEditPackage("slot_server")}
+              value={currentEditPackage.slot_server}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseEditPackage}>Cancel</Button>
+            <Button onClick={handleEditPackage}>Confirm</Button>
+          </DialogActions>
+        </Dialog>
       </div>
-
-      {/*-------------- END OF LayoutBody ---------------- */}
     </div>
   );
 }
