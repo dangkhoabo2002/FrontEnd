@@ -86,6 +86,7 @@ export default function Login() {
             setOpenDialog(true);
           } else {
             localStorage.setItem("checkUser", true);
+            localStorage.setItem("checkLogin", "logged");
             navigate(`/organizations`);
           }
         } else if (response.status === 401) {
