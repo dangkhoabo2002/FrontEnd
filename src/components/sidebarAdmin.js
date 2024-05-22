@@ -99,7 +99,7 @@ export default function SidebarAdmin() {
         <div className="flex flex-col">
           <div className={`hoverSection ${selectedMenu === "account" ? "selectedMenu" : ""}`}>
             <Link to={`/admin`} onClick={() => setSelectedMenu("account")}>
-              <section className="flex flex-row gap-3 py-4 pl-12 items-center justify-left text-[#637381]">
+              <section className="flex flex-row gap-0 py-4 pl-12 items-center justify-left text-[#637381]">
                 <SupervisorAccountOutlinedIcon style={{ fontSize: "28px" }} />
                 <p className="text-xl font-semibold" style={{ fontSize: "18px" }}>
                   Account Management
@@ -109,7 +109,7 @@ export default function SidebarAdmin() {
           </div>
           <div className={`hoverSection ${selectedMenu === "billing" ? "selectedMenu" : ""}`}>
             <Link to={`/admin/billing`} onClick={() => setSelectedMenu("billing")}>
-              <section className="flex flex-row gap-3 py-4 pl-12 items-center justify-left text-[#637381]">
+              <section className="flex flex-row gap-0 py-4 pl-12 items-center justify-left text-[#637381]">
                 <ReceiptIcon style={{ fontSize: "28px" }} />
                 <p className="text-xl font-semibold" style={{ fontSize: "18px" }}>
                   Billing Management
@@ -119,7 +119,7 @@ export default function SidebarAdmin() {
           </div>
           <div className={`hoverSection ${selectedMenu === "guide" ? "selectedMenu" : ""}`}>
             <Link to={`/admin/guide`} onClick={() => setSelectedMenu("guide")}>
-              <section className="flex flex-row gap-3 py-4 pl-12 items-center justify-left text-[#637381]">
+              <section className="flex flex-row gap-0 py-4 pl-12 items-center justify-left text-[#637381]">
                 <BookIcon style={{ fontSize: "28px" }} />
                 <p className="text-xl font-semibold" style={{ fontSize: "18px" }}>
                   Guide Management
@@ -129,7 +129,7 @@ export default function SidebarAdmin() {
           </div>
           <div className={`hoverSection ${selectedMenu === "package" ? "selectedMenu" : ""}`}>
             <Link to={`/admin/package`} onClick={() => setSelectedMenu("package")}>
-              <section className="flex flex-row gap-3 py-4 pl-12 items-center justify-left text-[#637381]">
+              <section className="flex flex-row gap-0 py-4 pl-12 items-center justify-left text-[#637381]">
                 <InventoryIcon style={{ fontSize: "28px" }} />
                 <p className="text-xl font-semibold" style={{ fontSize: "18px" }}>
                   Package Management
@@ -139,7 +139,7 @@ export default function SidebarAdmin() {
           </div>
           <div className={`hoverSection ${selectedMenu === "role" ? "selectedMenu" : ""}`}>
             <Link to={`/admin/role`} onClick={() => setSelectedMenu("role")}>
-              <section className="flex flex-row gap-3 py-4 pl-12 items-center justify-left text-[#637381]">
+              <section className="flex flex-row gap-0 py-4 pl-12 items-center justify-left text-[#637381]">
                 <ManageAccountsOutlinedIcon style={{ fontSize: "28px" }} />
                 <p className="text-xl font-semibold" style={{ fontSize: "18px" }}>
                   Role Management

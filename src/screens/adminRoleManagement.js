@@ -22,6 +22,8 @@ export default function AdminRoleManagement() {
   const [roleData, setRoleData] = useState([]);
   const [token, setToken] = useState();
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredRoleData, setFilteredRoleData] = useState([]);
 
   useEffect(() => {
     const loginToken = localStorage.getItem("checkUser");
@@ -53,6 +55,7 @@ export default function AdminRoleManagement() {
         toast.dismiss();
         const roleData = await response.json();
         setRoleData(roleData);
+        setFilteredRoleData(roleData);
       } else {
         toast.error("Something wrong, please try again later!", {
           style: {
@@ -329,19 +332,64 @@ export default function AdminRoleManagement() {
     }
   };
 
+  // searchbar
+  const handleSearchChange = (event) => {
+    const query = event.target.value.toLowerCase();
+    setSearchQuery(query);
+    setFilteredRoleData(
+      roleData.filter((role) =>
+        role.role_name.toLowerCase().includes(query)
+      )
+    );
+  };
+
   return (
     <div className="admin-layout">
       <Toaster position="bottom-right" reverseOrder={false} />
       <SidebarAdmin />
       <div className="content">
         {" "}
-        <div className="info-title font-semibold py-3">
-          <p>Role Management</p>
+        <div className="info-title font-semibold pb-5">
+          <p style={{ fontSize: "36px" }}>Role Management</p>
         </div>
         {token ? (
           <>
             <div className="button-container">
+              <div className="flex justify-start">
+                <label htmlFor="simple-search" className="sr-only">
+                  Search
+                </label>
+                <div className="relative w-full">
+                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <svg
+                      className="w-4 h-4 text-gray-400"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                      />
+                    </svg>
+                  </div>
+                  <input
+                    type="text"
+                    id="simple-search"
+                    style={{ width: "200%" }}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Search by role name..."
+                    onChange={handleSearchChange}
+                  />
+                </div>
+              </div>
               <Button
+                className="flex justify-end max-w-sm"
+                onClick={clickOpenAddRole}
                 variant="outlined"
                 sx={{
                   width: "120px",
@@ -349,7 +397,6 @@ export default function AdminRoleManagement() {
                   bgcolor: "#3867A5",
                   "&:hover": { bgcolor: "#2A4D7B" },
                 }}
-                onClick={clickOpenAddRole}
               >
                 Add Role
               </Button>
@@ -368,7 +415,7 @@ export default function AdminRoleManagement() {
                   <tr>
                     <td style={{ color: "transparent", padding: "0px" }}>.</td>
                   </tr>
-                  {roleData?.map((role) => (
+                  {filteredRoleData?.map((role) => (
                     <tr key={role.role_id}>
                       <td>{role.role_name}</td>
                       <td>{role.role_id}</td>

@@ -318,6 +318,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  TextField,
 } from "@mui/material";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -355,9 +356,9 @@ export default function AdminAccountManagement() {
       });
       if (response.status === 200) {
         toast.dismiss();
-
         const customerData = await response.json();
         setCustomerList(customerData);
+        setFilteredCustomerList(customerData);
       } else if (response.status === 403) {
         toast.dismiss();
         toast.error("Permission denied!", {
@@ -427,16 +428,67 @@ export default function AdminAccountManagement() {
     handleCloseDelete();
   };
 
+  // searchbar
+  const [filteredCustomerList, setFilteredCustomerList] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearchChange = (event) => {
+    const query = event.target.value.toLowerCase();
+    setSearchQuery(query);
+    setFilteredCustomerList(
+      customerList.filter((customer) =>
+        customer.username.toLowerCase().includes(query)
+      )
+    );
+  };
+
   return (
     <div className="admin-layout">
       <Toaster position="bottom-right" reverseOrder={false} />
       <SidebarAdmin />
       <div className="content">
-        <div className="info-title font-semibold  py-3">
-          <p>Account Management</p>
+        <div className="info-title font-semibold pb-5">
+          <p style={{fontSize:"36px"}}>Account Management</p>
         </div>
+
+        <div className="button-container">
+            <div className="flex justify-start">
+              <label htmlFor="simple-search" className="sr-only">
+                Search
+              </label>
+              <div className="relative w-full">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <svg
+                    className="w-4 h-4 text-gray-400"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                    />
+                  </svg>
+                </div>
+                <input
+                  type="text"
+                  id="simple-search"
+                  style={{width:"200%"}}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Search by username..."
+                  onChange={handleSearchChange}
+                />
+              </div>
+            </div>
+            </div>
+
         {token !== null ? (
           <div className="content-container">
+            
             <table className="table-auto w-full">
               <thead>
                 <tr>
@@ -449,81 +501,86 @@ export default function AdminAccountManagement() {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td style={{ color: "transparent", padding: "0px" }}>.</td>
-                </tr>
-                {customerList?.map((customer, index) => (
-                  <tr key={customer.id}>
-                    <td>{index + 1}</td>
-                    <td>{customer.username}</td>
-                    <td>{customer.full_name}</td>
-                    <td>{customer.email}</td>
-                    <td>
-                      <Button
-                        onClick={() => handleClickOpenRemoveUser(customer.id)}
-                        variant="contained"
-                        sx={{
-                          width: "100px",
-                          height: "25px",
-                          color: "white",
-                          borderRadius: "100px",
-                          bgcolor: "#F85F60",
-                          "&:hover": { bgcolor: "#D45758" },
-                          fontSize: "14px",
-                          fontWeight: "normal",
-                          textTransform: "none",
-                        }}
-                      >
-                        Delete
-                      </Button>
+                {filteredCustomerList.length > 0 ? (
+                  filteredCustomerList.map((customer, index) => (
+                    <tr key={customer.id}>
+                      <td>{index + 1}</td>
+                      <td>{customer.username}</td>
+                      <td>{customer.full_name}</td>
+                      <td>{customer.email}</td>
+                      <td>
+                        <Button
+                          onClick={() => handleClickOpenRemoveUser(customer.id)}
+                          variant="contained"
+                          sx={{
+                            width: "100px",
+                            height: "25px",
+                            color: "white",
+                            borderRadius: "100px",
+                            bgcolor: "#F85F60",
+                            "&:hover": { bgcolor: "#D45758" },
+                            fontSize: "14px",
+                            fontWeight: "normal",
+                            textTransform: "none",
+                          }}
+                        >
+                          Delete
+                        </Button>
+                      </td>
+                      {customer.status === "ACTIVE" ? (
+                        <td>
+                          <div className="flex justify-center m-5">
+                            <Button
+                              variant="contained"
+                              sx={{
+                                width: "100px",
+                                height: "25px",
+                                color: "white",
+                                borderRadius: "100px",
+                                bgcolor: "#6EC882",
+                                "&:hover": { bgcolor: "#63B976" },
+                                fontSize: "14px",
+                                fontWeight: "normal",
+                                textTransform: "none",
+                              }}
+                              onClick={handleOpenChangeStatus}
+                            >
+                              Active
+                            </Button>
+                          </div>
+                        </td>
+                      ) : (
+                        <td>
+                          <div className="flex justify-center m-5">
+                            <Button
+                              variant="contained"
+                              sx={{
+                                width: "100px",
+                                height: "25px",
+                                color: "white",
+                                borderRadius: "100px",
+                                bgcolor: "#8E8E8E",
+                                "&:hover": { bgcolor: "#6C6C6C" },
+                                fontSize: "14px",
+                                fontWeight: "normal",
+                                textTransform: "none",
+                              }}
+                              onClick={handleOpenChangeStatus}
+                            >
+                              Inactive
+                            </Button>
+                          </div>
+                        </td>
+                      )}
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="6" className="text-center py-4">
+                      No customers found.
                     </td>
-                    {customer.status === "ACTIVE" ? (
-                      <td>
-                        <div className="flex justify-center m-5">
-                          <Button
-                            variant="contained"
-                            sx={{
-                              width: "100px",
-                              height: "25px",
-                              color: "white",
-                              borderRadius: "100px",
-                              bgcolor: "#6EC882",
-                              "&:hover": { bgcolor: "#63B976" },
-                              fontSize: "14px",
-                              fontWeight: "normal",
-                              textTransform: "none",
-                            }}
-                            onClick={handleOpenChangeStatus}
-                          >
-                            Active
-                          </Button>
-                        </div>
-                      </td>
-                    ) : (
-                      <td>
-                        <div className="flex justify-center m-5">
-                          <Button
-                            variant="contained"
-                            sx={{
-                              width: "100px",
-                              height: "25px",
-                              color: "white",
-                              borderRadius: "100px",
-                              bgcolor: "#8E8E8E",
-                              "&:hover": { bgcolor: "#6C6C6C" },
-                              fontSize: "14px",
-                              fontWeight: "normal",
-                              textTransform: "none",
-                            }}
-                            onClick={handleOpenChangeStatus}
-                          >
-                            Inactive
-                          </Button>
-                        </div>
-                      </td>
-                    )}
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
 

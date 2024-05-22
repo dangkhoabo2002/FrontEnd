@@ -175,8 +175,8 @@ export default function AdminBillings() {
 
       <div className="content">
         {/* <NavigationAdmin /> */}{" "}
-        <div className="info-title font-semibold py-3">
-          <p>Billing Management</p>
+        <div className="info-title font-semibold pb-5">
+          <p style={{fontSize:"36px"}}>Billing Management</p>
         </div>
         {token !== null ? (
           <div className="content-container">

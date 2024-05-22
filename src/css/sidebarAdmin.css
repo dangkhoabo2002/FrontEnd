@@ -1,5 +1,5 @@
 .sidebar-container2 {
-    width: 320px;
+    width: 300px;
     height: 100vh;
     background-color: #fff;
     align-items: center;
@@ -10,11 +10,11 @@
   .logo-container {
     display: flex;
     align-items: center;
-    padding: 24.82px;
+    padding: 24px;
   }
   
   .logo-amazing {
-    width: 100px;
+    width: 90px;
     height: auto;
     margin-right: 10px;
   }

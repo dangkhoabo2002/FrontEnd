@@ -69,6 +69,7 @@ export default function AdminPackageManagement() {
         toast.dismiss();
         const data = await response.json();
         setPackageData(data);
+        setFilteredPackageData(data);
       } else {
         toast.dismiss();
         console.error("Failed to fetch package data");
@@ -588,23 +589,71 @@ export default function AdminPackageManagement() {
     checkToken();
   }, []);
 
+  // searchbar
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredPackageData, setFilteredPackageData] = useState([]);
+
+  const handleSearchChange = (event) => {
+    const query = event.target.value.toLowerCase();
+    setSearchQuery(query);
+    setFilteredPackageData(
+      Package.filter((pkg) =>
+        pkg.package_name.toLowerCase().includes(query)
+      )
+    );
+  };
+
   return (
     <div className="admin-layout">
       {/* <NavigationAdmin /> */}
       <SidebarAdmin />
       <div className="content">
         <Toaster position="bottom-right" reverseOrder={false} />{" "}
-        <div className="info-title font-semibold py-3">
-          <p>Package Management</p>
+        <div className="info-title font-semibold pb-5">
+          <p style={{fontSize:"36px"}}>Package Management</p>
         </div>
         {token !== null ? (
           <>
             <div className="button-container">
+            <div className="flex justify-start">
+              <label htmlFor="simple-search" className="sr-only">
+                Search
+              </label>
+              <div className="relative w-full">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <svg
+                    className="w-4 h-4 text-gray-400"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                    />
+                  </svg>
+                </div>
+                <input
+                  type="text"
+                  id="simple-search"
+                  style={{width:"200%"}}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Search by name..."
+                  onChange={handleSearchChange}
+                />
+              </div>
+            </div>
+
               <Button
+              className="flex justify-end max-w-sm"
                 onClick={clickOpenAddPackage}
                 variant="outlined"
                 sx={{
-                  width: "150px",
+                  width: "130px",
                   color: "white",
                   bgcolor: "#3867A5",
                   "&:hover": { bgcolor: "#2A4D7B" },
@@ -628,7 +677,7 @@ export default function AdminPackageManagement() {
                   </tr>
                 </thead>
                 <tbody>
-                  {Package.map((pkg) => (
+                  {filteredPackageData.map((pkg) => (
                     <tr key={pkg.package_id}>
                       <td>{pkg.package_name}</td>
                       <td>{pkg.price}đ</td>
