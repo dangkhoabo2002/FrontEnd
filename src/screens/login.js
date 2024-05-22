@@ -29,15 +29,16 @@ export default function Login() {
   });
   const [loginType, setLoginType] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
+
   const handleDialogClose = () => {
     setOpenDialog(false);
     navigate("/admin");
   };
 
-  useEffect(() => {
-    const loginAdmin = localStorage.getItem("checkAdmin");
-    const loginUser = localStorage.getItem("checkUser");
+  const loginAdmin = localStorage.getItem("checkAdmin");
+  const loginUser = localStorage.getItem("checkUser");
 
+  useEffect(() => {
     if (loginAdmin) {
       setLoginType("admin");
       setOpenDialog(true);
@@ -51,7 +52,9 @@ export default function Login() {
     setData({ ...data, [prop]: event.target.value });
   };
 
-  const handleLogin = async () => {
+  const handleLogin = async (event) => {
+    event.preventDefault(); // Prevent the default form submission behavior
+
     if (data.username === "" || data.password === "") {
       toast.error("Please input your Username & Password!", {
         style: {
@@ -117,6 +120,7 @@ export default function Login() {
       }
     }
   };
+
   return (
     <>
       <Toaster position="bottom-right" reverseOrder={false} />
@@ -165,104 +169,104 @@ export default function Login() {
           </Grid>
 
           <Grid item xs={12} md={6} className="pr-8">
-            <div className="d-flex flex-row align-items-center justify-content-center">
-              <p
-                className="lead mb-0"
-                style={{ fontWeight: "900  ", fontSize: "24px" }}
-              >
-                Sign in
-              </p>
-            </div>
-            <div className="d-flex flex-row align-items-center justify-content-center">
-              <p
-                className="lead mb-0"
-                style={{ fontSize: "16px", color: "#637381" }}
-              >
-                Enter your details below
-              </p>
-            </div>
-
-            <div className="emailAddress">
-              <p
-                className="mt-3"
-                style={{ fontSize: "16px", fontWeight: "600" }}
-              >
-                Root username
-              </p>
-              <p style={{ fontSize: "11px", fontWeight: "600" }}>
-                Used for account recovery and some administrative functions
-              </p>
-              <div className="textField mt-3">
-                <TextField
-                  label="Username"
-                  fullWidth
-                  variant="outlined"
-                  className="mb-4"
-                  onChange={handleChange("username")}
-                  value={data.username}
-                />
-              </div>
-            </div>
-
-            <div className="password">
-              <p
-                className="mt-3"
-                style={{ fontSize: "16px", fontWeight: "600" }}
-              >
-                Password
-              </p>
-              <p style={{ fontSize: "11px", fontWeight: "600" }}>
-                Your password just only you know
-              </p>
-              <div className="textField mt-3">
-                <TextField
-                  label="Password"
-                  fullWidth
-                  variant="outlined"
-                  type="password"
-                  className="mb-4"
-                  onChange={handleChange("password")}
-                  value={data.password}
-                />
-              </div>
-            </div>
-
-            <div className="mt-2 font-semibold" style={{ color: "#3867A5" }}>
-              <Link to={`/login/forgotPassword`}>
-                {/* <p style={{ color: "#3867A5" }}> */}
-                Forgot password?
-                {/* </p> */}
-              </Link>
-            </div>
-            <div className="loginBtn text-center mt-3">
-              <Button
-                style={{
-                  width: "100%",
-                  height: "45px",
-                  backgroundColor: "#3867A5",
-                }}
-                variant="contained"
-                color="primary"
-                className="mb-0"
-                onClick={handleLogin}
-              >
-                Login
-              </Button>
-            </div>
-            <div
-              className="text-center pt-2 float-left"
-              style={{ marginBottom: "50px" }}
-            >
-              <p className="small fw-bold mt-2 pt-1 flex ">
-                Don't have an account?{" "}
-                <Link
-                  to={"/signUp"}
-                  style={{ color: "#3867A5", marginLeft: "5px" }}
+            <form onSubmit={handleLogin}>
+              <div className="d-flex flex-row align-items-center justify-content-center">
+                <p
+                  className="lead mb-0"
+                  style={{ fontWeight: "900  ", fontSize: "24px" }}
                 >
-                  Get started
+                  Sign in
+                </p>
+              </div>
+              <div className="d-flex flex-row align-items-center justify-content-center">
+                <p
+                  className="lead mb-0"
+                  style={{ fontSize: "16px", color: "#637381" }}
+                >
+                  Enter your details below
+                </p>
+              </div>
+
+              <div className="emailAddress">
+                <p
+                  className="mt-3"
+                  style={{ fontSize: "16px", fontWeight: "600" }}
+                >
+                  Root username
+                </p>
+                <p style={{ fontSize: "11px", fontWeight: "600" }}>
+                  Used for account recovery and some administrative functions
+                </p>
+                <div className="textField mt-3">
+                  <TextField
+                    label="Username"
+                    fullWidth
+                    variant="outlined"
+                    className="mb-4"
+                    onChange={handleChange("username")}
+                    value={data.username}
+                  />
+                </div>
+              </div>
+
+              <div className="password">
+                <p
+                  className="mt-3"
+                  style={{ fontSize: "16px", fontWeight: "600" }}
+                >
+                  Password
+                </p>
+                <p style={{ fontSize: "11px", fontWeight: "600" }}>
+                  Your password just only you know
+                </p>
+                <div className="textField mt-3">
+                  <TextField
+                    label="Password"
+                    fullWidth
+                    variant="outlined"
+                    type="password"
+                    className="mb-4"
+                    onChange={handleChange("password")}
+                    value={data.password}
+                  />
+                </div>
+              </div>
+
+              <div className="mt-2 font-semibold" style={{ color: "#3867A5" }}>
+                <Link to={`/login/forgotPassword`}>
+                  Forgot password?
                 </Link>
-              </p>
-            </div>
+              </div>
+              <div className="loginBtn text-center mt-3">
+                <Button
+                  type="submit"
+                  style={{
+                    width: "100%",
+                    height: "45px",
+                    backgroundColor: "#3867A5",
+                  }}
+                  variant="contained"
+                  color="primary"
+                  className="mb-0"
+                >
+                  Login
+                </Button>
+              </div>
+              <div
+                className="text-center pt-2 float-left"
+                style={{ marginBottom: "50px" }}
+              >
+                <p className="small fw-bold mt-2 pt-1 flex ">
+                  Don't have an account?{" "}
+                  <Link
+                    to={"/signUp"}
+                    style={{ color: "#3867A5", marginLeft: "5px" }}
+                  >
+                    Get started
+                  </Link>
+                </p>
+              </div>
+            </form>
           </Grid>
         </Grid>
         <Dialog
