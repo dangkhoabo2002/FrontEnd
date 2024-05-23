@@ -2,10 +2,16 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import SidebarUser from "../components/sidebarUser";
 import NavigationUser from "../components/navUserProfile";
 import chip from "../assets/chip.png";
 import toast from "react-hot-toast";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 import "../css/userSubscribe.css";
 
 export default function UserSubscribe() {
@@ -13,6 +19,8 @@ export default function UserSubscribe() {
   const [getPackagePurchased, setGetPackagePurchased] = useState();
   const [getSubPurchased, setGetSubPurchased] = useState();
   const [isSub, setIsSub] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [password, setPassword] = useState("");
 
   const handlePackage = async () => {
     toast.loading("In processing..");
@@ -171,6 +179,22 @@ export default function UserSubscribe() {
     handlePackage();
   }, []);
 
+  const handleCancelPackage = () => {
+    // Open the confirmation dialog
+    setOpenDialog(true);
+  };
+
+  const handleConfirmCancel = () => {
+    // Handle the package cancellation logic here, including using the password
+    setOpenDialog(false);
+    // Add your package cancellation logic here
+    toast.success("Package cancelled successfully!");
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
   return (
     <div className="">
       <NavigationUser />
@@ -220,7 +244,7 @@ export default function UserSubscribe() {
                   </span>
                 </div>
                 <div className="packageSetting flex flex-col justify-around pl-1">
-                  <Button variant="text">Cancel package</Button>
+                  <Button variant="text" onClick={handleCancelPackage}>Cancel package</Button>
                   <Button variant="contained">Change package</Button>
                 </div>
               </div>
@@ -278,6 +302,37 @@ export default function UserSubscribe() {
           </div>
         </div>
       </div>
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Cancel Package"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText className="pb-4">
+          Are you sure you want to cancel the current package? This action cannot be undone. Please click confirm to proceed.
+          </DialogContentText>
+          <TextField
+            required
+            margin="dense"
+            id="password"
+            name="password"
+            label="Password"
+            type="password"
+            fullWidth
+            variant="standard"
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog}>Cancel</Button>
+          <Button onClick={handleConfirmCancel}>
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }
