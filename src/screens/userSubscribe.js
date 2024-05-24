@@ -14,6 +14,8 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import "../css/userSubscribe.css";
 
+import handleCheckPass from "../functions/checkPass";
+
 export default function UserSubscribe() {
   const [packageData, setPackageData] = useState([]);
   const [getPackagePurchased, setGetPackagePurchased] = useState();
@@ -50,7 +52,8 @@ export default function UserSubscribe() {
 
   const handleGetSubPurchased = async () => {
     toast.loading("In processing..");
-    const packageUrl = "http://127.0.0.1:5000/subscription/get_subscriptions_by_customer_id";
+    const packageUrl =
+      "http://127.0.0.1:5000/subscription/get_subscriptions_by_customer_id";
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(packageUrl, {
@@ -173,6 +176,32 @@ export default function UserSubscribe() {
     }
   };
 
+  const handleCancelPackageAPI = async () => {
+    const editUrl = `http://127.0.0.1:5000/subscription/update_subscription_status/${getPackagePurchased.package_id}`;
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await fetch(editUrl, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          new_status: "INACTIVE",
+        }),
+      });
+      if (response.status === 200) {
+        setIsSub(true);
+      } else {
+        setIsSub(false);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   useEffect(() => {
     handleGetSubPurchased();
     handleGetSub();
@@ -180,15 +209,25 @@ export default function UserSubscribe() {
   }, []);
 
   const handleCancelPackage = () => {
-    // Open the confirmation dialog
     setOpenDialog(true);
   };
 
-  const handleConfirmCancel = () => {
-    // Handle the package cancellation logic here, including using the password
-    setOpenDialog(false);
-    // Add your package cancellation logic here
-    toast.success("Package cancelled successfully!");
+  const handleConfirmCancel = async () => {
+    const checkPass = await handleCheckPass(password);
+    if (checkPass === "Success") {
+      handleCancelPackageAPI();
+      setOpenDialog(false);
+    } else if (checkPass === "") {
+      toast.error("Incorrect password!", {
+        style: {
+          border: "1px solid #FF5733",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
+        },
+      });
+    }
   };
 
   const handleCloseDialog = () => {
@@ -233,7 +272,9 @@ export default function UserSubscribe() {
                     <p className="font-bold text-large text-[#3867A5]">
                       {getPackagePurchased?.package_name}
                     </p>
-                    <p className="text-slate-400 pl-10">{getPackagePurchased?.duration}</p>
+                    <p className="text-slate-400 pl-10">
+                      {getPackagePurchased?.duration}
+                    </p>
                   </span>
                   <span>
                     <h2>Organization:</h2>
@@ -244,7 +285,9 @@ export default function UserSubscribe() {
                   </span>
                 </div>
                 <div className="packageSetting flex flex-col justify-around pl-1">
-                  <Button variant="text" onClick={handleCancelPackage}>Cancel package</Button>
+                  <Button variant="text" onClick={handleCancelPackage}>
+                    Cancel package
+                  </Button>
                   <Button variant="contained">Change package</Button>
                 </div>
               </div>
@@ -288,7 +331,8 @@ export default function UserSubscribe() {
                   {getSubPurchased &&
                     getSubPurchased.map((sub) => (
                       <p key={sub.subscription_id}>
-                        The package will automatically renew on {sub.expiration_date}.
+                        The package will automatically renew on{" "}
+                        {sub.expiration_date}.
                       </p>
                     ))}
                 </h2>
@@ -302,6 +346,8 @@ export default function UserSubscribe() {
           </div>
         </div>
       </div>
+
+      {/* CANCEL PACKAGE */}
       <Dialog
         open={openDialog}
         onClose={handleCloseDialog}
@@ -311,7 +357,8 @@ export default function UserSubscribe() {
         <DialogTitle id="alert-dialog-title">{"Cancel Package"}</DialogTitle>
         <DialogContent>
           <DialogContentText className="pb-4">
-          Are you sure you want to cancel the current package? This action cannot be undone. Please click confirm to proceed.
+            Are you sure you want to cancel the current package? This action
+            cannot be undone. Please click confirm to proceed.
           </DialogContentText>
           <TextField
             required
@@ -328,9 +375,7 @@ export default function UserSubscribe() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button onClick={handleConfirmCancel}>
-            Confirm
-          </Button>
+          <Button onClick={handleConfirmCancel}>Confirm</Button>
         </DialogActions>
       </Dialog>
     </div>

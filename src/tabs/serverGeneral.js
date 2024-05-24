@@ -43,17 +43,16 @@ export default function ServerGeneral(serverId, serverStatus) {
   }, []);
 
   // REFRESH PAGE
-  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const handleRefresh = async () => {
+    setLoading(true);
+    await handleGetServerData1();
+    await handleGetServerData2();
+    await handleGetMember();
+    setLoading(false);
+  };
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (isRefreshing) {
-      setLoading(true);
-      handleGetServerData1();
-      handleGetServerData2();
-      setIsRefreshing(false);
-    }
-  }, [isRefreshing]);
   // Data General
   const [generalData1, setGeneralData1] = useState();
   const [generalData2, setGeneralData2] = useState();
@@ -196,6 +195,7 @@ export default function ServerGeneral(serverId, serverStatus) {
   //DELETE SERVER
   const { organization_id } = useParams();
   const navigate = useNavigate();
+
   const handleDeleteServer = async () => {
     toast.loading("Deleting...");
 
@@ -372,7 +372,7 @@ export default function ServerGeneral(serverId, serverStatus) {
 
   // GET MEMBER IN SERVER
 
-  const [memberList, setMemberList] = useState();
+  const [memberList, setMemberList] = useState([]);
   const handleGetMember = async () => {
     const url = `http://127.0.0.1:5000/server/get_server_members/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
@@ -386,9 +386,10 @@ export default function ServerGeneral(serverId, serverStatus) {
           "Access-Control-Allow-Origin": "*",
         },
       });
+      const data = await response.json();
+
       if (response.status === 200) {
-        const memberServer = await response.json();
-        setMemberList(memberServer);
+        setMemberList(data.members);
       } else if (response.status === 400) {
         toast.error("Can not found server!", {
           style: {
@@ -420,7 +421,6 @@ export default function ServerGeneral(serverId, serverStatus) {
   // add member
 
   const [memberInput, setMemberInput] = useState("");
-  const [members, setMembers] = useState([]);
 
   const handleMemberInputChange = (event) => {
     setMemberInput(event.target.value);
@@ -536,28 +536,16 @@ export default function ServerGeneral(serverId, serverStatus) {
     }
   };
 
-  const handleMemberDelete = (index) => {
-    const updatedMembers = members.filter((_, i) => i !== index); // Filter out the deleted member
-    setMembers(updatedMembers);
-  };
-
   // REMOVE MEMBER IN SERVER
-
-  const [removeMem, setRemoveMem] = useState();
 
   const [openRemove, setOpenRemove] = useState();
 
-  const handleOpenRemove = () => {
-    setOpenRemove(true);
-  };
-
   const handleCloseRemove = () => {
-    setRemoveMem("");
     setOpenRemove(false);
   };
 
-  const handleRemoveMember = async () => {
-    if (removeMem === "") {
+  const handleRemoveMember = async (removeMember) => {
+    if (removeMember === "") {
       toast.error("Please choose the member to delete!", {
         style: {
           border: "1px solid #FF5733",
@@ -583,7 +571,7 @@ export default function ServerGeneral(serverId, serverStatus) {
           },
           body: JSON.stringify({
             server_id: serverId.serverId,
-            remove_username: removeMem,
+            remove_username: removeMember,
           }),
         });
         if (response.status === 200) {
@@ -599,7 +587,6 @@ export default function ServerGeneral(serverId, serverStatus) {
             },
           });
           handleGetMember();
-          setRemoveMem("");
         } else if (response.status === 400) {
           toast.dismiss();
 
@@ -879,7 +866,7 @@ export default function ServerGeneral(serverId, serverStatus) {
             </div>
             <div className="px-5 mb-2 flex flex-col items-end">
               <Button
-                onClick={() => setIsRefreshing(true)}
+                onClick={handleRefresh}
                 startIcon={<RefreshIcon />}
                 variant="contained"
                 className="refreshBtn"
@@ -937,21 +924,24 @@ export default function ServerGeneral(serverId, serverStatus) {
                       .
                     </td>
                   </tr>
-                  {ServerManager.map((svmg) => (
-                    <tr key={svmg.id}>
-                      <td>{svmg.id}</td>
-                      <td>{svmg.email}</td>
-                      <td>{svmg.role}</td>
-                      <td>
-                        <IconButton
-                          aria-label="delete"
-                          onClick={handleOpenRemove}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </td>
-                    </tr>
-                  ))}
+                  {memberList &&
+                    memberList?.map((mem, index) => (
+                      <tr key={index}>
+                        <td>{index + 1}</td>
+                        <td>{mem.username}</td>
+                        <td>{mem.role}</td>
+                        <td>
+                          {mem.role[0] !== "R01" && (
+                            <IconButton
+                              aria-label="delete"
+                              onClick={() => handleRemoveMember(mem.username)}
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
 
