@@ -148,7 +148,7 @@ export default function AdminGuide() {
 
   const handleDeleteGuide = async () => {
     if (currentGuide) {
-      const deleteUrl = `http://127.0.0.1:5000/guide/delete/${currentGuide}`;
+      const deleteUrl = `http://127.0.0.1:5000/guide/delete/`;
       const token = localStorage.getItem("access_token");
 
       try {
@@ -196,7 +196,7 @@ export default function AdminGuide() {
             },
           });
         } else if (response.status === 500) {
-          toast.error("Failed to add guide, please try again later!", {
+          toast.error("Failed to delete guide, please try again later!", {
             style: {
               border: "1px solid #F85F60",
               maxWidth: "900px",

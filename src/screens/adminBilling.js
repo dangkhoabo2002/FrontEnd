@@ -224,8 +224,8 @@ export default function AdminBillings() {
               <div className="popup">
                 <div className="popup_content">
                   <h1>Billing Information</h1>
-                  <div className="billingInfo">
-                    <div className="leftInfo">
+                  <div className="flex flex-row justify-start">
+                    <div className="flex flex-col ">
                       <h2>Transaction fee:</h2>
                       <h2>Billing Id:</h2>
                       <h2>Status</h2>
@@ -233,7 +233,7 @@ export default function AdminBillings() {
                       <h2>Date:</h2>
                       <h2>Subscription Id:</h2>
                     </div>
-                    <div className="rightInfo">
+                    <div className="flex flex-col">
                       <h2>{billingInfo?.amount}đ</h2>
                       <h2>{billingInfo?.billing_id}</h2>
                       <h2>{billingInfo?.billing_status}</h2>
@@ -248,7 +248,7 @@ export default function AdminBillings() {
                         style={{
                           fontSize: "16px",
                           fontWeight: "Bold",
-                          letterSpacing: "0.09rem",
+                          letterSpacing: "0.09rem", 
                         }}
                       >
                         Close

@@ -59,6 +59,8 @@ import {
   FormControlLabel,
   Checkbox,
   MenuItem,
+  Paper,
+  Card,
 } from "@mui/material";
 
 const ITEM_HEIGHT = 48;
@@ -962,7 +964,7 @@ export default function OrganizationDashboard() {
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: 600,
-    height: 500,
+    height: "auto",
     bgcolor: "background.paper",
     borderRadius: "20px",
     boxShadow: 24,
@@ -2012,141 +2014,149 @@ export default function OrganizationDashboard() {
                       Slot(s) available: {slotServer?.slot}
                     </h1>
                     <div className="server">
-                      <div className="profileField flex flex-col gap-5">
-                        <div className="org_name">
-                          <h1 className="mb-2">Organization name</h1>
-
-                          <TextField
-                            className="org-Dashboard-textField placeholder-gray-500 border"
-                            mt={1}
-                            disabled={isDisabled}
-                            id="outlined-basic"
-                            onChange={handleChangeInput("name")}
-                            value={data?.name}
-                            placeholder={organizations[0].name}
-                            size="small"
-                            sx={{ width: "auto", backgroundColor: "white" }}
-                            InputProps={{
-                              startAdornment: (
-                                <InputAdornment
-                                  position="start"
-                                  className="pr-2"
-                                >
-                                  <DnsIcon />
-                                </InputAdornment>
-                              ),
-                            }}
-                          />
-                        </div>
-
-                        <div className="flex flex-row gap-40 ">
-                          <div className="email">
-                            <h1 className="mb-2">Email</h1>
-
-                            <TextField
-                              className="org-Dashboard-textField placeholder-gray-500 border"
-                              mt={1}
-                              disabled={isDisabled}
-                              id="outlined-basic"
-                              onChange={handleChangeInput("contact_email")}
-                              placeholder={organizations[0].contact_email}
-                              value={data?.contact_email}
-                              size="small"
-                              sx={{ width: "400px", backgroundColor: "white" }}
-                              InputProps={{
-                                startAdornment: (
-                                  <InputAdornment
-                                    position="start"
-                                    className="pr-2"
-                                  >
-                                    <EmailIcon />
-                                  </InputAdornment>
-                                ),
-                              }}
-                            />
-                          </div>
-                          <div className="">
-                            <h1 className="mb-2">Phone Number</h1>
-                            <TextField
-                              className="org-Dashboard-textField placeholder-gray-500 border"
-                              mt={1}
-                              disabled={isDisabled}
-                              id="outlined-basic"
-                              onChange={handleChangeInput("contact_phone")}
-                              placeholder={organizations[0].contact_phone}
-                              value={data?.contact_phone}
-                              size="small"
-                              sx={{ width: "260px", backgroundColor: "white" }}
-                              InputProps={{
-                                startAdornment: (
-                                  <InputAdornment
-                                    position="start"
-                                    className="pr-2"
-                                  >
-                                    <PhoneIcon />
-                                  </InputAdornment>
-                                ),
-                              }}
-                            />
-                          </div>
-                        </div>
-                        <div className="serverDes">
-                          <h1 className="mb-2">Description</h1>
-                          <TextField
-                            className="org-Dashboard-textField"
-                            mt={1}
-                            rows={4}
-                            multiline
-                            disabled={isDisabled}
-                            id="outlined-multiline-static"
-                            onChange={handleChangeInput("description")}
-                            placeholder={organizations[0].description}
-                            value={data?.description}
-                            size="medium"
-                            sx={{
-                              width: "100%",
-                              maxWidth: "820px",
-                              backgroundColor: "white",
-                            }}
-                          />
-                        </div>
-                        <div className="server_des mb-3">
+                      <Card
+                        sx={{
+                          padding: "20px",
+                          border: "1px solid #89A6CC",
+                          backgroundColor: "white",
+                        }}
+                      >
+                        <Grid container spacing={3}>
+                          <Grid item xs={12}>
+                            <div className="flex flex-row items-center">
+                              <h1 style={{ width: "200px" }}>
+                                Organization name
+                              </h1>
+                              <TextField
+                                label=""
+                                className="org-Dashboard-textField"
+                                disabled={isDisabled}
+                                id="outlined-basic"
+                                onChange={handleChangeInput("name")}
+                                value={data?.name}
+                                placeholder={organizations[0].name}
+                                size="small"
+                                fullWidth
+                                InputProps={{
+                                  startAdornment: (
+                                    <InputAdornment position="start">
+                                      <DnsIcon />
+                                    </InputAdornment>
+                                  ),
+                                }}
+                              />
+                            </div>
+                          </Grid>
+                          <Grid item xs={12}>
+                            <div className="flex flex-row items-center">
+                              <h1 style={{ width: "200px" }}>Email</h1>
+                              <TextField
+                                label=""
+                                className="org-Dashboard-textField"
+                                disabled={isDisabled}
+                                id="outlined-basic"
+                                onChange={handleChangeInput("contact_email")}
+                                placeholder={organizations[0].contact_email}
+                                value={data?.contact_email}
+                                size="small"
+                                fullWidth
+                                InputProps={{
+                                  startAdornment: (
+                                    <InputAdornment position="start">
+                                      <EmailIcon />
+                                    </InputAdornment>
+                                  ),
+                                }}
+                              />
+                            </div>
+                          </Grid>
+                          <Grid item xs={12}>
+                            <div className="flex flex-row items-center">
+                              <h1 style={{ width: "200px" }}>Phone Number</h1>
+                              <TextField
+                                label=""
+                                className="org-Dashboard-textField"
+                                disabled={isDisabled}
+                                id="outlined-basic"
+                                onChange={handleChangeInput("contact_phone")}
+                                placeholder={organizations[0].contact_phone}
+                                value={data?.contact_phone}
+                                size="small"
+                                fullWidth
+                                InputProps={{
+                                  startAdornment: (
+                                    <InputAdornment position="start">
+                                      <PhoneIcon />
+                                    </InputAdornment>
+                                  ),
+                                }}
+                              />
+                            </div>
+                          </Grid>
+                          <Grid item xs={12}>
+                            <div className="flex flex-row items-center">
+                              <h1 style={{ width: "200px" }}>Description</h1>
+                              <TextField
+                                label=""
+                                className="org-Dashboard-textField"
+                                disabled={isDisabled}
+                                id="outlined-multiline-static"
+                                onChange={handleChangeInput("description")}
+                                placeholder={organizations[0].description}
+                                value={data?.description}
+                                multiline
+                                rows={4}
+                                fullWidth
+                              />
+                            </div>
+                          </Grid>
+                        </Grid>
+                        <Grid
+                          container
+                          justifyContent="flex-end"
+                          spacing={2}
+                          sx={{ mt: 2 }}
+                        >
                           {isDisabled && (
-                            <Button
-                              variant="outlined"
-                              onClick={handleEditClick}
-                            >
-                              Update
-                            </Button>
-                          )}
-
-                          {showResetButton && (
-                            <>
+                            <Grid item>
                               <Button
                                 variant="outlined"
-                                onClick={handleSaveClick}
-                                sx={{
-                                  color: "white",
-                                  bgcolor: "#3867A5",
-                                  marginRight: "10px",
-                                  "&:hover": { bgcolor: "#2A4D7B" },
-                                }}
-                              >
-                                Save Change
-                              </Button>
-                              <Button
-                                size="medium"
-                                variant="text"
                                 onClick={handleEditClick}
                               >
-                                <span className="btn-cancel">Cancel</span>
+                                Update
                               </Button>
+                            </Grid>
+                          )}
+                          {showResetButton && (
+                            <>
+                              <Grid item>
+                                <Button
+                                  variant="contained"
+                                  onClick={handleSaveClick}
+                                  sx={{
+                                    color: "white",
+                                    bgcolor: "#3867A5",
+                                    marginRight: "10px",
+                                    "&:hover": { bgcolor: "#2A4D7B" },
+                                  }}
+                                >
+                                  Save Change
+                                </Button>
+                              </Grid>
+                              <Grid item>
+                                <Button
+                                  variant="text"
+                                  onClick={handleEditClick}
+                                >
+                                  Cancel
+                                </Button>
+                              </Grid>
                             </>
                           )}
-                        </div>
-                      </div>
+                        </Grid>
+                      </Card>
                     </div>
-                    <div>
+                    <div className="mt-10">
                       <h1 className="text-[#637381] text-2xl font pr-16 my-3">
                         Demolish organization
                       </h1>

@@ -14,7 +14,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import { MuiOtpInput } from "mui-one-time-password-input";
 import Box from "@mui/material/Box";
-import { Alert, IconButton } from "@mui/material";
+import { Alert, IconButton, Paper } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { motion } from "framer-motion";
 import toast, { Toaster } from "react-hot-toast";
@@ -548,7 +548,7 @@ export default function UserProfile() {
   };
 
   return (
-    <div className="" style={{ height: "100vh" }}>
+    <div style={{ height: "100vh" }}>
       <Toaster position="bottom-right" reverseOrder={false} />
       <NavigationUser />
       <div
@@ -558,75 +558,76 @@ export default function UserProfile() {
           height: "59vh",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
+        <div style={{ display: "flex", flexDirection: "column" }}>
           <SidebarUser />
         </div>
-        <div className="profileField  flex flex-col gap-10 px-20 py-10 bg-[#F3F8FF]">
-          <div className="profileField  flex flex-row justify-start gap-72">
-            <div className="username">
-              <h1>Full Name</h1>
-              <TextField
-                className="bg-[white]"
-                disabled={isDisabled}
-                id="outlined-basic"
-                onChange={handleChangeInput("full_name")}
-                placeholder={userProfile?.full_name}
-                value={fullNameData?.full_name}
-                size="small"
-                sx={{ width: "auto" }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start" className="pr-2">
-                      <PersonIcon />
-                    </InputAdornment>
-                  ),
-                }}
-              />
+        <div className="profileField flex flex-col gap-10 px-20 py-10 bg-[#F3F8FF]">
+          <Paper
+            elevation={3}
+            style={{ padding: "20px", border: "1px solid #89A6CC" }}
+          >
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-row items-center">
+                <h1 style={{ width: "120px" }}>Full Name</h1>
+                <TextField
+                  className="bg-[white]"
+                  disabled={isDisabled}
+                  id="outlined-basic"
+                  onChange={handleChangeInput("full_name")}
+                  placeholder={userProfile?.full_name}
+                  value={fullNameData?.full_name}
+                  size="small"
+                  fullWidth
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start" className="pr-2">
+                        <PersonIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </div>
+
+              <div className="flex flex-row items-center">
+                <h1 style={{ width: "120px" }}>Username</h1>
+                <TextField
+                  className="bg-[white]"
+                  disabled
+                  id="outlined-basic"
+                  value={userProfile?.username}
+                  size="small"
+                  fullWidth
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start" className="pr-2">
+                        <PersonIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </div>
+
+              <div className="flex flex-row items-center">
+                <h1 style={{ width: "120px" }}>Email</h1>
+                <TextField
+                  className="bg-[white]"
+                  disabled
+                  id="outlined-basic"
+                  value={userProfile?.email}
+                  size="small"
+                  fullWidth
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start" className="pr-2">
+                        <EmailIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </div>
             </div>
-            <div className="username">
-              <h1>Username</h1>
-              <TextField
-                className="bg-[white]"
-                disabled
-                id="outlined-basic"
-                value={userProfile?.username}
-                size="small"
-                sx={{ width: "auto" }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start" className="pr-2">
-                      <PersonIcon />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </div>
-          </div>
-          <div className="flex flex-row gap-40 ">
-            <div className="email">
-              <h1>Email</h1>
-              <TextField
-                className="bg-[white]"
-                disabled
-                id="outlined-basic"
-                value={userProfile?.email}
-                size="small"
-                sx={{ width: "400px" }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start" className="pr-2">
-                      <EmailIcon />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </div>
-          </div>
+          </Paper>
+
           <div className="flex gap-10">
             {!showResetButton && (
               <Button variant="outlined" onClick={handleEditClick}>
