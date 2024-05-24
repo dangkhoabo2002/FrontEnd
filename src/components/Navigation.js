@@ -3,8 +3,7 @@ import { Link } from "react-router-dom";
 import Logo from "../assets/logo.png";
 
 export default function Navigation() {
-  const checkUser = localStorage.getItem("access_token");
-  const checkLogin = localStorage.getItem("checkLogin");
+  const checkUser = localStorage.getItem("checkUser");
 
   return (
     <div style={{ backgroundColor: "white" }}>
@@ -35,7 +34,7 @@ export default function Navigation() {
           <a href="../#contact">
             <button className="font-semibold">Contact</button>
           </a>
-          {checkUser && checkLogin === "logged" ? (
+          {checkUser === true ? (
             <Link to={`/organizations`}>
               <button className="bg-[#3867A5] hover:bg-[#2B4B75] text-white py-2 px-6 rounded-full w-40 tracking-widest	">
                 <b>Dashboard</b>

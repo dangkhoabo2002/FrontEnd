@@ -54,8 +54,7 @@ export default function ServerExecution(serverId) {
         const data = await response.json();
         setLines(data.lines);
         setStderr(data.stderr);
-        console.log(data.lines);
-        console.log(data.stderr);
+
         if (response.status === 200) {
           toast.success("Run file successfully.", {
             style: {

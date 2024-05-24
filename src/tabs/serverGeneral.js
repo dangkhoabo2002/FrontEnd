@@ -33,7 +33,7 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 
-export default function ServerGeneral(serverId) {
+export default function ServerGeneral(serverId, serverStatus) {
   // LOADING
 
   useEffect(() => {
@@ -275,6 +275,7 @@ export default function ServerGeneral(serverId) {
       setPassword("");
     }
   };
+
   // Check pass trước khi Delete
   const [openDeleteServer, setOpenDeleteServer] = useState(false);
 
@@ -289,11 +290,7 @@ export default function ServerGeneral(serverId) {
 
   const [isServerOn, setIsServerOn] = useState(true);
 
-  const handleButtonClick = () => {
-    setIsServerOn((prevState) => !prevState);
-  };
-
-  const [openChangeStatus, setOpenChangeStatus] = React.useState(false);
+  const [openChangeStatus, setOpenChangeStatus] = useState(false);
   const handleOpenChangeStatus = () => {
     setOpenChangeStatus(true);
   };
@@ -305,37 +302,71 @@ export default function ServerGeneral(serverId) {
 
   const handleChangeStatusConfirm = async () => {
     const check = await handleCheckPass(password);
+    const active = "ACTIVE";
+    const inactive = "INACTIVE";
     if (check === "Success") {
-      // handleTurnStatus();
-      // setPassword((password = ""));
+      if (generalData1?.status === "ACTIVE") {
+        handleChangeServerStatusAPI(inactive);
+        setIsServerOn(false);
+      } else {
+        handleChangeServerStatusAPI(active);
+        setIsServerOn(true);
+      }
     }
   };
 
-  // const handleTurnStatus = async () => {
-  //   const url = `http://127.0.0.1:5000/server/get_server_data/${serverId.serverId}`;
-  //   const token = localStorage.getItem("access_token");
-  //   try {
-  //     const response = await fetch(url, {
-  //       method: "PUT",
-  //       credentials: "include",
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //         "Content-Type": "application/json",
-  //         "Access-Control-Allow-Origin": "*",
-  //       },
-  //     });
-  //     if (response.status === 200) {
-  //       const server = await response.json();
-  //       handleButtonClick();
-  //       handleCloseChangeStatus();
-  //     } else {
-  //       alert("Update Fail");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //   } finally {
-  //   }
-  // };
+  const handleChangeServerStatusAPI = async (newStatus) => {
+    toast.loading("Updating...");
+
+    const url = `http://127.0.0.1:5000/server/change_status/${serverId.serverId}`;
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await fetch(url, {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          status: newStatus,
+        }),
+      });
+      if (response.status === 200) {
+        toast.dismiss();
+        if (generalData1.status === "ACTIVE") {
+          toast.success(`Server now is INACTIVE`, {
+            style: {
+              border: "1px solid #37E030",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "green",
+              fontWeight: "bolder",
+            },
+          });
+        } else {
+          toast.success(`Server now is ACTIVE`, {
+            style: {
+              border: "1px solid #37E030",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "green",
+              fontWeight: "bolder",
+            },
+          });
+        }
+        handleCloseChangeStatus();
+        handleGetServerData1();
+      } else {
+        toast.dismiss();
+        alert("Update Fail");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
 
   // BTN
 
@@ -369,15 +400,6 @@ export default function ServerGeneral(serverId) {
           },
         });
       } else if (response.status === 403) {
-        toast.error("Server not found or there is no member in server!", {
-          style: {
-            border: "1px solid #F85F60",
-            maxWidth: "900px",
-            padding: "16px 24px",
-            color: "red",
-            fontWeight: "bolder",
-          },
-        });
       } else {
         toast.error("Something wrong, please try again later!", {
           style: {
@@ -969,42 +991,18 @@ export default function ServerGeneral(serverId) {
                 sx={{
                   borderRadius: 1,
                   marginRight: 2,
-                  bgcolor: isServerOn ? "#6EC882" : "#8E8E8E",
+                  bgcolor:
+                    generalData1?.status === "ACTIVE" ? "#8E8E8E" : "#6EC882",
                   "&:hover": {
                     bgcolor: isServerOn ? "#60A670" : "#646464",
                   },
                 }}
                 onClick={handleOpenChangeStatus}
               >
-                {isServerOn ? "Turn off server" : "Turn on server"}
+                {generalData1?.status === "ACTIVE"
+                  ? "Turn off server"
+                  : "Turn on server"}
               </Button>
-              <Dialog open={openChangeStatus} onClose={handleCloseChangeStatus}>
-                <DialogTitle>
-                  {isServerOn ? "Turn off server" : "Turn on server"}
-                </DialogTitle>
-                <DialogContent>
-                  <DialogContentText className="pb-4">
-                    Your action is critical impact! Please enter your password
-                    to continue.
-                  </DialogContentText>
-                  <TextField
-                    required
-                    margin="dense"
-                    id="password"
-                    name="password"
-                    label="Password"
-                    type="password"
-                    fullWidth
-                    variant="outlined"
-                    onChange={handleChange}
-                    value={password}
-                  />
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleCloseChangeStatus}>Cancel</Button>
-                  <Button onClick={handleChangeStatusConfirm}>Confirm</Button>
-                </DialogActions>
-              </Dialog>
             </div>
           </div>
         </div>
@@ -1048,6 +1046,33 @@ export default function ServerGeneral(serverId) {
         <DialogActions>
           <Button onClick={handleCloseDeleteServer}>Cancel</Button>
           <Button onClick={handleDeleteServerConfirm}>Confirm</Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* CHANGE STATUS CONFIRMATION */}
+      <Dialog open={openChangeStatus} onClose={handleCloseChangeStatus}>
+        <DialogTitle>Change Server's Status</DialogTitle>
+        <DialogContent>
+          <DialogContentText className="pb-4">
+            Your action is critical impact! Please enter your password to
+            continue.
+          </DialogContentText>
+          <TextField
+            required
+            margin="dense"
+            id="password"
+            name="password"
+            label="Password"
+            type="password"
+            fullWidth
+            variant="outlined"
+            onChange={handleChange}
+            value={password}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseChangeStatus}>Cancel</Button>
+          <Button onClick={handleChangeStatusConfirm}>Confirm</Button>
         </DialogActions>
       </Dialog>
 

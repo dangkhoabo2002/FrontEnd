@@ -17,7 +17,6 @@ export default function UfwLog(rawUfwLog) {
   // HANDLE RAW DATA
   const [ufwLog, setUfwLog] = useState([]);
   const dataNew = rawUfwLog.ufwLog?.lines;
-  console.log(dataNew);
   const handleSysLog = () => {
     setUfwLog(
       dataNew?.map((line) => {
@@ -38,12 +37,12 @@ export default function UfwLog(rawUfwLog) {
   return (
     <div>
       <div
-        style={{ height: "auto", borderRadius: "0 0 4px 4px",}}
+        style={{ height: "auto", borderRadius: "0 0 4px 4px" }}
         a
         className="bg-[white] shadow-lg"
       >
         {ufwLog?.length > 0 && (
-          <> 
+          <>
             <TableContainer>
               <Table>
                 <TableHead>

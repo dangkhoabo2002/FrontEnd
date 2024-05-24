@@ -423,7 +423,6 @@ export default function ServerDocker(serverId) {
 
   const handleRowClickImage = (row) => {
     setSelectImage(row.row);
-    console.log(row);
   };
 
   const handleContainerActionAPI = async (actionName) => {

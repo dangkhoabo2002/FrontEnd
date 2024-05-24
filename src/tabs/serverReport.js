@@ -137,14 +137,15 @@ const ServerReport = () => {
       <div className="">
         <div className="flex flex-row justify-between">
           <div className="flex flex-col">
-          <div className="info-title font-semibold mb-3 ">
-            <p>Access History</p>
+            <div className="info-title font-semibold mb-3 ">
+              <p>Access History</p>
+            </div>
+            <h1 className="mb-3">
+              Review your server history within the last 3 days.
+            </h1>
           </div>
-          <h1 className="mb-3">
-          Review your server history within the last 3 days.
-        </h1></div>
 
-          <div className="flex" style={{alignItems:"center"}}>
+          <div className="flex" style={{ alignItems: "center" }}>
             <Button
               startIcon={<DownloadIcon />}
               variant="contained"
@@ -170,7 +171,6 @@ const ServerReport = () => {
                 }}
                 onClick={() => {
                   handleMenuClose();
-                  console.log("SysLog selected");
                 }}
               >
                 SysLog
@@ -181,10 +181,8 @@ const ServerReport = () => {
                 }}
                 onClick={() => {
                   handleMenuClose();
-                  console.log("Last Log selected");
                 }}
               >
-                {" "}
                 Last Log
               </MenuItem>
               <MenuItem
@@ -193,7 +191,6 @@ const ServerReport = () => {
                 }}
                 onClick={() => {
                   handleMenuClose();
-                  console.log("UFW Log selected");
                 }}
               >
                 {" "}
@@ -202,7 +199,6 @@ const ServerReport = () => {
             </Menu>
           </div>
         </div>
-
       </div>
       <TabContext value={value}>
         <Box>

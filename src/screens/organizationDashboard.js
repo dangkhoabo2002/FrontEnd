@@ -95,7 +95,6 @@ export default function OrganizationDashboard() {
   const theme = useTheme();
   const [personName, setPersonName] = React.useState([]);
 
-  console.log(personName);
   const handleChangeGrantRole = (event) => {
     const {
       target: { value },
@@ -192,6 +191,66 @@ export default function OrganizationDashboard() {
     }
   };
 
+  const [slotServer, setSlotServer] = useState();
+  const handleGetRemainServerSlot = async () => {
+    const loginUrl = `http://127.0.0.1:5000/server/get_remain_slot/${organization_id}`;
+    const token = localStorage.getItem("access_token");
+
+    try {
+      const response = await fetch(loginUrl, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+
+      const data = await response.json();
+      if (response.status === 200) {
+        setSlotServer(data);
+      } else if (response.status === 403) {
+        toast.dismiss();
+        toast.error("Permission denied!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 500) {
+        toast.dismiss();
+        const logErr = await response.json();
+
+        toast.error(`Fail to remove member ${logErr.message}!`, {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else {
+        toast.dismiss();
+        toast.error("Something wrong, please try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+    }
+  };
   // GET MEMBER
   const handleGetMember = async () => {
     toast.loading("In processing..");
@@ -296,8 +355,6 @@ export default function OrganizationDashboard() {
         setNumberMember(memberCount);
       } else {
         toast.dismiss();
-
-        console.log("Fail to get member");
       }
     } catch (error) {
       toast.dismiss();
@@ -388,6 +445,7 @@ export default function OrganizationDashboard() {
     handleGetServers();
     // handleNumberMember();
     handleGetMember();
+    handleGetRemainServerSlot();
   }, []);
 
   // ---------------------- ADD ------------------------
@@ -1951,7 +2009,7 @@ export default function OrganizationDashboard() {
                   {/* TAB 3 */}
                   <TabPanel sx={{ pt: 3, px: 0 }} value="3">
                     <h1 className="text-[#637381] text-2xl font pr-16 mb-3">
-                      Slot(s) available: 1/5
+                      Slot(s) available: {slotServer?.slot}
                     </h1>
                     <div className="server">
                       <div className="profileField flex flex-col gap-5">

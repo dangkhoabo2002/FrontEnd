@@ -2,6 +2,7 @@ import React from "react";
 import "../css/userSubscribePayment.css";
 import Logo from "../assets/logo.png";
 import Button from "@mui/material/Button";
+import { Link } from "react-router-dom";
 
 import { useState, useEffect } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
@@ -31,8 +32,47 @@ export default function UserSubscribePayment() {
       if (response.status === 200) {
         toast.dismiss();
         const data = await response.json();
-        console.log("dataREs", data);
         setBillInfo(data);
+      } else {
+        toast.dismiss();
+        toast.error("Can not logout, please try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      }
+    } catch (error) {
+    } finally {
+    }
+  };
+
+  const handleSendMail = async () => {
+    const url = `http://127.0.0.1:5000/after_transaction/${orderId}`;
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+
+      if (response.status === 200) {
+        toast.success("Receipt has been sent to your email. ", {
+          style: {
+            border: "1px solid #37E030",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "green",
+            fontWeight: "bolder",
+          },
+        });
       } else {
         toast.dismiss();
         toast.error("Can not logout, please try again later!", {
@@ -52,6 +92,7 @@ export default function UserSubscribePayment() {
 
   useEffect(() => {
     handleAfterPayment();
+    handleSendMail();
   });
 
   return (
@@ -76,12 +117,14 @@ export default function UserSubscribePayment() {
           </h3>
           <div>Package</div>
         </>
-        <Button
-          sx={{ padding: "8px 42px", color: "white" }}
-          variant="contained"
-        >
-          Back to Dashboard
-        </Button>
+        <Link to={`/organizations`}>
+          <Button
+            sx={{ padding: "8px 42px", color: "white" }}
+            variant="contained"
+          >
+            Back to Dashboard
+          </Button>
+        </Link>
       </div>
     </div>
   );
