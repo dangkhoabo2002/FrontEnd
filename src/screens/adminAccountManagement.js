@@ -88,17 +88,116 @@ export default function AdminAccountManagement() {
 
   // CHANGE STATUS USER
   const [openChangeStatus, setOpenChangeStatus] = useState(false);
+  const [newStatus, setNewStatus] = useState("");
 
-  const handleOpenChangeStatus = () => {
+  const handleOpenChangeStatus = (username, status) => {
+    setUsername(username);
+    if (status === "ACTIVE") {
+      setNewStatus("INACTIVE");
+    } else {
+      setNewStatus("ACTIVE");
+    }
     setOpenChangeStatus(true);
   };
 
   const handleChangeStatusClose = () => {
     setOpenChangeStatus(false);
+    setUsername("");
+    setNewStatus("");
   };
+
   const handleChangeStatus = () => {
-    // API HERE
+    handleChangeStatusAPI();
     handleChangeStatusClose();
+  };
+
+  const handleChangeStatusAPI = async () => {
+    if (username) {
+      const deleteUrl = `http://127.0.0.1:5000/manager/change_user_status`;
+      const token = localStorage.getItem("access_token");
+
+      try {
+        const response = await fetch(deleteUrl, {
+          method: "PATCH",
+          credentials: "include",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Credentials": "true",
+          },
+          body: JSON.stringify({
+            username: username,
+            new_status: newStatus,
+          }),
+        });
+        if (response.status === 200) {
+          handleGetCustomer();
+          handleChangeStatusClose();
+          toast.success("Change status successfully.", {
+            style: {
+              border: "1px solid #37E030",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "green",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 403) {
+          toast.error("Permission denied!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 400) {
+          toast.error(" is not selected!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 500) {
+          toast.error("Failed to change status of user, please try again later!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else {
+          toast.error("Something wrong, please try again later!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    } else {
+      toast.error("Please select a user!", {
+        style: {
+          border: "1px solid #F85F60",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
+        },
+      });
+    }
   };
 
   // DELETE USER ACCOUNT
@@ -111,11 +210,10 @@ export default function AdminAccountManagement() {
   };
   const handleCloseDelete = () => {
     setOpenDelete(false);
-    
+    setUsername("");
   };
   const handleDeleteUser = async () => {
     handleDeleteCustomer();
-
     handleCloseDelete();
   };
 
@@ -133,16 +231,14 @@ export default function AdminAccountManagement() {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Credentials": "true",
-
           },
           body: JSON.stringify({
             username: username,
-          })
+          }),
         });
         if (response.status === 200) {
-          
           handleGetCustomer();
-          // setCurrentGuide("");
+          setUsername("");
           handleCloseDelete();
           toast.success("Delete guide successfully.", {
             style: {
@@ -228,7 +324,7 @@ export default function AdminAccountManagement() {
     <div className="admin-layout">
       <SidebarAdmin />
       <div className="content">
-      <Toaster position="bottom-right" reverseOrder={false} />
+        <Toaster position="bottom-right" reverseOrder={false} />
 
         <div className="info-title font-semibold pb-5">
           <p style={{ fontSize: "36px" }}>Account Management</p>
@@ -311,51 +407,34 @@ export default function AdminAccountManagement() {
                           Delete
                         </Button>
                       </td>
-                      {customer.status === "ACTIVE" ? (
-                        <td>
-                          <div className="flex justify-center m-5">
-                            <Button
-                              variant="contained"
-                              sx={{
-                                width: "100px",
-                                height: "25px",
-                                color: "white",
-                                borderRadius: "100px",
-                                bgcolor: "#6EC882",
-                                "&:hover": { bgcolor: "#63B976" },
-                                fontSize: "14px",
-                                fontWeight: "normal",
-                                textTransform: "none",
-                              }}
-                              onClick={handleOpenChangeStatus}
-                            >
-                              Active
-                            </Button>
-                          </div>
-                        </td>
-                      ) : (
-                        <td>
-                          <div className="flex justify-center m-5">
-                            <Button
-                              variant="contained"
-                              sx={{
-                                width: "100px",
-                                height: "25px",
-                                color: "white",
-                                borderRadius: "100px",
-                                bgcolor: "#8E8E8E",
-                                "&:hover": { bgcolor: "#6C6C6C" },
-                                fontSize: "14px",
-                                fontWeight: "normal",
-                                textTransform: "none",
-                              }}
-                              onClick={handleOpenChangeStatus}
-                            >
-                              Inactive
-                            </Button>
-                          </div>
-                        </td>
-                      )}
+                      <td>
+                        <div className="flex justify-center m-5">
+                          <Button
+                            variant="contained"
+                            sx={{
+                              width: "100px",
+                              height: "25px",
+                              color: "white",
+                              borderRadius: "100px",
+                              bgcolor: "#6EC882",
+                              "&:hover": { bgcolor: "#63B976" },
+                              fontSize: "14px",
+                              fontWeight: "normal",
+                              textTransform: "none",
+                            }}
+                            onClick={() =>
+                              handleOpenChangeStatus(
+                                customer.username,
+                                customer.status
+                              )
+                            }
+                          >
+                            {customer.status === "ACTIVE"
+                              ? "Active"
+                              : "Inacitve"}
+                          </Button>
+                        </div>
+                      </td>
                     </tr>
                   ))
                 ) : (
