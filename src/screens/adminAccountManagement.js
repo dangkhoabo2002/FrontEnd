@@ -32,7 +32,7 @@ export default function AdminAccountManagement() {
   const [open, setOpen] = React.useState(false);
 
   const handleGetCustomer = async () => {
-    const customerUrl = `http://127.0.0.1:5000/auth/get_all_profile`;
+    const customerUrl = `https://master-help-desk-back-end.vercel.app/auth/get_all_profile`;
     const token = localStorage.getItem("access_token");
 
     try {
@@ -106,7 +106,7 @@ export default function AdminAccountManagement() {
 
   const handleChangeStatusAPI = async () => {
     if (username) {
-      const deleteUrl = `http://127.0.0.1:5000/manager/change_user_status`;
+      const deleteUrl = `https://master-help-desk-back-end.vercel.app/manager/change_user_status`;
       const token = localStorage.getItem("access_token");
 
       try {
@@ -215,7 +215,7 @@ export default function AdminAccountManagement() {
 
   const handleDeleteCustomer = async () => {
     if (username) {
-      const deleteUrl = `http://127.0.0.1:5000/manager/delete_user`;
+      const deleteUrl = `https://master-help-desk-back-end.vercel.app/manager/delete_user`;
       const token = localStorage.getItem("access_token");
 
       try {
@@ -361,131 +361,128 @@ export default function AdminAccountManagement() {
           </div>
         </div>
 
-          <div className="content-container">
-            <table className="table-auto w-full">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>USERNAME</th>
-                  <th>FULLNAME</th>
-                  <th>EMAIL</th>
-                  <th>ACTION</th>
-                  <th>STATUS</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredCustomerList.length > 0 ? (
-                  filteredCustomerList.map((customer, index) => (
-                    <tr key={customer.id}>
-                      <td>{index + 1}</td>
-                      <td>{customer.username}</td>
-                      <td>{customer.full_name}</td>
-                      <td>{customer.email}</td>
-                      <td>
+        <div className="content-container">
+          <table className="table-auto w-full">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>USERNAME</th>
+                <th>FULLNAME</th>
+                <th>EMAIL</th>
+                <th>ACTION</th>
+                <th>STATUS</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredCustomerList.length > 0 ? (
+                filteredCustomerList.map((customer, index) => (
+                  <tr key={customer.id}>
+                    <td>{index + 1}</td>
+                    <td>{customer.username}</td>
+                    <td>{customer.full_name}</td>
+                    <td>{customer.email}</td>
+                    <td>
+                      <Button
+                        onClick={() =>
+                          handleClickOpenRemoveUser(customer.username)
+                        }
+                        variant="contained"
+                        sx={{
+                          width: "100px",
+                          height: "25px",
+                          color: "white",
+                          borderRadius: "100px",
+                          bgcolor: "#F85F60",
+                          "&:hover": { bgcolor: "#D45758" },
+                          fontSize: "14px",
+                          fontWeight: "normal",
+                          textTransform: "none",
+                        }}
+                      >
+                        Delete
+                      </Button>
+                    </td>
+                    <td>
+                      <div className="flex justify-center m-5">
                         <Button
-                          onClick={() =>
-                            handleClickOpenRemoveUser(customer.username)
-                          }
                           variant="contained"
                           sx={{
                             width: "100px",
                             height: "25px",
                             color: "white",
                             borderRadius: "100px",
-                            bgcolor: "#F85F60",
-                            "&:hover": { bgcolor: "#D45758" },
+                            bgcolor:
+                              customer.status === "ACTIVE"
+                                ? "#6EC882"
+                                : "#8E8E8E",
+                            "&:hover": {
+                              bgcolor:
+                                customer.status === "ACTIVE"
+                                  ? "#63B976"
+                                  : "#717171",
+                            },
                             fontSize: "14px",
                             fontWeight: "normal",
                             textTransform: "none",
                           }}
+                          onClick={() =>
+                            handleOpenChangeStatus(
+                              customer.username,
+                              customer.status
+                            )
+                          }
                         >
-                          Delete
+                          {customer.status === "ACTIVE" ? "Active" : "Inacitve"}
                         </Button>
-                      </td>
-                      <td>
-                        <div className="flex justify-center m-5">
-                          <Button
-                            variant="contained"
-                            sx={{
-                              width: "100px",
-                              height: "25px",
-                              color: "white",
-                              borderRadius: "100px",
-                              bgcolor:
-                                customer.status === "ACTIVE"
-                                  ? "#6EC882"
-                                  : "#8E8E8E",
-                              "&:hover": {
-                                bgcolor:
-                                  customer.status === "ACTIVE"
-                                    ? "#63B976"
-                                    : "#717171",
-                              },
-                              fontSize: "14px",
-                              fontWeight: "normal",
-                              textTransform: "none",
-                            }}
-                            onClick={() =>
-                              handleOpenChangeStatus(
-                                customer.username,
-                                customer.status
-                              )
-                            }
-                          >
-                            {customer.status === "ACTIVE"
-                              ? "Active"
-                              : "Inacitve"}
-                          </Button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="6" className="text-center py-4">
-                      No customers found.
+                      </div>
                     </td>
                   </tr>
-                )}
-              </tbody>
-            </table>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="6" className="text-center py-4">
+                    No customers found.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
 
-            {/* DIALOG CONFIRM CHANGE STATUS */}
-            <Dialog open={openChangeStatus} onClose={handleChangeStatusClose}>
-              <DialogTitle>Confirmation</DialogTitle>
-              <DialogContent>
-                <DialogContentText>
-                  Are you sure you want to change the status?
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleChangeStatusClose}>Cancel</Button>
-                <Button onClick={handleChangeStatus}>
-                  <p className="text-red">Confirm</p>
-                </Button>
-              </DialogActions>
-            </Dialog>
+          {/* DIALOG CONFIRM CHANGE STATUS */}
+          <Dialog open={openChangeStatus} onClose={handleChangeStatusClose}>
+            <DialogTitle>Confirmation</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Are you sure you want to change the status?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleChangeStatusClose}>Cancel</Button>
+              <Button onClick={handleChangeStatus}>
+                <p className="text-red">Confirm</p>
+              </Button>
+            </DialogActions>
+          </Dialog>
 
-            {/* DIALOG DELETE USER */}
-            <Dialog
-              open={openDelete}
-              onClose={handleCloseDelete}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-            >
-              <DialogTitle id="alert-dialog-title">
-                {"Do you want to remove this guide?"}
-              </DialogTitle>
+          {/* DIALOG DELETE USER */}
+          <Dialog
+            open={openDelete}
+            onClose={handleCloseDelete}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {"Do you want to remove this guide?"}
+            </DialogTitle>
 
-              <DialogActions>
-                <Button onClick={handleCloseDelete}>No</Button>
-                <Button onClick={handleDeleteUser}>
-                  <p className="text-red">Yes</p>
-                </Button>
-              </DialogActions>
-            </Dialog>
-          </div>
-        
+            <DialogActions>
+              <Button onClick={handleCloseDelete}>No</Button>
+              <Button onClick={handleDeleteUser}>
+                <p className="text-red">Yes</p>
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </div>
       </div>
     </div>
   );

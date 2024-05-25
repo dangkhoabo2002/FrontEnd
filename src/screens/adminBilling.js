@@ -18,7 +18,8 @@ export default function AdminBillings() {
 
   const handleGetAllBilling = async () => {
     toast.loading("Loading data...");
-    const editUrl = "http://127.0.0.1:5000/billing/get_all_billing";
+    const editUrl =
+      "https://master-help-desk-back-end.vercel.app/billing/get_all_billing";
     const token = localStorage.getItem("access_token");
 
     try {
@@ -89,7 +90,7 @@ export default function AdminBillings() {
 
   const handleGetBilling = async (idBill) => {
     toast.loading("Loading data...");
-    const editUrl = `http://127.0.0.1:5000/billing/get_billing_by_id/${idBill}`;
+    const editUrl = `https://master-help-desk-back-end.vercel.app/billing/get_billing_by_id/${idBill}`;
 
     const token = localStorage.getItem("access_token");
 
