@@ -183,7 +183,6 @@ export default function AdminPackageManagement() {
           }),
         });
         if (response.status === 201) {
-          toast.dismiss();
           toast.success("New package created successfully.", {
             style: {
               border: "1px solid #37E030",

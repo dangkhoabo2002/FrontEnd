@@ -149,7 +149,7 @@ export default function AdminGuide() {
 
   const handleDeleteGuide = async () => {
     if (currentGuide) {
-      const deleteUrl = `http://127.0.0.1:5000/guide/delete/`;
+      const deleteUrl = `http://127.0.0.1:5000/guide/delete/${currentGuide}`;
       const token = localStorage.getItem("access_token");
 
       try {
