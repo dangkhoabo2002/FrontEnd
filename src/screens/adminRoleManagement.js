@@ -121,7 +121,7 @@ export default function AdminRoleManagement() {
             description: newRole.description,
           }),
         });
-        if (response.status === 201) {
+        if (response.status === 200) {
           toast.dismiss();
           toast.success("New role has been created.", {
             style: {
@@ -337,9 +337,7 @@ export default function AdminRoleManagement() {
     const query = event.target.value.toLowerCase();
     setSearchQuery(query);
     setFilteredRoleData(
-      roleData.filter((role) =>
-        role.role_name.toLowerCase().includes(query)
-      )
+      roleData.filter((role) => role.role_name.toLowerCase().includes(query))
     );
   };
 

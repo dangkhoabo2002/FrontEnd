@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import {
   Table,
@@ -11,50 +11,43 @@ import {
 import { Pagination } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
 
-export default function SysLog(rawSysLog) {
+export default function RawSysLog(rawSysLog) {
   const [page, setPage] = useState(0);
   const rowsPerPage = 10;
-
-  // HANDLE RAW DATA
-  const [sysLog, setSysLog] = useState([]);
-
-  useEffect(() => {
-    if (rawSysLog?.sysLog?.lines) {
-      const dataNew = rawSysLog.sysLog.lines;
-      setSysLog(
-        dataNew.map((line) => {
-          const parts = line.split(" ");
-          const time = parts[0] + " " + parts[1] + " - " + parts[2];
-          const log = parts.slice(3).join(" ");
-          return { time, log };
-        })
-      );
-    }
-  }, [rawSysLog]);
-
+  const newLog = rawSysLog.sysLog?.parsed_log;
   return (
     <div>
       <div
-        style={{ height: "auto", borderRadius: "0 0 4px 4px", }}
+        style={{ height: "auto", borderRadius: "0 0 4px 4px" }}
         a
         className="bg-[white] shadow-lg"
       >
-        {sysLog?.length > 0 && (
+        {newLog?.length > 0 && (
           <>
             <TableContainer>
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell>Time</TableCell>
-                    <TableCell>Log</TableCell>
+                    <TableCell>
+                      <p className="font-bold">Date</p>
+                    </TableCell>
+                    <TableCell>
+                      <p className="font-bold">Host</p>
+                    </TableCell>
+                    <TableCell>
+                      <p className="font-bold">Log</p>
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {sysLog
+                  {newLog
                     .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
                     .map((row) => (
-                      <TableRow key={row.time}>
-                        <TableCell>{row.time}</TableCell>
+                      <TableRow key={row.timestamp}>
+                        <TableCell sx={{ width: "160px" }}>
+                          {row.timestamp}
+                        </TableCell>
+                        <TableCell>{row.host}</TableCell>
                         <TableCell>{row.log}</TableCell>
                       </TableRow>
                     ))}
@@ -62,14 +55,14 @@ export default function SysLog(rawSysLog) {
               </Table>
             </TableContainer>
             <Pagination
-              count={sysLog?.length} // Total number of rows
+              count={newLog?.length} // Total number of rows
               page={page}
               onChange={(event, newPage) => setPage(newPage)}
               showFirstLast={true} // Display first and last page buttons
             />
           </>
         )}
-        {!sysLog?.length && <LinearProgress />}
+        {!newLog?.length && <LinearProgress />}
       </div>
     </div>
   );

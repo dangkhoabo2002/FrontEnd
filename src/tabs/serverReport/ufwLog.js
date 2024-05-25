@@ -10,72 +10,58 @@ import {
 import { Pagination } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
 
-export default function UfwLog(rawUfwLog) {
+export default function UfwLog(ufwLog) {
   const [page, setPage] = useState(0); // Page number (starts from 0)
   const rowsPerPage = 10; // Number of rows per page
+  const newLog = ufwLog.ufwLog?.parsed_log;
 
-  // HANDLE RAW DATA
-  const [ufwLog, setUfwLog] = useState([]);
-  const dataNew = rawUfwLog.ufwLog?.lines;
-  const handleSysLog = () => {
-    setUfwLog(
-      dataNew?.map((line) => {
-        const parts = line.split(" ");
-        const date = parts[0] + " " + parts[1] + " - " + parts[2];
-        const host = parts[3] + " " + parts[4];
-        const message = parts.slice(5).join(" ");
-        return { date, host, message };
-      })
-    );
-  };
-
-  useEffect(() => {
-    if (rawUfwLog) {
-      handleSysLog();
-    }
-  }, [dataNew]);
   return (
     <div>
       <div
         style={{ height: "auto", borderRadius: "0 0 4px 4px" }}
-        a
         className="bg-[white] shadow-lg"
       >
-        {ufwLog?.length > 0 && (
+        {newLog?.length > 0 && (
           <>
             <TableContainer>
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell>Time</TableCell>
-                    <TableCell>Host</TableCell>
-                    <TableCell>Message</TableCell>
+                    <TableCell>
+                      <p className="font-bold">Date</p>
+                    </TableCell>
+                    <TableCell>
+                      <p className="font-bold">Host</p>
+                    </TableCell>
+                    <TableCell>
+                      <p className="font-bold">Message</p>
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {ufwLog
+                  {newLog
                     .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
                     .map((row) => (
-                      <TableRow key={row.date}>
+                      <TableRow key={row.timestamp}>
                         <TableCell sx={{ width: "160px" }}>
-                          {row.date}
+                          {row.timestamp}
                         </TableCell>
                         <TableCell>{row.host}</TableCell>
-                        <TableCell>{row.message}</TableCell>
+                        <TableCell>{row.log}</TableCell>
                       </TableRow>
                     ))}
                 </TableBody>
               </Table>
             </TableContainer>
             <Pagination
-              count={ufwLog?.length} // Total number of rows
+              count={newLog?.length} // Total number of rows
               page={page}
               onChange={(event, newPage) => setPage(newPage)}
               showFirstLast={true} // Display first and last page buttons
             />
           </>
         )}
-        {!ufwLog?.length && <LinearProgress />}
+        {!newLog?.length && <LinearProgress />}
       </div>
     </div>
   );

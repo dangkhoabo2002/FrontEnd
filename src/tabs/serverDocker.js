@@ -942,7 +942,7 @@ export default function ServerDocker(serverId) {
                 className="font-semibold"
                 style={{ fontSize: "28px", color: "#637381" }}
               >
-                Add Image
+                Add Container
               </p>
               <IconButton onClick={handleCloseCreateContainer}>
                 <CloseIcon />
@@ -989,7 +989,7 @@ export default function ServerDocker(serverId) {
             </Grid>
             <Grid item xs={12} md={9}>
               <FormControl fullWidth variant="outlined">
-                <OutlinedInput value={selectImage} />
+                <OutlinedInput value={selectImage?.repository} />
               </FormControl>
             </Grid>
           </Grid>
