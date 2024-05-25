@@ -52,7 +52,6 @@ export default function App() {
   };
 
   useEffect(() => {
-    checkAdminRole();
     checkLoggedIn();
   });
   return (

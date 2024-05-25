@@ -89,7 +89,7 @@ export default function Login() {
           if (loginType === "admin") {
             setOpenDialog(true);
           } else {
-            localStorage.setItem("checkUser", true);
+            localStorage.setItem("checkUser", "user");
             navigate(`/organizations`);
           }
         } else if (response.status === 401) {
@@ -192,7 +192,7 @@ export default function Login() {
                   className="mt-3"
                   style={{ fontSize: "16px", fontWeight: "600" }}
                 >
-                  Root username
+                  Username
                 </p>
                 <p style={{ fontSize: "11px", fontWeight: "600" }}>
                   Used for account recovery and some administrative functions
@@ -217,7 +217,7 @@ export default function Login() {
                   Password
                 </p>
                 <p style={{ fontSize: "11px", fontWeight: "600" }}>
-                  Your password just only you know
+                  Your password must be kept secure.{" "}
                 </p>
                 <div className="textField mt-3">
                   <TextField
@@ -233,9 +233,7 @@ export default function Login() {
               </div>
 
               <div className="mt-2 font-semibold" style={{ color: "#3867A5" }}>
-                <Link to={`/login/forgotPassword`}>
-                  Forgot password?
-                </Link>
+                <Link to={`/login/forgotPassword`}>Forgot password?</Link>
               </div>
               <div className="loginBtn text-center mt-3">
                 <Button

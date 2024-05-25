@@ -27,9 +27,14 @@ export default function AdminRoleManagement() {
 
   useEffect(() => {
     const loginToken = localStorage.getItem("checkUser");
-    if (loginToken) {
-      navigate("/error404");
-    }
+
+    const checkLoggedIn = () => {
+      if (loginToken) {
+        navigate("/error404");
+      }
+    };
+
+    checkLoggedIn();
     handleGetRole();
     checkToken();
   }, []);

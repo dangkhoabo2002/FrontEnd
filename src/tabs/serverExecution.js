@@ -160,26 +160,9 @@ export default function ServerExecution(serverId) {
                   Check
                 </Button>
               </div>
-              <div className="check-btn mx-3 flex flex-col ">
-                <Button disable sx={{ width: "100px " }} color="error">
-                  Exists
-                </Button>
-              </div>
             </div>
           </div>
         </div>
-
-        <Box className="mt-3 d-flex" sx={{ marginLeft: "745px" }}>
-          <div className="">
-            <FormControlLabel
-              sx={{ color: "#637381" }}
-              control={
-                <Checkbox className="font-light" sx={{ color: "#637381" }} />
-              }
-              label={<p className="font-light">Run as administrator</p>}
-            />
-          </div>
-        </Box>
       </div>
 
       <div className="resultOutput mt-10">

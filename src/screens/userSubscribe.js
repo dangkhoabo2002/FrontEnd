@@ -394,7 +394,7 @@ export default function UserSubscribe() {
             label="Password"
             type="password"
             fullWidth
-            variant="standard"
+            variant="outlined"
             onChange={(e) => setPassword(e.target.value)}
             value={password}
           />
@@ -426,7 +426,7 @@ export default function UserSubscribe() {
             label="Password"
             type="password"
             fullWidth
-            variant="standard"
+            variant="outlined"
             onChange={(e) => setPassword(e.target.value)}
             value={password}
           />
