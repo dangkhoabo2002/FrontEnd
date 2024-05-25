@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import SidebarAdmin from "../components/sidebarAdmin";
 import NavigationAdmin from "../components/navAdmin";
 import "../css/adminRole.css";
+import "../css/serverGeneral.css";
 import {
   Button,
   Dialog,
@@ -17,7 +18,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import "../css/serverGeneral.css";
 
 export default function AdminRoleManagement() {
   const [roleData, setRoleData] = useState([]);
@@ -27,15 +27,7 @@ export default function AdminRoleManagement() {
   const [filteredRoleData, setFilteredRoleData] = useState([]);
 
   useEffect(() => {
-    const loginToken = localStorage.getItem("checkUser");
 
-    const checkLoggedIn = () => {
-      if (loginToken) {
-        navigate("/error404");
-      }
-    };
-
-    checkLoggedIn();
     handleGetRole();
     checkToken();
   }, []);
@@ -358,7 +350,7 @@ export default function AdminRoleManagement() {
         <div className="info-title font-semibold pb-5">
           <p style={{ fontSize: "36px" }}>Role Management</p>
         </div>
-
+        {token ? (
           <>
             <div className="button-container">
               <div className="flex justify-start">
@@ -446,7 +438,13 @@ export default function AdminRoleManagement() {
               </table>
             </div>
           </>
-
+        ) : (
+          <div className="flex flex-row justify-center py-40 gap-4 text-red-600 font-bold">
+            <WarningAmberIcon />
+            <p>UNKNOWN USER! PLEASE LOGIN FIRST</p>
+            <WarningAmberIcon />
+          </div>
+        )}
       </div>
 
       <Dialog open={openAddRole} onClose={clickCloseAddRole}>
