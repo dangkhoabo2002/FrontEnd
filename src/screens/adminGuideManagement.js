@@ -407,7 +407,6 @@ export default function AdminGuide() {
           <p style={{ fontSize: "36px" }}>Guide Management</p>
         </div>
         
-        {token !== null ? (
           <>
             <div className="button-container">
             <div className="flex justify-start">
@@ -518,13 +517,7 @@ export default function AdminGuide() {
               </Dialog>
             </div>
           </>
-        ) : (
-          <div className="flex flex-row justify-center py-40 gap-4 text-red-600 font-bold">
-            <WarningAmberIcon />
-            <p>UNKNOWN USER! PLEASE LOGIN FIRST </p>
-            <WarningAmberIcon />
-          </div>
-        )}
+
       </div>
 
       <Dialog open={open} onClose={handleCloseAddGuide}>

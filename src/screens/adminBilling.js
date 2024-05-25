@@ -193,7 +193,7 @@ export default function AdminBillings() {
         <div className="info-title font-semibold pb-5">
           <p style={{fontSize:"36px"}}>Billing Management</p>
         </div>
-        {token !== null ? (
+
           <div className="content-container">
             <table className="table-auto w-full">
               <thead>
@@ -283,13 +283,7 @@ export default function AdminBillings() {
               </div>
             </div>
           </div>
-        ) : (
-          <div className="flex flex-row justify-center py-40 gap-4 text-red-600 font-bold">
-            <WarningAmberIcon />
-            <p>UNKNOWN USER! PLEASE LOGIN FIRST </p>
-            <WarningAmberIcon />
-          </div>
-        )}
+
       </div>
     </div>
   );

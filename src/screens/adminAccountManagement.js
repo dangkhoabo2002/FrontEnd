@@ -75,15 +75,6 @@ export default function AdminAccountManagement() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const loginToken = localStorage.getItem("checkUser");
-
-    const checkLoggedIn = () => {
-      if (loginToken) {
-        navigate("/error404");
-      }
-    };
-
-    checkLoggedIn();
     handleGetCustomer();
   }, [navigate]);
 
@@ -366,7 +357,6 @@ export default function AdminAccountManagement() {
           </div>
         </div>
 
-        {token !== null ? (
           <div className="content-container">
             <table className="table-auto w-full">
               <thead>
@@ -483,13 +473,7 @@ export default function AdminAccountManagement() {
               </DialogActions>
             </Dialog>
           </div>
-        ) : (
-          <div className="flex flex-row justify-center py-40 text-red-600 font-bold gap-4">
-            <WarningAmberIcon />
-            <p>UNKNOWN USER! PLEASE LOGIN FIRST </p>
-            <WarningAmberIcon />
-          </div>
-        )}
+
       </div>
     </div>
   );

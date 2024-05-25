@@ -358,7 +358,7 @@ export default function AdminRoleManagement() {
         <div className="info-title font-semibold pb-5">
           <p style={{ fontSize: "36px" }}>Role Management</p>
         </div>
-        {token ? (
+
           <>
             <div className="button-container">
               <div className="flex justify-start">
@@ -446,13 +446,7 @@ export default function AdminRoleManagement() {
               </table>
             </div>
           </>
-        ) : (
-          <div className="flex flex-row justify-center py-40 gap-4 text-red-600 font-bold">
-            <WarningAmberIcon />
-            <p>UNKNOWN USER! PLEASE LOGIN FIRST</p>
-            <WarningAmberIcon />
-          </div>
-        )}
+
       </div>
 
       <Dialog open={openAddRole} onClose={clickCloseAddRole}>

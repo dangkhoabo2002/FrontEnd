@@ -613,7 +613,7 @@ export default function AdminPackageManagement() {
         <div className="info-title font-semibold pb-5">
           <p style={{fontSize:"36px"}}>Package Management</p>
         </div>
-        {token !== null ? (
+
           <>
             <div className="button-container">
             <div className="flex justify-start">
@@ -744,13 +744,7 @@ export default function AdminPackageManagement() {
               </Dialog>
             </div>
           </>
-        ) : (
-          <div className="flex flex-row justify-center py-40 gap-4 text-red-600 font-bold">
-            <WarningAmberIcon />
-            <p>UNKNOWN USER! PLEASE LOGIN FIRST </p>
-            <WarningAmberIcon />
-          </div>
-        )}
+
         <Dialog open={openAddPackage} onClose={clickCloseAddPackage}>
           <DialogTitle>Add new package</DialogTitle>
           <DialogContent>
