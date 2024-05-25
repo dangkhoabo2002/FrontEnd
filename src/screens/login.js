@@ -53,7 +53,7 @@ export default function Login() {
   };
 
   const handleLogin = async (event) => {
-    event.preventDefault(); // Prevent the default form submission behavior
+    event.preventDefault();
 
     if (data.username === "" || data.password === "") {
       toast.error("Please input your Username & Password!", {
