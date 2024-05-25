@@ -117,7 +117,9 @@ export default function ServerFirewall(serverId) {
     if (
       event.target.value === "enable_firewall" ||
       event.target.value === "disable_firewall" ||
-      event.target.value === "reset_firewall"
+      event.target.value === "reset_firewall" ||
+      event.target.value === "allow_ssh" ||
+      event.target.value === "allow_telnet"
     ) {
       setIsDisable(true);
     } else {
@@ -227,81 +229,12 @@ export default function ServerFirewall(serverId) {
               <MenuItem value={"deny_port"}>Deny Port</MenuItem>
               <MenuItem value={"deny_ip"}>Deny IP</MenuItem>
               <MenuItem value={"reset_firewall"}>Reset Firewall</MenuItem>
+              <MenuItem value={"allow_ssh"}>Allow SSH</MenuItem>
+              <MenuItem value={"allow_telnet"}>Allow Telnet</MenuItem>
             </Select>
           </div>
         </div>
-        {/* End SL */}
-        {/* Trusted Service */}
-        {/* <div className="flex flex-row mt-3">
-        <div className="flex flex-row gap-28">
-          <p>
-            <b>Trusted services:</b>
-          </p>
-          <div
-            className="flex flex-col"
-            style={{ border: "1px solid", borderRadius: "5px" }}
-          >
-            <div className=" flex flex-row mx-2">
-              <div className="flex flex-col" style={{ marginRight: "200px" }}>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={trustedServices.http}
-                      onChange={handleServiceChange}
-                      name="http"
-                    />
-                  }
-                  label="WWW (HTTP)"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={trustedServices.ftp}
-                      onChange={handleServiceChange}
-                      name="ftp"
-                    />
-                  }
-                  label="FTP"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={trustedServices.ssh}
-                      onChange={handleServiceChange}
-                      name="ssh"
-                    />
-                  }
-                  label="SSH"
-                />
-              </div>
-              <div className="flex flex-col">
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={trustedServices.telnet}
-                      onChange={handleServiceChange}
-                      name="telnet"
-                    />
-                  }
-                  label="Telnet"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={trustedServices.smtp}
-                      onChange={handleServiceChange}
-                      name="smtp"
-                    />
-                  }
-                  label="Mail (SMTP)"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> */}
-        {/*End TS */}
-        {/* OP */}
+
         {!isDisable && (
           <div className="flex flex-row mt-3 gap-32">
             <div className="flex flex-col w-24">

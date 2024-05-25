@@ -571,12 +571,43 @@ export default function OrganizationDashboard() {
               rsa_key: addSeverData.rsa_key,
             }),
           });
+          const data = await response.json();
           if (response.status === 201) {
             toast.dismiss();
             handleGetServers();
             handleCloseAddServer();
+          } else if (response.status === 403) {
+            toast.dismiss();
+            toast.error(`Permission denied!`, {
+              style: {
+                border: "1px solid #FF5733",
+                maxWidth: "900px",
+                padding: "16px 24px",
+                color: "#FF5733",
+                fontWeight: "bolder",
+              },
+            });
+          } else if (response.status === 400) {
+            toast.error(`${data.message}!`, {
+              style: {
+                border: "1px solid #FF5733",
+                maxWidth: "900px",
+                padding: "16px 24px",
+                color: "#FF5733",
+                fontWeight: "bolder",
+              },
+            });
           } else if (response.status === 500) {
             toast.dismiss();
+            toast.error(`${data.message}!`, {
+              style: {
+                border: "1px solid #FF5733",
+                maxWidth: "900px",
+                padding: "16px 24px",
+                color: "#FF5733",
+                fontWeight: "bolder",
+              },
+            });
           }
         } catch (error) {
           console.error("Error:", error);
@@ -1861,45 +1892,50 @@ export default function OrganizationDashboard() {
                               <td>{index + 1}</td>
                               <td>{member.username}</td>
                               <td>{member.roles}</td>
-                              <td>
-                                <IconButton
-                                  aria-label="delete"
-                                  onClick={() =>
-                                    handleRemoveUser(member.username)
-                                  }
-                                >
-                                  <DeleteIcon />
-                                </IconButton>
+                              {member.roles !== "Super User" ? (
+                                <td>
+                                  <IconButton
+                                    aria-label="delete"
+                                    onClick={() =>
+                                      handleRemoveUser(member.username)
+                                    }
+                                  >
+                                    <DeleteIcon />
+                                  </IconButton>
 
-                                {/* DELETE USER DIALOG */}
-                                <Dialog
-                                  open={open}
-                                  onClose={handleClose}
-                                  aria-labelledby="alert-dialog-title"
-                                  aria-describedby="alert-dialog-description"
-                                >
-                                  <DialogTitle id="alert-dialog-title">
-                                    {"Do you want to remove this member ?"}
-                                  </DialogTitle>
+                                  {/* DELETE USER DIALOG */}
+                                  <Dialog
+                                    open={open}
+                                    onClose={handleClose}
+                                    aria-labelledby="alert-dialog-title"
+                                    aria-describedby="alert-dialog-description"
+                                  >
+                                    <DialogTitle id="alert-dialog-title">
+                                      {"Do you want to remove this member ?"}
+                                    </DialogTitle>
 
-                                  <DialogActions>
-                                    <Button onClick={handleClose}>No</Button>
-                                    <Button
-                                      onClick={() =>
-                                        handleRemoveUser(member.username)
-                                      }
-                                    >
-                                      <p className="text-red">Yes</p>
-                                    </Button>
-                                  </DialogActions>
-                                </Dialog>
-                                <IconButton
-                                  aria-label="uprole"
-                                  onClick={() => handleOpenAddRole()}
-                                >
-                                  <AddModeratorIcon />
-                                </IconButton>
-                              </td>
+                                    <DialogActions>
+                                      <Button onClick={handleClose}>No</Button>
+                                      <Button
+                                        onClick={() =>
+                                          handleRemoveUser(member.username)
+                                        }
+                                      >
+                                        <p className="text-red">Yes</p>
+                                      </Button>
+                                    </DialogActions>
+                                  </Dialog>
+
+                                  <IconButton
+                                    aria-label="uprole"
+                                    onClick={() => handleOpenAddRole()}
+                                  >
+                                    <AddModeratorIcon />
+                                  </IconButton>
+                                </td>
+                              ) : (
+                                ""
+                              )}
                             </tr>
                           ))}
                         </table>
