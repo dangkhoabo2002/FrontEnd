@@ -64,7 +64,8 @@ export default function UserProfile() {
       });
     } else {
       toast.loading("In processing..");
-      const updUrl = "http://127.0.0.1:5000/auth/update_information";
+      const updUrl =
+        "https://master-help-desk-back-end.vercel.app/auth/update_information";
       const token = localStorage.getItem("access_token");
 
       try {
@@ -127,7 +128,7 @@ export default function UserProfile() {
 
   const handleGetUserProfile = async () => {
     toast.loading("In processing..");
-    const getUrl = `http://127.0.0.1:5000/auth/get_profile`;
+    const getUrl = `https://master-help-desk-back-end.vercel.app/auth/get_profile`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(getUrl, {
@@ -226,7 +227,8 @@ export default function UserProfile() {
       });
     } else {
       toast.loading(" OTP is being sent to your email...");
-      const sendUrl = "http://127.0.0.1:5000/auth/forgot_password";
+      const sendUrl =
+        "https://master-help-desk-back-end.vercel.app/auth/forgot_password";
       try {
         const response = await fetch(sendUrl, {
           method: "POST",
@@ -298,7 +300,7 @@ export default function UserProfile() {
       });
     } else {
       toast.loading("In processing..");
-      const checkOtpUrl = `http://127.0.0.1:5000/auth/verify_otp`;
+      const checkOtpUrl = `https://master-help-desk-back-end.vercel.app/auth/verify_otp`;
       try {
         const response = await fetch(checkOtpUrl, {
           method: "POST",
@@ -360,7 +362,8 @@ export default function UserProfile() {
   const handleResendOtp = async () => {
     if (userProfile?.email) {
       toast.loading(" OTP is being sent to your email...");
-      const changeUrl = "http://127.0.0.1:5000/auth/resend_otp";
+      const changeUrl =
+        "https://master-help-desk-back-end.vercel.app/auth/resend_otp";
       try {
         const response = await fetch(changeUrl, {
           method: "POST",
@@ -466,7 +469,8 @@ export default function UserProfile() {
       const token = localStorage.getItem("access_token");
       const rsToken = localStorage.getItem("otp_verified_profile");
       toast.loading("In processing..");
-      const changeUrl = "http://127.0.0.1:5000/auth/change_password";
+      const changeUrl =
+        "https://master-help-desk-back-end.vercel.app/auth/change_password";
       try {
         const response = await fetch(changeUrl, {
           method: "POST",

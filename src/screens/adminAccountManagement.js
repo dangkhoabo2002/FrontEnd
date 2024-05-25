@@ -30,7 +30,7 @@ export default function AdminAccountManagement() {
   const [open, setOpen] = React.useState(false);
 
   const handleGetCustomer = async () => {
-    const customerUrl = `http://127.0.0.1:5000/auth/get_all_profile`;
+    const customerUrl = `https://master-help-desk-back-end.vercel.app/auth/get_all_profile`;
     const token = localStorage.getItem("access_token");
 
     try {
@@ -113,7 +113,7 @@ export default function AdminAccountManagement() {
 
   const handleChangeStatusAPI = async () => {
     if (username) {
-      const deleteUrl = `http://127.0.0.1:5000/manager/change_user_status`;
+      const deleteUrl = `https://master-help-desk-back-end.vercel.app/manager/change_user_status`;
       const token = localStorage.getItem("access_token");
 
       try {
@@ -222,7 +222,7 @@ export default function AdminAccountManagement() {
 
   const handleDeleteCustomer = async () => {
     if (username) {
-      const deleteUrl = `http://127.0.0.1:5000/manager/delete_user`;
+      const deleteUrl = `https://master-help-desk-back-end.vercel.app/manager/delete_user`;
       const token = localStorage.getItem("access_token");
 
       try {

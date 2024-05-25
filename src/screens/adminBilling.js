@@ -17,7 +17,8 @@ export default function AdminBillings() {
 
   const handleGetAllBilling = async () => {
     toast.loading("Loading data...");
-    const editUrl = "http://127.0.0.1:5000/billing/get_all_billing";
+    const editUrl =
+      "https://master-help-desk-back-end.vercel.app/billing/get_all_billing";
     const token = localStorage.getItem("access_token");
 
     try {
@@ -88,7 +89,7 @@ export default function AdminBillings() {
 
   const handleGetBilling = async (idBill) => {
     toast.loading("Loading data...");
-    const editUrl = `http://127.0.0.1:5000/billing/get_billing_by_id/${idBill}`;
+    const editUrl = `https://master-help-desk-back-end.vercel.app/billing/get_billing_by_id/${idBill}`;
 
     const token = localStorage.getItem("access_token");
 
@@ -176,7 +177,7 @@ export default function AdminBillings() {
       <div className="content">
         {/* <NavigationAdmin /> */}{" "}
         <div className="info-title font-semibold pb-5">
-          <p style={{fontSize:"36px"}}>Billing Management</p>
+          <p style={{ fontSize: "36px" }}>Billing Management</p>
         </div>
         {token !== null ? (
           <div className="content-container">
@@ -248,7 +249,7 @@ export default function AdminBillings() {
                         style={{
                           fontSize: "16px",
                           fontWeight: "Bold",
-                          letterSpacing: "0.09rem", 
+                          letterSpacing: "0.09rem",
                         }}
                       >
                         Close

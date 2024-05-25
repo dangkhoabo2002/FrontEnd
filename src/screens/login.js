@@ -67,7 +67,8 @@ export default function Login() {
       });
     } else {
       toast.loading("In processing...");
-      const loginUrl = "http://127.0.0.1:5000/auth/login";
+      const loginUrl =
+        "https://master-help-desk-back-end.vercel.app/auth/login";
       try {
         const response = await fetch(loginUrl, {
           method: "POST",
@@ -233,9 +234,7 @@ export default function Login() {
               </div>
 
               <div className="mt-2 font-semibold" style={{ color: "#3867A5" }}>
-                <Link to={`/login/forgotPassword`}>
-                  Forgot password?
-                </Link>
+                <Link to={`/login/forgotPassword`}>Forgot password?</Link>
               </div>
               <div className="loginBtn text-center mt-3">
                 <Button

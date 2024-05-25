@@ -51,7 +51,7 @@ export default function AdminPackageManagement() {
 
   const handleGetPackage = async () => {
     toast.loading("In processing..");
-    const packageUrl = `http://127.0.0.1:5000/package/get`;
+    const packageUrl = `https://master-help-desk-back-end.vercel.app/package/get`;
     const token = localStorage.getItem("access_token");
 
     try {
@@ -160,7 +160,7 @@ export default function AdminPackageManagement() {
       }
       try {
         toast.loading("Adding new package...");
-        const customerUrl = `http://127.0.0.1:5000/package/add`;
+        const customerUrl = `https://master-help-desk-back-end.vercel.app/package/add`;
         const token = localStorage.getItem("access_token");
         const response = await fetch(customerUrl, {
           method: "POST",
@@ -248,7 +248,7 @@ export default function AdminPackageManagement() {
   };
 
   const handleDeleteRole = async () => {
-    const customerUrl = `http://127.0.0.1:5000/package/delete/${packageId_del}`;
+    const customerUrl = `https://master-help-desk-back-end.vercel.app/package/delete/${packageId_del}`;
     const token = localStorage.getItem("access_token");
 
     try {
@@ -344,7 +344,7 @@ export default function AdminPackageManagement() {
 
   const handleEditPackage = async () => {
     if (packageId_edit) {
-      const editUrl = `http://127.0.0.1:5000/package/update/${packageId_edit}`;
+      const editUrl = `https://master-help-desk-back-end.vercel.app/package/update/${packageId_edit}`;
       const token = localStorage.getItem("access_token");
 
       if (
@@ -477,7 +477,7 @@ export default function AdminPackageManagement() {
   const handleGetPackageInfo = async (package_id) => {
     if (package_id) {
       toast.loading("In processing...");
-      const editUrl = `http://127.0.0.1:5000/package/get/${package_id}`;
+      const editUrl = `https://master-help-desk-back-end.vercel.app/package/get/${package_id}`;
 
       const token = localStorage.getItem("access_token");
 
@@ -597,9 +597,7 @@ export default function AdminPackageManagement() {
     const query = event.target.value.toLowerCase();
     setSearchQuery(query);
     setFilteredPackageData(
-      Package.filter((pkg) =>
-        pkg.package_name.toLowerCase().includes(query)
-      )
+      Package.filter((pkg) => pkg.package_name.toLowerCase().includes(query))
     );
   };
 
@@ -610,46 +608,46 @@ export default function AdminPackageManagement() {
       <div className="content">
         <Toaster position="bottom-right" reverseOrder={false} />{" "}
         <div className="info-title font-semibold pb-5">
-          <p style={{fontSize:"36px"}}>Package Management</p>
+          <p style={{ fontSize: "36px" }}>Package Management</p>
         </div>
         {token !== null ? (
           <>
             <div className="button-container">
-            <div className="flex justify-start">
-              <label htmlFor="simple-search" className="sr-only">
-                Search
-              </label>
-              <div className="relative w-full">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <svg
-                    className="w-4 h-4 text-gray-400"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                    />
-                  </svg>
+              <div className="flex justify-start">
+                <label htmlFor="simple-search" className="sr-only">
+                  Search
+                </label>
+                <div className="relative w-full">
+                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <svg
+                      className="w-4 h-4 text-gray-400"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                      />
+                    </svg>
+                  </div>
+                  <input
+                    type="text"
+                    id="simple-search"
+                    style={{ width: "200%" }}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Search by name..."
+                    onChange={handleSearchChange}
+                  />
                 </div>
-                <input
-                  type="text"
-                  id="simple-search"
-                  style={{width:"200%"}}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Search by name..."
-                  onChange={handleSearchChange}
-                />
               </div>
-            </div>
 
               <Button
-              className="flex justify-end max-w-sm"
+                className="flex justify-end max-w-sm"
                 onClick={clickOpenAddPackage}
                 variant="outlined"
                 sx={{

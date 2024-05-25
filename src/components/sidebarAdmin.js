@@ -8,12 +8,17 @@ import ManageAccountsOutlinedIcon from "@mui/icons-material/ManageAccountsOutlin
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import Logo from "../images/MHDLogo.png";
 
-import '../css/sidebarAdmin.css';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import "../css/sidebarAdmin.css";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
 import toast from "react-hot-toast";
 
 export default function SidebarAdmin() {
-
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -27,7 +32,8 @@ export default function SidebarAdmin() {
   const navigate = useNavigate();
   const handleLogout = async () => {
     toast.loading("In processing..");
-    const logoutUrl = "http://127.0.0.1:5000/manager/logout";
+    const logoutUrl =
+      "https://master-help-desk-back-end.vercel.app/manager/logout";
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(logoutUrl, {
@@ -94,54 +100,95 @@ export default function SidebarAdmin() {
         <img src={Logo} alt="Logo" className="logo-amazing" />
         <p className="logo-text">MASTER HELP DESK</p>
       </div>
-      
+
       <div className="flex flex-col">
         <div className="flex flex-col">
-          <div className={`hoverSection ${selectedMenu === "account" ? "selectedMenu" : ""}`}>
+          <div
+            className={`hoverSection ${
+              selectedMenu === "account" ? "selectedMenu" : ""
+            }`}
+          >
             <Link to={`/admin`} onClick={() => setSelectedMenu("account")}>
               <section className="flex flex-row gap-0 py-4 pl-12 items-center justify-left text-[#637381]">
                 <SupervisorAccountOutlinedIcon style={{ fontSize: "28px" }} />
-                <p className="text-xl font-semibold" style={{ fontSize: "18px" }}>
+                <p
+                  className="text-xl font-semibold"
+                  style={{ fontSize: "18px" }}
+                >
                   Account Management
                 </p>
               </section>
             </Link>
           </div>
-          <div className={`hoverSection ${selectedMenu === "billing" ? "selectedMenu" : ""}`}>
-            <Link to={`/admin/billing`} onClick={() => setSelectedMenu("billing")}>
+          <div
+            className={`hoverSection ${
+              selectedMenu === "billing" ? "selectedMenu" : ""
+            }`}
+          >
+            <Link
+              to={`/admin/billing`}
+              onClick={() => setSelectedMenu("billing")}
+            >
               <section className="flex flex-row gap-0 py-4 pl-12 items-center justify-left text-[#637381]">
                 <ReceiptIcon style={{ fontSize: "28px" }} />
-                <p className="text-xl font-semibold" style={{ fontSize: "18px" }}>
+                <p
+                  className="text-xl font-semibold"
+                  style={{ fontSize: "18px" }}
+                >
                   Billing Management
                 </p>
               </section>
             </Link>
           </div>
-          <div className={`hoverSection ${selectedMenu === "guide" ? "selectedMenu" : ""}`}>
+          <div
+            className={`hoverSection ${
+              selectedMenu === "guide" ? "selectedMenu" : ""
+            }`}
+          >
             <Link to={`/admin/guide`} onClick={() => setSelectedMenu("guide")}>
               <section className="flex flex-row gap-0 py-4 pl-12 items-center justify-left text-[#637381]">
                 <BookIcon style={{ fontSize: "28px" }} />
-                <p className="text-xl font-semibold" style={{ fontSize: "18px" }}>
+                <p
+                  className="text-xl font-semibold"
+                  style={{ fontSize: "18px" }}
+                >
                   Guide Management
                 </p>
               </section>
             </Link>
           </div>
-          <div className={`hoverSection ${selectedMenu === "package" ? "selectedMenu" : ""}`}>
-            <Link to={`/admin/package`} onClick={() => setSelectedMenu("package")}>
+          <div
+            className={`hoverSection ${
+              selectedMenu === "package" ? "selectedMenu" : ""
+            }`}
+          >
+            <Link
+              to={`/admin/package`}
+              onClick={() => setSelectedMenu("package")}
+            >
               <section className="flex flex-row gap-0 py-4 pl-12 items-center justify-left text-[#637381]">
                 <InventoryIcon style={{ fontSize: "28px" }} />
-                <p className="text-xl font-semibold" style={{ fontSize: "18px" }}>
+                <p
+                  className="text-xl font-semibold"
+                  style={{ fontSize: "18px" }}
+                >
                   Package Management
                 </p>
               </section>
             </Link>
           </div>
-          <div className={`hoverSection ${selectedMenu === "role" ? "selectedMenu" : ""}`}>
+          <div
+            className={`hoverSection ${
+              selectedMenu === "role" ? "selectedMenu" : ""
+            }`}
+          >
             <Link to={`/admin/role`} onClick={() => setSelectedMenu("role")}>
               <section className="flex flex-row gap-0 py-4 pl-12 items-center justify-left text-[#637381]">
                 <ManageAccountsOutlinedIcon style={{ fontSize: "28px" }} />
-                <p className="text-xl font-semibold" style={{ fontSize: "18px" }}>
+                <p
+                  className="text-xl font-semibold"
+                  style={{ fontSize: "18px" }}
+                >
                   Role Management
                 </p>
               </section>
@@ -149,18 +196,18 @@ export default function SidebarAdmin() {
           </div>
         </div>
 
-        <div className="" style={{cursor:"pointer"}}>
-    <section
-    style={{marginTop: "180px"}}
-      className="flex flex-row gap-3 py-4 pl-12 items-center justify-left text-[#637381]"
-      onClick={handleClickOpen}
-    >
-      <ExitToAppIcon style={{ fontSize: "28px" }} />
-      <p className="text-xl font-semibold" style={{ fontSize: "18px" }}>
-        Logout
-      </p>
-    </section>
-  </div>
+        <div className="" style={{ cursor: "pointer" }}>
+          <section
+            style={{ marginTop: "180px" }}
+            className="flex flex-row gap-3 py-4 pl-12 items-center justify-left text-[#637381]"
+            onClick={handleClickOpen}
+          >
+            <ExitToAppIcon style={{ fontSize: "28px" }} />
+            <p className="text-xl font-semibold" style={{ fontSize: "18px" }}>
+              Logout
+            </p>
+          </section>
+        </div>
 
         <Dialog
           open={open}

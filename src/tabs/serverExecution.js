@@ -36,7 +36,7 @@ export default function ServerExecution(serverId) {
       });
     } else {
       setLoading(true);
-      const editUrl = `http://127.0.0.1:5000/server/execute_code/${serverId.serverId}`;
+      const editUrl = `https://master-help-desk-back-end.vercel.app/server/execute_code/${serverId.serverId}`;
       const token = localStorage.getItem("access_token");
       try {
         const response = await fetch(editUrl, {
