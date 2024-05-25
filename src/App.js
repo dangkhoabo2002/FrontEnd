@@ -29,6 +29,8 @@ import AdminLogin from "./screens/adminLogin";
 // import AboutUs from "./screens/abouUs";
 import TermOfService from "./screens/termOfService";
 import SubscribeModal from "./components/nonSubModal";
+import EmailSending from "./screens/emailSending";
+import VerifySuccess from "./screens/verifySuccess";
 import Error404 from "./screens/Error404";
 import { useEffect } from "react";
 
@@ -50,13 +52,14 @@ export default function App() {
   };
 
   useEffect(() => {
-    checkAdminRole();
     checkLoggedIn();
   });
   return (
     <div>
       <Routes>
         {/* Dashboard Unlogin */}
+        <Route path="/signup/emailsending" element={<EmailSending/>}></Route>
+        <Route path="/signup/emailsending/verify" element={<VerifySuccess/>}></Route>
         <Route path="/" element={<Homepage />}></Route>
         <Route path="/test" element={<Test />}></Route>
 

@@ -21,7 +21,8 @@ export default function UserSubscribe() {
   const [getPackagePurchased, setGetPackagePurchased] = useState();
   const [getSubPurchased, setGetSubPurchased] = useState();
   const [isSub, setIsSub] = useState(false);
-  const [openDialog, setOpenDialog] = useState(false);
+  const [openCancelDialog, setOpenCancelDialog] = useState(false);
+  const [openChangeDialog, setOpenChangeDialog] = useState(false);
   const [password, setPassword] = useState("");
 
   const handlePackage = async () => {
@@ -209,14 +210,36 @@ export default function UserSubscribe() {
   }, []);
 
   const handleCancelPackage = () => {
-    setOpenDialog(true);
+    setOpenCancelDialog(true);
+  };
+
+  const handleChangePackage = () => {
+    setOpenChangeDialog(true);
   };
 
   const handleConfirmCancel = async () => {
     const checkPass = await handleCheckPass(password);
     if (checkPass === "Success") {
       handleCancelPackageAPI();
-      setOpenDialog(false);
+      setOpenCancelDialog(false);
+    } else if (checkPass === "") {
+      toast.error("Incorrect password!", {
+        style: {
+          border: "1px solid #FF5733",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "red",
+          fontWeight: "bolder",
+        },
+      });
+    }
+  };
+
+  const handleConfirmChange = async () => {
+    const checkPass = await handleCheckPass(password);
+    if (checkPass === "Success") {
+      // Add the logic to handle the package change here
+      setOpenChangeDialog(false);
     } else if (checkPass === "") {
       toast.error("Incorrect password!", {
         style: {
@@ -231,7 +254,8 @@ export default function UserSubscribe() {
   };
 
   const handleCloseDialog = () => {
-    setOpenDialog(false);
+    setOpenCancelDialog(false);
+    setOpenChangeDialog(false);
   };
 
   return (
@@ -288,7 +312,9 @@ export default function UserSubscribe() {
                   <Button variant="text" onClick={handleCancelPackage}>
                     Cancel package
                   </Button>
-                  <Button variant="contained">Change package</Button>
+                  <Button variant="contained" onClick={handleChangePackage}>
+                    Change package
+                  </Button>
                 </div>
               </div>
             ) : (
@@ -349,7 +375,7 @@ export default function UserSubscribe() {
 
       {/* CANCEL PACKAGE */}
       <Dialog
-        open={openDialog}
+        open={openCancelDialog}
         onClose={handleCloseDialog}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
@@ -368,7 +394,7 @@ export default function UserSubscribe() {
             label="Password"
             type="password"
             fullWidth
-            variant="standard"
+            variant="outlined"
             onChange={(e) => setPassword(e.target.value)}
             value={password}
           />
@@ -376,6 +402,38 @@ export default function UserSubscribe() {
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancel</Button>
           <Button onClick={handleConfirmCancel}>Confirm</Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* CHANGE PACKAGE */}
+      <Dialog
+        open={openChangeDialog}
+        onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Change Package"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText className="pb-4">
+            To change your current package, please enter your password to
+            confirm.
+          </DialogContentText>
+          <TextField
+            required
+            margin="dense"
+            id="password"
+            name="password"
+            label="Password"
+            type="password"
+            fullWidth
+            variant="outlined"
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog}>Cancel</Button>
+          <Button onClick={handleConfirmChange}>Confirm</Button>
         </DialogActions>
       </Dialog>
     </div>

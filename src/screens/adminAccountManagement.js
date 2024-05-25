@@ -260,7 +260,7 @@ export default function AdminAccountManagement() {
             },
           });
         } else if (response.status === 400) {
-          toast.error(" is not selected!", {
+          toast.error("Guide is not selected!", {
             style: {
               border: "1px solid #F85F60",
               maxWidth: "900px",

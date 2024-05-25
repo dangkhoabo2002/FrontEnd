@@ -672,7 +672,7 @@ export default function AdminPackageManagement() {
                     <th>DURATION</th>
                     <th>SLOT NUMBER</th>
                     <th>SLOT SERVER</th>
-                    <th>Status</th>
+                    <th>STATUS</th>
                     <th>ACTION</th>
                   </tr>
                 </thead>

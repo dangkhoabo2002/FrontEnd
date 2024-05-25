@@ -168,6 +168,20 @@ export default function AdminBillings() {
     handleGetAllBilling();
   }, []);
 
+  //status
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "PENDING":
+        return "#DCD421";
+      case "FAIL":
+        return "#F85F60";
+      case "SUCCESS":
+        return "#6EC882";
+      default:
+        return "#8E8E8E";
+    }
+  };
+
   return (
     <div className="admin-layout">
       <Toaster position="bottom-right" reverseOrder={false} />
@@ -194,7 +208,16 @@ export default function AdminBillings() {
                   <tr key={bill.billing_id}>
                     <td>{bill.timestamp}</td>
                     <td>{bill.amount}đ</td>
-                    <td>{bill.billing_status}</td>
+                    <td ><div style={{
+                        backgroundColor: getStatusColor(bill.billing_status),
+                        color: "white",
+                        textAlign: "center",
+                        borderRadius: "100px",
+                        padding: "5px 0px",
+                        fontSize: "14px",
+                        fontWeight: "normal",
+                        textTransform: "none",
+                      }}>{bill.billing_status}</div></td>
                     <td>
                       <a href="#popup1" id="openPopUp">
                         <Button

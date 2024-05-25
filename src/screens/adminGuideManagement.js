@@ -284,6 +284,8 @@ export default function AdminGuide() {
         navigate("/error404");
       }
     };
+
+    checkLoggedIn();
     handleGetGuide();
     checkToken();
   }, []);
