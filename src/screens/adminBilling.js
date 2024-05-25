@@ -6,6 +6,7 @@ import { Button } from "@mui/material";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import "../css/serverGeneral.css";
 
 export default function AdminBillings() {
   const [listBilling, setListBilling] = useState();

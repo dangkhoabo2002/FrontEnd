@@ -17,6 +17,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import "../css/serverGeneral.css";
 
 export default function AdminRoleManagement() {
   const [roleData, setRoleData] = useState([]);

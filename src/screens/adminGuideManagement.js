@@ -12,6 +12,7 @@ import {
   IconButton,
   TextField,
 } from "@mui/material";
+import "../css/serverGeneral.css";
 
 // ICONS MUI
 import DeleteIcon from "@mui/icons-material/Delete";

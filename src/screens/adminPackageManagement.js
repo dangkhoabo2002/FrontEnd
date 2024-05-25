@@ -18,6 +18,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import "../css/adminPackage.css";
+import "../css/serverGeneral.css";
 
 export default function AdminPackageManagement() {
   const [Package, setPackageData] = useState([]);

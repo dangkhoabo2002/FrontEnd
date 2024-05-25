@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import SidebarAdmin from "../components/sidebarAdmin";
 import "../css/Admin.css";
+import "../css/serverGeneral.css";
 import Button from "@mui/material/Button";
 import toast, { Toaster } from "react-hot-toast";
 import {

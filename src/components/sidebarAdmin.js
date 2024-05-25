@@ -7,6 +7,8 @@ import InventoryIcon from "@mui/icons-material/Inventory";
 import ManageAccountsOutlinedIcon from "@mui/icons-material/ManageAccountsOutlined";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import Logo from "../images/MHDLogo.png";
+import "../css/Sidebar.css";
+
 
 import '../css/sidebarAdmin.css';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
