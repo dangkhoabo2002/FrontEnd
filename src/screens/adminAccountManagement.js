@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import SidebarAdmin from "../components/sidebarAdmin";
 import "../css/Admin.css";
 import "../css/serverGeneral.css";
+
 import Button from "@mui/material/Button";
 import toast, { Toaster } from "react-hot-toast";
 import {
@@ -85,9 +86,9 @@ export default function AdminAccountManagement() {
   const handleOpenChangeStatus = (username, status) => {
     setUsername(username);
     if (status === "ACTIVE") {
-      setNewStatus("INACTIVE");
+      setNewStatus("inactive");
     } else {
-      setNewStatus("ACTIVE");
+      setNewStatus("active");
     }
     setOpenChangeStatus(true);
   };
@@ -156,15 +157,18 @@ export default function AdminAccountManagement() {
             },
           });
         } else if (response.status === 500) {
-          toast.error("Failed to change status of user, please try again later!", {
-            style: {
-              border: "1px solid #F85F60",
-              maxWidth: "900px",
-              padding: "16px 24px",
-              color: "red",
-              fontWeight: "bolder",
-            },
-          });
+          toast.error(
+            "Failed to change status of user, please try again later!",
+            {
+              style: {
+                border: "1px solid #F85F60",
+                maxWidth: "900px",
+                padding: "16px 24px",
+                color: "red",
+                fontWeight: "bolder",
+              },
+            }
+          );
         } else {
           toast.error("Something wrong, please try again later!", {
             style: {
@@ -252,7 +256,7 @@ export default function AdminAccountManagement() {
             },
           });
         } else if (response.status === 400) {
-          toast.error("Guide is not selected!", {
+          toast.error(" is not selected!", {
             style: {
               border: "1px solid #F85F60",
               maxWidth: "900px",
@@ -407,8 +411,16 @@ export default function AdminAccountManagement() {
                               height: "25px",
                               color: "white",
                               borderRadius: "100px",
-                              bgcolor: "#6EC882",
-                              "&:hover": { bgcolor: "#63B976" },
+                              bgcolor:
+                                customer.status === "ACTIVE"
+                                  ? "#6EC882"
+                                  : "#8E8E8E",
+                              "&:hover": {
+                                bgcolor:
+                                  customer.status === "ACTIVE"
+                                    ? "#63B976"
+                                    : "#717171",
+                              },
                               fontSize: "14px",
                               fontWeight: "normal",
                               textTransform: "none",
@@ -473,7 +485,7 @@ export default function AdminAccountManagement() {
               </DialogActions>
             </Dialog>
           </div>
-
+        
       </div>
     </div>
   );

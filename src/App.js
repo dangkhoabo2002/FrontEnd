@@ -23,7 +23,7 @@ export default function App() {
         <Route path="/error404" element={<Error404 />}></Route>
 
         {/* ADMIN ROUTE*/}
-        <Route path="/adminLogin" element={<AdminLogin />}></Route>
+        <Route path="/" element={<AdminLogin />}></Route>
         <Route path="/admin" element={<Admin />}></Route>
         <Route
           path="/admin/billing"
