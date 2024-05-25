@@ -320,7 +320,7 @@ export default function ServerProxy(serverId) {
 
   // GET Proxy
   const [proxyData, setProxyData] = useState("");
-
+  console.log(proxyData);
   const handleGetProxy = async () => {
     const getUrl = `http://127.0.0.1:5000/server/get_all_proxy/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
@@ -449,7 +449,7 @@ export default function ServerProxy(serverId) {
               <tbody>
                 {proxyData &&
                   proxyData?.map((proxy, index) => (
-                    <tr key={index}>
+                    <tr key={proxy.protocol}>
                       <td>{index + 1}</td>
                       <td>{proxyData[index].protocol}</td>
                       <td>{proxyData[index].details}</td>

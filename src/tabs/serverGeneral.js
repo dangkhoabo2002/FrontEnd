@@ -956,13 +956,20 @@ export default function ServerGeneral(serverId, serverStatus) {
           <p>Setting</p>
         </div>
         <div className="setting-site mb-5 flex flex-row justify-between">
-          <div>
+          <div className="flex flex-row gap-4">
             <Button
               variant="outlined"
               startIcon={<Fingerprint />}
               onClick={() => setOpenCheckPassRsa(true)}
             >
               RSA KEY
+            </Button>
+            <Button
+              variant="outlined"
+              startIcon={<Fingerprint />}
+              onClick={() => setOpenCheckPassRsa(true)}
+            >
+              SERVER PASSWORD
             </Button>
           </div>
           <div>
@@ -1208,8 +1215,9 @@ export default function ServerGeneral(serverId, serverStatus) {
       <Dialog open={openNewRsa} onClose={handleCloseUpdateRsa}>
         <DialogTitle>Set new RSA key!</DialogTitle>
         <DialogContent>
-          <DialogContentText className="pb-4">
-            Your action is critical impact! Input new rsa key here.
+          <DialogContentText className="pb-4 inline-flex">
+            <p style={{ color: "red" }}>Your action is critical impact! </p>
+            <p className="pl-1">Input new rsa key here.</p>
           </DialogContentText>
           <TextField
             required
@@ -1225,7 +1233,7 @@ export default function ServerGeneral(serverId, serverStatus) {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleCloseUpdateRsa}>Cancel</Button>
           <Button onClick={handleUpdateRsa}>Confirm</Button>
         </DialogActions>
       </Dialog>

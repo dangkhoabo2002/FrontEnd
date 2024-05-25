@@ -16,6 +16,7 @@ import { useParams } from "react-router-dom";
 import LinearProgress from "@mui/material/LinearProgress";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import toast, { Toaster } from "react-hot-toast";
 
 const ServerReport = () => {
   const [open, setOpen] = useState(false);
@@ -28,6 +29,96 @@ const ServerReport = () => {
   const handleMenuClick = (event) => setAnchorEl(event.currentTarget);
   const handleMenuClose = () => setAnchorEl(null);
 
+  const [newUrl, setNewUrl] = useState("");
+
+  const handleChooseDowloadLog = (option) => {
+    if (option === "ufwLog") {
+      setNewUrl("report_raw_log_ufw");
+    } else if (option === "lastLog") {
+      setNewUrl("report_raw_log_last");
+    } else if (option === "sysLog") {
+      setNewUrl("report_raw_syslog");
+    }
+    handleDowloadLog(newUrl);
+  };
+
+  const handleDowloadLog = async (url) => {
+    toast.loading("Preparing data to dowload...");
+    const token = localStorage.getItem("access_token");
+    const urlac = `http://127.0.0.1:5000/server/${url}/${param.server_id}`;
+    try {
+      const response = await fetch(urlac, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Access-Control-Expose-Headers": "Content-Disposition",
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error status: ${response.status}`);
+      }
+
+      const contentDisposition = response.headers.get("Content-Disposition");
+      let fileName = "default_filename.txt";
+
+      if (contentDisposition) {
+        const matches = contentDisposition.match(/filename="(.+)"/i);
+        if (matches && matches[1]) {
+          fileName = decodeURIComponent(matches[1]);
+        }
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", fileName);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      const data = await response.json();
+      if (response.status === 200) {
+        toast.dismiss();
+      } else if (response.status === 403) {
+        toast.dismiss();
+        toast.error(`Permission denied!`, {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 500) {
+        toast.dismiss();
+        const errMessage = await data.message;
+        toast.error(`${errMessage}!`, {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else {
+        toast.error("Something went wrong, please try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
   const [value, setValue] = useState("1");
 
   const handleChange = (event, newValue) => {
@@ -98,7 +189,6 @@ const ServerReport = () => {
 
   // UFW LOG
   const [ufwLog, setUfwLog] = useState();
-
   const handleGetUfwLog = async () => {
     const url = `http://127.0.0.1:5000/server/report_log_ufw/${param.server_id}`;
 
@@ -135,6 +225,8 @@ const ServerReport = () => {
   return (
     <>
       <div className="">
+        <Toaster position="bottom-right" reverseOrder={false} />
+
         <div className="flex flex-row justify-between">
           <div className="flex flex-col">
             <div className="info-title font-semibold mb-3 ">
@@ -170,7 +262,7 @@ const ServerReport = () => {
                   width: "120px",
                 }}
                 onClick={() => {
-                  handleMenuClose();
+                  handleChooseDowloadLog("sysLog");
                 }}
               >
                 SysLog
@@ -180,7 +272,7 @@ const ServerReport = () => {
                   width: "120px",
                 }}
                 onClick={() => {
-                  handleMenuClose();
+                  handleChooseDowloadLog("lastLog");
                 }}
               >
                 Last Log
@@ -190,10 +282,9 @@ const ServerReport = () => {
                   width: "120px",
                 }}
                 onClick={() => {
-                  handleMenuClose();
+                  handleChooseDowloadLog("ufwLog");
                 }}
               >
-                {" "}
                 UFW Log
               </MenuItem>
             </Menu>

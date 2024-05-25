@@ -295,6 +295,10 @@ export default function AdminGuide() {
   };
 
   const handleCloseAddGuide = () => {
+    setGuideAdd({
+      title: "",
+      content: "",
+    });
     setOpen(false);
   };
 
@@ -333,7 +337,7 @@ export default function AdminGuide() {
         });
         if (response.status === 201) {
           handleGetGuide();
-          
+
           toast.success("Add guide successfully.", {
             style: {
               border: "1px solid #37E030",
@@ -390,9 +394,7 @@ export default function AdminGuide() {
     const query = event.target.value.toLowerCase();
     setSearchQuery(query);
     setFilteredGuideData(
-      guideData.filter((guide) =>
-        guide.title.toLowerCase().includes(query)
-      )
+      guideData.filter((guide) => guide.title.toLowerCase().includes(query))
     );
   };
 
@@ -405,45 +407,44 @@ export default function AdminGuide() {
         <div className="info-title font-semibold pb-5">
           <p style={{ fontSize: "36px" }}>Guide Management</p>
         </div>
-        
         {token !== null ? (
           <>
             <div className="button-container">
-            <div className="flex justify-start">
-              <label htmlFor="simple-search" className="sr-only">
-                Search
-              </label>
-              <div className="relative w-full">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <svg
-                    className="w-4 h-4 text-gray-400"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                    />
-                  </svg>
+              <div className="flex justify-start">
+                <label htmlFor="simple-search" className="sr-only">
+                  Search
+                </label>
+                <div className="relative w-full">
+                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <svg
+                      className="w-4 h-4 text-gray-400"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                      />
+                    </svg>
+                  </div>
+                  <input
+                    type="text"
+                    id="simple-search"
+                    style={{ width: "200%" }}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Search by title..."
+                    onChange={handleSearchChange}
+                  />
                 </div>
-                <input
-                  type="text"
-                  id="simple-search"
-                  style={{width:"200%"}}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Search by title..."
-                  onChange={handleSearchChange}
-                />
               </div>
-            </div>
 
               <Button
-              className="flex justify-end max-w-sm"
+                className="flex justify-end max-w-sm"
                 onClick={handleOpenAddGuide}
                 variant="outlined"
                 sx={{
@@ -456,7 +457,7 @@ export default function AdminGuide() {
                 Add Guide
               </Button>
             </div>
-            
+
             <div className="content-container">
               <table id="guide-table" className="table-auto w-full">
                 <thead>

@@ -8,49 +8,23 @@ import {
   TableRow,
 } from "@mui/material";
 import { Pagination } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
-import MuiAccordion from "@mui/material/Accordion";
-import MuiAccordionSummary from "@mui/material/AccordionSummary";
-import MuiAccordionDetails from "@mui/material/AccordionDetails";
+
 import LinearProgress from "@mui/material/LinearProgress";
 
 export default function LastLog(rawLastLog) {
   const [page, setPage] = useState(0); // Page number (starts from 0)
   const rowsPerPage = 10; // Number of rows per page
-
+  const newLog = rawLastLog.lastLog?.parsed_log;
   // HANDLE RAW DATA
-  const [lastLog, setLastLog] = useState([]);
-  const dataNew = rawLastLog.lastLog?.lines;
-  const [openModal, setOpenModal] = useState(false);
 
-  // const handleOpen = (value) => {
-  //   setValue(newValue);
-  // };
-
-  const [expanded, setExpanded] = React.useState("panel1");
-
-  const handleChange = (panel) => (event, newExpanded) => {
-    setExpanded(newExpanded ? panel : false);
-  };
-
-  useEffect(() => {
-    if (dataNew) {
-      setLastLog(
-        dataNew.map((line) => {
-          return { log: line };
-        })
-      );
-    }
-  }, [dataNew]);
   return (
     <div>
       <div
-        style={{ height: "auto", borderRadius: "0 0 4px 4px",}}
+        style={{ height: "auto", borderRadius: "0 0 4px 4px" }}
         a
         className="bg-[white] shadow-lg"
       >
-        {dataNew?.length > 0 && (
+        {/* {newLog?.length > 0 && (
           <>
             <TableContainer>
               <Table>
@@ -60,17 +34,17 @@ export default function LastLog(rawLastLog) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {dataNew
+                  {newLog
                     .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
                     ?.map((row) => (
-                      <TableRow key={row.id}>
+                      <TableRow key={row.timestamp}>
                         <TableCell>
                           <Accordion>
                             <AccordionSummary
                               id="panel-header"
                               aria-controls="panel-content"
                             >
-                              Log
+                              {row.timestamp}
                             </AccordionSummary>
                             <AccordionDetails>{row}</AccordionDetails>
                           </Accordion>
@@ -81,90 +55,96 @@ export default function LastLog(rawLastLog) {
               </Table>
             </TableContainer>
             <Pagination
-              count={dataNew?.length} // Total number of rows
+              count={newLog?.length} // Total number of rows
               page={page}
               onChange={(event, newPage) => setPage(newPage)}
               showFirstLast={true} // Display first and last page buttons
             />
           </>
         )}
-        {!dataNew?.length && <LinearProgress />}
+        {!newLog?.length && <LinearProgress />} */}
+        {newLog?.length > 0 && (
+          <>
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>
+                      <p className="font-bold">Date</p>
+                    </TableCell>
+                    <TableCell>
+                      <p className="font-bold">From</p>
+                    </TableCell>
+                    <TableCell>
+                      <p className="font-bold">User</p>
+                    </TableCell>
+                    <TableCell>
+                      <p className="font-bold">Information</p>
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {newLog
+                    .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
+                    .map((row) => (
+                      <TableRow key={row.timestamp}>
+                        <TableCell sx={{ width: "400px" }}>
+                          {row.timestamp}
+                        </TableCell>
+                        <TableCell>{row.from_ip}</TableCell>
+                        <TableCell>{row.user}</TableCell>
+                        <TableCell>{row.info}</TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <Pagination
+              count={newLog?.length} // Total number of rows
+              page={page}
+              onChange={(event, newPage) => setPage(newPage)}
+              showFirstLast={true} // Display first and last page buttons
+            />
+          </>
+        )}
+        {!newLog?.length && <LinearProgress />}
       </div>
-
-      {/* <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          {selectedLog && (
-            <Box sx={modalContentStyle}>
-              <Typography
-                id="modal-modal-title"
-                variant="h4"
-                component="h2"
-                sx={{ marginBottom: 2 }}
-              >
-                Log Details
-              </Typography>
-              <Box sx={{ width: "100%", textAlign: "left" }}>
-                <Typography variant="body1" sx={{ marginBottom: 1 }}>
-                  Date: {selectedLog.date}
-                </Typography>
-                <Typography variant="body1" sx={{ marginBottom: 1 }}>
-                  Time: {selectedLog.time}
-                </Typography>
-                <Typography variant="body1" sx={{ marginBottom: 1 }}>
-                  Host: {selectedLog.host}
-                </Typography>
-                <Typography variant="body1" sx={{ marginBottom: 1 }}>
-                  Log: {selectedLog.log}
-                </Typography>
-                <Typography variant="body1" sx={{ marginBottom: 1 }}>
-                  Type: {selectedLog.type}
-                </Typography>
-              </Box>
-            </Box>
-          )}
-        </Box>
-      </Modal> */}
     </div>
   );
 }
 
-const Accordion = styled((props) => (
-  <MuiAccordion disableGutters elevation={0} square {...props} />
-))(({ theme }) => ({
-  border: `1px solid ${theme.palette.divider}`,
-  "&:not(:last-child)": {
-    borderBottom: 0,
-  },
-  "&::before": {
-    display: "none",
-  },
-}));
+// const Accordion = styled((props) => (
+//   <MuiAccordion disableGutters elevation={0} square {...props} />
+// ))(({ theme }) => ({
+//   border: `1px solid ${theme.palette.divider}`,
+//   "&:not(:last-child)": {
+//     borderBottom: 0,
+//   },
+//   "&::before": {
+//     display: "none",
+//   },
+// }));
 
-const AccordionSummary = styled((props) => (
-  <MuiAccordionSummary
-    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: "0.9rem" }} />}
-    {...props}
-  />
-))(({ theme }) => ({
-  backgroundColor:
-    theme.palette.mode === "dark"
-      ? "rgba(255, 255, 255, .05)"
-      : "rgba(0, 0, 0, .03)",
-  flexDirection: "row-reverse",
-  "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
-    transform: "rotate(90deg)",
-  },
-  "& .MuiAccordionSummary-content": {
-    marginLeft: theme.spacing(1),
-  },
-}));
+// const AccordionSummary = styled((props) => (
+//   <MuiAccordionSummary
+//     expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: "0.9rem" }} />}
+//     {...props}
+//   />
+// ))(({ theme }) => ({
+//   backgroundColor:
+//     theme.palette.mode === "dark"
+//       ? "rgba(255, 255, 255, .05)"
+//       : "rgba(0, 0, 0, .03)",
+//   flexDirection: "row-reverse",
+//   "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
+//     transform: "rotate(90deg)",
+//   },
+//   "& .MuiAccordionSummary-content": {
+//     marginLeft: theme.spacing(1),
+//   },
+// }));
 
-const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-  padding: theme.spacing(2),
-  borderTop: "1px solid rgba(0, 0, 0, .125)",
-}));
+// const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
+//   padding: theme.spacing(2),
+//   borderTop: "1px solid rgba(0, 0, 0, .125)",
+// }));
