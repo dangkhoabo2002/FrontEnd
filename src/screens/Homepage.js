@@ -51,7 +51,7 @@ export default function Homepage() {
             </div>
           </div>
 
-          <div className="flex flex-row gap-12">
+          <div className="flex flex-row justify-center item-center gap-12">
             <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 hoverZoom">
               <div className="">
                 <img
