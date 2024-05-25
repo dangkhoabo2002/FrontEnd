@@ -269,26 +269,10 @@ export default function AdminGuide() {
     }
   };
 
-  const [token, setToken] = useState();
-  const checkToken = () => {
-    const isToken = localStorage.getItem("checkAdmin");
-    setToken(isToken);
-  };
-
   const navigate = useNavigate();
 
   useEffect(() => {
-    const loginToken = localStorage.getItem("checkUser");
-
-    const checkLoggedIn = () => {
-      if (loginToken) {
-        navigate("/error404");
-      }
-    };
-
-    checkLoggedIn();
     handleGetGuide();
-    checkToken();
   }, []);
 
   const handleOpenAddGuide = () => {
@@ -334,7 +318,7 @@ export default function AdminGuide() {
         });
         if (response.status === 201) {
           handleGetGuide();
-          
+
           toast.success("Add guide successfully.", {
             style: {
               border: "1px solid #37E030",
@@ -391,9 +375,7 @@ export default function AdminGuide() {
     const query = event.target.value.toLowerCase();
     setSearchQuery(query);
     setFilteredGuideData(
-      guideData.filter((guide) =>
-        guide.title.toLowerCase().includes(query)
-      )
+      guideData.filter((guide) => guide.title.toLowerCase().includes(query))
     );
   };
 
@@ -406,9 +388,8 @@ export default function AdminGuide() {
         <div className="info-title font-semibold pb-5">
           <p style={{ fontSize: "36px" }}>Guide Management</p>
         </div>
-        
-          <>
-            <div className="button-container">
+        <>
+          <div className="button-container">
             <div className="flex justify-start">
               <label htmlFor="simple-search" className="sr-only">
                 Search
@@ -434,7 +415,7 @@ export default function AdminGuide() {
                 <input
                   type="text"
                   id="simple-search"
-                  style={{width:"200%"}}
+                  style={{ width: "200%" }}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Search by title..."
                   onChange={handleSearchChange}
@@ -442,82 +423,81 @@ export default function AdminGuide() {
               </div>
             </div>
 
-              <Button
+            <Button
               className="flex justify-end max-w-sm"
-                onClick={handleOpenAddGuide}
-                variant="outlined"
-                sx={{
-                  width: "120px",
-                  color: "white",
-                  bgcolor: "#3867A5",
-                  "&:hover": { bgcolor: "#2A4D7B" },
-                }}
-              >
-                Add Guide
-              </Button>
-            </div>
-            
-            <div className="content-container">
-              <table id="guide-table" className="table-auto w-full">
-                <thead>
-                  <tr>
-                    <th id="id">#</th>
-                    <th id="title">TITLE</th>
-                    <th id="content">CONTENT</th>
-                    <th id="action">ACTIONS</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredGuideData.map((guide, index) => (
-                    <tr key={guide.guide_id}>
-                      <td>{index + 1}</td>
-                      <td>{guide.title}</td>
-                      <td>{guide.content.slice(0, 50)}...</td>
-                      <td style={{ padding: "6px 0px" }}>
-                        <IconButton
-                          aria-label="delete"
-                          onClick={() =>
-                            handleClickOpenRemoveGuide(guide.guide_id)
-                          }
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                        <IconButton
-                          aria-label="edit"
-                          onClick={() =>
-                            handleClickOpenEditGuide(
-                              guide.guide_id,
-                              guide.title,
-                              guide.content
-                            )
-                          }
-                        >
-                          <EditIcon />
-                        </IconButton>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              <Dialog
-                open={openDelete}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-              >
-                <DialogTitle id="alert-dialog-title">
-                  {"Do you want to remove this guide ?"}
-                </DialogTitle>
-                <DialogActions>
-                  <Button onClick={handleCloseDelete}>No</Button>
-                  <Button onClick={handleDeleteGuide}>
-                    <p className="text-red">Yes</p>
-                  </Button>
-                </DialogActions>
-              </Dialog>
-            </div>
-          </>
+              onClick={handleOpenAddGuide}
+              variant="outlined"
+              sx={{
+                width: "120px",
+                color: "white",
+                bgcolor: "#3867A5",
+                "&:hover": { bgcolor: "#2A4D7B" },
+              }}
+            >
+              Add Guide
+            </Button>
+          </div>
 
+          <div className="content-container">
+            <table id="guide-table" className="table-auto w-full">
+              <thead>
+                <tr>
+                  <th id="id">#</th>
+                  <th id="title">TITLE</th>
+                  <th id="content">CONTENT</th>
+                  <th id="action">ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredGuideData.map((guide, index) => (
+                  <tr key={guide.guide_id}>
+                    <td>{index + 1}</td>
+                    <td>{guide.title}</td>
+                    <td>{guide.content.slice(0, 50)}...</td>
+                    <td style={{ padding: "6px 0px" }}>
+                      <IconButton
+                        aria-label="delete"
+                        onClick={() =>
+                          handleClickOpenRemoveGuide(guide.guide_id)
+                        }
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                      <IconButton
+                        aria-label="edit"
+                        onClick={() =>
+                          handleClickOpenEditGuide(
+                            guide.guide_id,
+                            guide.title,
+                            guide.content
+                          )
+                        }
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <Dialog
+              open={openDelete}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">
+                {"Do you want to remove this guide ?"}
+              </DialogTitle>
+              <DialogActions>
+                <Button onClick={handleCloseDelete}>No</Button>
+                <Button onClick={handleDeleteGuide}>
+                  <p className="text-red">Yes</p>
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </div>
+        </>
       </div>
 
       <Dialog open={open} onClose={handleCloseAddGuide}>

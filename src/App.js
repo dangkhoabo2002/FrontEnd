@@ -30,7 +30,6 @@ export default function App() {
         {/* USER ORG*/}
 
         {/* ERROR */}
-        <Route path="*" element={<Error404 />} />
       </Routes>
     </div>
   );

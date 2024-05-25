@@ -27,15 +27,8 @@ export default function AdminRoleManagement() {
   const [filteredRoleData, setFilteredRoleData] = useState([]);
 
   useEffect(() => {
-
     handleGetRole();
-    checkToken();
   }, []);
-
-  const checkToken = () => {
-    const isToken = localStorage.getItem("checkAdmin");
-    setToken(isToken);
-  };
 
   const handleGetRole = async () => {
     const customerUrl = `http://127.0.0.1:5000/role/get`;
@@ -335,9 +328,7 @@ export default function AdminRoleManagement() {
     const query = event.target.value.toLowerCase();
     setSearchQuery(query);
     setFilteredRoleData(
-      roleData.filter((role) =>
-        role.role_name.toLowerCase().includes(query)
-      )
+      roleData.filter((role) => role.role_name.toLowerCase().includes(query))
     );
   };
 
@@ -350,101 +341,93 @@ export default function AdminRoleManagement() {
         <div className="info-title font-semibold pb-5">
           <p style={{ fontSize: "36px" }}>Role Management</p>
         </div>
-        {token ? (
-          <>
-            <div className="button-container">
-              <div className="flex justify-start">
-                <label htmlFor="simple-search" className="sr-only">
-                  Search
-                </label>
-                <div className="relative w-full">
-                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <svg
-                      className="w-4 h-4 text-gray-400"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                      />
-                    </svg>
-                  </div>
-                  <input
-                    type="text"
-                    id="simple-search"
-                    style={{ width: "200%" }}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Search by role name..."
-                    onChange={handleSearchChange}
-                  />
+        <>
+          <div className="button-container">
+            <div className="flex justify-start">
+              <label htmlFor="simple-search" className="sr-only">
+                Search
+              </label>
+              <div className="relative w-full">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <svg
+                    className="w-4 h-4 text-gray-400"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                    />
+                  </svg>
                 </div>
+                <input
+                  type="text"
+                  id="simple-search"
+                  style={{ width: "200%" }}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Search by role name..."
+                  onChange={handleSearchChange}
+                />
               </div>
-              <Button
-                className="flex justify-end max-w-sm"
-                onClick={clickOpenAddRole}
-                variant="outlined"
-                sx={{
-                  width: "120px",
-                  color: "white",
-                  bgcolor: "#3867A5",
-                  "&:hover": { bgcolor: "#2A4D7B" },
-                }}
-              >
-                Add Role
-              </Button>
             </div>
-            <div className="content-container">
-              <table className="table-auto w-full">
-                <thead>
-                  <tr>
-                    <th>ROLE NAME</th>
-                    <th>ROLE ID</th>
-                    <th>DESCRIPTION</th>
-                    <th>ACTION</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td style={{ color: "transparent", padding: "0px" }}>.</td>
-                  </tr>
-                  {filteredRoleData?.map((role) => (
-                    <tr key={role.role_id}>
-                      <td>{role.role_name}</td>
-                      <td>{role.role_id}</td>
-                      <td>{role.description}</td>
-                      <td>
-                        <IconButton
-                          aria-label="delete"
-                          onClick={() => clickOpenDelete(role.role_id)}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                        <IconButton
-                          aria-label="edit"
-                          onClick={() => clickOpenEdit(role.role_id)}
-                        >
-                          <EditIcon />
-                        </IconButton>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </>
-        ) : (
-          <div className="flex flex-row justify-center py-40 gap-4 text-red-600 font-bold">
-            <WarningAmberIcon />
-            <p>UNKNOWN USER! PLEASE LOGIN FIRST</p>
-            <WarningAmberIcon />
+            <Button
+              className="flex justify-end max-w-sm"
+              onClick={clickOpenAddRole}
+              variant="outlined"
+              sx={{
+                width: "120px",
+                color: "white",
+                bgcolor: "#3867A5",
+                "&:hover": { bgcolor: "#2A4D7B" },
+              }}
+            >
+              Add Role
+            </Button>
           </div>
-        )}
+          <div className="content-container">
+            <table className="table-auto w-full">
+              <thead>
+                <tr>
+                  <th>ROLE NAME</th>
+                  <th>ROLE ID</th>
+                  <th>DESCRIPTION</th>
+                  <th>ACTION</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style={{ color: "transparent", padding: "0px" }}>.</td>
+                </tr>
+                {filteredRoleData?.map((role) => (
+                  <tr key={role.role_id}>
+                    <td>{role.role_name}</td>
+                    <td>{role.role_id}</td>
+                    <td>{role.description}</td>
+                    <td>
+                      <IconButton
+                        aria-label="delete"
+                        onClick={() => clickOpenDelete(role.role_id)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                      <IconButton
+                        aria-label="edit"
+                        onClick={() => clickOpenEdit(role.role_id)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
       </div>
 
       <Dialog open={openAddRole} onClose={clickCloseAddRole}>

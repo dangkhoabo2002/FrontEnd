@@ -8,18 +8,6 @@ import toast, { Toaster } from "react-hot-toast";
 export default function AdminLogin() {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const loginToken = localStorage.getItem("checkAdmin");
-    if (loginToken) {
-      navigate("/admin");
-    }
-
-    const loginUserToken = localStorage.getItem("checkUser");
-    if (loginUserToken) {
-      navigate("/");
-    }
-  }, [navigate]);
-
   const [data, setData] = useState({
     manager_username: "",
     manager_password: "",

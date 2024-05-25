@@ -148,24 +148,7 @@ export default function AdminBillings() {
     }
   };
 
-  const [token, setToken] = useState();
-  const checkToken = () => {
-    const isToken = localStorage.getItem("checkAdmin");
-    setToken(isToken);
-  };
-
-  const navigate = useNavigate();
-
   useEffect(() => {
-    const loginToken = localStorage.getItem("checkUser");
-
-    const checkLoggedIn = () => {
-      if (loginToken) {
-        navigate("/error404");
-      }
-    };
-    checkLoggedIn();
-    checkToken();
     handleGetAllBilling();
   }, []);
 
@@ -189,27 +172,28 @@ export default function AdminBillings() {
       <SidebarAdmin />
 
       <div className="content">
-        {/* <NavigationAdmin /> */}{" "}
+        {/* <NavigationAdmin /> */}
         <div className="info-title font-semibold pb-5">
-          <p style={{fontSize:"36px"}}>Billing Management</p>
+          <p style={{ fontSize: "36px" }}>Billing Management</p>
         </div>
-
-          <div className="content-container">
-            <table className="table-auto w-full">
-              <thead>
-                <tr>
-                  <th>DATE</th>
-                  <th>TRANSACTION FEE</th>
-                  <th>STATUS</th>
-                  <th>DETAIL</th>
-                </tr>
-              </thead>
-              <tbody>
-                {listBilling?.map((bill) => (
-                  <tr key={bill.billing_id}>
-                    <td>{bill.timestamp}</td>
-                    <td>{bill.amount}đ</td>
-                    <td ><div style={{
+        <div className="content-container">
+          <table className="table-auto w-full">
+            <thead>
+              <tr>
+                <th>DATE</th>
+                <th>TRANSACTION FEE</th>
+                <th>STATUS</th>
+                <th>DETAIL</th>
+              </tr>
+            </thead>
+            <tbody>
+              {listBilling?.map((bill) => (
+                <tr key={bill.billing_id}>
+                  <td>{bill.timestamp}</td>
+                  <td>{bill.amount}đ</td>
+                  <td>
+                    <div
+                      style={{
                         backgroundColor: getStatusColor(bill.billing_status),
                         color: "white",
                         textAlign: "center",
@@ -218,72 +202,75 @@ export default function AdminBillings() {
                         fontSize: "14px",
                         fontWeight: "normal",
                         textTransform: "none",
-                      }}>{bill.billing_status}</div></td>
-                    <td>
-                      <a href="#popup1" id="openPopUp">
-                        <Button
-                          onClick={() => handleViewBilling(bill.billing_id)}
-                          variant="contained"
-                          sx={{
-                            width: "100px",
-                            height: "25px",
-                            color: "white",
-                            borderRadius: "100px",
-                            bgcolor: "#5F94D9",
-                            "&:hover": { bgcolor: "#4D7AB5" },
-                            fontSize: "14px",
-                            fontWeight: "normal",
-                            textTransform: "none",
-                          }}
-                        >
-                          View
-                        </Button>
-                      </a>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <div id="popup1" className="overlay">
-              <div className="popup">
-                <div className="popup_content">
-                  <h1>Billing Information</h1>
-                  <div className="flex flex-row justify-start">
-                    <div className="flex flex-col ">
-                      <h2>Transaction fee:</h2>
-                      <h2>Billing Id:</h2>
-                      <h2>Status</h2>
-                      <h2>Customer Id:</h2>
-                      <h2>Date:</h2>
-                      <h2>Subscription Id:</h2>
+                      }}
+                    >
+                      {bill.billing_status}
                     </div>
-                    <div className="flex flex-col">
-                      <h2>{billingInfo?.amount}đ</h2>
-                      <h2>{billingInfo?.billing_id}</h2>
-                      <h2>{billingInfo?.billing_status}</h2>
-                      <h2>{billingInfo?.customer_id}</h2>
-                      <h2>{billingInfo?.timestamp}</h2>
-                      <h2>{billingInfo?.subscription_id}</h2>
-                    </div>
-                  </div>
-                  <div className="popup_btn">
-                    <a id="popup_btn" href="#" className="close">
-                      <div
-                        style={{
-                          fontSize: "16px",
-                          fontWeight: "Bold",
-                          letterSpacing: "0.09rem", 
+                  </td>
+                  <td>
+                    <a href="#popup1" id="openPopUp">
+                      <Button
+                        onClick={() => handleViewBilling(bill.billing_id)}
+                        variant="contained"
+                        sx={{
+                          width: "100px",
+                          height: "25px",
+                          color: "white",
+                          borderRadius: "100px",
+                          bgcolor: "#5F94D9",
+                          "&:hover": { bgcolor: "#4D7AB5" },
+                          fontSize: "14px",
+                          fontWeight: "normal",
+                          textTransform: "none",
                         }}
                       >
-                        Close
-                      </div>
+                        View
+                      </Button>
                     </a>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div id="popup1" className="overlay">
+            <div className="popup">
+              <div className="popup_content">
+                <h1>Billing Information</h1>
+                <div className="flex flex-row justify-start">
+                  <div className="flex flex-col ">
+                    <h2>Transaction fee:</h2>
+                    <h2>Billing Id:</h2>
+                    <h2>Status</h2>
+                    <h2>Customer Id:</h2>
+                    <h2>Date:</h2>
+                    <h2>Subscription Id:</h2>
                   </div>
+                  <div className="flex flex-col">
+                    <h2>{billingInfo?.amount}đ</h2>
+                    <h2>{billingInfo?.billing_id}</h2>
+                    <h2>{billingInfo?.billing_status}</h2>
+                    <h2>{billingInfo?.customer_id}</h2>
+                    <h2>{billingInfo?.timestamp}</h2>
+                    <h2>{billingInfo?.subscription_id}</h2>
+                  </div>
+                </div>
+                <div className="popup_btn">
+                  <a id="popup_btn" href="#" className="close">
+                    <div
+                      style={{
+                        fontSize: "16px",
+                        fontWeight: "Bold",
+                        letterSpacing: "0.09rem",
+                      }}
+                    >
+                      Close
+                    </div>
+                  </a>
                 </div>
               </div>
             </div>
           </div>
-
+        </div>
       </div>
     </div>
   );

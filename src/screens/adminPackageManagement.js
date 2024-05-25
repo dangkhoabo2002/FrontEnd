@@ -51,7 +51,6 @@ export default function AdminPackageManagement() {
   };
 
   const handleGetPackage = async () => {
-    toast.loading("In processing..");
     const packageUrl = `http://127.0.0.1:5000/package/get`;
     const token = localStorage.getItem("access_token");
 
@@ -476,7 +475,6 @@ export default function AdminPackageManagement() {
 
   const handleGetPackageInfo = async (package_id) => {
     if (package_id) {
-      toast.loading("In processing...");
       const editUrl = `http://127.0.0.1:5000/package/get/${package_id}`;
 
       const token = localStorage.getItem("access_token");
@@ -567,26 +565,10 @@ export default function AdminPackageManagement() {
     }
   };
 
-  const [token, setToken] = useState();
-
-  const checkToken = () => {
-    const isToken = localStorage.getItem("checkAdmin");
-    setToken(isToken);
-  };
-
   const navigate = useNavigate();
 
   useEffect(() => {
-    const loginToken = localStorage.getItem("checkUser");
-
-    const checkLoggedIn = () => {
-      if (loginToken) {
-        navigate("/error404");
-      }
-    };
-    checkLoggedIn();
     handleGetPackage();
-    checkToken();
   }, []);
 
   // searchbar
@@ -597,9 +579,7 @@ export default function AdminPackageManagement() {
     const query = event.target.value.toLowerCase();
     setSearchQuery(query);
     setFilteredPackageData(
-      Package.filter((pkg) =>
-        pkg.package_name.toLowerCase().includes(query)
-      )
+      Package.filter((pkg) => pkg.package_name.toLowerCase().includes(query))
     );
   };
 
@@ -610,11 +590,10 @@ export default function AdminPackageManagement() {
       <div className="content">
         <Toaster position="bottom-right" reverseOrder={false} />{" "}
         <div className="info-title font-semibold pb-5">
-          <p style={{fontSize:"36px"}}>Package Management</p>
+          <p style={{ fontSize: "36px" }}>Package Management</p>
         </div>
-
-          <>
-            <div className="button-container">
+        <>
+          <div className="button-container">
             <div className="flex justify-start">
               <label htmlFor="simple-search" className="sr-only">
                 Search
@@ -640,7 +619,7 @@ export default function AdminPackageManagement() {
                 <input
                   type="text"
                   id="simple-search"
-                  style={{width:"200%"}}
+                  style={{ width: "200%" }}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Search by name..."
                   onChange={handleSearchChange}
@@ -648,102 +627,101 @@ export default function AdminPackageManagement() {
               </div>
             </div>
 
-              <Button
+            <Button
               className="flex justify-end max-w-sm"
-                onClick={clickOpenAddPackage}
-                variant="outlined"
-                sx={{
-                  width: "130px",
-                  color: "white",
-                  bgcolor: "#3867A5",
-                  "&:hover": { bgcolor: "#2A4D7B" },
-                }}
-              >
-                Add Package
-              </Button>
-            </div>
-            <div className="content-container">
-              <table id="package-table" className="table-auto w-full">
-                <thead>
-                  <tr>
-                    <th>NAME</th>
-                    <th>PRICE</th>
-                    <th>DESCRIPTION</th>
-                    <th>DURATION</th>
-                    <th>SLOT NUMBER</th>
-                    <th>SLOT SERVER</th>
-                    <th>STATUS</th>
-                    <th>ACTION</th>
+              onClick={clickOpenAddPackage}
+              variant="outlined"
+              sx={{
+                width: "130px",
+                color: "white",
+                bgcolor: "#3867A5",
+                "&:hover": { bgcolor: "#2A4D7B" },
+              }}
+            >
+              Add Package
+            </Button>
+          </div>
+          <div className="content-container">
+            <table id="package-table" className="table-auto w-full">
+              <thead>
+                <tr>
+                  <th>NAME</th>
+                  <th>PRICE</th>
+                  <th>DESCRIPTION</th>
+                  <th>DURATION</th>
+                  <th>SLOT NUMBER</th>
+                  <th>SLOT SERVER</th>
+                  <th>STATUS</th>
+                  <th>ACTION</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredPackageData.map((pkg) => (
+                  <tr key={pkg.package_id}>
+                    <td>{pkg.package_name}</td>
+                    <td>{pkg.price}đ</td>
+                    <td>{pkg.description}</td>
+                    <td>{pkg.duration} days</td>
+                    <td>{pkg.slot_number}</td>
+                    <td>{pkg.slot_server}</td>
+                    <td>
+                      <div
+                        style={{
+                          backgroundColor: pkg.status ? "#6EC882" : "#8E8E8E",
+                          color: "white",
+                          textAlign: "center",
+                          borderRadius: "100px",
+                          padding: "5px 15px",
+                          fontSize: "14px",
+                          fontWeight: "normal",
+                          textTransform: "none",
+                        }}
+                      >
+                        {pkg.status ? "Active" : "Inactive"}
+                      </div>
+                    </td>
+                    <td style={{ padding: "6px 0px" }}>
+                      <IconButton
+                        aria-label="delete"
+                        onClick={() => clickOpenDelete(pkg.package_id)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+
+                      <IconButton
+                        aria-label="edit"
+                        onClick={() =>
+                          handleClickOpenEditPackage(pkg.package_id)
+                        }
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  {filteredPackageData.map((pkg) => (
-                    <tr key={pkg.package_id}>
-                      <td>{pkg.package_name}</td>
-                      <td>{pkg.price}đ</td>
-                      <td>{pkg.description}</td>
-                      <td>{pkg.duration} days</td>
-                      <td>{pkg.slot_number}</td>
-                      <td>{pkg.slot_server}</td>
-                      <td>
-                        <div
-                          style={{
-                            backgroundColor: pkg.status ? "#6EC882" : "#8E8E8E",
-                            color: "white",
-                            textAlign: "center",
-                            borderRadius: "100px",
-                            padding: "5px 15px",
-                            fontSize: "14px",
-                            fontWeight: "normal",
-                            textTransform: "none",
-                          }}
-                        >
-                          {pkg.status ? "Active" : "Inactive"}
-                        </div>
-                      </td>
-                      <td style={{ padding: "6px 0px" }}>
-                        <IconButton
-                          aria-label="delete"
-                          onClick={() => clickOpenDelete(pkg.package_id)}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-
-                        <IconButton
-                          aria-label="edit"
-                          onClick={() =>
-                            handleClickOpenEditPackage(pkg.package_id)
-                          }
-                        >
-                          <EditIcon />
-                        </IconButton>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              <Dialog
-                open={openDelete}
-                onClose={clickCloseDelete}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-              >
-                <DialogTitle id="alert-dialog-title">
-                  {"Do you want to remove this package?"}
-                </DialogTitle>
-                <DialogContent>
-                  <DialogContentText id="alert-dialog-description">
-                    This package will no longer be available.
-                  </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={clickCloseDelete}>No</Button>
-                  <Button onClick={handleDeleteRole}>Yes</Button>
-                </DialogActions>
-              </Dialog>
-            </div>
-          </>
-
+                ))}
+              </tbody>
+            </table>
+            <Dialog
+              open={openDelete}
+              onClose={clickCloseDelete}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">
+                {"Do you want to remove this package?"}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  This package will no longer be available.
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={clickCloseDelete}>No</Button>
+                <Button onClick={handleDeleteRole}>Yes</Button>
+              </DialogActions>
+            </Dialog>
+          </div>
+        </>
         <Dialog open={openAddPackage} onClose={clickCloseAddPackage}>
           <DialogTitle>Add new package</DialogTitle>
           <DialogContent>
