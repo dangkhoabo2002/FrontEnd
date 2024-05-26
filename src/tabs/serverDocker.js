@@ -21,7 +21,11 @@ export default function ServerDocker(serverId) {
   const [loading, setLoading] = useState(false);
   const [loadingContainer, setLoadingContainer] = useState(false);
 
-  const [resultOutput, setResultOutput] = useState();
+  const [output, setOutput] = useState({
+    status: "",
+    messages: "",
+    error: "",
+  });
 
   // DOCKER PROJECT
   const [dockerProject, setDockerProject] = useState({
@@ -64,6 +68,11 @@ export default function ServerDocker(serverId) {
             dockerfile: dockerProject.docker_compose,
             image_tag: dockerProject.image_tag,
           }),
+        });const dockerOutput = await response.json();
+        setOutput({
+            status: dockerOutput.status,
+            messages: dockerOutput.messages,
+            error: dockerOutput.stderr,
         });
         if (response.status === 200) {
           toast.dismiss();
@@ -147,6 +156,11 @@ export default function ServerDocker(serverId) {
             compose_yaml: dockerProject.compose_yaml,
             action: "compose-up",
           }),
+        });const dockerOutput = await response.json();
+        setOutput({
+            status: dockerOutput.status,
+            messages: dockerOutput.messages,
+            error: dockerOutput.stderr,
         });
         if (response.status === 200) {
           toast.success("Compose up successfull.", {
@@ -226,6 +240,11 @@ export default function ServerDocker(serverId) {
             compose_yaml: dockerProject.compose_yaml,
             action: "compose-down",
           }),
+        });const dockerOutput = await response.json();
+        setOutput({
+            status: dockerOutput.status,
+            messages: dockerOutput.messages,
+            error: dockerOutput.stderr,
         });
         if (response.status === 200) {
           toast.success("Compose down successfull.", {
@@ -472,6 +491,11 @@ export default function ServerDocker(serverId) {
             container: selectContainer?.container_id,
             action: actionName,
           }),
+        });const dockerOutput = await response.json();
+        setOutput({
+            status: dockerOutput.status,
+            messages: dockerOutput.messages,
+            error: dockerOutput.stderr,
         });
         if (response.status === 200) {
           toast.dismiss();
@@ -592,7 +616,12 @@ export default function ServerDocker(serverId) {
           container_name: addContainer.container_name,
         }),
       });
-
+      const dockerOutput = await response.json();
+      setOutput({
+          status: dockerOutput.status,
+          messages: dockerOutput.messages,
+          error: dockerOutput.stderr,
+      });
       if (response.status === 200) {
         toast.dismiss();
         toast.success("Add Container Successfully.", {
@@ -920,13 +949,54 @@ export default function ServerDocker(serverId) {
         </div>
       </div>
       <div className="resultOutput">
-        <h1 className="text-2xl my-3">Output result</h1>
-        <textarea
-          class="w-full resize-none rounded-md p-4"
-          style={{ border: "1px solid #89A6CC" }}
+      <h1 className="text-2xl my-3">Output result</h1>
+        <div
+          style={{
+            padding: "16px",
+            border: "1px solid #89A6CC",
+            borderRadius: "8px",
+            backgroundColor: "#F7F9FC",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+            margin: "0 auto",
+            textAlign: "left",
+          }}
         >
-          {resultOutput}
-        </textarea>
+          <pre
+            className="text-gray-700 dark:text-gray-400"
+            style={{
+              whiteSpace: "pre-wrap",
+              marginBottom: "8px",
+              fontWeight: "bold",
+              color: "#3867A5",
+            }}
+          >
+            Response status:
+            {output.status === undefined ? " None" : ` ${output.status}`}
+          </pre>
+          <pre
+            className="text-gray-700 dark:text-gray-400"
+            style={{
+              whiteSpace: "pre-wrap",
+              marginBottom: "8px",
+              fontWeight: "bold",
+              color: "#3867A5",
+            }}
+          >
+            messages:
+            {output.messages === undefined ? " None" : ` ${output.messages}`}
+          </pre>
+          <pre
+            className="text-gray-700 dark:text-gray-400"
+            style={{
+              whiteSpace: "pre-wrap",
+              marginBottom: "8px",
+              fontWeight: "bold",
+              color: "#3867A5",
+            }}
+          >
+            Error: {output.error === undefined ? " None" : ` ${output.error}`}
+          </pre>
+        </div>
       </div>
       {/* Modal Add Container */}
       <Modal

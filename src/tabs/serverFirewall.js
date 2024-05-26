@@ -15,6 +15,11 @@ import toast, { Toaster } from "react-hot-toast";
 
 export default function ServerFirewall(serverId) {
   const [loading, setLoading] = useState(false);
+  const [output, setOutput] = useState({
+    status: "",
+    messages: "",
+    error: "",
+  });
 
   const [trustedServices, setTrustedServices] = useState({
     http: false,
@@ -65,6 +70,12 @@ export default function ServerFirewall(serverId) {
             port: port,
             ip: "",
           }),
+        });
+        const firewallOutput = await response.json();
+        setOutput({
+          status: firewallOutput.status,
+          messages: firewallOutput.messages,
+          error: firewallOutput.stderr,
         });
         if (response.status === 200) {
           toast.success("Update successfully.", {
@@ -307,16 +318,53 @@ export default function ServerFirewall(serverId) {
       </div>
       <div className="resultOutput mt-10">
         <h1 className="text-2xl my-3">Output result</h1>
-        <textarea
-          className="w-full resize-none rounded-md p-4"
+        <div
           style={{
+            padding: "16px",
             border: "1px solid #89A6CC",
-            maxHeight: "8em",
-            overflow: "auto",
+            borderRadius: "8px",
+            backgroundColor: "#F7F9FC",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+            margin: "0 auto",
+            textAlign: "left",
           }}
         >
-          Build successfully
-        </textarea>
+          <pre
+            className="text-gray-700 dark:text-gray-400"
+            style={{
+              whiteSpace: "pre-wrap",
+              marginBottom: "8px",
+              fontWeight: "bold",
+              color: "#3867A5",
+            }}
+          >
+            Response status:
+            {output.status === undefined ? " None" : ` ${output.status}`}
+          </pre>
+          <pre
+            className="text-gray-700 dark:text-gray-400"
+            style={{
+              whiteSpace: "pre-wrap",
+              marginBottom: "8px",
+              fontWeight: "bold",
+              color: "#3867A5",
+            }}
+          >
+            messages:
+            {output.messages === undefined ? " None" : ` ${output.messages}`}
+          </pre>
+          <pre
+            className="text-gray-700 dark:text-gray-400"
+            style={{
+              whiteSpace: "pre-wrap",
+              marginBottom: "8px",
+              fontWeight: "bold",
+              color: "#3867A5",
+            }}
+          >
+            Error: {output.error === undefined ? " None" : ` ${output.error}`}
+          </pre>
+        </div>
       </div>
     </div>
   );

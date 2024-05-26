@@ -18,6 +18,11 @@ export default function ServerExecution(serverId) {
   const [loading, setLoading] = useState();
   const [lines, setLines] = useState([]);
   const [stderr, setStderr] = useState([]);
+  const [output, setOutput] = useState({
+    status: "",
+    messages: "",
+    error: "",
+  });
 
   const handleChangeNewRsa = (event) => {
     setPath(event.target.value);
@@ -50,6 +55,11 @@ export default function ServerExecution(serverId) {
           body: JSON.stringify({
             execute_file: path,
           }),
+        });const execiteOutput = await response.json();
+        setOutput({
+            status: execiteOutput.status,
+            messages: execiteOutput.messages,
+            error: execiteOutput.stderr,
         });
         const data = await response.json();
         setLines(data.lines);
@@ -166,20 +176,54 @@ export default function ServerExecution(serverId) {
       </div>
 
       <div className="resultOutput mt-10">
-        <h1 className="text-2xl my-3">Output result</h1>
-
-        <ol className="border-2">
-          {lines?.map((line, index) => (
-            <p key={index}>{line}</p>
-          ))}
-        </ol>
-
-        <h1 className="text-2xl my-3">Error</h1>
-        <ol>
-          {stderr?.map((stderr, index) => (
-            <p key={index}>{stderr}</p>
-          ))}
-        </ol>
+      <h1 className="text-2xl my-3">Output result</h1>
+        <div
+          style={{
+            padding: "16px",
+            border: "1px solid #89A6CC",
+            borderRadius: "8px",
+            backgroundColor: "#F7F9FC",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+            margin: "0 auto",
+            textAlign: "left",
+          }}
+        >
+          <pre
+            className="text-gray-700 dark:text-gray-400"
+            style={{
+              whiteSpace: "pre-wrap",
+              marginBottom: "8px",
+              fontWeight: "bold",
+              color: "#3867A5",
+            }}
+          >
+            Response status:
+            {output.status === undefined ? " None" : ` ${output.status}`}
+          </pre>
+          <pre
+            className="text-gray-700 dark:text-gray-400"
+            style={{
+              whiteSpace: "pre-wrap",
+              marginBottom: "8px",
+              fontWeight: "bold",
+              color: "#3867A5",
+            }}
+          >
+            messages:
+            {output.messages === undefined ? " None" : ` ${output.messages}`}
+          </pre>
+          <pre
+            className="text-gray-700 dark:text-gray-400"
+            style={{
+              whiteSpace: "pre-wrap",
+              marginBottom: "8px",
+              fontWeight: "bold",
+              color: "#3867A5",
+            }}
+          >
+            Error: {output.error === undefined ? " None" : ` ${output.error}`}
+          </pre>
+        </div>
       </div>
     </div>
   );

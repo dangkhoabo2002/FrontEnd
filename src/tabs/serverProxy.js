@@ -86,18 +86,15 @@ export default function ServerProxy(serverId) {
       addProxyData.domain === "" ||
       addProxyData.port === ""
     ) {
-      toast.error(
-        "All fiels can not be blank, please input correct information!",
-        {
-          style: {
-            border: "1px solid #FF5733",
-            maxWidth: "900px",
-            padding: "16px 24px",
-            color: "#FF5733",
-            fontWeight: "bolder",
-          },
-        }
-      );
+      toast.error("Please input your data!", {
+        style: {
+          border: "1px solid #FF5733",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "#FF5733",
+          fontWeight: "bolder",
+        },
+      });
     } else {
       setLoading2(true);
       const editUrl = `http://127.0.0.1:5000/server/add_proxy/${serverId.serverId}`;
@@ -209,7 +206,12 @@ export default function ServerProxy(serverId) {
           detail: currentDeleteProxy.details,
         }),
       });
-
+      const proxyOutput = await response.json();
+      setOutput({
+        status: proxyOutput.status,
+        messages: proxyOutput.messages,
+        error: proxyOutput.stderr,
+      });
       if (response.status === 200) {
         toast.success("Delete successfully.", {
           style: {
@@ -303,6 +305,12 @@ export default function ServerProxy(serverId) {
           new_port: editProxyData.new_port,
         }),
       });
+      const proxyOutput = await response.json();
+      setOutput({
+        status: proxyOutput.status,
+        messages: proxyOutput.messages,
+        error: proxyOutput.stderr,
+      });
       if (response.status === 200) {
         toast.success("Proxy updated.", {
           style: {
@@ -372,7 +380,7 @@ export default function ServerProxy(serverId) {
       const proxyGet = await response.json();
       setOutput({
         status: proxyGet.status,
-        message: proxyGet.message,
+        messages: proxyGet.messages,
         error: proxyGet.stderr,
       });
 
@@ -798,18 +806,52 @@ export default function ServerProxy(serverId) {
 
       <div className="resultOutput mt-10">
         <h1 className="text-2xl my-3">Output result</h1>
-        <div className="px-8 py-4 border-2 border-blue-500">
-          <p>
+        <div
+          style={{
+            padding: "16px",
+            border: "1px solid #89A6CC",
+            borderRadius: "8px",
+            backgroundColor: "#F7F9FC",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+            margin: "0 auto",
+            textAlign: "left",
+          }}
+        >
+          <pre
+            className="text-gray-700 dark:text-gray-400"
+            style={{
+              whiteSpace: "pre-wrap",
+              marginBottom: "8px",
+              fontWeight: "bold",
+              color: "#3867A5",
+            }}
+          >
             Response status:
             {output.status === undefined ? " None" : ` ${output.status}`}
-          </p>
-          <p>
-            Message:
-            {output.message === undefined ? " None" : ` ${output.message}`}
-          </p>
-          <p>
+          </pre>
+          <pre
+            className="text-gray-700 dark:text-gray-400"
+            style={{
+              whiteSpace: "pre-wrap",
+              marginBottom: "8px",
+              fontWeight: "bold",
+              color: "#3867A5",
+            }}
+          >
+            messages:
+            {output.messages === undefined ? " None" : ` ${output.messages}`}
+          </pre>
+          <pre
+            className="text-gray-700 dark:text-gray-400"
+            style={{
+              whiteSpace: "pre-wrap",
+              marginBottom: "8px",
+              fontWeight: "bold",
+              color: "#3867A5",
+            }}
+          >
             Error: {output.error === undefined ? " None" : ` ${output.error}`}
-          </p>
+          </pre>
         </div>
       </div>
     </div>
