@@ -47,7 +47,8 @@ export default function ServerProxy(serverId) {
   const [isOpenAddProxy, setIsOpenAddProxy] = useState(false);
   const [addProxyData, setAddProxyData] = useState({
     protocol: "",
-    detail: "",
+    domain: "",
+    port: "",
   });
 
   const handleOpenAddProxy = () => {
@@ -56,7 +57,7 @@ export default function ServerProxy(serverId) {
 
   const handleCloseAddProxy = () => {
     setIsOpenAddProxy(false);
-    setAddProxyData({ protocol: "", detail: "" });
+    setAddProxyData({ protocol: "", domain: "", port: "" });
   };
 
   const handleAddProxy = () => {
@@ -78,72 +79,93 @@ export default function ServerProxy(serverId) {
   const handleChangeAddInput = (prop) => (event) => {
     setAddProxyData({ ...addProxyData, [prop]: event.target.value });
   };
+
   const handleAddProxyAPI = async () => {
-    setLoading2(true);
-    const editUrl = `http://127.0.0.1:5000/server/add_proxy/${serverId.serverId}`;
-    const token = localStorage.getItem("access_token");
-    try {
-      const response = await fetch(editUrl, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-        body: JSON.stringify({
-          protocol: addProxyData.protocol,
-          detail: addProxyData.detail,
-        }),
-      });
-      if (response.status === 200) {
-        handleCloseAddProxy();
-        handleGetProxy();
-        setAddProxyData({ protocol: "", detail: "" });
-        toast.success("Proxy added.", {
+    if (
+      addProxyData.protocol === "" ||
+      addProxyData.domain === "" ||
+      addProxyData.port === ""
+    ) {
+      toast.error(
+        "All fiels can not be blank, please input correct information!",
+        {
           style: {
-            border: "1px solid #37E030",
+            border: "1px solid #FF5733",
             maxWidth: "900px",
             padding: "16px 24px",
-            color: "green",
+            color: "#FF5733",
             fontWeight: "bolder",
           },
-        });
-      } else if (response.status === 403) {
-        toast.error("Please enter proxy information first!", {
-          style: {
-            border: "1px solid #F85F60",
-            maxWidth: "900px",
-            padding: "16px 24px",
-            color: "red",
-            fontWeight: "bolder",
+        }
+      );
+    } else {
+      setLoading2(true);
+      const editUrl = `http://127.0.0.1:5000/server/add_proxy/${serverId.serverId}`;
+      const token = localStorage.getItem("access_token");
+      try {
+        const response = await fetch(editUrl, {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
           },
+          body: JSON.stringify({
+            protocol: addProxyData.protocol,
+            domain: addProxyData.domain,
+            port: addProxyData.port,
+          }),
         });
-      } else if (response.status === 500) {
-        toast.error(`Detail must be formated: "http(s)://domain:port"`, {
-          style: {
-            border: "1px solid #F85F60",
-            maxWidth: "900px",
-            padding: "16px 24px",
-            color: "red",
-            fontWeight: "bolder",
-          },
-        });
-      } else {
-        toast.error("Something wrong, please try again later!", {
-          style: {
-            border: "1px solid #F85F60",
-            maxWidth: "900px",
-            padding: "16px 24px",
-            color: "red",
-            fontWeight: "bolder",
-          },
-        });
+        if (response.status === 200) {
+          handleCloseAddProxy();
+          handleGetProxy();
+          setAddProxyData({ protocol: "", domain: "", port: "" });
+          toast.success("Proxy added.", {
+            style: {
+              border: "1px solid #37E030",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "green",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 403) {
+          toast.error("Please enter proxy information first!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 500) {
+          toast.error(`Detail must be formated: "http(s)://domain:port"`, {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else {
+          toast.error("Something wrong, please try again later!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+        setLoading2(false);
       }
-    } catch (error) {
-      console.error("Error:", error);
-    } finally {
-      setLoading2(false);
     }
   };
 
@@ -690,18 +712,38 @@ export default function ServerProxy(serverId) {
                       fontWeight: "400",
                     }}
                   >
-                    Detail:
+                    Domain:
                   </Typography>
                 </Grid>
                 <Grid item xs={12} md={9}>
                   <FormControl fullWidth variant="outlined">
                     <OutlinedInput
-                      placeholder="http(s)://domain:port"
-                      inputProps={{
-                        "aria-label": "Detail",
-                      }}
-                      onChange={handleChangeAddInput("detail")}
+                      placeholder="yourdomain.enw"
+                      onChange={handleChangeAddInput("domain")}
                       value={addProxyData.detail}
+                    />
+                  </FormControl>
+                </Grid>
+              </Grid>
+
+              <Grid container alignItems="center" spacing={2} mt={0}>
+                <Grid item xs={12} md={3}>
+                  <Typography
+                    className="mt-3"
+                    style={{
+                      fontSize: "16px",
+                      fontWeight: "400",
+                    }}
+                  >
+                    Port:
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} md={9}>
+                  <FormControl fullWidth variant="outlined">
+                    <OutlinedInput
+                      placeholder="3022"
+                      onChange={handleChangeAddInput("port")}
+                      value={addProxyData.port}
                     />
                   </FormControl>
                 </Grid>
