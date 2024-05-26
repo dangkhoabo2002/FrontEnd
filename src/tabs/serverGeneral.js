@@ -905,7 +905,11 @@ export default function ServerGeneral(serverId, serverStatus) {
               style={{ border: "1px solid #89A6CC" }}
             >
               <table class="table-auto w-full ">
-                <thead>
+                <thead
+                  style={{
+                    paddingBottom: "25px",
+                  }}
+                >
                   <tr>
                     <th>#</th>
                     <th>Email</th>

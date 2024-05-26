@@ -8,6 +8,7 @@ import {
   Typography,
   FormControl,
   OutlinedInput,
+  TextField,
 } from "@mui/material";
 import "../css/serverProxy.css";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -28,10 +29,20 @@ import toast, { Toaster } from "react-hot-toast";
 
 import CloseIcon from "@mui/icons-material/Close";
 import { DataGrid } from "@mui/x-data-grid";
+
 export default function ServerProxy(serverId) {
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
 
+  // OUTPUT
+
+  const [output, setOutput] = useState({
+    status: "",
+    messages: "",
+    error: "",
+  });
+
+  console.log(output);
   // ADD PROXY
   const [isOpenAddProxy, setIsOpenAddProxy] = useState(false);
   const [addProxyData, setAddProxyData] = useState({
@@ -176,6 +187,7 @@ export default function ServerProxy(serverId) {
           detail: currentDeleteProxy.details,
         }),
       });
+
       if (response.status === 200) {
         toast.success("Delete successfully.", {
           style: {
@@ -320,7 +332,6 @@ export default function ServerProxy(serverId) {
 
   // GET Proxy
   const [proxyData, setProxyData] = useState("");
-  console.log(proxyData);
   const handleGetProxy = async () => {
     const getUrl = `http://127.0.0.1:5000/server/get_all_proxy/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
@@ -335,8 +346,15 @@ export default function ServerProxy(serverId) {
           "Access-Control-Allow-Credentials": "true",
         },
       });
+
+      const proxyGet = await response.json();
+      setOutput({
+        status: proxyGet.status,
+        message: proxyGet.message,
+        error: proxyGet.stderr,
+      });
+
       if (response.status === 200) {
-        const proxyGet = await response.json();
         setProxyData(proxyGet);
       } else if (response.status === 403) {
         toast.error("Permission denied!", {
@@ -738,16 +756,19 @@ export default function ServerProxy(serverId) {
 
       <div className="resultOutput mt-10">
         <h1 className="text-2xl my-3">Output result</h1>
-        <textarea
-          className="w-full resize-none rounded-md p-4"
-          style={{
-            border: "1px solid #89A6CC",
-            maxHeight: "8em",
-            overflow: "auto",
-          }}
-        >
-          Build successfully
-        </textarea>
+        <div className="px-8 py-4 border-2 border-blue-500">
+          <p>
+            Response status:
+            {output.status === undefined ? " None" : ` ${output.status}`}
+          </p>
+          <p>
+            Message:
+            {output.message === undefined ? " None" : ` ${output.message}`}
+          </p>
+          <p>
+            Error: {output.error === undefined ? " None" : ` ${output.error}`}
+          </p>
+        </div>
       </div>
     </div>
   );
