@@ -108,7 +108,7 @@ export default function UserServerConfig() {
   };
   useEffect(() => {
     handleGetServerData();
-  }, []);
+  }, [serverData.status]);
 
   // GET SERVER BY ID
   const [data, setData] = useState();

@@ -8,6 +8,7 @@ import {
   Typography,
   FormControl,
   OutlinedInput,
+  TextField,
 } from "@mui/material";
 import "../css/serverProxy.css";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -28,15 +29,26 @@ import toast, { Toaster } from "react-hot-toast";
 
 import CloseIcon from "@mui/icons-material/Close";
 import { DataGrid } from "@mui/x-data-grid";
+
 export default function ServerProxy(serverId) {
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
 
+  // OUTPUT
+
+  const [output, setOutput] = useState({
+    status: "",
+    messages: "",
+    error: "",
+  });
+
+  console.log(output);
   // ADD PROXY
   const [isOpenAddProxy, setIsOpenAddProxy] = useState(false);
   const [addProxyData, setAddProxyData] = useState({
     protocol: "",
-    detail: "",
+    domain: "",
+    port: "",
   });
 
   const handleOpenAddProxy = () => {
@@ -45,7 +57,7 @@ export default function ServerProxy(serverId) {
 
   const handleCloseAddProxy = () => {
     setIsOpenAddProxy(false);
-    setAddProxyData({ protocol: "", detail: "" });
+    setAddProxyData({ protocol: "", domain: "", port: "" });
   };
 
   const handleAddProxy = () => {
@@ -67,7 +79,9 @@ export default function ServerProxy(serverId) {
   const handleChangeAddInput = (prop) => (event) => {
     setAddProxyData({ ...addProxyData, [prop]: event.target.value });
   };
+
   const handleAddProxyAPI = async () => {
+<<<<<<< HEAD
     setLoading2(true);
     const editUrl = `https://master-help-desk-back-end.vercel.app/server/add_proxy/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
@@ -79,60 +93,90 @@ export default function ServerProxy(serverId) {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
+=======
+    if (
+      addProxyData.protocol === "" ||
+      addProxyData.domain === "" ||
+      addProxyData.port === ""
+    ) {
+      toast.error("Please input your data!", {
+        style: {
+          border: "1px solid #FF5733",
+          maxWidth: "900px",
+          padding: "16px 24px",
+          color: "#FF5733",
+          fontWeight: "bolder",
+>>>>>>> mergeBranch2
         },
-        body: JSON.stringify({
-          protocol: addProxyData.protocol,
-          detail: addProxyData.detail,
-        }),
       });
-      if (response.status === 200) {
-        handleCloseAddProxy();
-        handleGetProxy();
-        setAddProxyData({ protocol: "", detail: "" });
-        toast.success("Proxy added.", {
-          style: {
-            border: "1px solid #37E030",
-            maxWidth: "900px",
-            padding: "16px 24px",
-            color: "green",
-            fontWeight: "bolder",
+    } else {
+      setLoading2(true);
+      const editUrl = `https://master-help-desk-back-end.vercel.app/server/add_proxy/${serverId.serverId}`;
+      const token = localStorage.getItem("access_token");
+      try {
+        const response = await fetch(editUrl, {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
           },
+          body: JSON.stringify({
+            protocol: addProxyData.protocol,
+            domain: addProxyData.domain,
+            port: addProxyData.port,
+          }),
         });
-      } else if (response.status === 403) {
-        toast.error("Please enter proxy information first!", {
-          style: {
-            border: "1px solid #F85F60",
-            maxWidth: "900px",
-            padding: "16px 24px",
-            color: "red",
-            fontWeight: "bolder",
-          },
-        });
-      } else if (response.status === 500) {
-        toast.error(`Detail must be formated: "http(s)://domain:port"`, {
-          style: {
-            border: "1px solid #F85F60",
-            maxWidth: "900px",
-            padding: "16px 24px",
-            color: "red",
-            fontWeight: "bolder",
-          },
-        });
-      } else {
-        toast.error("Something wrong, please try again later!", {
-          style: {
-            border: "1px solid #F85F60",
-            maxWidth: "900px",
-            padding: "16px 24px",
-            color: "red",
-            fontWeight: "bolder",
-          },
-        });
+        if (response.status === 200) {
+          handleCloseAddProxy();
+          handleGetProxy();
+          setAddProxyData({ protocol: "", domain: "", port: "" });
+          toast.success("Proxy added.", {
+            style: {
+              border: "1px solid #37E030",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "green",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 403) {
+          toast.error("Please enter proxy information first!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else if (response.status === 500) {
+          toast.error(`Detail must be formated: "http(s)://domain:port"`, {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else {
+          toast.error("Something wrong, please try again later!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+        setLoading2(false);
       }
-    } catch (error) {
-      console.error("Error:", error);
-    } finally {
-      setLoading2(false);
     }
   };
 
@@ -175,6 +219,12 @@ export default function ServerProxy(serverId) {
           protocol: currentDeleteProxy.protocol,
           detail: currentDeleteProxy.details,
         }),
+      });
+      const proxyOutput = await response.json();
+      setOutput({
+        status: proxyOutput.status,
+        messages: proxyOutput.messages,
+        error: proxyOutput.stderr,
       });
       if (response.status === 200) {
         toast.success("Delete successfully.", {
@@ -269,6 +319,12 @@ export default function ServerProxy(serverId) {
           new_port: editProxyData.new_port,
         }),
       });
+      const proxyOutput = await response.json();
+      setOutput({
+        status: proxyOutput.status,
+        messages: proxyOutput.messages,
+        error: proxyOutput.stderr,
+      });
       if (response.status === 200) {
         toast.success("Proxy updated.", {
           style: {
@@ -320,7 +376,6 @@ export default function ServerProxy(serverId) {
 
   // GET Proxy
   const [proxyData, setProxyData] = useState("");
-  console.log(proxyData);
   const handleGetProxy = async () => {
     const getUrl = `https://master-help-desk-back-end.vercel.app/server/get_all_proxy/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
@@ -335,8 +390,15 @@ export default function ServerProxy(serverId) {
           "Access-Control-Allow-Credentials": "true",
         },
       });
+
+      const proxyGet = await response.json();
+      setOutput({
+        status: proxyGet.status,
+        messages: proxyGet.messages,
+        error: proxyGet.stderr,
+      });
+
       if (response.status === 200) {
-        const proxyGet = await response.json();
         setProxyData(proxyGet);
       } else if (response.status === 403) {
         toast.error("Permission denied!", {
@@ -672,18 +734,38 @@ export default function ServerProxy(serverId) {
                       fontWeight: "400",
                     }}
                   >
-                    Detail:
+                    Domain:
                   </Typography>
                 </Grid>
                 <Grid item xs={12} md={9}>
                   <FormControl fullWidth variant="outlined">
                     <OutlinedInput
-                      placeholder="http(s)://domain:port"
-                      inputProps={{
-                        "aria-label": "Detail",
-                      }}
-                      onChange={handleChangeAddInput("detail")}
+                      placeholder="yourdomain.enw"
+                      onChange={handleChangeAddInput("domain")}
                       value={addProxyData.detail}
+                    />
+                  </FormControl>
+                </Grid>
+              </Grid>
+
+              <Grid container alignItems="center" spacing={2} mt={0}>
+                <Grid item xs={12} md={3}>
+                  <Typography
+                    className="mt-3"
+                    style={{
+                      fontSize: "16px",
+                      fontWeight: "400",
+                    }}
+                  >
+                    Port:
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} md={9}>
+                  <FormControl fullWidth variant="outlined">
+                    <OutlinedInput
+                      placeholder="3022"
+                      onChange={handleChangeAddInput("port")}
+                      value={addProxyData.port}
                     />
                   </FormControl>
                 </Grid>
@@ -738,16 +820,53 @@ export default function ServerProxy(serverId) {
 
       <div className="resultOutput mt-10">
         <h1 className="text-2xl my-3">Output result</h1>
-        <textarea
-          className="w-full resize-none rounded-md p-4"
+        <div
           style={{
+            padding: "16px",
             border: "1px solid #89A6CC",
-            maxHeight: "8em",
-            overflow: "auto",
+            borderRadius: "8px",
+            backgroundColor: "#F7F9FC",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+            margin: "0 auto",
+            textAlign: "left",
           }}
         >
-          Build successfully
-        </textarea>
+          <pre
+            className="text-gray-700 dark:text-gray-400"
+            style={{
+              whiteSpace: "pre-wrap",
+              marginBottom: "8px",
+              fontWeight: "bold",
+              color: "#3867A5",
+            }}
+          >
+            Response status:
+            {output.status === undefined ? " None" : ` ${output.status}`}
+          </pre>
+          <pre
+            className="text-gray-700 dark:text-gray-400"
+            style={{
+              whiteSpace: "pre-wrap",
+              marginBottom: "8px",
+              fontWeight: "bold",
+              color: "#3867A5",
+            }}
+          >
+            Message:
+            {output.messages === undefined ? " None" : ` ${output.messages}`}
+          </pre>
+          <pre
+            className="text-gray-700 dark:text-gray-400"
+            style={{
+              whiteSpace: "pre-wrap",
+              marginBottom: "8px",
+              fontWeight: "bold",
+              color: "#3867A5",
+            }}
+          >
+            Error: {output.error === undefined ? " None" : ` ${output.error}`}
+          </pre>
+        </div>
       </div>
     </div>
   );

@@ -155,9 +155,21 @@ export default function SignUp() {
             maxWidth: "2000px",
           },
         });
-      } else {
+      } else if (response.status === 500) {
         toast.dismiss();
-        toast.error("Something wrong, please try again later!", {
+        toast.error("Email is not exist!", {
+          style: {
+            border: "1px solid #F85F60",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+            maxWidth: "2000px",
+          },
+        });
+      } else {
+        const data = await response.json();
+        toast.dismiss();
+        toast.error(`${data.message}, please try again!`, {
           style: {
             border: "1px solid #F85F60",
             maxWidth: "900px",

@@ -13,6 +13,7 @@ import {
   TextField,
   MenuItem,
 } from "@mui/material";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -24,6 +25,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Fingerprint from "@mui/icons-material/Fingerprint";
 
 import "../css/serverGeneral.css";
+import "../css/Admin.css";
 import ServerManager from "../database/listOfServerManager.json";
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -791,6 +793,142 @@ export default function ServerGeneral(serverId, serverStatus) {
     }
   };
 
+  // State for server password
+  const [openCheckPassServerPassword, setOpenCheckPassServerPassword] =
+    useState(false);
+  const [openNewServerPassword, setOpenNewServerPassword] = useState(false);
+  const [newServerPassword, setNewServerPassword] = useState();
+
+  const handleChangeNewServerPassword = (event) => {
+    setNewServerPassword(event.target.value);
+  };
+
+  const handleCloseCheckPassServerPassword = () => {
+    setPassword("");
+    setNewServerPassword("");
+    setOpenCheckPassServerPassword(false);
+  };
+
+  const handleOpenUpdateServerPassword = async () => {
+    const checkPass = await handleCheckPass(password);
+    if (checkPass === "Success") {
+      setOpenCheckPassServerPassword(false);
+      setOpenNewServerPassword(true);
+      setPassword("");
+    }
+  };
+
+  const handleCloseUpdateServerPassword = async () => {
+    setPassword("");
+    setNewServerPassword("");
+    setOpenNewServerPassword(false);
+  };
+
+  const handleUpdateServerPassword = async () => {
+    handleUpdateServerPasswordAPI();
+    setOpenNewServerPassword(false);
+  };
+
+  const handleUpdateServerPasswordAPI = async () => {
+    const getUrl = `https://master-help-desk-back-end.vercel.app/server/update_password/${serverId.serverId}`;
+    toast.loading("Updating...");
+
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await fetch(getUrl, {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          password: newServerPassword,
+        }),
+      });
+      if (response.status === 200) {
+        toast.dismiss();
+
+        toast.success("Server's password is updated successfully.", {
+          style: {
+            border: "1px solid #37E030",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "green",
+            fontWeight: "bolder",
+          },
+        });
+        handleCloseCheckPassServerPassword();
+      } else if (response.status === 400) {
+        toast.dismiss();
+
+        const error = await response.json();
+        if (error.message === "Server is not identified yet!") {
+          toast.error("Permission denied!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        } else {
+          toast.error("Missing new password!", {
+            style: {
+              border: "1px solid #F85F60",
+              maxWidth: "900px",
+              padding: "16px 24px",
+              color: "red",
+              fontWeight: "bolder",
+            },
+          });
+        }
+      } else if (response.status === 403) {
+        toast.dismiss();
+
+        toast.error("Permission denied!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else if (response.status === 500) {
+        toast.dismiss();
+
+        toast.error("Failed to update password!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      } else {
+        toast.dismiss();
+
+        toast.error("Something wrong, please try again later!", {
+          style: {
+            border: "1px solid #F85F60",
+            maxWidth: "900px",
+            padding: "16px 24px",
+            color: "red",
+            fontWeight: "bolder",
+          },
+        });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div>
       {/* Return Error */}
@@ -905,7 +1043,11 @@ export default function ServerGeneral(serverId, serverStatus) {
               style={{ border: "1px solid #89A6CC" }}
             >
               <table class="table-auto w-full ">
-                <thead>
+                <thead
+                  style={{
+                    paddingBottom: "25px",
+                  }}
+                >
                   <tr>
                     <th>#</th>
                     <th>Email</th>
@@ -958,16 +1100,20 @@ export default function ServerGeneral(serverId, serverStatus) {
         <div className="setting-site mb-5 flex flex-row justify-between">
           <div className="flex flex-row gap-4">
             <Button
-              variant="outlined"
+              sx={{
+                backgroundColor: "#19a419",
+                "&:hover": { bgcolor: "#117611" },
+              }}
+              variant="contained"
               startIcon={<Fingerprint />}
               onClick={() => setOpenCheckPassRsa(true)}
             >
               RSA KEY
             </Button>
             <Button
-              variant="outlined"
-              startIcon={<Fingerprint />}
-              onClick={() => setOpenCheckPassRsa(true)}
+              variant="contained"
+              startIcon={<LockOutlinedIcon />}
+              onClick={() => setOpenCheckPassServerPassword(true)}
             >
               SERVER PASSWORD
             </Button>
@@ -1235,6 +1381,66 @@ export default function ServerGeneral(serverId, serverStatus) {
         <DialogActions>
           <Button onClick={handleCloseUpdateRsa}>Cancel</Button>
           <Button onClick={handleUpdateRsa}>Confirm</Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* SERVER PASSWORD CONFIRM */}
+      <Dialog
+        open={openCheckPassServerPassword}
+        onClose={handleCloseCheckPassServerPassword}
+      >
+        <DialogTitle>Update Server Password</DialogTitle>
+        <DialogContent>
+          <DialogContentText className="pb-4">
+            Your action is critical impact! Please enter your password to
+            continue.
+          </DialogContentText>
+          <TextField
+            required
+            margin="dense"
+            id="password"
+            name="password"
+            label="Password"
+            type="password"
+            fullWidth
+            variant="outlined"
+            onChange={handleChange}
+            value={password}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseCheckPassServerPassword}>Cancel</Button>
+          <Button onClick={handleOpenUpdateServerPassword}>Confirm</Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* SERVER PASSWORD UPDATE INPUT */}
+      <Dialog
+        open={openNewServerPassword}
+        onClose={handleCloseUpdateServerPassword}
+      >
+        <DialogTitle>Set new Server Password!</DialogTitle>
+        <DialogContent>
+          <DialogContentText className="pb-4 inline-flex">
+            <p style={{ color: "red" }}>Your action is critical impact! </p>
+            <p className="pl-1">Input new server password here.</p>
+          </DialogContentText>
+          <TextField
+            required
+            margin="dense"
+            id="newPassword"
+            name="newPassword"
+            label="New Password"
+            type="password"
+            fullWidth
+            variant="outlined"
+            onChange={handleChangeNewServerPassword}
+            value={newServerPassword}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseUpdateServerPassword}>Cancel</Button>
+          <Button onClick={handleUpdateServerPassword}>Confirm</Button>
         </DialogActions>
       </Dialog>
     </div>

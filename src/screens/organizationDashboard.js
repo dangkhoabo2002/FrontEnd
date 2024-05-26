@@ -1259,7 +1259,6 @@ export default function OrganizationDashboard() {
           className=""
           style={{
             width: "100%",
-            boxSizing: "border-box",
             backgroundColor: "#f3f3fb",
           }}
         >
