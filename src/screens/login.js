@@ -6,10 +6,8 @@ import nonIcon from "../assets/non-icon.png";
 
 import {
   Grid,
-  Checkbox,
   Button,
   TextField,
-  FormControlLabel,
   Box,
   Dialog,
   DialogTitle,
@@ -28,26 +26,14 @@ export default function Login() {
     password: "",
   });
   const [loginType, setLoginType] = useState("");
-  // const [openDialog, setOpenDialog] = useState(false);
-
-  // const handleDialogClose = () => {
-  //   setOpenDialog(false);
-  //   navigate("/admin");
-  // };
-
-  const loginAdmin = localStorage.getItem("checkAdmin");
   const loginUser = localStorage.getItem("checkUser");
 
   useEffect(() => {
-    // if (loginAdmin) {
-    //   setLoginType("admin");
-    //   setOpenDialog(true);
-    // } else 
     if (loginUser) {
       setLoginType("user");
       navigate(`/organizations`);
     }
-  }, []);
+  }, [loginUser, navigate]);
 
   const handleChange = (prop) => (event) => {
     setData({ ...data, [prop]: event.target.value });
@@ -85,14 +71,10 @@ export default function Login() {
         });
         if (response.status === 200) {
           toast.dismiss();
-          const data = await response.json();
-          localStorage.setItem("access_token", data.access_token);
-          if (loginType === "admin") {
-            // setOpenDialog(true);
-          } else {
-            localStorage.setItem("checkUser", "user");
-            navigate(`/organizations`);
-          }
+          const responseData = await response.json();
+          localStorage.setItem("access_token", responseData.access_token);
+          localStorage.setItem("checkUser", "user");
+          navigate(`/organizations`);
         } else if (response.status === 401) {
           toast.dismiss();
           toast.error("Invalid Username or Password!", {
@@ -105,7 +87,6 @@ export default function Login() {
           });
         } else {
           toast.dismiss();
-
           toast.error("Something wrong, please try again later!", {
             style: {
               border: "1px solid #F85F60",
@@ -117,7 +98,8 @@ export default function Login() {
         }
       } catch (error) {
         console.error("Error:", error);
-      } finally {
+        toast.dismiss();
+        toast.error("Something went wrong. Please try again later.");
       }
     }
   };
@@ -268,60 +250,6 @@ export default function Login() {
             </form>
           </Grid>
         </Grid>
-        {/* <Dialog
-          open={openDialog}
-          onClose={handleDialogClose}
-          sx={{
-            textAlign: "center",
-            borderRadius: "15px",
-            boxShadow: "0px 0px 20px rgba(0, 0, 0, 0.2)",
-            "& .dialog-content": {
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: "15px",
-            },
-            "& .MuiDialogTitle-root": {
-              fontSize: "24px",
-              textAlign: "center",
-              borderRadius: "10px 10px 0 0",
-            },
-            "& .MuiDialogContent-root": {
-              padding: "0 15px 15px 15px",
-              color: "#333333",
-            },
-            "& .MuiDialogActions-root": {
-              justifyContent: "center",
-              padding: "10px 20px",
-            },
-            "& .MuiButton-root": {
-              backgroundColor: "#3867A5",
-              color: "#FFFFFF",
-              borderRadius: "5px",
-              width: "100px",
-              "&:hover": {
-                backgroundColor: "#304e7f",
-              },
-            },
-          }}
-        >
-          <div className="dialog-content">
-            <div className="flex flex-row justify-center">
-              <img loading="lazy" src={nonIcon} style={{ width: "60px" }} />
-            </div>
-            <DialogTitle>Retry again!</DialogTitle>
-            <DialogContent>
-              <p>
-                Currently, you are logged in as an admin role. Please log out to
-                continue.
-              </p>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleDialogClose}>Ok</Button>
-            </DialogActions>
-          </div>
-        </Dialog> */}
       </div>
     </>
   );
