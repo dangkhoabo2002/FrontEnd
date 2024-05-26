@@ -34,11 +34,6 @@ export default function App() {
       return <Navigate to="/login" />;
     }
   };
-
-
-  useEffect(() => {
-    checkLoggedIn();
-  });
   return (
     <div>
       <Routes>
