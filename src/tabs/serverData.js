@@ -783,6 +783,8 @@ export default function ServerData(serverId) {
   const [selectedFolder, setSelectedFolder] = useState(null);
   const [pathFolderDownload, setPathFolderDownload] = useState("");
   const [folderError, setFolderError] = useState(false);
+  const [resultOutput, setResultOutput] = useState();
+
 
   // Handlers
   const handleDefaultChangeFile = (event) => {
@@ -1478,14 +1480,10 @@ export default function ServerData(serverId) {
           Output result
         </Typography>
         <textarea
-          className="w-full resize-none rounded-md p-4"
-          style={{
-            border: "1px solid #89A6CC",
-            maxHeight: "8em",
-            overflow: "auto",
-          }}
+          class="w-full resize-none rounded-md p-4"
+          style={{ border: "1px solid #89A6CC" }}
         >
-          Build successfully
+          {resultOutput}
         </textarea>
       </div>
     </div>
