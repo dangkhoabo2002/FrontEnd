@@ -32,14 +32,17 @@ const ServerReport = () => {
   const [newUrl, setNewUrl] = useState("");
 
   const handleChooseDowloadLog = (option) => {
+    let url = "";
+
     if (option === "ufwLog") {
-      setNewUrl("report_raw_log_ufw");
+      url = "report_raw_log_ufw";
     } else if (option === "lastLog") {
-      setNewUrl("report_raw_log_last");
+      url = "report_raw_log_last";
     } else if (option === "sysLog") {
-      setNewUrl("report_raw_syslog");
+      url = "report_raw_syslog";
     }
-    handleDowloadLog(newUrl);
+
+    handleDowloadLog(url);
   };
 
   const handleDowloadLog = async (url) => {

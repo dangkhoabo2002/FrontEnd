@@ -24,45 +24,6 @@ export default function LastLog(rawLastLog) {
         a
         className="bg-[white] shadow-lg"
       >
-        {/* {newLog?.length > 0 && (
-          <>
-            <TableContainer>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Conclusion</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {newLog
-                    .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
-                    ?.map((row) => (
-                      <TableRow key={row.timestamp}>
-                        <TableCell>
-                          <Accordion>
-                            <AccordionSummary
-                              id="panel-header"
-                              aria-controls="panel-content"
-                            >
-                              {row.timestamp}
-                            </AccordionSummary>
-                            <AccordionDetails>{row}</AccordionDetails>
-                          </Accordion>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            <Pagination
-              count={newLog?.length} // Total number of rows
-              page={page}
-              onChange={(event, newPage) => setPage(newPage)}
-              showFirstLast={true} // Display first and last page buttons
-            />
-          </>
-        )}
-        {!newLog?.length && <LinearProgress />} */}
         {newLog?.length > 0 && (
           <>
             <TableContainer>
@@ -86,8 +47,8 @@ export default function LastLog(rawLastLog) {
                 <TableBody>
                   {newLog
                     .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
-                    .map((row) => (
-                      <TableRow key={row.timestamp}>
+                    .map((row, index) => (
+                      <TableRow key={index}>
                         <TableCell sx={{ width: "400px" }}>
                           {row.timestamp}
                         </TableCell>
