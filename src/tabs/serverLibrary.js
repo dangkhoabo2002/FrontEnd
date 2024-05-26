@@ -28,7 +28,7 @@ export default function ServerLibrary(serverId) {
 
   const handleInstallLibraryAPI = async (libName) => {
     setLoading(true);
-    const editUrl = `http://127.0.0.1:5000/server/install_lib/${serverId.serverId}`;
+    const editUrl = `https://master-help-desk-back-end.vercel.app/server/install_lib/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(editUrl, {
@@ -109,7 +109,7 @@ export default function ServerLibrary(serverId) {
   };
 
   const handleUninstallLibraryAPI = async (libName) => {
-    const editUrl = `http://127.0.0.1:5000/server/uninstall_lib/${serverId.serverId}`;
+    const editUrl = `https://master-help-desk-back-end.vercel.app/server/uninstall_lib/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(editUrl, {
@@ -194,7 +194,7 @@ export default function ServerLibrary(serverId) {
   const [listLib, setListLib] = useState();
 
   const handleGetLib = async () => {
-    const getUrl = `http://127.0.0.1:5000/server/lib_status/${serverId.serverId}`;
+    const getUrl = `https://master-help-desk-back-end.vercel.app/server/lib_status/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(getUrl, {
@@ -307,7 +307,7 @@ export default function ServerLibrary(serverId) {
                   </h2>
                   {lib.installed == "False" ? (
                     <LoadingButton
-                    sx={{width:"132px"}}
+                      sx={{ width: "132px" }}
                       size="small"
                       color="secondary"
                       onClick={() => handleInstallLibraryAPI(lib.library)}
@@ -318,8 +318,7 @@ export default function ServerLibrary(serverId) {
                     </LoadingButton>
                   ) : (
                     <LoadingButton
-                    sx={{width:"132px"}}
-
+                      sx={{ width: "132px" }}
                       size="small"
                       color="secondary"
                       onClick={() => handleInstallLibraryAPI(lib.library)}
@@ -334,54 +333,54 @@ export default function ServerLibrary(serverId) {
             ))}
         </div>
         <div className="resultOutput mt-10">
-        <h1 className="text-2xl my-3">Output result</h1>
-        <div
-          style={{
-            padding: "16px",
-            border: "1px solid #89A6CC",
-            borderRadius: "8px",
-            backgroundColor: "",
-            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-            margin: "0 auto",
-            textAlign: "left",
-          }}
-        >
-          <pre
-            className="text-gray-700 dark:text-gray-400"
+          <h1 className="text-2xl my-3">Output result</h1>
+          <div
             style={{
-              whiteSpace: "pre-wrap",
-              marginBottom: "8px",
-              fontWeight: "bold",
-              color: "#3867A5",
+              padding: "16px",
+              border: "1px solid #89A6CC",
+              borderRadius: "8px",
+              backgroundColor: "",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+              margin: "0 auto",
+              textAlign: "left",
             }}
           >
-            Response status:
-            {output.status === undefined ? " None" : ` ${output.status}`}
-          </pre>
-          <pre
-            className="text-gray-700 dark:text-gray-400"
-            style={{
-              whiteSpace: "pre-wrap",
-              marginBottom: "8px",
-              fontWeight: "bold",
-              color: "#3867A5",
-            }}
-          >
-            messages:
-            {output.messages === undefined ? " None" : ` ${output.messages}`}
-          </pre>
-          <pre
-            className="text-gray-700 dark:text-gray-400"
-            style={{
-              whiteSpace: "pre-wrap",
-              marginBottom: "8px",
-              fontWeight: "bold",
-              color: "#3867A5",
-            }}
-          >
-            Error: {output.error === undefined ? " None" : ` ${output.error}`}
-          </pre>
-        </div>
+            <pre
+              className="text-gray-700 dark:text-gray-400"
+              style={{
+                whiteSpace: "pre-wrap",
+                marginBottom: "8px",
+                fontWeight: "bold",
+                color: "#3867A5",
+              }}
+            >
+              Response status:
+              {output.status === undefined ? " None" : ` ${output.status}`}
+            </pre>
+            <pre
+              className="text-gray-700 dark:text-gray-400"
+              style={{
+                whiteSpace: "pre-wrap",
+                marginBottom: "8px",
+                fontWeight: "bold",
+                color: "#3867A5",
+              }}
+            >
+              messages:
+              {output.messages === undefined ? " None" : ` ${output.messages}`}
+            </pre>
+            <pre
+              className="text-gray-700 dark:text-gray-400"
+              style={{
+                whiteSpace: "pre-wrap",
+                marginBottom: "8px",
+                fontWeight: "bold",
+                color: "#3867A5",
+              }}
+            >
+              Error: {output.error === undefined ? " None" : ` ${output.error}`}
+            </pre>
+          </div>
         </div>
       </div>
     </>

@@ -97,7 +97,7 @@ export default function ServerProxy(serverId) {
       });
     } else {
       setLoading2(true);
-      const editUrl = `http://127.0.0.1:5000/server/add_proxy/${serverId.serverId}`;
+      const editUrl = `https://master-help-desk-back-end.vercel.app/server/add_proxy/${serverId.serverId}`;
       const token = localStorage.getItem("access_token");
       try {
         const response = await fetch(editUrl, {
@@ -190,7 +190,7 @@ export default function ServerProxy(serverId) {
 
   const handleDeleteProxyAPI = async () => {
     setLoading2(true);
-    const editUrl = `http://127.0.0.1:5000/server/delete_proxy/${serverId.serverId}`;
+    const editUrl = `https://master-help-desk-back-end.vercel.app/server/delete_proxy/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(editUrl, {
@@ -287,7 +287,7 @@ export default function ServerProxy(serverId) {
 
   const handleEditProxyAPI = async () => {
     setLoading2(true);
-    const editUrl = `http://127.0.0.1:5000/server/update_proxy/${serverId.serverId}`;
+    const editUrl = `https://master-help-desk-back-end.vercel.app/server/update_proxy/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(editUrl, {
@@ -363,7 +363,7 @@ export default function ServerProxy(serverId) {
   // GET Proxy
   const [proxyData, setProxyData] = useState("");
   const handleGetProxy = async () => {
-    const getUrl = `http://127.0.0.1:5000/server/get_all_proxy/${serverId.serverId}`;
+    const getUrl = `https://master-help-desk-back-end.vercel.app/server/get_all_proxy/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(getUrl, {

@@ -13,7 +13,7 @@ import {
   TextField,
   MenuItem,
 } from "@mui/material";
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -68,7 +68,7 @@ export default function ServerGeneral(serverId, serverStatus) {
   // GET SERVER DATA
 
   const handleGetServerData1 = async () => {
-    const getUrl = `http://127.0.0.1:5000/server/get_server_data/${serverId.serverId}`;
+    const getUrl = `https://master-help-desk-back-end.vercel.app/server/get_server_data/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(getUrl, {
@@ -131,7 +131,7 @@ export default function ServerGeneral(serverId, serverStatus) {
   };
 
   const handleGetServerData2 = async () => {
-    const getUrl = `http://127.0.0.1:5000/server/get_server_info/${serverId.serverId}`;
+    const getUrl = `https://master-help-desk-back-end.vercel.app/server/get_server_info/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(getUrl, {
@@ -201,7 +201,7 @@ export default function ServerGeneral(serverId, serverStatus) {
   const handleDeleteServer = async () => {
     toast.loading("Deleting...");
 
-    const getUrl = `http://127.0.0.1:5000/server/delete/${serverId.serverId}`;
+    const getUrl = `https://master-help-desk-back-end.vercel.app/server/delete/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(getUrl, {
@@ -320,7 +320,7 @@ export default function ServerGeneral(serverId, serverStatus) {
   const handleChangeServerStatusAPI = async (newStatus) => {
     toast.loading("Updating...");
 
-    const url = `http://127.0.0.1:5000/server/change_status/${serverId.serverId}`;
+    const url = `https://master-help-desk-back-end.vercel.app/server/change_status/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(url, {
@@ -376,7 +376,7 @@ export default function ServerGeneral(serverId, serverStatus) {
 
   const [memberList, setMemberList] = useState([]);
   const handleGetMember = async () => {
-    const url = `http://127.0.0.1:5000/server/get_server_members/${serverId.serverId}`;
+    const url = `https://master-help-desk-back-end.vercel.app/server/get_server_members/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(url, {
@@ -450,7 +450,7 @@ export default function ServerGeneral(serverId, serverStatus) {
         }
       );
     } else {
-      const url = `http://127.0.0.1:5000/server/add_member`;
+      const url = `https://master-help-desk-back-end.vercel.app/server/add_member`;
       toast.loading("Adding new member...");
 
       const token = localStorage.getItem("access_token");
@@ -558,7 +558,7 @@ export default function ServerGeneral(serverId, serverStatus) {
         },
       });
     } else {
-      const url = `http://127.0.0.1:5000/server/remove_member`;
+      const url = `https://master-help-desk-back-end.vercel.app/server/remove_member`;
       toast.loading("Removing member...");
 
       const token = localStorage.getItem("access_token");
@@ -694,7 +694,7 @@ export default function ServerGeneral(serverId, serverStatus) {
   };
 
   const handleUpdateRsaAPI = async () => {
-    const getUrl = `http://127.0.0.1:5000/server/update_rsa_key/${serverId.serverId}`;
+    const getUrl = `https://master-help-desk-back-end.vercel.app/server/update_rsa_key/${serverId.serverId}`;
     toast.loading("Updating...");
 
     const token = localStorage.getItem("access_token");
@@ -830,7 +830,7 @@ export default function ServerGeneral(serverId, serverStatus) {
   };
 
   const handleUpdateServerPasswordAPI = async () => {
-    const getUrl = `http://127.0.0.1:5000/server/update_password/${serverId.serverId}`;
+    const getUrl = `https://master-help-desk-back-end.vercel.app/server/update_password/${serverId.serverId}`;
     toast.loading("Updating...");
 
     const token = localStorage.getItem("access_token");
@@ -1100,13 +1100,13 @@ export default function ServerGeneral(serverId, serverStatus) {
         <div className="setting-site mb-5 flex flex-row justify-between">
           <div className="flex flex-row gap-4">
             <Button
-            sx={{backgroundColor: "#19a419",
-            "&:hover": { bgcolor: "#117611" },
-            }}
+              sx={{
+                backgroundColor: "#19a419",
+                "&:hover": { bgcolor: "#117611" },
+              }}
               variant="contained"
               startIcon={<Fingerprint />}
               onClick={() => setOpenCheckPassRsa(true)}
-              
             >
               RSA KEY
             </Button>
@@ -1415,7 +1415,10 @@ export default function ServerGeneral(serverId, serverStatus) {
       </Dialog>
 
       {/* SERVER PASSWORD UPDATE INPUT */}
-      <Dialog open={openNewServerPassword} onClose={handleCloseUpdateServerPassword}>
+      <Dialog
+        open={openNewServerPassword}
+        onClose={handleCloseUpdateServerPassword}
+      >
         <DialogTitle>Set new Server Password!</DialogTitle>
         <DialogContent>
           <DialogContentText className="pb-4 inline-flex">

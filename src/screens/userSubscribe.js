@@ -27,7 +27,8 @@ export default function UserSubscribe() {
 
   const handlePackage = async () => {
     toast.loading("In processing..");
-    const packageUrl = "http://127.0.0.1:5000/package/get";
+    const packageUrl =
+      "https://master-help-desk-back-end.vercel.app/package/get";
 
     try {
       const response = await fetch(packageUrl, {
@@ -54,7 +55,7 @@ export default function UserSubscribe() {
   const handleGetSubPurchased = async () => {
     toast.loading("In processing..");
     const packageUrl =
-      "http://127.0.0.1:5000/subscription/get_subscriptions_by_customer_id";
+      "https://master-help-desk-back-end.vercel.app/subscription/get_subscriptions_by_customer_id";
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(packageUrl, {
@@ -101,7 +102,7 @@ export default function UserSubscribe() {
 
   const handleGetPackagePurchased = async (package_id) => {
     toast.loading("In processing..");
-    const packageUrl = `http://127.0.0.1:5000/package/get/${package_id}`;
+    const packageUrl = `https://master-help-desk-back-end.vercel.app/package/get/${package_id}`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(packageUrl, {
@@ -155,7 +156,7 @@ export default function UserSubscribe() {
   };
 
   const handleGetSub = async () => {
-    const editUrl = `http://127.0.0.1:5000/subscription/check_subscription_by_username`;
+    const editUrl = `https://master-help-desk-back-end.vercel.app/subscription/check_subscription_by_username`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(editUrl, {
@@ -178,7 +179,7 @@ export default function UserSubscribe() {
   };
 
   const handleCancelPackageAPI = async () => {
-    const editUrl = `http://127.0.0.1:5000/subscription/update_subscription_status/${getPackagePurchased.package_id}`;
+    const editUrl = `https://master-help-desk-back-end.vercel.app/subscription/update_subscription_status/${getPackagePurchased.package_id}`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(editUrl, {

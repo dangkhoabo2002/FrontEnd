@@ -48,7 +48,7 @@ const ServerReport = () => {
   const handleDowloadLog = async (url) => {
     toast.loading("Preparing data to dowload...");
     const token = localStorage.getItem("access_token");
-    const urlac = `http://127.0.0.1:5000/server/${url}/${param.server_id}`;
+    const urlac = `https://master-help-desk-back-end.vercel.app/server/${url}/${param.server_id}`;
     try {
       const response = await fetch(urlac, {
         method: "GET",
@@ -134,7 +134,7 @@ const ServerReport = () => {
   const [sysLog, setSysLog] = useState();
 
   const handleGetSysLog = async () => {
-    const url = `http://127.0.0.1:5000/server/report_log_syslog/${param.server_id}`;
+    const url = `https://master-help-desk-back-end.vercel.app/server/report_log_syslog/${param.server_id}`;
 
     const token = localStorage.getItem("access_token");
 
@@ -164,7 +164,7 @@ const ServerReport = () => {
   const [lastLog, setLastLog] = useState();
 
   const handleGetLastLog = async () => {
-    const url = `http://127.0.0.1:5000/server/report_log_last/${param.server_id}`;
+    const url = `https://master-help-desk-back-end.vercel.app/server/report_log_last/${param.server_id}`;
 
     const token = localStorage.getItem("access_token");
 
@@ -193,7 +193,7 @@ const ServerReport = () => {
   // UFW LOG
   const [ufwLog, setUfwLog] = useState();
   const handleGetUfwLog = async () => {
-    const url = `http://127.0.0.1:5000/server/report_log_ufw/${param.server_id}`;
+    const url = `https://master-help-desk-back-end.vercel.app/server/report_log_ufw/${param.server_id}`;
 
     const token = localStorage.getItem("access_token");
 

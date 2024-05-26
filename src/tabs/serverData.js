@@ -81,7 +81,7 @@ export default function ServerData(serverId) {
       formData.append("dir", pathFile);
     }
 
-    const UPLOAD_ENDPOINT = `http://127.0.0.1:5000/server/upload_file/${param.server_id}`;
+    const UPLOAD_ENDPOINT = `https://master-help-desk-back-end.vercel.app/server/upload_file/${param.server_id}`;
     try {
       toast.loading("Uploading...");
       const response = await fetch(UPLOAD_ENDPOINT, {

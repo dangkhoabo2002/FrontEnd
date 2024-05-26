@@ -52,7 +52,7 @@ export default function ServerDocker(serverId) {
     } else {
       setLoading(true);
 
-      const url = `http://127.0.0.1:5000/server/docker_build/${serverId.serverId}`;
+      const url = `https://master-help-desk-back-end.vercel.app/server/docker_build/${serverId.serverId}`;
       const token = localStorage.getItem("access_token");
 
       try {
@@ -68,11 +68,12 @@ export default function ServerDocker(serverId) {
             dockerfile: dockerProject.docker_compose,
             image_tag: dockerProject.image_tag,
           }),
-        });const dockerOutput = await response.json();
+        });
+        const dockerOutput = await response.json();
         setOutput({
-            status: dockerOutput.status,
-            messages: dockerOutput.messages,
-            error: dockerOutput.stderr,
+          status: dockerOutput.status,
+          messages: dockerOutput.messages,
+          error: dockerOutput.stderr,
         });
         if (response.status === 200) {
           toast.dismiss();
@@ -140,7 +141,7 @@ export default function ServerDocker(serverId) {
         },
       });
     } else {
-      const url = `http://127.0.0.1:5000/server/docker_build/${serverId.serverId}`;
+      const url = `https://master-help-desk-back-end.vercel.app/server/docker_build/${serverId.serverId}`;
       const token = localStorage.getItem("access_token");
 
       try {
@@ -156,11 +157,12 @@ export default function ServerDocker(serverId) {
             compose_yaml: dockerProject.compose_yaml,
             action: "compose-up",
           }),
-        });const dockerOutput = await response.json();
+        });
+        const dockerOutput = await response.json();
         setOutput({
-            status: dockerOutput.status,
-            messages: dockerOutput.messages,
-            error: dockerOutput.stderr,
+          status: dockerOutput.status,
+          messages: dockerOutput.messages,
+          error: dockerOutput.stderr,
         });
         if (response.status === 200) {
           toast.success("Compose up successfull.", {
@@ -224,7 +226,7 @@ export default function ServerDocker(serverId) {
       });
     } else {
       setLoading(true);
-      const url = `http://127.0.0.1:5000/server/docker_build/${serverId.serverId}`;
+      const url = `https://master-help-desk-back-end.vercel.app/server/docker_build/${serverId.serverId}`;
       const token = localStorage.getItem("access_token");
 
       try {
@@ -240,11 +242,12 @@ export default function ServerDocker(serverId) {
             compose_yaml: dockerProject.compose_yaml,
             action: "compose-down",
           }),
-        });const dockerOutput = await response.json();
+        });
+        const dockerOutput = await response.json();
         setOutput({
-            status: dockerOutput.status,
-            messages: dockerOutput.messages,
-            error: dockerOutput.stderr,
+          status: dockerOutput.status,
+          messages: dockerOutput.messages,
+          error: dockerOutput.stderr,
         });
         if (response.status === 200) {
           toast.success("Compose down successfull.", {
@@ -303,7 +306,7 @@ export default function ServerDocker(serverId) {
   const handleGetImagesAPI = async () => {
     setLoading(true);
 
-    const url = `http://127.0.0.1:5000/server/docker_list_images/${serverId.serverId}`;
+    const url = `https://master-help-desk-back-end.vercel.app/server/docker_list_images/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
 
     try {
@@ -355,7 +358,7 @@ export default function ServerDocker(serverId) {
 
   const handleGetContainersAPI = async () => {
     setLoadingContainer(true);
-    const url = `http://127.0.0.1:5000/server/docker_list_containers/${serverId.serverId}`;
+    const url = `https://master-help-desk-back-end.vercel.app/server/docker_list_containers/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
 
     try {
@@ -475,7 +478,7 @@ export default function ServerDocker(serverId) {
       });
     } else {
       toast.loading(`Your action is under process, please wait...`);
-      const url = `http://127.0.0.1:5000/server/docker_containers/${serverId.serverId}`;
+      const url = `https://master-help-desk-back-end.vercel.app/server/docker_containers/${serverId.serverId}`;
       const token = localStorage.getItem("access_token");
 
       try {
@@ -491,11 +494,12 @@ export default function ServerDocker(serverId) {
             container: selectContainer?.container_id,
             action: actionName,
           }),
-        });const dockerOutput = await response.json();
+        });
+        const dockerOutput = await response.json();
         setOutput({
-            status: dockerOutput.status,
-            messages: dockerOutput.messages,
-            error: dockerOutput.stderr,
+          status: dockerOutput.status,
+          messages: dockerOutput.messages,
+          error: dockerOutput.stderr,
         });
         if (response.status === 200) {
           toast.dismiss();
@@ -600,7 +604,7 @@ export default function ServerDocker(serverId) {
 
   const handleCreateContainerAPI = async () => {
     toast.loading("Adding new container, please wait...");
-    const url = `http://127.0.0.1:5000/server/docker_create_containers/${serverId.serverId}`;
+    const url = `https://master-help-desk-back-end.vercel.app/server/docker_create_containers/${serverId.serverId}`;
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(url, {
@@ -618,9 +622,9 @@ export default function ServerDocker(serverId) {
       });
       const dockerOutput = await response.json();
       setOutput({
-          status: dockerOutput.status,
-          messages: dockerOutput.messages,
-          error: dockerOutput.stderr,
+        status: dockerOutput.status,
+        messages: dockerOutput.messages,
+        error: dockerOutput.stderr,
       });
       if (response.status === 200) {
         toast.dismiss();
@@ -949,7 +953,7 @@ export default function ServerDocker(serverId) {
         </div>
       </div>
       <div className="resultOutput">
-      <h1 className="text-2xl my-3">Output result</h1>
+        <h1 className="text-2xl my-3">Output result</h1>
         <div
           style={{
             padding: "16px",

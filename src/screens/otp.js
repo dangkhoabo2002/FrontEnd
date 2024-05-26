@@ -31,7 +31,8 @@ export default function OTP() {
       });
     } else {
       toast.loading("In processing..");
-      const otpUrl = "http://127.0.0.1:5000/auth/verify_otp";
+      const otpUrl =
+        "https://master-help-desk-back-end.vercel.app/auth/verify_otp";
       try {
         const response = await fetch(otpUrl, {
           method: "POST",
@@ -93,7 +94,8 @@ export default function OTP() {
 
   const handleResendOtp = async () => {
     toast.loading("In processing..");
-    const otpUrl = "http://127.0.0.1:5000/auth/resend_otp";
+    const otpUrl =
+      "https://master-help-desk-back-end.vercel.app/auth/resend_otp";
 
     try {
       const response = await fetch(otpUrl, {

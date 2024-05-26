@@ -114,7 +114,8 @@ export default function SignUp() {
       return;
     }
     toast.loading("In processing..");
-    const signupUrl = "http://127.0.0.1:5000/auth/signup";
+    const signupUrl =
+      "https://master-help-desk-back-end.vercel.app/auth/signup";
     try {
       const response = await fetch(signupUrl, {
         method: "POST",
