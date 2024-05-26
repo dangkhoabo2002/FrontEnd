@@ -9,23 +9,15 @@ import OTPInput from "./screens/otp";
 import ResetPassword from "./screens/resetPassword";
 import Subscribe from "./screens/Subscribe";
 import Payment from "./screens/Payment";
-import Admin from "./screens/adminAccountManagement";
 import ServerConfig from "./screens/userServerConfig";
 import Guide from "./screens/userGuide";
 import MaintenancePage from "./screens/maintenancePage";
-
-import AdminBilling from "./screens/adminBilling";
-import AdminSetting from "./screens/adminSetting";
-import AdminGuide from "./screens/adminGuideManagement";
-import AdminPackage from "./screens/adminPackageManagement";
-import AdminRole from "./screens/adminRoleManagement";
 
 import Test from "./screens/test";
 import UserProfile from "./screens/userProfile";
 import UserSubscribe from "./screens/userSubscribe";
 import UserPayment from "./screens/userSubscribePayment";
 import Organizations from "./screens/userOrganization";
-import AdminLogin from "./screens/adminLogin";
 // import AboutUs from "./screens/abouUs";
 import TermOfService from "./screens/termOfService";
 import SubscribeModal from "./components/nonSubModal";
@@ -43,13 +35,6 @@ export default function App() {
     }
   };
 
-  const userRole = localStorage.getItem("checkAdmin");
-
-  const checkAdminRole = () => {
-    if (!userRole) {
-      return <Navigate to="/error404" />;
-    }
-  };
 
   useEffect(() => {
     checkLoggedIn();
@@ -70,29 +55,6 @@ export default function App() {
         <Route path="/error404" element={<Error404 />}></Route>
         <Route path="/maintaining" element={<MaintenancePage />}></Route>
 
-        {/* ADMIN ROUTE*/}
-        <Route path="/adminLogin" element={<AdminLogin />}></Route>
-        <Route path="/admin" element={<Admin />}></Route>
-        <Route
-          path="/admin/billing"
-          element={<AdminBilling />}
-        ></Route>
-        <Route
-          path="/admin/setting"
-          element={<AdminSetting />}
-        ></Route>
-        <Route
-          path="/admin/guide"
-          element={<AdminGuide />}
-        ></Route>
-        <Route
-          path="/admin/package"
-          element={<AdminPackage />}
-        ></Route>
-        <Route
-          path="/admin/role"
-          element={ <AdminRole />}
-        ></Route>
 
         {/* USER ROUTE*/}
         <Route path="/login" element={<Login />}></Route>

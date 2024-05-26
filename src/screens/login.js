@@ -28,21 +28,22 @@ export default function Login() {
     password: "",
   });
   const [loginType, setLoginType] = useState("");
-  const [openDialog, setOpenDialog] = useState(false);
+  // const [openDialog, setOpenDialog] = useState(false);
 
-  const handleDialogClose = () => {
-    setOpenDialog(false);
-    navigate("/admin");
-  };
+  // const handleDialogClose = () => {
+  //   setOpenDialog(false);
+  //   navigate("/admin");
+  // };
 
   const loginAdmin = localStorage.getItem("checkAdmin");
   const loginUser = localStorage.getItem("checkUser");
 
   useEffect(() => {
-    if (loginAdmin) {
-      setLoginType("admin");
-      setOpenDialog(true);
-    } else if (loginUser) {
+    // if (loginAdmin) {
+    //   setLoginType("admin");
+    //   setOpenDialog(true);
+    // } else 
+    if (loginUser) {
       setLoginType("user");
       navigate(`/organizations`);
     }
@@ -87,7 +88,7 @@ export default function Login() {
           const data = await response.json();
           localStorage.setItem("access_token", data.access_token);
           if (loginType === "admin") {
-            setOpenDialog(true);
+            // setOpenDialog(true);
           } else {
             localStorage.setItem("checkUser", "user");
             navigate(`/organizations`);
@@ -267,7 +268,7 @@ export default function Login() {
             </form>
           </Grid>
         </Grid>
-        <Dialog
+        {/* <Dialog
           open={openDialog}
           onClose={handleDialogClose}
           sx={{
@@ -320,7 +321,7 @@ export default function Login() {
               <Button onClick={handleDialogClose}>Ok</Button>
             </DialogActions>
           </div>
-        </Dialog>
+        </Dialog> */}
       </div>
     </>
   );
