@@ -760,7 +760,7 @@ export default function AdminPackageManagement() {
               }
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="start">$</InputAdornment>
+                  <InputAdornment position="start">VND</InputAdornment>
                 ),
               }}
             />
@@ -783,7 +783,7 @@ export default function AdminPackageManagement() {
               }}
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="start">Month</InputAdornment>
+                  <InputAdornment position="start">Day</InputAdornment>
                 ),
               }}
             />

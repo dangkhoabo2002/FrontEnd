@@ -190,7 +190,7 @@ export default function AdminBillings() {
               {listBilling?.map((bill) => (
                 <tr key={bill.billing_id}>
                   <td>{bill.timestamp}</td>
-                  <td>{bill.amount}đ</td>
+                  <td>{bill.amount} VND</td>
                   <td>
                     <div
                       style={{
