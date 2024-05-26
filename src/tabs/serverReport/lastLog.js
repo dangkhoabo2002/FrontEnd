@@ -24,45 +24,6 @@ export default function LastLog(rawLastLog) {
         a
         className="bg-[white] shadow-lg"
       >
-        {/* {newLog?.length > 0 && (
-          <>
-            <TableContainer>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Conclusion</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {newLog
-                    .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
-                    ?.map((row) => (
-                      <TableRow key={row.timestamp}>
-                        <TableCell>
-                          <Accordion>
-                            <AccordionSummary
-                              id="panel-header"
-                              aria-controls="panel-content"
-                            >
-                              {row.timestamp}
-                            </AccordionSummary>
-                            <AccordionDetails>{row}</AccordionDetails>
-                          </Accordion>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            <Pagination
-              count={newLog?.length} // Total number of rows
-              page={page}
-              onChange={(event, newPage) => setPage(newPage)}
-              showFirstLast={true} // Display first and last page buttons
-            />
-          </>
-        )}
-        {!newLog?.length && <LinearProgress />} */}
         {newLog?.length > 0 && (
           <>
             <TableContainer>
@@ -86,8 +47,8 @@ export default function LastLog(rawLastLog) {
                 <TableBody>
                   {newLog
                     .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
-                    .map((row) => (
-                      <TableRow key={row.timestamp}>
+                    .map((row, index) => (
+                      <TableRow key={index}>
                         <TableCell sx={{ width: "400px" }}>
                           {row.timestamp}
                         </TableCell>
@@ -112,39 +73,3 @@ export default function LastLog(rawLastLog) {
     </div>
   );
 }
-
-// const Accordion = styled((props) => (
-//   <MuiAccordion disableGutters elevation={0} square {...props} />
-// ))(({ theme }) => ({
-//   border: `1px solid ${theme.palette.divider}`,
-//   "&:not(:last-child)": {
-//     borderBottom: 0,
-//   },
-//   "&::before": {
-//     display: "none",
-//   },
-// }));
-
-// const AccordionSummary = styled((props) => (
-//   <MuiAccordionSummary
-//     expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: "0.9rem" }} />}
-//     {...props}
-//   />
-// ))(({ theme }) => ({
-//   backgroundColor:
-//     theme.palette.mode === "dark"
-//       ? "rgba(255, 255, 255, .05)"
-//       : "rgba(0, 0, 0, .03)",
-//   flexDirection: "row-reverse",
-//   "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
-//     transform: "rotate(90deg)",
-//   },
-//   "& .MuiAccordionSummary-content": {
-//     marginLeft: theme.spacing(1),
-//   },
-// }));
-
-// const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-//   padding: theme.spacing(2),
-//   borderTop: "1px solid rgba(0, 0, 0, .125)",
-// }));

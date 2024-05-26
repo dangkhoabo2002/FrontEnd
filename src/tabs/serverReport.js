@@ -24,28 +24,32 @@ const ServerReport = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const menuOpen = Boolean(anchorEl);
 
-  const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleMenuClick = (event) => setAnchorEl(event.currentTarget);
   const handleMenuClose = () => setAnchorEl(null);
 
-  const [newUrl, setNewUrl] = useState("");
+  const handleChooseDowloadLog = async (option) => {
+    let url = "";
 
-  const handleChooseDowloadLog = (option) => {
     if (option === "ufwLog") {
-      setNewUrl("report_raw_log_ufw");
+      url = "report_raw_log_ufw";
     } else if (option === "lastLog") {
-      setNewUrl("report_raw_log_last");
+      url = "report_raw_log_last";
     } else if (option === "sysLog") {
-      setNewUrl("report_raw_syslog");
+      url = "report_raw_syslog";
     }
-    handleDowloadLog(newUrl);
+
+    handleDowloadLog(url);
   };
 
   const handleDowloadLog = async (url) => {
     toast.loading("Preparing data to dowload...");
+
     const token = localStorage.getItem("access_token");
     const urlac = `http://127.0.0.1:5000/server/${url}/${param.server_id}`;
+
+    console.log(urlac);
+
     try {
       const response = await fetch(urlac, {
         method: "GET",

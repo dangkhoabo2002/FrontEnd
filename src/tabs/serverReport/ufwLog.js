@@ -41,8 +41,8 @@ export default function UfwLog(ufwLog) {
                 <TableBody>
                   {newLog
                     .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
-                    .map((row) => (
-                      <TableRow key={row.timestamp}>
+                    .map((row, index) => (
+                      <TableRow key={index}>
                         <TableCell sx={{ width: "160px" }}>
                           {row.timestamp}
                         </TableCell>
