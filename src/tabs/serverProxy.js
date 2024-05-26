@@ -838,7 +838,7 @@ export default function ServerProxy(serverId) {
               color: "#3867A5",
             }}
           >
-            messages:
+            Message:
             {output.messages === undefined ? " None" : ` ${output.messages}`}
           </pre>
           <pre

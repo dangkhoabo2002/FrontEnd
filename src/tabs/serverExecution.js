@@ -55,11 +55,12 @@ export default function ServerExecution(serverId) {
           body: JSON.stringify({
             execute_file: path,
           }),
-        });const execiteOutput = await response.json();
+        });
+        const execiteOutput = await response.json();
         setOutput({
-            status: execiteOutput.status,
-            messages: execiteOutput.messages,
-            error: execiteOutput.stderr,
+          status: execiteOutput.status,
+          messages: execiteOutput.messages,
+          error: execiteOutput.stderr,
         });
         const data = await response.json();
         setLines(data.lines);
@@ -176,7 +177,7 @@ export default function ServerExecution(serverId) {
       </div>
 
       <div className="resultOutput mt-10">
-      <h1 className="text-2xl my-3">Output result</h1>
+        <h1 className="text-2xl my-3">Output result</h1>
         <div
           style={{
             padding: "16px",
@@ -209,7 +210,7 @@ export default function ServerExecution(serverId) {
               color: "#3867A5",
             }}
           >
-            messages:
+            Message:
             {output.messages === undefined ? " None" : ` ${output.messages}`}
           </pre>
           <pre
