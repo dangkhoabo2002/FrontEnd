@@ -114,7 +114,7 @@ export default function Navigation() {
           >
             Contact
           </a>
-          {checkUser !== "user" ? (
+          {checkUser === "user" ? (
             <Link to="/organizations">
               <button className="bg-[#3867A5] hover:bg-[#2B4B75] text-white w-full text-center py-2 rounded-md text-base font-medium">
                 <b>Dashboard</b>
