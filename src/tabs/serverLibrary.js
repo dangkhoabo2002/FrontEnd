@@ -10,6 +10,11 @@ import toast, { Toaster } from "react-hot-toast";
 export default function ServerLibrary(serverId) {
   const [loading, setLoading] = useState(false);
   const [showOnlyNotInstalled, setShowOnlyNotInstalled] = useState(false);
+  const [output, setOutput] = useState({
+    status: "",
+    messages: "",
+    error: "",
+  });
 
   // function handleFilterClick() {
   //   setShowOnlyNotInstalled((prev) => !prev);
@@ -37,6 +42,12 @@ export default function ServerLibrary(serverId) {
         body: JSON.stringify({
           library: libName,
         }),
+      });
+      const libraryOutput = await response.json();
+      setOutput({
+        status: libraryOutput.status,
+        messages: libraryOutput.messages,
+        error: libraryOutput.stderr,
       });
       if (response.status === 200) {
         toast.success("Install successfully.", {
@@ -112,6 +123,12 @@ export default function ServerLibrary(serverId) {
         body: JSON.stringify({
           library: libName,
         }),
+      });
+      const libraryOutput = await response.json();
+      setOutput({
+        status: libraryOutput.status,
+        messages: libraryOutput.messages,
+        error: libraryOutput.stderr,
       });
       if (response.status === 200) {
         toast.success("Uninstall successfully.", {
@@ -189,6 +206,7 @@ export default function ServerLibrary(serverId) {
           "Access-Control-Allow-Origin": "*",
         },
       });
+
       if (response.status === 200) {
         const lib = await response.json();
 
@@ -289,6 +307,7 @@ export default function ServerLibrary(serverId) {
                   </h2>
                   {lib.installed == "False" ? (
                     <LoadingButton
+                    sx={{width:"132px"}}
                       size="small"
                       color="secondary"
                       onClick={() => handleInstallLibraryAPI(lib.library)}
@@ -299,6 +318,8 @@ export default function ServerLibrary(serverId) {
                     </LoadingButton>
                   ) : (
                     <LoadingButton
+                    sx={{width:"132px"}}
+
                       size="small"
                       color="secondary"
                       onClick={() => handleInstallLibraryAPI(lib.library)}
@@ -313,17 +334,54 @@ export default function ServerLibrary(serverId) {
             ))}
         </div>
         <div className="resultOutput mt-10">
-          <h1 className="text-2xl my-3">Output result</h1>
-          <textarea
-            className="w-full resize-none rounded-md p-4"
+        <h1 className="text-2xl my-3">Output result</h1>
+        <div
+          style={{
+            padding: "16px",
+            border: "1px solid #89A6CC",
+            borderRadius: "8px",
+            backgroundColor: "",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+            margin: "0 auto",
+            textAlign: "left",
+          }}
+        >
+          <pre
+            className="text-gray-700 dark:text-gray-400"
             style={{
-              border: "1px solid #89A6CC",
-              maxHeight: "8em",
-              overflow: "auto",
+              whiteSpace: "pre-wrap",
+              marginBottom: "8px",
+              fontWeight: "bold",
+              color: "#3867A5",
             }}
           >
-            Build successfully
-          </textarea>
+            Response status:
+            {output.status === undefined ? " None" : ` ${output.status}`}
+          </pre>
+          <pre
+            className="text-gray-700 dark:text-gray-400"
+            style={{
+              whiteSpace: "pre-wrap",
+              marginBottom: "8px",
+              fontWeight: "bold",
+              color: "#3867A5",
+            }}
+          >
+            messages:
+            {output.messages === undefined ? " None" : ` ${output.messages}`}
+          </pre>
+          <pre
+            className="text-gray-700 dark:text-gray-400"
+            style={{
+              whiteSpace: "pre-wrap",
+              marginBottom: "8px",
+              fontWeight: "bold",
+              color: "#3867A5",
+            }}
+          >
+            Error: {output.error === undefined ? " None" : ` ${output.error}`}
+          </pre>
+        </div>
         </div>
       </div>
     </>

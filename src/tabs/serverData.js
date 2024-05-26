@@ -783,8 +783,11 @@ export default function ServerData(serverId) {
   const [selectedFolder, setSelectedFolder] = useState(null);
   const [pathFolderDownload, setPathFolderDownload] = useState("");
   const [folderError, setFolderError] = useState(false);
-  const [resultOutput, setResultOutput] = useState();
-
+  const [output, setOutput] = useState({
+    status: "",
+    messages: "",
+    error: "",
+  });
 
   // Handlers
   const handleDefaultChangeFile = (event) => {
@@ -837,7 +840,12 @@ export default function ServerData(serverId) {
           "Access-Control-Allow-Origin": "*",
         },
       });
-
+      const dataOutput = await response.json();
+      setOutput({
+        status: dataOutput.status,
+        messages: dataOutput.messages,
+        error: dataOutput.stderr,
+      });
       const data = await response.json();
       if (response.status === 200) {
         toast.dismiss();
@@ -923,6 +931,12 @@ export default function ServerData(serverId) {
             },
           }
         );
+        const dataOutput = await response.json();
+        setOutput({
+          status: dataOutput.status,
+          messages: dataOutput.messages,
+          error: dataOutput.stderr,
+        });
         if (!response.ok) {
           throw new Error(`HTTP error status: ${response.status}`);
         }
@@ -1049,6 +1063,12 @@ export default function ServerData(serverId) {
           body: formData,
         }
       );
+      const dataOutput = await response.json();
+      setOutput({
+        status: dataOutput.status,
+        messages: dataOutput.messages,
+        error: dataOutput.stderr,
+      });
       const responseData = await response.json();
       if (response.status === 200) {
         toast.dismiss();
@@ -1121,6 +1141,12 @@ export default function ServerData(serverId) {
           },
         }
       );
+      const dataOutput = await response.json();
+      setOutput({
+        status: dataOutput.status,
+        messages: dataOutput.messages,
+        error: dataOutput.stderr,
+      });
       if (!response.ok) {
         throw new Error(`HTTP error status: ${response.status}`);
       }
@@ -1205,6 +1231,12 @@ export default function ServerData(serverId) {
           },
         }
       );
+      const dataOutput = await response.json();
+      setOutput({
+        status: dataOutput.status,
+        messages: dataOutput.messages,
+        error: dataOutput.stderr,
+      });
       const responseData = await response.json();
 
       if (response.status === 200) {
@@ -1476,15 +1508,54 @@ export default function ServerData(serverId) {
       </Paper>
 
       <div className="resultOutput mt-10">
-        <Typography variant="h6" className="text-2xl my-3">
-          Output result
-        </Typography>
-        <textarea
-          class="w-full resize-none rounded-md p-4"
-          style={{ border: "1px solid #89A6CC" }}
+        <h1 className="text-2xl my-3">Output result</h1>
+        <div
+          style={{
+            padding: "16px",
+            border: "1px solid #89A6CC",
+            borderRadius: "8px",
+            backgroundColor: "#F7F9FC",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+            margin: "0 auto",
+            textAlign: "left",
+          }}
         >
-          {resultOutput}
-        </textarea>
+          <pre
+            className="text-gray-700 dark:text-gray-400"
+            style={{
+              whiteSpace: "pre-wrap",
+              marginBottom: "8px",
+              fontWeight: "bold",
+              color: "#3867A5",
+            }}
+          >
+            Response status:
+            {output.status === undefined ? " None" : ` ${output.status}`}
+          </pre>
+          <pre
+            className="text-gray-700 dark:text-gray-400"
+            style={{
+              whiteSpace: "pre-wrap",
+              marginBottom: "8px",
+              fontWeight: "bold",
+              color: "#3867A5",
+            }}
+          >
+            Message:
+            {output.messages === undefined ? " None" : ` ${output.messages}`}
+          </pre>
+          <pre
+            className="text-gray-700 dark:text-gray-400"
+            style={{
+              whiteSpace: "pre-wrap",
+              marginBottom: "8px",
+              fontWeight: "bold",
+              color: "#3867A5",
+            }}
+          >
+            Error: {output.error === undefined ? " None" : ` ${output.error}`}
+          </pre>
+        </div>
       </div>
     </div>
   );

@@ -95,6 +95,14 @@ export default function ServerProxy(serverId) {
           protocol: addProxyData.protocol,
           detail: addProxyData.detail,
         }),
+
+
+      });
+      const proxyOutput = await response.json();
+      setOutput({
+          status: proxyOutput.status,
+          messages: proxyOutput.messages,
+          error: proxyOutput.stderr,
       });
       if (response.status === 200) {
         handleCloseAddProxy();
@@ -187,7 +195,12 @@ export default function ServerProxy(serverId) {
           detail: currentDeleteProxy.details,
         }),
       });
-
+      const proxyOutput = await response.json();
+      setOutput({
+          status: proxyOutput.status,
+          messages: proxyOutput.messages,
+          error: proxyOutput.stderr,
+      });
       if (response.status === 200) {
         toast.success("Delete successfully.", {
           style: {
@@ -227,6 +240,7 @@ export default function ServerProxy(serverId) {
   const [currentProxy, setCurrentProxy] = useState();
 
   const handleEditProxy = () => {
+    
     if (editProxyData.new_port === "" || editProxyData.new_domain === "") {
       toast.error("The field can not be empty!", {
         style: {
@@ -237,6 +251,7 @@ export default function ServerProxy(serverId) {
           fontWeight: "bolder",
         },
       });
+      
     } else {
       handleEditProxyAPI();
       handleCloseEditProxy();
@@ -280,6 +295,12 @@ export default function ServerProxy(serverId) {
           new_domain: editProxyData.new_domain,
           new_port: editProxyData.new_port,
         }),
+      });
+      const proxyOutput = await response.json();
+      setOutput({
+          status: proxyOutput.status,
+          messages: proxyOutput.messages,
+          error: proxyOutput.stderr,
       });
       if (response.status === 200) {
         toast.success("Proxy updated.", {
@@ -350,7 +371,7 @@ export default function ServerProxy(serverId) {
       const proxyGet = await response.json();
       setOutput({
         status: proxyGet.status,
-        message: proxyGet.message,
+        messages: proxyGet.messages,
         error: proxyGet.stderr,
       });
 
@@ -755,19 +776,53 @@ export default function ServerProxy(serverId) {
       </div>
 
       <div className="resultOutput mt-10">
-        <h1 className="text-2xl my-3">Output result</h1>
-        <div className="px-8 py-4 border-2 border-blue-500">
-          <p>
+      <h1 className="text-2xl my-3">Output result</h1>
+        <div
+          style={{
+            padding: "16px",
+            border: "1px solid #89A6CC",
+            borderRadius: "8px",
+            backgroundColor: "#F7F9FC",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+            margin: "0 auto",
+            textAlign: "left",
+          }}
+        >
+          <pre
+            className="text-gray-700 dark:text-gray-400"
+            style={{
+              whiteSpace: "pre-wrap",
+              marginBottom: "8px",
+              fontWeight: "bold",
+              color: "#3867A5",
+            }}
+          >
             Response status:
             {output.status === undefined ? " None" : ` ${output.status}`}
-          </p>
-          <p>
-            Message:
-            {output.message === undefined ? " None" : ` ${output.message}`}
-          </p>
-          <p>
+          </pre>
+          <pre
+            className="text-gray-700 dark:text-gray-400"
+            style={{
+              whiteSpace: "pre-wrap",
+              marginBottom: "8px",
+              fontWeight: "bold",
+              color: "#3867A5",
+            }}
+          >
+            messages:
+            {output.messages === undefined ? " None" : ` ${output.messages}`}
+          </pre>
+          <pre
+            className="text-gray-700 dark:text-gray-400"
+            style={{
+              whiteSpace: "pre-wrap",
+              marginBottom: "8px",
+              fontWeight: "bold",
+              color: "#3867A5",
+            }}
+          >
             Error: {output.error === undefined ? " None" : ` ${output.error}`}
-          </p>
+          </pre>
         </div>
       </div>
     </div>
