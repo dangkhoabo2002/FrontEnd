@@ -7,6 +7,7 @@ import AdminGuide from "./screens/adminGuideManagement";
 import AdminPackage from "./screens/adminPackageManagement";
 import AdminRole from "./screens/adminRoleManagement";
 import AdminLogin from "./screens/adminLogin";
+import AdminSubscription from "./screens/adminSubscription";
 
 import Error404 from "./screens/Error404";
 
@@ -24,6 +25,7 @@ export default function App() {
         <Route path="/admin/guide" element={<AdminGuide />}></Route>
         <Route path="/admin/package" element={<AdminPackage />}></Route>
         <Route path="/admin/role" element={<AdminRole />}></Route>
+        <Route path="/admin/subscription" element={<AdminSubscription />}></Route>
 
         {/* USER ROUTE*/}
 

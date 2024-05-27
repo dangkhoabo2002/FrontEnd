@@ -1,36 +1,29 @@
 import React from "react";
 import Logo from "../assets/logo.png";
 import LogoutConfirm from "../components/confirmLogoutManagerModal";
-
-import BackgroundAdmin from "../assets/adminBackground.jpeg";
 import { Link } from "react-router-dom";
-export default function navAdmin() {
+
+export default function NavAdmin() {
   return (
     <div>
-      <nav className="px-4 pl-10">
-        <div className="flex justify-between bg-white">
+      <nav className="px-4 py-2 bg-white">
+        <div className="flex justify-between items-center flex-wrap">
           <Link to={`/`}>
-            <div className="flex justify-center items-center">
+            <div className="flex items-center">
               <img
                 loading="lazy"
-                className="object-cover h-18 w-16 	"
+                className="h-18 w-16 object-cover"
                 src={Logo}
                 alt="Logo"
               />
               <p className="font-black text-xl pl-10">MASTER HELP DESK</p>
             </div>
           </Link>
-          <div className="flex justify-center items-center pr-6 ">
+          <div className="flex items-center pr-6">
             <LogoutConfirm />
           </div>
         </div>
       </nav>
-      {/* <img
-        loading="lazy"
-        style={{ width: "100%", height: "180px", objectFit: "cover" }}
-        src={BackgroundAdmin}
-        alt="Background"
-      /> */}
     </div>
   );
 }
