@@ -100,6 +100,7 @@ export default function ServerData(serverId) {
       });
       const data = await response.json();
       if (response.status === 200) {
+        
         toast.dismiss();
         toast.success("Upload success.", {
           style: {

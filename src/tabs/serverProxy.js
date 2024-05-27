@@ -312,6 +312,7 @@ export default function ServerProxy(serverId) {
         error: proxyOutput.stderr,
       });
       if (response.status === 200) {
+        setProxyData(proxyOutput);
         toast.success("Proxy updated.", {
           style: {
             border: "1px solid #37E030",

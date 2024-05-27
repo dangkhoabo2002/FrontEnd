@@ -187,7 +187,7 @@ export default function UserServerConfig() {
       <Toaster position="bottom-right" reverseOrder={false} />
       <div
         className="containerOrg"
-        style={{ overflowX: "hidden", height: "100vh" }}
+        style={{ overflowX: "hidden", minHeight: "100vh" }}
       >
         <div className="sideMenu">
           <Sidebar />

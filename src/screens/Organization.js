@@ -362,7 +362,7 @@ export default function LandingPage() {
   // GET MEMBER IN ORG
 
   return (
-    <div className="" style={{ backgroundColor: "#f3f3fb", height: "100vh" }}>
+    <div className="" style={{ backgroundColor: "#f3f3fb", minHeight: "100vh" }}>
       <Toaster position="bottom-right" reverseOrder={false} />
 
       <div
@@ -380,7 +380,7 @@ export default function LandingPage() {
             className="font-semibold"
             style={{ fontSize: "28px", color: "#637381" }}
           >
-            Organizations
+            Dashboard
           </p>
         </div>
       </div>

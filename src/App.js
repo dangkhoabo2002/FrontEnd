@@ -24,7 +24,8 @@ import SubscribeModal from "./components/nonSubModal";
 import EmailSending from "./screens/emailSending";
 import VerifySuccess from "./screens/verifySuccess";
 import Error404 from "./screens/Error404";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import "./App.css";
 
 export default function App() {
   const loginToken = localStorage.getItem("checkUser");
@@ -34,8 +35,35 @@ export default function App() {
       return <Navigate to="/login" />;
     }
   };
+
+  const [redirected, setRedirected] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768 && !redirected) {
+        setRedirected(true);
+        alert("This website does not support mobile devices. Please access it using a tablet, desktop, or laptop for the best experience.");
+        window.location.href = "/error404";
+      }
+    };
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [redirected]);
+
   return (
     <div>
+      <div id="mobile-warning">
+        This website does not support mobile devices. Please access it using a tablet, desktop, or laptop for the best experience.
+      </div>
+      <div id="app-content">
+        {/* Your existing content */}
+      </div>
       <Routes>
         {/* Dashboard Unlogin */}
         <Route path="/signup/emailsending" element={<EmailSending/>}></Route>

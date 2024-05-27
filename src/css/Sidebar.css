@@ -1,47 +1,38 @@
 .hoverSection:hover {
   background-color: #DFEDFF;
-  cursor: context-menu;
-  transition: background-color 0.3s ease, ;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .hoverSection p {
   color: #637381;
-  /* Màu chữ khi chưa hover và đã selected */
   transition: color 0.3s ease;
-  /* Transition cho màu chữ */
 }
 
 .selectedMenu p {
   color: #3867A5;
-  /* Màu chữ khi chưa hover và đã selected */
   transition: color 0.3s ease;
-  /* Transition cho màu chữ */
 }
 
 .hoverSection:hover p,
 .selectedMenu:hover p {
   color: #3867A5;
-  /* Màu chữ khi hover */
 }
 
 .hoverSection section {
   color: #637381;
   transition: color 0.3s ease, transform 0.3s ease;
-  /* Transition cho màu chữ và biểu tượng */
 }
 
 .selectedMenu section {
   color: #3867A5;
   transition: color 0.3s ease, transform 0.3s ease;
-  /* Transition cho màu chữ và biểu tượng */
 }
 
 .hoverSection:hover section,
 .selectedMenu:hover section {
   color: #3867A5;
-  /* Màu chữ khi hover */
   transform: translateX(3px);
-  /* Di chuyển biểu tượng sang phải khi hover */
 }
 
 section:hover {
@@ -56,37 +47,13 @@ section:hover {
   border-radius: 5px;
   font-weight: 900;
   transition: background-color 0.3s ease, color 0.3s ease, border-right 0.3s ease, transform 0.3s ease;
-  /* Thêm transition cho background-color, color, border-right và transform */
   transform: translateY(-3px);
 }
 
-
-/* SidebarInput.css */
-
-/* .hoverSection {
-    transition: background-color 0.3s ease;
-  }
-  
-  .hoverSection:hover {
-    background-color: #D9D9D9;
-  }
-  
-  .menu-title {
-    gap: 3px;
-    padding: 10px 11px;
-    font-weight: bold;
-    font-size: 14px;
-    color: #212B36;
-  }
-  
-  .menu-item {
-    gap: 3px;
-    padding: 10px 11px;
-    font-size: 18px;
-    color: #637381;
-  }
-  
-  .active-menu {
-    background-color: #D9D9D9;
-  }
-   */
+.dropdownIcon {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-right: 10px;
+}

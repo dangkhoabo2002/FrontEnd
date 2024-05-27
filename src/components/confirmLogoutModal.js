@@ -9,6 +9,7 @@ import Slide from "@mui/material/Slide";
 import { useNavigate } from "react-router-dom";
 import { Typography } from "@mui/material";
 import toast, { Toaster } from "react-hot-toast";
+import LogoutIcon from '@mui/icons-material/Logout';
 
 export default function AlertDialogSlide() {
   const [open, setOpen] = React.useState(false);
@@ -65,9 +66,9 @@ export default function AlertDialogSlide() {
 
       <Button
         variant="contained"
-        sx={{ backgroundColor: "#3867A5", "&:hover": { bgcolor: "#2B4B75" } }}
+        sx={{ width:"120px", backgroundColor: "#3867A5", "&:hover": { bgcolor: "#2B4B75" } }}
         onClick={handleClickOpen}
-      >
+      ><LogoutIcon className="mr-2"/>
         Logout
       </Button>
       <Dialog

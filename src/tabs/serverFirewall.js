@@ -78,6 +78,7 @@ export default function ServerFirewall(serverId) {
           error: firewallOutput.stderr,
         });
         if (response.status === 200) {
+          setFirewallData(firewallOutput);
           toast.success("Update successfully.", {
             style: {
               border: "1px solid #37E030",

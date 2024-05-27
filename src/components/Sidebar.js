@@ -7,13 +7,24 @@ import BookIcon from "@mui/icons-material/Book";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import SubscribeBtn from "./subscribeBtn";
 import Skeleton from "@mui/material/Skeleton";
+import DnsIcon from "@mui/icons-material/Dns";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import InventoryIcon from "@mui/icons-material/Inventory";
+import OrgIcon from "../assets/orgIcon.png";
+
 
 export default function Sidebar() {
   const [selectedMenu, setSelectedMenu] = useState("organizations");
+  const [organizations, setOrganizations] = useState([]);
+  const [servers, setServers] = useState({});
+  const [expanded, setExpanded] = useState(false);
+  const [expandedOrg, setExpandedOrg] = useState(null);
   const location = useLocation();
 
   useEffect(() => {
     handleGetSub();
+    fetchOrganizations();
   }, []);
 
   useEffect(() => {
@@ -24,6 +35,8 @@ export default function Sidebar() {
       setSelectedMenu("guide");
     } else if (path === "/user") {
       setSelectedMenu("user");
+    } else if (path === "/user/subscribe") {
+      setSelectedMenu("subscribe");
     }
   }, [location]);
 
@@ -53,7 +66,77 @@ export default function Sidebar() {
     }
   };
 
+  const fetchOrganizations = async () => {
+    const orgUrl = `http://127.0.0.1:5000/org/get`;
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await fetch(orgUrl, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+      if (response.status === 200) {
+        const orgData = await response.json();
+        setOrganizations(orgData);
+      } else {
+        console.error("Failed to fetch organizations");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  const fetchServers = async (organizationId) => {
+    const serverUrl = `http://127.0.0.1:5000/server/get_server_in_organization/${organizationId}`;
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await fetch(serverUrl, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+      if (response.status === 200) {
+        const serverData = await response.json();
+        setServers((prevServers) => ({
+          ...prevServers,
+          [organizationId]: serverData,
+        }));
+      } else {
+        console.error("Failed to fetch servers");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  const toggleExpanded = () => {
+    setExpanded(!expanded);
+  };
+
+  const handleOrganizationClick = () => {
+    setSelectedMenu("organizations");
+    setExpanded(!expanded);
+  };
+
+  const toggleOrganization = (organizationId) => {
+    if (expandedOrg === organizationId) {
+      setExpandedOrg(null);
+    } else {
+      setExpandedOrg(organizationId);
+      fetchServers(organizationId);
+    }
+  };
+
   return (
+
     <div
       style={{
         borderRight: "1px solid #E5E8EB",
@@ -80,20 +163,73 @@ export default function Sidebar() {
         >
           <b>GENERAL</b>
         </div>
-        <Link
-          to="/organizations"
-          onClick={() => setSelectedMenu("organizations")}
-          className={`hoverSection ${
-            selectedMenu === "organizations" ? "selectedMenu" : ""
-          }`}
+        <div
+          className={`hoverSection ${selectedMenu === "organizations" ? "selectedMenu" : ""}`}
+          onClick={handleOrganizationClick}
         >
-          <section className="flex flex-row gap-3 py-4 px-11 items-center">
-            <ApartmentIcon style={{ fontSize: "28px" }} />
-            <p style={{ fontSize: "18px" }} className="text-xl font-semibold">
-              Organization
-            </p>
-          </section>
-        </Link>
+          <div className="flex flex-row justify-between items-center">
+            <Link to="/organizations" style={{ flexGrow: 1, textDecoration: 'none' }}>
+              <section className="flex flex-row gap-3 py-4 px-11 items-center">
+                <ApartmentIcon style={{ fontSize: "28px" }} />
+                <p style={{ fontSize: "18px" }} className="text-xl font-semibold">
+                Dashboard
+                </p>
+              </section>
+            </Link>
+            <div className="dropdownIcon" onClick={(e) => { e.stopPropagation(); toggleExpanded(); }}>
+              {expanded ? (
+                <ArrowDropDownIcon />
+              ) : (
+                <ArrowRightIcon />
+              )}
+            </div>
+          </div>
+        </div>
+        {expanded &&
+          organizations.map((org) => (
+            <div key={org.organization_id}>
+              <div
+                className="flex flex-row justify-end items-center gap-20 py-4 cursor-pointer"
+                onClick={() => toggleOrganization(org.organization_id)}
+              >
+                <div className="flex flex-row gap-3 items-center  px-6">
+                <img
+            src={OrgIcon}
+            style={{
+              width: "auto",
+              height: "20px",
+            }}
+          />
+                  <p style={{ fontSize: "16px" }}>{org.name}</p>
+                </div>
+                <div className="dropdownIcon">
+                  {expandedOrg === org.organization_id ? (
+                    <ArrowDropDownIcon />
+                  ) : (
+                    <ArrowRightIcon />
+                  )}
+                </div>
+              </div>
+              {expandedOrg === org.organization_id && (
+                <div className="ml-8">
+                  {servers[org.organization_id] ? (
+                    servers[org.organization_id].map((server) => (
+                      <Link
+                        to={`/organizations/dashboard/${org.organization_id}/${server.server_id}`}
+                        key={server.server_id}
+                        className="flex flex-row gap-3 py-2 px-11 items-center"
+                      >
+                        <DnsIcon style={{ fontSize: "20px" }} />
+                        <p style={{ fontSize: "14px" }}>{server.server_name}</p>
+                      </Link>
+                    ))
+                  ) : (
+                    <Skeleton variant="text" />
+                  )}
+                </div>
+              )}
+            </div>
+          ))}
         <Link
           to="/guide"
           onClick={() => setSelectedMenu("guide")}
@@ -114,18 +250,35 @@ export default function Sidebar() {
         >
           <b>MANAGEMENT</b>
         </div>
-        <Link to={`/user`}>
-          <div className="hoverSection">
-            <section className="flex flex-row gap-3 py-4 px-11 items-center">
-              <PermIdentityIcon style={{ fontSize: "28px" }} />
-              <p
-                style={{ fontSize: "18px", color: "#637381" }}
-                className="text-xl font-semibold "
-              >
-                Profile
-              </p>
-            </section>
-          </div>
+
+        <Link
+          to="/user"
+          onClick={() => setSelectedMenu("user")}
+          className={`hoverSection ${
+            selectedMenu === "user" ? "selectedMenu" : ""
+          }`}
+        >
+          <section className="flex flex-row gap-3 py-4 px-11 items-center">
+            <PermIdentityIcon style={{ fontSize: "28px" }} />
+            <p style={{ fontSize: "18px" }} className="text-xl font-semibold">
+            Profile
+            </p>
+          </section>
+        </Link>
+
+        <Link
+          to="/user/subscribe"
+          onClick={() => setSelectedMenu("subscribe")}
+          className={`hoverSection ${
+            selectedMenu === "subscribe" ? "selectedMenu" : ""
+          }`}
+        >
+          <section className="flex flex-row gap-3 py-4 px-11 items-center">
+            <InventoryIcon style={{ fontSize: "28px" }} />
+            <p style={{ fontSize: "18px" }} className="text-xl font-semibold">
+            Subscribe
+            </p>
+          </section>
         </Link>
 
         {isSub === "" ? (
@@ -142,6 +295,7 @@ export default function Sidebar() {
           </>
         )}
       </div>
+
     </div>
   );
 }
