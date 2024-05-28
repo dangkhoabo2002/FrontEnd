@@ -61,6 +61,7 @@ import {
   MenuItem,
   Paper,
   Card,
+  Tabs,
 } from "@mui/material";
 
 const ITEM_HEIGHT = 48;
@@ -1244,6 +1245,9 @@ export default function OrganizationDashboard() {
   //   }
   // };
 
+  const handleTabChange = (event, newValue) => {
+    setValue(newValue);
+  };
   return (
     <>
       <Toaster position="bottom-right" reverseOrder={false} />
@@ -1299,46 +1303,50 @@ export default function OrganizationDashboard() {
             <div>
               <Box>
                 <TabContext value={value}>
-                  <Box
-                    sx={{
-                      borderColor: "divider",
-                      width: "26.78vw",
-                      overflow: "hidden",
-                      border: "2px solid #D9D9D9",
-                      borderRadius: "5px",
-
-                      backgroundColor: "white",
-                    }}
-                  >
-                    <TabList
-                      onChange={handleChange}
-                      aria-label="lab API tabs example"
-                      sx={{
-                        "& .MuiTabs-flexContainer": {},
-                        "& .MuiTab-root": {
-                          minWidth: "auto",
-                          textTransform: "capitalize",
-                          width: "136px",
-                          fontWeight: "bold",
-                          color: "black",
-                          transition: "background-color 0.3s, color 0.3s",
-                          "&.Mui-selected": {
-                            color: "black",
-                          },
-                        },
-                        "& .Mui-selected": {
-                          backgroundColor: "#D9D9D9",
-                        },
-                        "& .MuiTabs-indicator": {
-                          backgroundColor: "transparent",
-                        },
-                      }}
-                    >
-                      <Tab disableRipple label="Servers" value="1" />
-                      <Tab disableRipple label="Members" value="2" />
-                      <Tab disableRipple label="Settings" value="3" />
-                    </TabList>
-                  </Box>
+                <Box
+      sx={{
+        borderColor: "divider",
+        width: "90vw",
+        overflow: "hidden",
+        border: "2px solid #D9D9D9",
+        borderRadius: "5px",
+        backgroundColor: "white",
+        "@media (min-width: 768px)": {
+          width: "25vw", 
+        },
+        "@media (min-width: 1024px)": {
+          width: "30vw",
+        },
+      }}
+    >
+      <Tabs
+        value={value}
+        onChange={handleTabChange}
+        aria-label="lab API tabs example"
+        sx={{
+          "& .MuiTabs-flexContainer": {},
+          "& .MuiTab-root": {
+            minWidth: "auto",
+            textTransform: "capitalize",
+            width: "33.33%",
+            fontWeight: "bold",
+            color: "black",
+            transition: "background-color 0.3s, color 0.3s",
+            "&.Mui-selected": {
+              color: "black",
+              backgroundColor: "#D9D9D9", // Gray background for selected tab
+            },
+          },
+          "& .MuiTabs-indicator": {
+            backgroundColor: "transparent",
+          },
+        }}
+      >
+        <Tab disableRipple label="Servers" value="1" />
+        <Tab disableRipple label="Members" value="2" />
+        <Tab disableRipple label="Settings" value="3" />
+      </Tabs>
+    </Box>
 
                   {/* TAB 1 */}
                   <TabPanel sx={{ pt: 3, px: 0 }} value="1">

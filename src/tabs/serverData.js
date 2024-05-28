@@ -186,9 +186,9 @@ export default function ServerData(serverId) {
         );
         const dataOutput = await response.json();
         setOutput({
-          status: dataOutput.status,
-          messages: dataOutput.messages,
-          error: dataOutput.stderr,
+          status: response.status,
+          messages: response.messages,
+          error: response.stderr,
         });
         if (!response.ok) {
           throw new Error(`HTTP error status: ${response.status}`);
@@ -315,9 +315,9 @@ export default function ServerData(serverId) {
       );
       const dataOutput = await response.json();
       setOutput({
-        status: dataOutput.status,
-        messages: dataOutput.messages,
-        error: dataOutput.stderr,
+        status: response.status,
+        messages: response.messages,
+        error: response.stderr,
       });
       const responseData = await response.json();
       if (response.status === 200) {
@@ -393,9 +393,9 @@ export default function ServerData(serverId) {
       );
       const dataOutput = await response.json();
       setOutput({
-        status: dataOutput.status,
-        messages: dataOutput.messages,
-        error: dataOutput.stderr,
+        status: response.status,
+        messages: response.messages,
+        error: response.stderr,
       });
       if (!response.ok) {
         throw new Error(`HTTP error status: ${response.status}`);
@@ -483,9 +483,9 @@ export default function ServerData(serverId) {
       );
       const dataOutput = await response.json();
       setOutput({
-        status: dataOutput.status,
-        messages: dataOutput.messages,
-        error: dataOutput.stderr,
+        status: response.status,
+        messages: response.messages,
+        error: response.stderr,
       });
       const responseData = await response.json();
 
@@ -769,7 +769,7 @@ export default function ServerData(serverId) {
       </Paper>
 
       <div className="resultOutput mt-10">
-        <h1 className="text-2xl my-3">Output result</h1>
+      <h1 className="text-2xl my-3">Output result</h1>
         <div
           style={{
             padding: "16px",
@@ -814,7 +814,14 @@ export default function ServerData(serverId) {
               color: "#3867A5",
             }}
           >
-            Error: {output.error === undefined ? " None" : ` ${output.error}`}
+            Error:
+            <span style={{ color: "red", fontWeight: "normal" }}>
+              {output.error.length === 0
+                ? " None"
+                : output.error.map((line, index) => (
+                    <div key={index}>{line}</div>
+                  ))}
+            </span>
           </pre>
         </div>
       </div>

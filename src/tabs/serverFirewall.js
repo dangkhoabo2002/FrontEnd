@@ -73,9 +73,9 @@ export default function ServerFirewall(serverId) {
         });
         const firewallOutput = await response.json();
         setOutput({
-          status: firewallOutput.status,
-          messages: firewallOutput.messages,
-          error: firewallOutput.stderr,
+          status: response.status,
+          messages: response.messages,
+          error: response.stderr,
         });
         if (response.status === 200) {
           setFirewallData(firewallOutput);
@@ -318,7 +318,7 @@ export default function ServerFirewall(serverId) {
         </table>{" "}
       </div>
       <div className="resultOutput mt-10">
-        <h1 className="text-2xl my-3">Output result</h1>
+      <h1 className="text-2xl my-3">Output result</h1>
         <div
           style={{
             padding: "16px",
@@ -351,7 +351,7 @@ export default function ServerFirewall(serverId) {
               color: "#3867A5",
             }}
           >
-            messages:
+            Message:
             {output.messages === undefined ? " None" : ` ${output.messages}`}
           </pre>
           <pre
@@ -363,7 +363,14 @@ export default function ServerFirewall(serverId) {
               color: "#3867A5",
             }}
           >
-            Error: {output.error === undefined ? " None" : ` ${output.error}`}
+            Error:
+            <span style={{ color: "red", fontWeight: "normal" }}>
+              {output.error.length === 0
+                ? " None"
+                : output.error.map((line, index) => (
+                    <div key={index}>{line}</div>
+                  ))}
+            </span>
           </pre>
         </div>
       </div>

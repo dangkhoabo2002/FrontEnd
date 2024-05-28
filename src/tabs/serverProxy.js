@@ -114,6 +114,12 @@ export default function ServerProxy(serverId) {
             port: addProxyData.port,
           }),
         });
+        const proxyOutput = await response.json();
+        setOutput({
+          status: response.status,
+          messages: response.messages,
+          error: response.stderr,
+        });
         if (response.status === 200) {
           handleCloseAddProxy();
           handleGetProxy();
@@ -208,9 +214,9 @@ export default function ServerProxy(serverId) {
       });
       const proxyOutput = await response.json();
       setOutput({
-        status: proxyOutput.status,
-        messages: proxyOutput.messages,
-        error: proxyOutput.stderr,
+        status: response.status,
+        messages: response.messages,
+        error: response.stderr,
       });
       if (response.status === 200) {
         toast.success("Delete successfully.", {
@@ -307,9 +313,9 @@ export default function ServerProxy(serverId) {
       });
       const proxyOutput = await response.json();
       setOutput({
-        status: proxyOutput.status,
-        messages: proxyOutput.messages,
-        error: proxyOutput.stderr,
+        status: response.status,
+        messages: response.messages,
+        error: response.stderr,
       });
       if (response.status === 200) {
         setProxyData(proxyOutput);
@@ -806,7 +812,7 @@ export default function ServerProxy(serverId) {
       </div>
 
       <div className="resultOutput mt-10">
-        <h1 className="text-2xl my-3">Output result</h1>
+      <h1 className="text-2xl my-3">Output result</h1>
         <div
           style={{
             padding: "16px",
@@ -851,7 +857,14 @@ export default function ServerProxy(serverId) {
               color: "#3867A5",
             }}
           >
-            Error: {output.error === undefined ? " None" : ` ${output.error}`}
+            Error:
+            <span style={{ color: "red", fontWeight: "normal" }}>
+              {output.error.length === 0
+                ? " None"
+                : output.error.map((line, index) => (
+                    <div key={index}>{line}</div>
+                  ))}
+            </span>
           </pre>
         </div>
       </div>

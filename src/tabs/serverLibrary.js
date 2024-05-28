@@ -45,9 +45,9 @@ export default function ServerLibrary(serverId) {
       });
       const libraryOutput = await response.json();
       setOutput({
-        status: libraryOutput.status,
-        messages: libraryOutput.messages,
-        error: libraryOutput.stderr,
+        status: response.status,
+        messages: response.messages,
+        error: response.stderr,
       });
       if (response.status === 200) {
         toast.success("Install successfully.", {
@@ -126,9 +126,9 @@ export default function ServerLibrary(serverId) {
       });
       const libraryOutput = await response.json();
       setOutput({
-        status: libraryOutput.status,
-        messages: libraryOutput.messages,
-        error: libraryOutput.stderr,
+        status: response.status,
+        messages: response.messages,
+        error: response.stderr,
       });
       if (response.status === 200) {
         toast.success("Uninstall successfully.", {
@@ -307,7 +307,7 @@ export default function ServerLibrary(serverId) {
                   </h2>
                   {lib.installed == "False" ? (
                     <LoadingButton
-                    sx={{width:"132px"}}
+                      sx={{ width: "132px" }}
                       size="small"
                       color="secondary"
                       onClick={() => handleInstallLibraryAPI(lib.library)}
@@ -318,8 +318,7 @@ export default function ServerLibrary(serverId) {
                     </LoadingButton>
                   ) : (
                     <LoadingButton
-                    sx={{width:"132px"}}
-
+                      sx={{ width: "132px" }}
                       size="small"
                       color="secondary"
                       onClick={() => handleInstallLibraryAPI(lib.library)}
@@ -334,54 +333,61 @@ export default function ServerLibrary(serverId) {
             ))}
         </div>
         <div className="resultOutput mt-10">
-        <h1 className="text-2xl my-3">Output result</h1>
-        <div
-          style={{
-            padding: "16px",
-            border: "1px solid #89A6CC",
-            borderRadius: "8px",
-            backgroundColor: "",
-            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-            margin: "0 auto",
-            textAlign: "left",
-          }}
-        >
-          <pre
-            className="text-gray-700 dark:text-gray-400"
+          <h1 className="text-2xl my-3">Output result</h1>
+          <div
             style={{
-              whiteSpace: "pre-wrap",
-              marginBottom: "8px",
-              fontWeight: "bold",
-              color: "#3867A5",
+              padding: "16px",
+              border: "1px solid #89A6CC",
+              borderRadius: "8px",
+              backgroundColor: "#F7F9FC",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+              margin: "0 auto",
+              textAlign: "left",
             }}
           >
-            Response status:
-            {output.status === undefined ? " None" : ` ${output.status}`}
-          </pre>
-          <pre
-            className="text-gray-700 dark:text-gray-400"
-            style={{
-              whiteSpace: "pre-wrap",
-              marginBottom: "8px",
-              fontWeight: "bold",
-              color: "#3867A5",
-            }}
-          >
-            messages:
-            {output.messages === undefined ? " None" : ` ${output.messages}`}
-          </pre>
-          <pre
-            className="text-gray-700 dark:text-gray-400"
-            style={{
-              whiteSpace: "pre-wrap",
-              marginBottom: "8px",
-              fontWeight: "bold",
-              color: "#3867A5",
-            }}
-          >
-            Error: {output.error === undefined ? " None" : ` ${output.error}`}
-          </pre>
-        </div>
+            <pre
+              className="text-gray-700 dark:text-gray-400"
+              style={{
+                whiteSpace: "pre-wrap",
+                marginBottom: "8px",
+                fontWeight: "bold",
+                color: "#3867A5",
+              }}
+            >
+              Response status:
+              {output.status === undefined ? " None" : ` ${output.status}`}
+            </pre>
+            <pre
+              className="text-gray-700 dark:text-gray-400"
+              style={{
+                whiteSpace: "pre-wrap",
+                marginBottom: "8px",
+                fontWeight: "bold",
+                color: "#3867A5",
+              }}
+            >
+              Message:
+              {output.messages === undefined ? " None" : ` ${output.messages}`}
+            </pre>
+            <pre
+              className="text-gray-700 dark:text-gray-400"
+              style={{
+                whiteSpace: "pre-wrap",
+                marginBottom: "8px",
+                fontWeight: "bold",
+                color: "#3867A5",
+              }}
+            >
+              Error:
+              <span style={{ color: "red", fontWeight: "normal" }}>
+                {output.error.length === 0
+                  ? " None"
+                  : output.error.map((line, index) => (
+                      <div key={index}>{line}</div>
+                    ))}
+              </span>
+            </pre>
+          </div>
         </div>
       </div>
     </>

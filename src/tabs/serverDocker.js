@@ -70,9 +70,9 @@ export default function ServerDocker(serverId) {
           }),
         });const dockerOutput = await response.json();
         setOutput({
-            status: dockerOutput.status,
-            messages: dockerOutput.messages,
-            error: dockerOutput.stderr,
+            status: response.status,
+            messages: response.messages,
+            error: response.stderr,
         });
         if (response.status === 200) {
           toast.dismiss();
@@ -158,9 +158,9 @@ export default function ServerDocker(serverId) {
           }),
         });const dockerOutput = await response.json();
         setOutput({
-            status: dockerOutput.status,
-            messages: dockerOutput.messages,
-            error: dockerOutput.stderr,
+            status: response.status,
+            messages: response.messages,
+            error: response.stderr,
         });
         if (response.status === 200) {
           toast.success("Compose up successfull.", {
@@ -242,9 +242,9 @@ export default function ServerDocker(serverId) {
           }),
         });const dockerOutput = await response.json();
         setOutput({
-            status: dockerOutput.status,
-            messages: dockerOutput.messages,
-            error: dockerOutput.stderr,
+            status: response.status,
+            messages: response.messages,
+            error: response.stderr,
         });
         if (response.status === 200) {
           toast.success("Compose down successfull.", {
@@ -493,9 +493,9 @@ export default function ServerDocker(serverId) {
           }),
         });const dockerOutput = await response.json();
         setOutput({
-            status: dockerOutput.status,
-            messages: dockerOutput.messages,
-            error: dockerOutput.stderr,
+            status: response.status,
+            messages: response.messages,
+            error: response.stderr,
         });
         if (response.status === 200) {
           toast.dismiss();
@@ -618,9 +618,9 @@ export default function ServerDocker(serverId) {
       });
       const dockerOutput = await response.json();
       setOutput({
-          status: dockerOutput.status,
-          messages: dockerOutput.messages,
-          error: dockerOutput.stderr,
+          status: response.status,
+          messages: response.messages,
+          error: response.stderr,
       });
       if (response.status === 200) {
         toast.dismiss();
@@ -982,7 +982,7 @@ export default function ServerDocker(serverId) {
               color: "#3867A5",
             }}
           >
-            messages:
+            Message:
             {output.messages === undefined ? " None" : ` ${output.messages}`}
           </pre>
           <pre
@@ -994,7 +994,14 @@ export default function ServerDocker(serverId) {
               color: "#3867A5",
             }}
           >
-            Error: {output.error === undefined ? " None" : ` ${output.error}`}
+            Error:
+            <span style={{ color: "red", fontWeight: "normal" }}>
+              {output.error.length === 0
+                ? " None"
+                : output.error.map((line, index) => (
+                    <div key={index}>{line}</div>
+                  ))}
+            </span>
           </pre>
         </div>
       </div>

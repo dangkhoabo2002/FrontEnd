@@ -62,9 +62,6 @@ export default function ServerExecution(serverId) {
           messages: execiteOutput.messages,
           error: execiteOutput.stderr,
         });
-        const data = await response.json();
-        setLines(data.lines);
-        setStderr(data.stderr);
 
         if (response.status === 200) {
           toast.success("Run file successfully.", {
@@ -222,7 +219,14 @@ export default function ServerExecution(serverId) {
               color: "#3867A5",
             }}
           >
-            Error: {output.error === undefined ? " None" : ` ${output.error}`}
+            Error:
+            <span style={{ color: "red", fontWeight: "normal" }}>
+              {output.error.length === 0
+                ? " None"
+                : output.error.map((line, index) => (
+                    <div key={index}>{line}</div>
+                  ))}
+            </span>
           </pre>
         </div>
       </div>
