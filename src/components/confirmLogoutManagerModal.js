@@ -19,12 +19,11 @@ export default function AlertDialogSlide() {
     setOpen(false);
   };
 
-  
-
   const navigate = useNavigate();
   const handleLogout = async () => {
     toast.loading("In processing..");
-    const logoutUrl = "http://127.0.0.1:5000/manager/logout";
+    const logoutUrl =
+      "https://master-help-desk-back-end.vercel.app/manager/logout";
     const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(logoutUrl, {

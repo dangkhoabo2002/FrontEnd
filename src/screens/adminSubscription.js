@@ -14,7 +14,8 @@ export default function AdminSubscription() {
 
   const handleGetAllSubscription = async () => {
     toast.loading("Loading data...");
-    const editUrl = "http://127.0.0.1:5000/subscription/get_all_subscriptions";
+    const editUrl =
+      "https://master-help-desk-back-end.vercel.app/subscription/get_all_subscriptions";
     const token = localStorage.getItem("access_token");
 
     try {
@@ -199,5 +200,4 @@ export default function AdminSubscription() {
       </div>
     </div>
   );
-  
 }

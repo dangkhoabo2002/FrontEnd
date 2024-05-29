@@ -4,7 +4,14 @@ import "../css/Admin.css";
 import "../css/serverGeneral.css";
 import { Button } from "@mui/material";
 import toast, { Toaster } from "react-hot-toast";
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from "@mui/material";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  TextField,
+} from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import { useNavigate } from "react-router-dom";
@@ -34,7 +41,7 @@ export default function AdminAccountManagement() {
   };
 
   const handleGetCustomer = async () => {
-    const customerUrl = `http://127.0.0.1:5000/auth/get_all_profile`;
+    const customerUrl = `https://master-help-desk-back-end.vercel.app/auth/get_all_profile`;
     const token = localStorage.getItem("access_token");
 
     try {
@@ -91,7 +98,7 @@ export default function AdminAccountManagement() {
 
   const handleChangeStatusAPI = async () => {
     if (username) {
-      const deleteUrl = `http://127.0.0.1:5000/manager/change_user_status`;
+      const deleteUrl = `https://master-help-desk-back-end.vercel.app/manager/change_user_status`;
       const token = localStorage.getItem("access_token");
 
       try {
@@ -141,15 +148,18 @@ export default function AdminAccountManagement() {
             },
           });
         } else if (response.status === 500) {
-          toast.error("Failed to change status of user, please try again later!", {
-            style: {
-              border: "1px solid #F85F60",
-              maxWidth: "900px",
-              padding: "16px 24px",
-              color: "red",
-              fontWeight: "bolder",
-            },
-          });
+          toast.error(
+            "Failed to change status of user, please try again later!",
+            {
+              style: {
+                border: "1px solid #F85F60",
+                maxWidth: "900px",
+                padding: "16px 24px",
+                color: "red",
+                fontWeight: "bolder",
+              },
+            }
+          );
         } else {
           toast.error("Something wrong, please try again later!", {
             style: {
@@ -189,7 +199,7 @@ export default function AdminAccountManagement() {
 
   const handleDeleteUser = async () => {
     if (username) {
-      const deleteUrl = `http://127.0.0.1:5000/manager/delete_user`;
+      const deleteUrl = `https://master-help-desk-back-end.vercel.app/manager/delete_user`;
       const token = localStorage.getItem("access_token");
 
       try {
@@ -290,7 +300,10 @@ export default function AdminAccountManagement() {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredCustomerList.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredCustomerList.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
 
   return (
     <div className="admin-layout flex flex-col md:flex-row">
@@ -355,7 +368,9 @@ export default function AdminAccountManagement() {
                   <td className="p-4">{customer.email}</td>
                   <td className="p-4">
                     <Button
-                      onClick={() => handleClickOpenRemoveUser(customer.username)}
+                      onClick={() =>
+                        handleClickOpenRemoveUser(customer.username)
+                      }
                       variant="contained"
                       sx={{
                         width: "100px",
@@ -381,15 +396,26 @@ export default function AdminAccountManagement() {
                           height: "25px",
                           color: "white",
                           borderRadius: "100px",
-                          bgcolor: customer.status === "ACTIVE" ? "#6EC882" : "#8E8E8E",
+                          bgcolor:
+                            customer.status === "ACTIVE"
+                              ? "#6EC882"
+                              : "#8E8E8E",
                           "&:hover": {
-                            bgcolor: customer.status === "ACTIVE" ? "#63B976" : "#717171",
+                            bgcolor:
+                              customer.status === "ACTIVE"
+                                ? "#63B976"
+                                : "#717171",
                           },
                           fontSize: "14px",
                           fontWeight: "normal",
                           textTransform: "none",
                         }}
-                        onClick={() => handleOpenChangeStatus(customer.username, customer.status)}
+                        onClick={() =>
+                          handleOpenChangeStatus(
+                            customer.username,
+                            customer.status
+                          )
+                        }
                       >
                         {customer.status === "ACTIVE" ? "Active" : "Inactive"}
                       </Button>

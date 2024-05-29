@@ -56,7 +56,7 @@ export default function AdminGuide() {
   const handleEditGuide = async () => {
     toast.loading("In processing..");
     if (currentGuide) {
-      const editUrl = `http://127.0.0.1:5000/guide/update/${currentGuide}`;
+      const editUrl = `https://master-help-desk-back-end.vercel.app/guide/update/${currentGuide}`;
       const token = localStorage.getItem("access_token");
 
       try {
@@ -151,7 +151,7 @@ export default function AdminGuide() {
 
   const handleDeleteGuide = async () => {
     if (currentGuide) {
-      const deleteUrl = `http://127.0.0.1:5000/guide/delete/${currentGuide}`;
+      const deleteUrl = `https://master-help-desk-back-end.vercel.app/guide/delete/${currentGuide}`;
       const token = localStorage.getItem("access_token");
 
       try {
@@ -245,7 +245,7 @@ export default function AdminGuide() {
   };
 
   const handleGetGuide = async () => {
-    const guideUrl = `http://127.0.0.1:5000/guide/get`;
+    const guideUrl = `https://master-help-desk-back-end.vercel.app/guide/get`;
     const token = localStorage.getItem("access_token");
 
     try {
@@ -284,8 +284,8 @@ export default function AdminGuide() {
   const handleCloseAddGuide = () => {
     setGuideAdd({
       title: "",
-      content: ""
-    })
+      content: "",
+    });
     setOpen(false);
   };
 
@@ -305,7 +305,7 @@ export default function AdminGuide() {
         },
       });
     } else {
-      const addUrl = "http://127.0.0.1:5000/guide/add";
+      const addUrl = "https://master-help-desk-back-end.vercel.app/guide/add";
       const token = localStorage.getItem("access_token");
       try {
         const response = await fetch(addUrl, {
@@ -392,7 +392,10 @@ export default function AdminGuide() {
   // Calculate the data to be displayed on the current page
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredGuideData.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredGuideData.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
 
   return (
     <div className="admin-layout flex flex-col md:flex-row">
@@ -520,7 +523,9 @@ export default function AdminGuide() {
         <Dialog open={open} onClose={handleCloseAddGuide}>
           <DialogTitle>Add new guide</DialogTitle>
           <DialogContent>
-            <DialogContentText>Add new guide into MHD system.</DialogContentText>
+            <DialogContentText>
+              Add new guide into MHD system.
+            </DialogContentText>
             <TextField
               fullWidth
               variant="outlined"
