@@ -165,7 +165,7 @@ export default function SidebarAdmin() {
 
         <div className="" style={{cursor:"pointer"}}>
     <section
-    style={{marginTop: "180px"}}
+    style={{marginTop: "100px"}}
       className="flex flex-row gap-3 py-4 pl-12 items-center justify-left text-[#637381]"
       onClick={handleClickOpen}
     >

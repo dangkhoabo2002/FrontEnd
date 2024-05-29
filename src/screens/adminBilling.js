@@ -6,11 +6,14 @@ import { Button } from "@mui/material";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import Pagination from "@mui/material/Pagination";
 import "../css/serverGeneral.css";
 
 export default function AdminBillings() {
-  const [listBilling, setListBilling] = useState();
+  const [listBilling, setListBilling] = useState([]);
   const [billingInfo, setBillingInfo] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   const handleViewBilling = (id) => {
     handleGetBilling(id);
@@ -83,7 +86,6 @@ export default function AdminBillings() {
       }
     } catch (error) {
       console.error("Error:", error);
-    } finally {
     }
   };
 
@@ -144,7 +146,6 @@ export default function AdminBillings() {
       }
     } catch (error) {
       console.error("Error:", error);
-    } finally {
     }
   };
 
@@ -166,48 +167,48 @@ export default function AdminBillings() {
     }
   };
 
-  return (
-    <div className="admin-layout">
-      <Toaster position="bottom-right" reverseOrder={false} />
-      <SidebarAdmin />
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
 
-      <div className="content">
-        {/* <NavigationAdmin /> */}
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = listBilling.slice(indexOfFirstItem, indexOfLastItem);
+
+  return (
+    <div className="admin-layout flex flex-col md:flex-row">
+      <SidebarAdmin />
+      <div className="content flex-1 p-4 md:p-10">
+        <Toaster position="bottom-right" reverseOrder={false} />
+
         <div className="info-title font-semibold pb-5">
-          <p style={{ fontSize: "36px" }}>Billing Management</p>
+          <p className="text-3xl">Billing Management</p>
         </div>
-        <div className="content-container">
-          <table className="table-auto w-full">
+
+        <div className="content-container overflow-x-auto">
+          <table className="table-auto w-full border-collapse">
             <thead>
               <tr>
-                <th>DATE</th>
-                <th>TRANSACTION FEE</th>
-                <th>STATUS</th>
-                <th>DETAIL</th>
+                <th className="p-4">DATE</th>
+                <th className="p-4">TRANSACTION FEE</th>
+                <th className="p-4">STATUS</th>
+                <th className="p-4">DETAIL</th>
               </tr>
             </thead>
             <tbody>
-              {listBilling?.map((bill) => (
-                <tr key={bill.billing_id}>
-                  <td>{bill.timestamp}</td>
-                  <td>{bill.amount} VND</td>
-                  <td>
+              {currentItems?.map((bill) => (
+                <tr key={bill.billing_id} className="border-t">
+                  <td className="p-4">{bill.timestamp}</td>
+                  <td className="p-4">{bill.amount} VND</td>
+                  <td className="p-4">
                     <div
-                      style={{
-                        backgroundColor: getStatusColor(bill.billing_status),
-                        color: "white",
-                        textAlign: "center",
-                        borderRadius: "100px",
-                        padding: "5px 0px",
-                        fontSize: "14px",
-                        fontWeight: "normal",
-                        textTransform: "none",
-                      }}
+                      className="text-white text-center rounded-full px-3 py-1 text-sm"
+                      style={{ backgroundColor: getStatusColor(bill.billing_status) }}
                     >
                       {bill.billing_status}
                     </div>
                   </td>
-                  <td>
+                  <td className="p-4">
                     <a href="#popup1" id="openPopUp">
                       <Button
                         onClick={() => handleViewBilling(bill.billing_id)}
@@ -232,6 +233,14 @@ export default function AdminBillings() {
               ))}
             </tbody>
           </table>
+          <div className="flex justify-center mt-4">
+            <Pagination
+              count={Math.ceil(listBilling.length / itemsPerPage)}
+              page={currentPage}
+              onChange={handlePageChange}
+              color="primary"
+            />
+          </div>
           <div id="popup1" className="overlay">
             <div className="popup">
               <div className="popup_content">

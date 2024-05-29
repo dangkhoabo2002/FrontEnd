@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import SidebarAdmin from "../components/sidebarAdmin";
-import NavigationAdmin from "../components/navAdmin";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import {
   Button,
@@ -11,6 +10,7 @@ import {
   DialogTitle,
   IconButton,
   TextField,
+  Pagination,
 } from "@mui/material";
 import "../css/serverGeneral.css";
 
@@ -50,6 +50,8 @@ export default function AdminGuide() {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredGuideData, setFilteredGuideData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   const handleEditGuide = async () => {
     toast.loading("In processing..");
@@ -280,6 +282,10 @@ export default function AdminGuide() {
   };
 
   const handleCloseAddGuide = () => {
+    setGuideAdd({
+      title: "",
+      content: ""
+    })
     setOpen(false);
   };
 
@@ -379,202 +385,213 @@ export default function AdminGuide() {
     );
   };
 
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
+
+  // Calculate the data to be displayed on the current page
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredGuideData.slice(indexOfFirstItem, indexOfLastItem);
+
   return (
-    <div className="admin-layout">
-      {/* <NavigationAdmin /> */}
+    <div className="admin-layout flex flex-col md:flex-row">
       <SidebarAdmin />
-      <div className="content">
-        <Toaster position="bottom-right" reverseOrder={false} />{" "}
+      <div className="content flex-1 p-4 md:p-10">
+        <Toaster position="bottom-right" reverseOrder={false} />
+
         <div className="info-title font-semibold pb-5">
-          <p style={{ fontSize: "36px" }}>Guide Management</p>
+          <p className="text-3xl">Guide Management</p>
         </div>
-        <>
-          <div className="button-container">
-            <div className="flex justify-start">
-              <label htmlFor="simple-search" className="sr-only">
-                Search
-              </label>
-              <div className="relative w-full">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <svg
-                    className="w-4 h-4 text-gray-400"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                    />
-                  </svg>
-                </div>
-                <input
-                  type="text"
-                  id="simple-search"
-                  style={{ width: "200%" }}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Search by title..."
-                  onChange={handleSearchChange}
+
+        <div className="button-container mb-6 p-4 bg-white rounded-lg shadow-md border border-gray-300 flex justify-between">
+          <div className="relative w-full md:w-1/2 lg:w-1/3">
+            <label htmlFor="simple-search" className="sr-only">
+              Search
+            </label>
+            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <svg
+                className="w-4 h-4 text-gray-400"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
                 />
-              </div>
+              </svg>
             </div>
-
-            <Button
-              className="flex justify-end max-w-sm"
-              onClick={handleOpenAddGuide}
-              variant="outlined"
-              sx={{
-                width: "120px",
-                color: "white",
-                bgcolor: "#3867A5",
-                "&:hover": { bgcolor: "#2A4D7B" },
-              }}
-            >
-              Add Guide
-            </Button>
+            <input
+              type="text"
+              id="simple-search"
+              className="search-input w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 pl-10 py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Search by title..."
+              onChange={handleSearchChange}
+            />
           </div>
 
-          <div className="content-container">
-            <table id="guide-table" className="table-auto w-full">
-              <thead>
-                <tr>
-                  <th id="id">#</th>
-                  <th id="title">TITLE</th>
-                  <th id="content">CONTENT</th>
-                  <th id="action">ACTIONS</th>
+          <Button
+            className="max-w-sm"
+            onClick={handleOpenAddGuide}
+            variant="outlined"
+            sx={{
+              width: "120px",
+              color: "white",
+              bgcolor: "#3867A5",
+              "&:hover": { bgcolor: "#2A4D7B" },
+            }}
+          >
+            Add Guide
+          </Button>
+        </div>
+
+        <div className="content-container overflow-x-auto">
+          <table className="table-auto w-full border-collapse">
+            <thead>
+              <tr>
+                <th className="p-4">#</th>
+                <th className="p-4">TITLE</th>
+                <th className="p-4">CONTENT</th>
+                <th className="p-4">ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentItems.map((guide, index) => (
+                <tr key={guide.guide_id} className="border-t">
+                  <td className="p-4">{indexOfFirstItem + index + 1}</td>
+                  <td className="p-4">{guide.title}</td>
+                  <td className="p-4">{guide.content.slice(0, 50)}...</td>
+                  <td className="p-4 flex justify-center">
+                    <IconButton
+                      aria-label="delete"
+                      onClick={() => handleClickOpenRemoveGuide(guide.guide_id)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                    <IconButton
+                      aria-label="edit"
+                      onClick={() =>
+                        handleClickOpenEditGuide(
+                          guide.guide_id,
+                          guide.title,
+                          guide.content
+                        )
+                      }
+                    >
+                      <EditIcon />
+                    </IconButton>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {filteredGuideData.map((guide, index) => (
-                  <tr key={guide.guide_id}>
-                    <td>{index + 1}</td>
-                    <td>{guide.title}</td>
-                    <td>{guide.content.slice(0, 50)}...</td>
-                    <td style={{ padding: "6px 0px" }}>
-                      <IconButton
-                        aria-label="delete"
-                        onClick={() =>
-                          handleClickOpenRemoveGuide(guide.guide_id)
-                        }
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                      <IconButton
-                        aria-label="edit"
-                        onClick={() =>
-                          handleClickOpenEditGuide(
-                            guide.guide_id,
-                            guide.title,
-                            guide.content
-                          )
-                        }
-                      >
-                        <EditIcon />
-                      </IconButton>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <Dialog
-              open={openDelete}
-              onClose={handleClose}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-            >
-              <DialogTitle id="alert-dialog-title">
-                {"Do you want to remove this guide ?"}
-              </DialogTitle>
-              <DialogActions>
-                <Button onClick={handleCloseDelete}>No</Button>
-                <Button onClick={handleDeleteGuide}>
-                  <p className="text-red">Yes</p>
-                </Button>
-              </DialogActions>
-            </Dialog>
+              ))}
+            </tbody>
+          </table>
+          <div className="flex justify-center mt-4">
+            <Pagination
+              count={Math.ceil(filteredGuideData.length / itemsPerPage)}
+              page={currentPage}
+              onChange={handlePageChange}
+              color="primary"
+            />
           </div>
-        </>
+        </div>
+
+        <Dialog
+          open={openDelete}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"Do you want to remove this guide?"}
+          </DialogTitle>
+          <DialogActions>
+            <Button onClick={handleCloseDelete}>No</Button>
+            <Button onClick={handleDeleteGuide}>
+              <p className="text-red">Yes</p>
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        <Dialog open={open} onClose={handleCloseAddGuide}>
+          <DialogTitle>Add new guide</DialogTitle>
+          <DialogContent>
+            <DialogContentText>Add new guide into MHD system.</DialogContentText>
+            <TextField
+              fullWidth
+              variant="outlined"
+              value={guideAdd.title}
+              onChange={handleChange("title")}
+              required
+              margin="dense"
+              id="guide_title"
+              name="guide_title"
+              label="Title"
+              type="text"
+            />
+            <TextField
+              required
+              margin="dense"
+              id="guide_content"
+              name="guide_content"
+              label="Content"
+              type="text"
+              fullWidth
+              multiline
+              rows={4}
+              variant="outlined"
+              value={guideAdd.content}
+              onChange={handleChange("content")}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseAddGuide}>Cancel</Button>
+            <Button onClick={handleAddGuide}>Confirm</Button>
+          </DialogActions>
+        </Dialog>
+
+        <Dialog open={openEdit} onClose={handleCloseEditGuide}>
+          <DialogTitle>Update guide</DialogTitle>
+          <DialogContent>
+            <DialogContentText className="pb-4">
+              Edit guide's information.
+            </DialogContentText>
+            <TextField
+              required
+              margin="dense"
+              id="guide"
+              name="guide"
+              label="Guide name"
+              type="text"
+              fullWidth
+              variant="outlined"
+              onChange={handleChangeEditGuide("title")}
+              value={currentEditGuide.title}
+            />
+            <TextField
+              required
+              id="outlined-multiline-static"
+              label="Description"
+              multiline
+              rows={4}
+              margin="dense"
+              name="pkg"
+              type="Description"
+              fullWidth
+              onChange={handleChangeEditGuide("content")}
+              value={currentEditGuide.content}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseEditGuide}>Cancel</Button>
+            <Button onClick={handleEditGuide}>Confirm</Button>
+          </DialogActions>
+        </Dialog>
       </div>
-
-      <Dialog open={open} onClose={handleCloseAddGuide}>
-        <DialogTitle>Add new guide</DialogTitle>
-        <DialogContent>
-          <DialogContentText>Add new guide into MHD system.</DialogContentText>
-          <TextField
-            fullWidth
-            variant="outlined"
-            value={guideAdd.title}
-            onChange={handleChange("title")}
-            required
-            margin="dense"
-            id="guide_title"
-            name="guide_title"
-            label="Title"
-            type="text"
-          />
-          <TextField
-            required
-            margin="dense"
-            id="guide_content"
-            name="guide_content"
-            label="Content"
-            type="text"
-            fullWidth
-            multiline
-            rows={4}
-            variant="outlined"
-            value={guideAdd.content}
-            onChange={handleChange("content")}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseAddGuide}>Cancel</Button>
-          <Button onClick={handleAddGuide}>Confirm</Button>
-        </DialogActions>
-      </Dialog>
-
-      {/*-------------- EDIT ALERT ---------------- */}
-      <Dialog open={openEdit} onClose={handleCloseEditGuide}>
-        <DialogTitle>Update guide</DialogTitle>
-        <DialogContent>
-          <DialogContentText className="pb-4">
-            Edit guide's information.
-          </DialogContentText>
-          <TextField
-            required
-            margin="dense"
-            id="guide"
-            name="guide"
-            label="Guide name"
-            type="text"
-            fullWidth
-            variant="outlined"
-            onChange={handleChangeEditGuide("title")}
-            value={currentEditGuide.title}
-          />
-          <TextField
-            required
-            id="outlined-multiline-static"
-            label="Description"
-            multiline
-            rows={4}
-            margin="dense"
-            name="pkg"
-            type="Description"
-            fullWidth
-            onChange={handleChangeEditGuide("content")}
-            value={currentEditGuide.content}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseEditGuide}>Cancel</Button>
-          <Button onClick={handleEditGuide}>Confirm</Button>
-        </DialogActions>
-      </Dialog>
     </div>
   );
 }
