@@ -37,3 +37,36 @@
     transform: rotate(360deg);
   }
 } */
+
+/* Hide everything except the mobile warning on mobile devices */
+@media (max-width: 767px) {
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: white;
+  }
+  #mobile-warning {
+    display: block;
+    font-size: 1.5rem;
+    text-align: center;
+    color: black;
+    padding: 20px;
+    border: 2px solid red;
+    border-radius: 10px;
+    background-color: white;
+  }
+  #app-content {
+    display: none;
+  }
+}
+
+/* Default styles for larger screens */
+#mobile-warning {
+  display: none;
+}
+#app-content {
+  display: block;
+}

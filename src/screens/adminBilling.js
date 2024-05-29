@@ -6,10 +6,14 @@ import { Button } from "@mui/material";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import Pagination from "@mui/material/Pagination";
+import "../css/serverGeneral.css";
 
 export default function AdminBillings() {
-  const [listBilling, setListBilling] = useState();
+  const [listBilling, setListBilling] = useState([]);
   const [billingInfo, setBillingInfo] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   const handleViewBilling = (id) => {
     handleGetBilling(id);
@@ -83,7 +87,6 @@ export default function AdminBillings() {
       }
     } catch (error) {
       console.error("Error:", error);
-    } finally {
     }
   };
 
@@ -144,129 +147,142 @@ export default function AdminBillings() {
       }
     } catch (error) {
       console.error("Error:", error);
-    } finally {
     }
   };
 
-  const [token, setToken] = useState();
-  const checkToken = () => {
-    const isToken = localStorage.getItem("checkAdmin");
-    setToken(isToken);
-  };
-
-  const navigate = useNavigate();
-
   useEffect(() => {
-    const loginToken = localStorage.getItem("checkUser");
-
-    const checkLoggedIn = () => {
-      if (loginToken) {
-        navigate("/error404");
-      }
-    };
-    checkLoggedIn();
-    checkToken();
     handleGetAllBilling();
   }, []);
 
-  return (
-    <div className="admin-layout">
-      <Toaster position="bottom-right" reverseOrder={false} />
-      <SidebarAdmin />
+  //status
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "PENDING":
+        return "#DCD421";
+      case "FAIL":
+        return "#F85F60";
+      case "SUCCESS":
+        return "#6EC882";
+      default:
+        return "#8E8E8E";
+    }
+  };
 
-      <div className="content">
-        {/* <NavigationAdmin /> */}{" "}
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = listBilling.slice(indexOfFirstItem, indexOfLastItem);
+
+  return (
+    <div className="admin-layout flex flex-col md:flex-row">
+      <SidebarAdmin />
+      <div className="content flex-1 p-4 md:p-10">
+        <Toaster position="bottom-right" reverseOrder={false} />
+
         <div className="info-title font-semibold pb-5">
-          <p style={{ fontSize: "36px" }}>Billing Management</p>
+          <p className="text-3xl">Billing Management</p>
         </div>
-        {token !== null ? (
-          <div className="content-container">
-            <table className="table-auto w-full">
-              <thead>
-                <tr>
-                  <th>DATE</th>
-                  <th>TRANSACTION FEE</th>
-                  <th>STATUS</th>
-                  <th>DETAIL</th>
-                </tr>
-              </thead>
-              <tbody>
-                {listBilling?.map((bill) => (
-                  <tr key={bill.billing_id}>
-                    <td>{bill.timestamp}</td>
-                    <td>{bill.amount}đ</td>
-                    <td>{bill.billing_status}</td>
-                    <td>
-                      <a href="#popup1" id="openPopUp">
-                        <Button
-                          onClick={() => handleViewBilling(bill.billing_id)}
-                          variant="contained"
-                          sx={{
-                            width: "100px",
-                            height: "25px",
-                            color: "white",
-                            borderRadius: "100px",
-                            bgcolor: "#5F94D9",
-                            "&:hover": { bgcolor: "#4D7AB5" },
-                            fontSize: "14px",
-                            fontWeight: "normal",
-                            textTransform: "none",
-                          }}
-                        >
-                          View
-                        </Button>
-                      </a>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <div id="popup1" className="overlay">
-              <div className="popup">
-                <div className="popup_content">
-                  <h1>Billing Information</h1>
-                  <div className="flex flex-row justify-start">
-                    <div className="flex flex-col ">
-                      <h2>Transaction fee:</h2>
-                      <h2>Billing Id:</h2>
-                      <h2>Status</h2>
-                      <h2>Customer Id:</h2>
-                      <h2>Date:</h2>
-                      <h2>Subscription Id:</h2>
+
+        <div className="content-container overflow-x-auto">
+          <table className="table-auto w-full border-collapse">
+            <thead>
+              <tr>
+                <th className="p-4">DATE</th>
+                <th className="p-4">TRANSACTION FEE</th>
+                <th className="p-4">STATUS</th>
+                <th className="p-4">DETAIL</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentItems?.map((bill) => (
+                <tr key={bill.billing_id} className="border-t">
+                  <td className="p-4">{bill.timestamp}</td>
+                  <td className="p-4">{bill.amount} VND</td>
+                  <td className="p-4">
+                    <div
+                      className="text-white text-center rounded-full px-3 py-1 text-sm"
+                      style={{
+                        backgroundColor: getStatusColor(bill.billing_status),
+                      }}
+                    >
+                      {bill.billing_status}
                     </div>
-                    <div className="flex flex-col">
-                      <h2>{billingInfo?.amount}đ</h2>
-                      <h2>{billingInfo?.billing_id}</h2>
-                      <h2>{billingInfo?.billing_status}</h2>
-                      <h2>{billingInfo?.customer_id}</h2>
-                      <h2>{billingInfo?.timestamp}</h2>
-                      <h2>{billingInfo?.subscription_id}</h2>
-                    </div>
-                  </div>
-                  <div className="popup_btn">
-                    <a id="popup_btn" href="#" className="close">
-                      <div
-                        style={{
-                          fontSize: "16px",
-                          fontWeight: "Bold",
-                          letterSpacing: "0.09rem",
+                  </td>
+                  <td className="p-4">
+                    <a href="#popup1" id="openPopUp">
+                      <Button
+                        onClick={() => handleViewBilling(bill.billing_id)}
+                        variant="contained"
+                        sx={{
+                          width: "100px",
+                          height: "25px",
+                          color: "white",
+                          borderRadius: "100px",
+                          bgcolor: "#5F94D9",
+                          "&:hover": { bgcolor: "#4D7AB5" },
+                          fontSize: "14px",
+                          fontWeight: "normal",
+                          textTransform: "none",
                         }}
                       >
-                        Close
-                      </div>
+                        View
+                      </Button>
                     </a>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div className="flex justify-center mt-4">
+            <Pagination
+              count={Math.ceil(listBilling.length / itemsPerPage)}
+              page={currentPage}
+              onChange={handlePageChange}
+              color="primary"
+            />
+          </div>
+          <div id="popup1" className="overlay">
+            <div className="popup">
+              <div className="popup_content">
+                <h1>Billing Information</h1>
+                <div className="flex flex-row justify-start">
+                  <div className="flex flex-col ">
+                    <h2>Transaction fee:</h2>
+                    <h2>Billing Id:</h2>
+                    <h2>Status</h2>
+                    <h2>Customer Id:</h2>
+                    <h2>Date:</h2>
+                    <h2>Subscription Id:</h2>
                   </div>
+                  <div className="flex flex-col">
+                    <h2>{billingInfo?.amount}đ</h2>
+                    <h2>{billingInfo?.billing_id}</h2>
+                    <h2>{billingInfo?.billing_status}</h2>
+                    <h2>{billingInfo?.customer_id}</h2>
+                    <h2>{billingInfo?.timestamp}</h2>
+                    <h2>{billingInfo?.subscription_id}</h2>
+                  </div>
+                </div>
+                <div className="popup_btn">
+                  <a id="popup_btn" href="#" className="close">
+                    <div
+                      style={{
+                        fontSize: "16px",
+                        fontWeight: "Bold",
+                        letterSpacing: "0.09rem",
+                      }}
+                    >
+                      Close
+                    </div>
+                  </a>
                 </div>
               </div>
             </div>
           </div>
-        ) : (
-          <div className="flex flex-row justify-center py-40 gap-4 text-red-600 font-bold">
-            <WarningAmberIcon />
-            <p>UNKNOWN USER! PLEASE LOGIN FIRST </p>
-            <WarningAmberIcon />
-          </div>
-        )}
+        </div>
       </div>
     </div>
   );

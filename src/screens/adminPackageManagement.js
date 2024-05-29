@@ -17,7 +17,9 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import Pagination from "@mui/material/Pagination";
 import "../css/adminPackage.css";
+import "../css/serverGeneral.css";
 
 export default function AdminPackageManagement() {
   const [Package, setPackageData] = useState([]);
@@ -31,6 +33,8 @@ export default function AdminPackageManagement() {
     slot_number: "",
     slot_server: "",
   });
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   const clickOpenAddPackage = () => {
     setOpenAddPackage(true);
@@ -50,7 +54,6 @@ export default function AdminPackageManagement() {
   };
 
   const handleGetPackage = async () => {
-    toast.loading("In processing..");
     const packageUrl = `https://master-help-desk-back-end.vercel.app/package/get`;
     const token = localStorage.getItem("access_token");
 
@@ -182,7 +185,6 @@ export default function AdminPackageManagement() {
           }),
         });
         if (response.status === 201) {
-          toast.dismiss();
           toast.success("New package created successfully.", {
             style: {
               border: "1px solid #37E030",
@@ -476,7 +478,6 @@ export default function AdminPackageManagement() {
 
   const handleGetPackageInfo = async (package_id) => {
     if (package_id) {
-      toast.loading("In processing...");
       const editUrl = `https://master-help-desk-back-end.vercel.app/package/get/${package_id}`;
 
       const token = localStorage.getItem("access_token");
@@ -567,26 +568,10 @@ export default function AdminPackageManagement() {
     }
   };
 
-  const [token, setToken] = useState();
-
-  const checkToken = () => {
-    const isToken = localStorage.getItem("checkAdmin");
-    setToken(isToken);
-  };
-
   const navigate = useNavigate();
 
   useEffect(() => {
-    const loginToken = localStorage.getItem("checkUser");
-
-    const checkLoggedIn = () => {
-      if (loginToken) {
-        navigate("/error404");
-      }
-    };
-    checkLoggedIn();
     handleGetPackage();
-    checkToken();
   }, []);
 
   // searchbar
@@ -601,153 +586,145 @@ export default function AdminPackageManagement() {
     );
   };
 
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredPackageData.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+
   return (
-    <div className="admin-layout">
-      {/* <NavigationAdmin /> */}
+    <div className="admin-layout flex flex-col md:flex-row">
       <SidebarAdmin />
-      <div className="content">
-        <Toaster position="bottom-right" reverseOrder={false} />{" "}
+      <div className="content flex-1 p-4 md:p-10">
+        <Toaster position="bottom-right" reverseOrder={false} />
         <div className="info-title font-semibold pb-5">
-          <p style={{ fontSize: "36px" }}>Package Management</p>
+          <p className="text-3xl">Package Management</p>
         </div>
-        {token !== null ? (
-          <>
-            <div className="button-container">
-              <div className="flex justify-start">
-                <label htmlFor="simple-search" className="sr-only">
-                  Search
-                </label>
-                <div className="relative w-full">
-                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <svg
-                      className="w-4 h-4 text-gray-400"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                      />
-                    </svg>
-                  </div>
-                  <input
-                    type="text"
-                    id="simple-search"
-                    style={{ width: "200%" }}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Search by name..."
-                    onChange={handleSearchChange}
-                  />
-                </div>
-              </div>
-
-              <Button
-                className="flex justify-end max-w-sm"
-                onClick={clickOpenAddPackage}
-                variant="outlined"
-                sx={{
-                  width: "130px",
-                  color: "white",
-                  bgcolor: "#3867A5",
-                  "&:hover": { bgcolor: "#2A4D7B" },
-                }}
+        <div className="button-container mb-6 p-4 bg-white rounded-lg shadow-md border border-gray-300 flex justify-between">
+          <div className="relative w-full md:w-1/2 lg:w-1/3">
+            <label htmlFor="simple-search" className="sr-only">
+              Search
+            </label>
+            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <svg
+                className="w-4 h-4 text-gray-400"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 20 20"
               >
-                Add Package
-              </Button>
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                />
+              </svg>
             </div>
-            <div className="content-container">
-              <table id="package-table" className="table-auto w-full">
-                <thead>
-                  <tr>
-                    <th>NAME</th>
-                    <th>PRICE</th>
-                    <th>DESCRIPTION</th>
-                    <th>DURATION</th>
-                    <th>SLOT NUMBER</th>
-                    <th>SLOT SERVER</th>
-                    <th>Status</th>
-                    <th>ACTION</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredPackageData.map((pkg) => (
-                    <tr key={pkg.package_id}>
-                      <td>{pkg.package_name}</td>
-                      <td>{pkg.price}đ</td>
-                      <td>{pkg.description}</td>
-                      <td>{pkg.duration} days</td>
-                      <td>{pkg.slot_number}</td>
-                      <td>{pkg.slot_server}</td>
-                      <td>
-                        <div
-                          style={{
-                            backgroundColor: pkg.status ? "#6EC882" : "#8E8E8E",
-                            color: "white",
-                            textAlign: "center",
-                            borderRadius: "100px",
-                            padding: "5px 15px",
-                            fontSize: "14px",
-                            fontWeight: "normal",
-                            textTransform: "none",
-                          }}
-                        >
-                          {pkg.status ? "Active" : "Inactive"}
-                        </div>
-                      </td>
-                      <td style={{ padding: "6px 0px" }}>
-                        <IconButton
-                          aria-label="delete"
-                          onClick={() => clickOpenDelete(pkg.package_id)}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-
-                        <IconButton
-                          aria-label="edit"
-                          onClick={() =>
-                            handleClickOpenEditPackage(pkg.package_id)
-                          }
-                        >
-                          <EditIcon />
-                        </IconButton>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              <Dialog
-                open={openDelete}
-                onClose={clickCloseDelete}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-              >
-                <DialogTitle id="alert-dialog-title">
-                  {"Do you want to remove this package?"}
-                </DialogTitle>
-                <DialogContent>
-                  <DialogContentText id="alert-dialog-description">
-                    This package will no longer be available.
-                  </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={clickCloseDelete}>No</Button>
-                  <Button onClick={handleDeleteRole}>Yes</Button>
-                </DialogActions>
-              </Dialog>
-            </div>
-          </>
-        ) : (
-          <div className="flex flex-row justify-center py-40 gap-4 text-red-600 font-bold">
-            <WarningAmberIcon />
-            <p>UNKNOWN USER! PLEASE LOGIN FIRST </p>
-            <WarningAmberIcon />
+            <input
+              type="text"
+              id="simple-search"
+              className="search-input w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 pl-10 py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Search by name..."
+              onChange={handleSearchChange}
+            />
           </div>
-        )}
+          <Button
+            className="max-w-sm"
+            onClick={clickOpenAddPackage}
+            variant="outlined"
+            sx={{
+              width: "130px",
+              color: "white",
+              bgcolor: "#3867A5",
+              "&:hover": { bgcolor: "#2A4D7B" },
+            }}
+          >
+            Add Package
+          </Button>
+        </div>
+        <div className="content-container overflow-x-auto">
+          <table className="table-auto w-full border-collapse">
+            <thead>
+              <tr>
+                <th className="p-4">#</th>
+                <th className="p-4">NAME</th>
+                <th className="p-4">PRICE</th>
+                <th className="p-4">DESCRIPTION</th>
+                <th className="p-4">DURATION</th>
+                <th className="p-4">SLOT NUMBER</th>
+                <th className="p-4">SLOT SERVER</th>
+                <th className="p-4">STATUS</th>
+                <th className="p-4">ACTION</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentItems.map((pkg, index) => (
+                <tr key={pkg.package_id} className="border-t">
+                  <td className="p-4">{indexOfFirstItem + index + 1}</td>
+                  <td className="p-4">{pkg.package_name}</td>
+                  <td className="p-4">{pkg.price} VND</td>
+                  <td className="p-4">{pkg.description}</td>
+                  <td className="p-4">{pkg.duration} days</td>
+                  <td className="p-4">{pkg.slot_number}</td>
+                  <td className="p-4">{pkg.slot_server}</td>
+                  <td className="p-4">
+                    <div
+                      className="text-white text-center rounded-full px-3 py-1 text-sm"
+                      style={{
+                        backgroundColor: pkg.status ? "#6EC882" : "#8E8E8E",
+                      }}
+                    >
+                      {pkg.status ? "Active" : "Inactive"}
+                    </div>
+                  </td>
+                  <td className="p-4 flex justify-center">
+                    <IconButton
+                      aria-label="delete"
+                      onClick={() => clickOpenDelete(pkg.package_id)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                    <IconButton
+                      aria-label="edit"
+                      onClick={() => handleClickOpenEditPackage(pkg.package_id)}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div className="flex justify-center mt-4">
+            <Pagination
+              count={Math.ceil(filteredPackageData.length / itemsPerPage)}
+              page={currentPage}
+              onChange={handlePageChange}
+              color="primary"
+            />
+          </div>
+        </div>
+        <Dialog
+          open={openDelete}
+          onClose={clickCloseDelete}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"Do you want to remove this package?"}
+          </DialogTitle>
+          <DialogActions>
+            <Button onClick={clickCloseDelete}>No</Button>
+            <Button onClick={handleDeleteRole}>Yes</Button>
+          </DialogActions>
+        </Dialog>
         <Dialog open={openAddPackage} onClose={clickCloseAddPackage}>
           <DialogTitle>Add new package</DialogTitle>
           <DialogContent>
@@ -786,7 +763,7 @@ export default function AdminPackageManagement() {
               }
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="start">$</InputAdornment>
+                  <InputAdornment position="start">VND</InputAdornment>
                 ),
               }}
             />
@@ -809,7 +786,7 @@ export default function AdminPackageManagement() {
               }}
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="start">Month</InputAdornment>
+                  <InputAdornment position="start">Day</InputAdornment>
                 ),
               }}
             />

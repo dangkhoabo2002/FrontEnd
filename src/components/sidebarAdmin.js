@@ -7,6 +7,8 @@ import InventoryIcon from "@mui/icons-material/Inventory";
 import ManageAccountsOutlinedIcon from "@mui/icons-material/ManageAccountsOutlined";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import Logo from "../images/MHDLogo.png";
+import "../css/Sidebar.css";
+import EventNoteIcon from "@mui/icons-material/EventNote";
 
 import "../css/sidebarAdmin.css";
 import {
@@ -91,6 +93,8 @@ export default function SidebarAdmin() {
       setSelectedMenu("role");
     } else if (path === "/admin/package") {
       setSelectedMenu("package");
+    } else if (path === "/admin/subscription") {
+      setSelectedMenu("subscription");
     }
   }, [location]);
 
@@ -194,11 +198,31 @@ export default function SidebarAdmin() {
               </section>
             </Link>
           </div>
+          <div
+            className={`hoverSection ${
+              selectedMenu === "subscription" ? "selectedMenu" : ""
+            }`}
+          >
+            <Link
+              to={`/admin/subscription`}
+              onClick={() => setSelectedMenu("subscription")}
+            >
+              <section className="flex flex-row gap-0 py-4 pl-12 items-center justify-left text-[#637381]">
+                <EventNoteIcon style={{ fontSize: "28px" }} />
+                <p
+                  className="text-xl font-semibold"
+                  style={{ fontSize: "18px" }}
+                >
+                  Subscription
+                </p>
+              </section>
+            </Link>
+          </div>
         </div>
 
         <div className="" style={{ cursor: "pointer" }}>
           <section
-            style={{ marginTop: "180px" }}
+            style={{ marginTop: "100px" }}
             className="flex flex-row gap-3 py-4 pl-12 items-center justify-left text-[#637381]"
             onClick={handleClickOpen}
           >
