@@ -40,7 +40,7 @@ export default function App() {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 768 && !redirected) {
+      if (window.innerWidth < 768 && !redirected && !["/", "/term"].includes(window.location.pathname)) {
         setRedirected(true);
         alert("This website does not support mobile devices. Please access it using a tablet, desktop, or laptop for the best experience.");
         window.location.href = "/error404";
@@ -77,7 +77,6 @@ export default function App() {
         <Route path="/sub" element={<SubscribeModal />}></Route>
         <Route path="/error404" element={<Error404 />}></Route>
         <Route path="/maintaining" element={<MaintenancePage />}></Route>
-
 
         {/* USER ROUTE*/}
         <Route path="/login" element={<Login />}></Route>

@@ -41,11 +41,13 @@ export default function NonSubscribeModal() {
             <img loading="lazy" src={nonIcon} style={{ width: "50px" }} />
           </div>
           <Typography id="modal-title" variant="h6" component="h2">
-            Package is not activated yet!{" "}
+          Your subscription expired!{" "}
           </Typography>
           <Typography id="modal-description" sx={{ mt: 2 }}>
-            Please purchase the package to activate the function and have the
-            best experience.{" "}
+            Don't miss the chance to continue enjoying the superior features and
+            uninterrupted convenience of our service. Renew now to stay updated
+            with the latest improvements and keep receiving dedicated support
+            from our professional customer care team.{" "}
           </Typography>
           <Link to={"../subscribe"}>
             <div className="mt-5">
