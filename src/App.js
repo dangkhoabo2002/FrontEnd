@@ -2,7 +2,6 @@ import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import Admin from "./screens/adminAccountManagement";
 import AdminBilling from "./screens/adminBilling";
-import AdminSetting from "./screens/adminSetting";
 import AdminGuide from "./screens/adminGuideManagement";
 import AdminPackage from "./screens/adminPackageManagement";
 import AdminRole from "./screens/adminRoleManagement";
@@ -38,7 +37,6 @@ export default function App() {
           <Route path="/" element={<AdminLogin />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/billing" element={<AdminBilling />} />
-          <Route path="/admin/setting" element={<AdminSetting />} />
           <Route path="/admin/guide" element={<AdminGuide />} />
           <Route path="/admin/package" element={<AdminPackage />} />
           <Route path="/admin/role" element={<AdminRole />} />
