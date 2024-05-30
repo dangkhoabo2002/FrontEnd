@@ -111,3 +111,35 @@
     color: #F85F60;
     font-weight: bold;
 }
+
+.overlay {
+    @apply fixed top-0 bottom-0 left-0 right-0 bg-black bg-opacity-70 transition-opacity duration-500 hidden opacity-0 z-10;
+}
+
+.overlay:target {
+    @apply block opacity-100;
+}
+
+.popup {
+    @apply flex flex-col bg-white rounded-lg shadow-lg mx-auto my-16 p-8 transition-all duration-1000;
+}
+
+.popup_content {
+    @apply flex flex-col justify-center px-10;
+}
+
+.billingInfo {
+    @apply grid grid-cols-2 gap-4 py-8;
+}
+
+.popup_btn {
+    @apply flex justify-center mt-6;
+}
+
+.leftInfo h6 {
+    @apply font-semibold text-lg;
+}
+
+.rightInfo h6 {
+    @apply text-lg;
+}
