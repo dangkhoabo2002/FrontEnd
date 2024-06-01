@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import SidebarAdmin from "../components/sidebarAdmin";
 import NavigationAdmin from "../components/navAdmin";
 import "../css/adminBilling.css";
-import { Box, Button, Divider, Typography } from "@mui/material";
+import { Box, Button, Divider, Tooltip, Typography } from "@mui/material";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -277,16 +277,18 @@ export default function AdminBillings() {
                     <Typography variant="h6">
                       {billingInfo?.amount} VNĐ
                     </Typography>
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        width: "220px",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                      }}
-                    >
-                      {billingInfo?.billing_id}
-                    </Typography>
+                    <Tooltip title={billingInfo?.billing_id} arrow>
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          width: "220px",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
+                      >
+                        {billingInfo?.billing_id}
+                      </Typography>
+                    </Tooltip>
                     <Typography
                       variant="h6"
                       className={
@@ -299,22 +301,33 @@ export default function AdminBillings() {
                     >
                       {billingInfo?.billing_status}
                     </Typography>
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        width: "220px",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                      }}
-                    >
-                      {billingInfo?.customer_id}
-                    </Typography>
+                    <Tooltip title={billingInfo?.customer_id} arrow>
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          width: "220px",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
+                      >
+                        {billingInfo?.customer_id}
+                      </Typography>
+                    </Tooltip>
                     <Typography variant="h6">
                       {billingInfo?.timestamp}
                     </Typography>
-                    <Typography variant="h6">
-                      {billingInfo?.subscription_id}
-                    </Typography>
+                    <Tooltip title={billingInfo?.subscription_id} arrow>
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          width: "220px",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
+                      >
+                        {billingInfo?.subscription_id}
+                      </Typography>
+                    </Tooltip>
                   </Box>
                 </Box>
                 <Divider sx={{ marginY: 4 }} />
