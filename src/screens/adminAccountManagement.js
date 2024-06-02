@@ -187,102 +187,102 @@ export default function AdminAccountManagement() {
     }
   };
 
-  const handleClickOpenRemoveUser = (username) => {
-    setUsername(username);
-    setOpenDelete(true);
-  };
+  // const handleClickOpenRemoveUser = (username) => {
+  //   setUsername(username);
+  //   setOpenDelete(true);
+  // };
 
-  const handleCloseDelete = () => {
-    setOpenDelete(false);
-    setUsername("");
-  };
+  // const handleCloseDelete = () => {
+  //   setOpenDelete(false);
+  //   setUsername("");
+  // };
 
-  const handleDeleteUser = async () => {
-    if (username) {
-      const deleteUrl = `https://master-help-desk-back-end.vercel.app/manager/delete_user`;
-      const token = localStorage.getItem("access_token");
+  // const handleDeleteUser = async () => {
+  //   if (username) {
+  //     const deleteUrl = `https://master-help-desk-back-end.vercel.app/manager/delete_user`;
+  //     const token = localStorage.getItem("access_token");
 
-      try {
-        const response = await fetch(deleteUrl, {
-          method: "DELETE",
-          credentials: "include",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Credentials": "true",
-          },
-          body: JSON.stringify({
-            username: username,
-          }),
-        });
-        if (response.status === 200) {
-          handleGetCustomer();
-          toast.success("Delete user successfully.", {
-            style: {
-              border: "1px solid #37E030",
-              maxWidth: "900px",
-              padding: "16px 24px",
-              color: "green",
-              fontWeight: "bolder",
-            },
-          });
-        } else if (response.status === 403) {
-          toast.error("Permission denied!", {
-            style: {
-              border: "1px solid #F85F60",
-              maxWidth: "900px",
-              padding: "16px 24px",
-              color: "red",
-              fontWeight: "bolder",
-            },
-          });
-        } else if (response.status === 400) {
-          toast.error("User is not selected!", {
-            style: {
-              border: "1px solid #F85F60",
-              maxWidth: "900px",
-              padding: "16px 24px",
-              color: "red",
-              fontWeight: "bolder",
-            },
-          });
-        } else if (response.status === 500) {
-          toast.error("Failed to delete user, please try again later!", {
-            style: {
-              border: "1px solid #F85F60",
-              maxWidth: "900px",
-              padding: "16px 24px",
-              color: "red",
-              fontWeight: "bolder",
-            },
-          });
-        } else {
-          toast.error("Something wrong, please try again later!", {
-            style: {
-              border: "1px solid #F85F60",
-              maxWidth: "900px",
-              padding: "16px 24px",
-              color: "red",
-              fontWeight: "bolder",
-            },
-          });
-        }
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    } else {
-      toast.error("Please select a user!", {
-        style: {
-          border: "1px solid #F85F60",
-          maxWidth: "900px",
-          padding: "16px 24px",
-          color: "red",
-          fontWeight: "bolder",
-        },
-      });
-    }
-  };
+  //     try {
+  //       const response = await fetch(deleteUrl, {
+  //         method: "DELETE",
+  //         credentials: "include",
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           "Content-Type": "application/json",
+  //           "Access-Control-Allow-Origin": "*",
+  //           "Access-Control-Allow-Credentials": "true",
+  //         },
+  //         body: JSON.stringify({
+  //           username: username,
+  //         }),
+  //       });
+  //       if (response.status === 200) {
+  //         handleGetCustomer();
+  //         toast.success("Delete user successfully.", {
+  //           style: {
+  //             border: "1px solid #37E030",
+  //             maxWidth: "900px",
+  //             padding: "16px 24px",
+  //             color: "green",
+  //             fontWeight: "bolder",
+  //           },
+  //         });
+  //       } else if (response.status === 403) {
+  //         toast.error("Permission denied!", {
+  //           style: {
+  //             border: "1px solid #F85F60",
+  //             maxWidth: "900px",
+  //             padding: "16px 24px",
+  //             color: "red",
+  //             fontWeight: "bolder",
+  //           },
+  //         });
+  //       } else if (response.status === 400) {
+  //         toast.error("User is not selected!", {
+  //           style: {
+  //             border: "1px solid #F85F60",
+  //             maxWidth: "900px",
+  //             padding: "16px 24px",
+  //             color: "red",
+  //             fontWeight: "bolder",
+  //           },
+  //         });
+  //       } else if (response.status === 500) {
+  //         toast.error("Failed to delete user, please try again later!", {
+  //           style: {
+  //             border: "1px solid #F85F60",
+  //             maxWidth: "900px",
+  //             padding: "16px 24px",
+  //             color: "red",
+  //             fontWeight: "bolder",
+  //           },
+  //         });
+  //       } else {
+  //         toast.error("Something wrong, please try again later!", {
+  //           style: {
+  //             border: "1px solid #F85F60",
+  //             maxWidth: "900px",
+  //             padding: "16px 24px",
+  //             color: "red",
+  //             fontWeight: "bolder",
+  //           },
+  //         });
+  //       }
+  //     } catch (error) {
+  //       console.error("Error:", error);
+  //     }
+  //   } else {
+  //     toast.error("Please select a user!", {
+  //       style: {
+  //         border: "1px solid #F85F60",
+  //         maxWidth: "900px",
+  //         padding: "16px 24px",
+  //         color: "red",
+  //         fontWeight: "bolder",
+  //       },
+  //     });
+  //   }
+  // };
 
   const handleSearchChange = (event) => {
     const query = event.target.value.toLowerCase();
@@ -355,7 +355,7 @@ export default function AdminAccountManagement() {
                 <th className="p-4">USERNAME</th>
                 <th className="p-4">FULLNAME</th>
                 <th className="p-4">EMAIL</th>
-                <th className="p-4">ACTION</th>
+                {/* <th className="p-4">ACTION</th> */}
                 <th className="p-4">STATUS</th>
               </tr>
             </thead>
@@ -366,7 +366,7 @@ export default function AdminAccountManagement() {
                   <td className="p-4">{customer.username}</td>
                   <td className="p-4">{customer.full_name}</td>
                   <td className="p-4">{customer.email}</td>
-                  <td className="p-4">
+                  {/* <td className="p-4">
                     <Button
                       onClick={() =>
                         handleClickOpenRemoveUser(customer.username)
@@ -386,7 +386,7 @@ export default function AdminAccountManagement() {
                     >
                       Delete
                     </Button>
-                  </td>
+                  </td> */}
                   <td className="p-4">
                     <div className="flex justify-center m-5">
                       <Button
@@ -450,7 +450,7 @@ export default function AdminAccountManagement() {
           </DialogActions>
         </Dialog>
 
-        <Dialog
+        {/* <Dialog
           open={openDelete}
           onClose={handleCloseDelete}
           aria-labelledby="alert-dialog-title"
@@ -465,7 +465,7 @@ export default function AdminAccountManagement() {
               <p className="text-red">Yes</p>
             </Button>
           </DialogActions>
-        </Dialog>
+        </Dialog> */}
       </div>
     </div>
   );
